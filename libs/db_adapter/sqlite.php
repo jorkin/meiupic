@@ -264,7 +264,7 @@ Class adapter_sqlite{
      * @return int
      */
     function affectedRows() {
-        return sqlite_num_rows($this->conn);
+        return sqlite_changes($this->conn);
     }
     /**
      * 从记录集中返回一行数据
