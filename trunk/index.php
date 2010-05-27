@@ -8,12 +8,12 @@ if(!file_exists('conf/config.php') || !file_exists('conf/setting.php')){
     header('Location: ./install.php');
     exit;
 }
+Define('FCPATH',__FILE__);
+Define('ROOTDIR',dirname(FCPATH).'/');
+
 require_once('conf/setting.php');
 require_once('conf/config.php');
 
-
-Define('FCPATH',__FILE__);
-Define('ROOTDIR',dirname(FCPATH).'/');
 Define('LIBDIR',ROOTDIR.'libs/');
 Define('CTLDIR',ROOTDIR.'ctls/');
 Define('VIEWDIR',ROOTDIR.'views/');
