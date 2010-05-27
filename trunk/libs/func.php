@@ -8,12 +8,6 @@ function &db($name = 'default',$config = ''){
         
         if($name == 'default'){
             $config = $db_config;
-            if($db_config['adapter'] == 'txtsql'){
-                require_once (LIBDIR.'db.class.php');
-            }else{
-                require_once (LIBDIR.'db.class.php');
-                $database[$name] =& new db($db_config);
-            }
         }
         
         if($config['adapter'] == 'txtsql'){
