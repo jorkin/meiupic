@@ -1,0 +1,97 @@
+body{ 
+    margin:0; 
+    padding:0;
+    text-align:center;
+    font-size:12px;
+    font-family:"Lucida Grande",Verdana,Arial,"Bitstream Vera Sans",sans-serif;
+}
+div.login{
+    margin:7em auto;
+    width:300px;
+}
+.login_center{
+    -moz-border-radius:11px;
+    -webkit-border-radius:11px;
+    -moz-box-shadow:0 4px 18px #C8C8C8;
+    -webkit-box-shadow:0 4px 18px #C8C8C8;
+    background:#FFFFFF;
+    border:1px solid #CDDFE4;
+    font-weight:normal;
+    margin-left:8px;
+    padding:16px 16px 40px;
+    height:180px;
+    position:relative;
+}
+.login_center p{
+    margin:0;
+    font-size:13px;
+    text-align:left;
+    color:#777;
+}
+.login_center form{
+    /*border-left: 1px dashed #ccc;
+    padding-left:10px;
+    width:190px;
+    float:right;*/
+    padding-left:30px;
+}
+input.login_input{
+    font-family:"Lucida Grande",Verdana,Arial,"Bitstream Vera Sans",sans-serif;
+    border:1px solid #CDDFE4;
+    width:180px;
+    margin-bottom:16px;
+    margin-right:6px;
+    margin-top:2px;
+    padding:3px;
+    font-size:16px;
+    color:#555;
+}
+input.login_botton {
+    -moz-border-radius:11px;
+    -webkit-border-radius:11px;
+    border:1px solid;
+    cursor:pointer;
+    font-family:"Lucida Grande",Verdana,Arial,"Bitstream Vera Sans",sans-serif;
+    font-size:12px;
+    margin-top:-3px;
+    padding:3px 10px;
+    text-decoration:none;
+    text-shadow:0 -1px 0 rgba(0, 0, 0, 0.3);
+    background:#21759B url(button-grad.png) repeat-x scroll left top;
+    border-color:#298CBA !important;
+    color:#FFFFFF !important;
+    font-weight:bold;
+}
+input.login_botton:hover {
+    border-color:#13455B !important;
+    color:#EAF2FA !important;
+}
+#login_error{
+    -moz-border-radius:3px;
+    -webkit-border-radius:3px;
+    background-color:#FFEBE8;
+    border-color:#CC0000;
+    border-style:solid;
+    border-width:1px;
+    margin:0 0 10px 8px;
+    padding:8px;
+}
+#messages{
+    -moz-border-radius:3px;
+    -webkit-border-radius:3px;
+    background-color:#FFFFD8;
+    border-color:green;
+    border-style:solid;
+    border-width:1px;
+    margin:0 0 10px 8px;
+    padding:8px;
+}
+
+#logo{
+    /*width:147px;
+    height:50px;
+    position:absolute;
+    left:10px;
+    top:90px;
+    background:url(logo.gif);*/
+}
