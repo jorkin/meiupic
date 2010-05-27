@@ -5,10 +5,22 @@ function &db($name = 'default',$config = ''){
     static $database = array();
     
     if(!isset($database[$name])){
-        require_once (LIBDIR.'db.class.php');
+        
         if($name == 'default'){
-            $database[$name] =& new db($db_config);
+            $config = $db_config;
+            if($db_config['adapter'] == 'txtsql'){
+                require_once (LIBDIR.'db.class.php');
+            }else{
+                require_once (LIBDIR.'db.class.php');
+                $database[$name] =& new db($db_config);
+            }
+        }
+        
+        if($config['adapter'] == 'txtsql'){
+            require_once (LIBDIR.'txtSQL.class.php');
+            $database[$name] =& new txtSQL($config);
         }else{
+            require_once (LIBDIR.'db.class.php');
             $database[$name] =& new db($config);
         }
     }
