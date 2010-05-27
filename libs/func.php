@@ -15,6 +15,23 @@ function &db($name = 'default',$config = ''){
     return $database[$name];
 }
 
+function &load_model($model){
+    static $models = array();
+    
+    if(!isset($models[$model])){
+        $modelPath = MODELDIR.$model.'.php';
+        if(file_exists($modelPath)) {
+            require_once(LIBDIR.'modelfactory.php');
+            require_once($modelPath);
+        }else{ 
+            exit('Can not load model:'.$model);
+        }
+
+        $models[$model] =& new $model;
+    }
+    return $models[$model];
+}
+
 function &get_output(){
     static $output = array();
     
@@ -29,9 +46,9 @@ function run(){
     $ctl = isset($_GET['ctl'])?$_GET['ctl']:'default';
     $act = isset($_GET['act'])?$_GET['act']:'index';
     
-    if(file_exists(CTLDIR.$ctl.'.php')){
+    if(file_exists(CTLDIR.'admin/'.$ctl.'.php')){
         require_once(LIBDIR.'pagefactory.php');
-        require_once(CTLDIR.$ctl.'.php');
+        require_once(CTLDIR.'admin/'.$ctl.'.php');
         
         $controller = new controller();
         if(is_callable(array(&$controller,$act))){
