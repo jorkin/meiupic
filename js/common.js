@@ -166,7 +166,7 @@ function do_create_album(){
 
 function do_create_album_a(){
     
-    var url = 'index.php?ctl=upload&act=ajax_create_album';
+    var url = 'index.php?ctl=album&act=ajax_create_album';
     var album_name=$.trim($('#floatContent').find('input[name=album_name]').val());
     
     if(album_name==''){

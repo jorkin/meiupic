@@ -70,7 +70,10 @@
         /* 检查MYSQL支持情况 */
         $mysql_enabled = function_exists('mysql_connect') ? "支持" : "<b class=\"red\">不支持</b>";
         $system_info[] = array("Mysql 数据库支持", $mysql_enabled);
-
+        
+        /* 检查Sqlite支持情况*/
+        $sqlite_enabled = function_exists('sqlite_open') ? "支持" : "<b class=\"red\">不支持</b>";
+        $system_info[] = array("Sqlite 数据库支持", $sqlite_enabled);
         /* 检查图片处理函数库 */
         $gd_ver = get_gd_version();
         $gd_ver = empty($gd_ver) ? "<b class=\"red\">不支持</b>" : $gd_ver;
@@ -115,6 +118,136 @@
         $system_info[] = array("安全模式", $safe_mode);
         
         return $system_info;
+    }
+    
+    function creat_mysql($setting){
+        $dbconn = @mysql_connect($setting['dbhost'].':'.$setting['dbport'],$setting['dbuser'],$setting['dbpass'],true);
+        if(!$dbconn){
+            echo "<script> alert('无法连接数据库！请确认数据库参数是否正确！');history.back();</script>";
+            exit();
+        }
+        $select_db = @mysql_select_db($setting['dbname'],$dbconn);
+        if(!$select_db){
+            if(!isset($_POST['create_db'])){
+                echo "<script> alert('无法选择库！请确认数据库参数是否正确！');history.back();</script>";
+                exit();
+            }
+            $create_db = mysql_query('CREATE DATABASE `'.$setting['dbname'].'` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;',$dbconn);
+            
+            if(!$create_db){
+                echo "<script> alert('创建数据库失败，可能是权限错误！');history.back();</script>";
+                exit();
+            }
+            
+            $select_db = @mysql_select_db($setting['dbname'],$dbconn);
+        }
+        
+        $config_file_content = "<?php\n";
+        $config_file_content .= "\$db_config = array(\n";
+        $config_file_content .= "'adapter'  => '".$setting['dbadapter']."',\n";
+        $config_file_content .= "'host'     => '".$setting['dbhost']."',\n";
+        $config_file_content .= "'port'     => '".$setting['dbport']."',\n";
+        $config_file_content .= "'dbuser'   => '".$setting['dbuser']."',\n";
+        $config_file_content .= "'dbpass'   => '".$setting['dbpass']."',\n";
+        $config_file_content .= "'dbname'   => '".$setting['dbname']."',\n";
+        $config_file_content .= "'pconnect' => false,\n";
+        $config_file_content .= "'charset'  => 'utf8',\n";
+        $config_file_content .= "'pre'      => '".$setting['dbpre']."'\n";
+        $config_file_content .= ");\n";
+        $config_file_content .= "?>";
+        if(!@file_put_contents(ROOTDIR.'conf/config.php',$config_file_content)){
+            echo "<script> alert('无法创建数据库配置文件！');history.back();</script>";
+            exit();
+        }
+        mysql_query('SET NAMES "utf8"',$dbconn);
+        
+        $admintable = $setting['dbpre'].'admin';
+        $albumstable = $setting['dbpre'].'albums';
+        $imgstable = $setting['dbpre'].'imgs';
+        
+        $rt1 = @mysql_query("CREATE TABLE IF NOT EXISTS `$admintable` (
+          `id` int(11) NOT NULL AUTO_INCREMENT,
+          `username` varchar(50) NOT NULL,
+          `userpass` varchar(50) NOT NULL,
+          PRIMARY KEY (`id`)
+        ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;",$dbconn);
+
+        $rt2 = @mysql_query("CREATE TABLE IF NOT EXISTS `$albumstable` (
+          `id` int(11) NOT NULL AUTO_INCREMENT,
+          `name` varchar(50) NOT NULL,
+          `cover` varchar(255) NOT NULL,
+          PRIMARY KEY (`id`)
+        ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;",$dbconn);
+
+        $rt3 = @mysql_query("CREATE TABLE IF NOT EXISTS `$imgstable` (
+          `id` int(11) NOT NULL AUTO_INCREMENT,
+          `album` smallint(4) NOT NULL,
+          `name` varchar(100) NOT NULL,
+          `path` varchar(255) NOT NULL,
+          `thumb` varchar(255) NOT NULL,
+          `status` tinyint(1) NOT NULL DEFAULT '0',
+          PRIMARY KEY (`id`)
+        ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;",$dbconn);
+        
+        if(!$rt1 || !$rt2 || !$rt3){
+            echo "<script> alert('创建表结构错误！');history.back();</script>";
+            exit();
+        }
+        
+        $rt4 = @mysql_query("REPLACE INTO `$admintable` (`id`, `username`, `userpass`) VALUES (1, '".$setting['username']."', '".md5($setting['userpass'])."');",$dbconn);
+        if(!$rt4){
+            echo "<script> alert('添加用户数据错误！');history.back();</script>";
+            exit();
+        }
+        mysql_close($dbconn);
+    }
+    
+    function creat_sqlite($dbname,$pre,$adminuser,$adminpass){
+        $config_file_content = "<?php\n";
+        $config_file_content .= "\$db_config = array(\n";
+        $config_file_content .= "'adapter'  => 'sqlite',\n";
+        $config_file_content .= "'dbname'   => '".$dbname."',\n";
+        $config_file_content .= "'charset'  => 'utf8',\n";
+        $config_file_content .= "'pre'      => '".$pre."'\n";
+        $config_file_content .= ");\n";
+        $config_file_content .= "?>";
+        if(!@file_put_contents(ROOTDIR.'conf/config.php',$config_file_content)){
+            echo "<script> alert('无法创建数据库配置文件！');history.back();</script>";
+            exit();
+        }
+        
+        $conn=sqlite_open($dbname);
+        
+        $admintable = $pre.'admin';
+        $albumstable = $pre.'albums';
+        $imgstable = $pre.'imgs';
+        
+        sqlite_query("CREATE TABLE $admintable (
+                  id INTEGER NOT NULL PRIMARY KEY,
+                  username varchar(50) NOT NULL,
+                  userpass varchar(50) NOT NULL
+                )",$conn);
+        
+
+        sqlite_query("CREATE TABLE $albumstable (
+                  id INTEGER NOT NULL PRIMARY KEY,
+                  name varchar(50) NOT NULL,
+                  cover varchar(255) NOT NULL DEFAULT ''
+                )",$conn);
+
+
+        sqlite_query("CREATE TABLE $imgstable (
+                  id INTEGER NOT NULL PRIMARY KEY,
+                  album smallint(4) NOT NULL,
+                  name varchar(100) NOT NULL,
+                  path varchar(255) NOT NULL,
+                  thumb varchar(255) NOT NULL,
+                  status tinyint(1) NOT NULL DEFAULT '0'
+                )",$conn);
+        
+        sqlite_query("INSERT INTO $admintable (id, username, userpass) VALUES (1, '".$adminuser."', '".md5($adminpass)."')",$conn);
+        
+        sqlite_close($conn);
     }
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -189,6 +322,68 @@ table.setting th{
     text-align:left;
 }
 </style>
+<script>
+function checkSubmit(o){
+    if(o.dbadapter.value == 'mysql' || o.dbadapter.value == 'mysqli'){
+        if(o.dbhost.value == ''){
+            alert('数据库主机不能为空！');
+            return false;
+        }
+    
+        if(o.dbport.value == ''){
+            alert('端口号不能为空！');
+            return false;
+        }
+        if(o.dbhost.value == ''){
+            alert('数据库主机不能为空！');
+            return false;
+        }
+        if(o.dbuser.value == ''){
+            alert('数据库用户名不能为空！');
+            return false;
+        }
+        if(o.dbname.value == ''){
+            alert('数据库名不能为空！');
+            return false;
+        }
+    }else if(o.dbadapter.value == 'sqlite'){
+        if(o.sqlitedbname.value == ''){
+            alert('Sqlite数据库路径不能为空！');
+            return false;
+        }
+    }
+    
+    if(o.username.value == ''){
+        alert('管理员用户名不能为空！');
+        return false;
+    }
+    if(o.userpass.value == ''){
+        alert('管理员密码不能为空！');
+        return false;
+    }
+    
+    if(o.passagain.value != o.userpass.value){
+        alert('两次密码不一致！');
+        return false;
+    }
+    
+    if(o.url.value == ''){
+        alert('站点URL不能为空!');
+        return false;
+    }
+    o.submit();
+}
+
+function selected_adapter(val){
+    if(val == 'sqlite'){
+        document.getElementById('sqlite_div').style.display = '';
+        document.getElementById('mysql_div').style.display = 'none';
+    }else{
+        document.getElementById('sqlite_div').style.display = 'none';
+        document.getElementById('mysql_div').style.display = '';
+    }
+}
+</script>
 </head>
 <body>
 <div id="main">
@@ -196,7 +391,6 @@ table.setting th{
 if (PHP_VERSION >= "5.1.0") {
 	date_default_timezone_set ( 'Asia/Shanghai' );
 }
-
 define('ROOTDIR',dirname(__FILE__).'/');
 define('LIBDIR',ROOTDIR.'libs/');
 $action = $_GET['step']?$_GET['step']:'1';
@@ -246,12 +440,22 @@ if(file_exists(ROOTDIR.'conf/install.lock') && $action!=3){
         echo "<h2>数据库配置</h2>\n";
         echo "<form action=\"install.php?step=install\" method=\"post\" onsubmit=\"checkSubmit(this);return false;\">";
         echo '<table class="setting">'."\n";
+        echo '<tbody>'."\n";
+         echo '<tr><th>数据库类型</th><td><select id="sel_dbadapter" name="dbadapter" onchange="selected_adapter(this.value)"><option value="mysql" selected="selected">Mysql</option><option value="mysqli">Mysqli</option><option value="sqlite">Sqlite</option></select></td>'."\n";
+         echo '</tbody>'."\n";
+        echo '<tbody id="mysql_div">'."\n";
         echo '<tr><th>数据库主机</th><td><input name="dbhost" type="text" value="localhost" /></td>'."\n";
         echo '<tr><th>端口号</th><td><input name="dbport" type="text" value="3306" /></td>'."\n";
         echo '<tr><th>用户名</th><td><input name="dbuser" type="text" value="root" /></td>'."\n";
         echo '<tr><th>密码</th><td><input name="dbpass" type="password" value="" /></td>'."\n";
         echo '<tr><th>数据库名</th><td><input name="dbname" type="text" value="" /> <input type="checkbox" name="create_db" value="1" /> 自动创建数据库</td>'."\n";
+        echo '</tbody>'."\n";
+        echo '<tbody>'."\n";
         echo '<tr><th>表前缀</th><td><input name="dbpre" type="text" value="meu_" /></td>'."\n";
+        echo '</tbody>'."\n";
+        echo '<tbody id="sqlite_div" style="display:none;">'."\n";
+        echo '<tr><th>数据库路径</th><td><input name="sqlitedbname" type="text" value="conf/database.php" /></td>'."\n";
+        echo '</tbody>'."\n";
         echo '</table>'."\n";
         
         echo "<h2>管理员帐号</h2>\n";
@@ -266,54 +470,32 @@ if(file_exists(ROOTDIR.'conf/install.lock') && $action!=3){
         echo '</table>'."\n";
         echo "<div align=\"left\" style=\"margin-top:10px;padding-left:200px\"><input type=\"button\" onclick=\"window.location.href='install.php?step=1'\" value=\"上一步\" class=\"btn\" />&nbsp;&nbsp;&nbsp;&nbsp; <input type=\"submit\" value=\"立即安装\" class=\"btn\" /></div>";
         echo '</form>'."\n";
+        echo '<script>selected_adapter(document.getElementById("sel_dbadapter").value);</script>';
     }elseif($action == 'install'){
         $setting['dbhost'] = trim($_POST['dbhost']);
         $setting['dbport'] = trim($_POST['dbport']);
         $setting['dbuser'] = trim($_POST['dbuser']);
         $setting['dbpass'] = $_POST['dbpass'];
         $setting['dbname'] = trim($_POST['dbname']);
+        $setting['dbadapter'] = trim($_POST['dbadapter']);
+        $setting['sqlitedbname'] = trim($_POST['sqlitedbname']);
         $setting['dbpre'] = trim($_POST['dbpre']);
         $setting['url'] = trim($_POST['url']);
         $setting['username'] = trim($_POST['username']);
         $setting['userpass'] = trim($_POST['userpass']);
         
-        $dbconn = @mysql_connect($setting['dbhost'].':'.$setting['dbport'],$setting['dbuser'],$setting['dbpass'],true);
-        if(!$dbconn){
-            echo "<script> alert('无法连接数据库！请确认数据库参数是否正确！');history.back();</script>";
-            exit();
-        }
-        $select_db = @mysql_select_db($setting['dbname'],$dbconn);
-        if(!$select_db){
-            if(!isset($_POST['create_db'])){
-                echo "<script> alert('无法选择库！请确认数据库参数是否正确！');history.back();</script>";
+        if($setting['dbadapter'] == 'sqlite'){
+            if(file_exists($setting['sqlitedbname'])){
+                echo "<script> alert('Sqlite数据库已经存在，无法继续安装！');history.back();</script>";
                 exit();
             }
-            $create_db = mysql_query('CREATE DATABASE `'.$setting['dbname'].'` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;',$dbconn);
-            
-            if(!$create_db){
-                echo "<script> alert('创建数据库失败，可能是权限错误！');history.back();</script>";
+            if(is_writable($setting['sqlitedbname'])){
+                echo "<script> alert('文件不可写入，无法创建Sqlite数据库！');history.back();</script>";
                 exit();
             }
-            
-            $select_db = @mysql_select_db($setting['dbname'],$dbconn);
-        }
-        
-        $config_file_content = "<?php\n";
-        $config_file_content .= "\$db_config = array(\n";
-        $config_file_content .= "'adapter'  => 'mysql',\n";
-        $config_file_content .= "'host'     => '".$setting['dbhost']."',\n";
-        $config_file_content .= "'port'     => '".$setting['dbport']."',\n";
-        $config_file_content .= "'dbuser'   => '".$setting['dbuser']."',\n";
-        $config_file_content .= "'dbpass'   => '".$setting['dbpass']."',\n";
-        $config_file_content .= "'dbname'   => '".$setting['dbname']."',\n";
-        $config_file_content .= "'pconnect' => false,\n";
-        $config_file_content .= "'charset'  => 'utf8',\n";
-        $config_file_content .= "'pre'      => '".$setting['dbpre']."'\n";
-        $config_file_content .= ");\n";
-        $config_file_content .= "?>";
-        if(!@file_put_contents(ROOTDIR.'conf/config.php',$config_file_content)){
-            echo "<script> alert('无法创建数据库配置文件！');history.back();</script>";
-            exit();
+            creat_sqlite($setting['sqlitedbname'],$setting['dbpre'],$setting['username'],$setting['userpass']);
+        }else{
+            creat_mysql($setting);
         }
         $setting_content = "<?php \n";
         $setting_content .= "\$setting['url'] = '".$setting['url']."';\n";
@@ -333,50 +515,9 @@ if(file_exists(ROOTDIR.'conf/install.lock') && $action!=3){
             exit();
         }
         
-        mysql_query('SET NAMES "utf8"',$dbconn);
-        
-        $admintable = $setting['dbpre'].'admin';
-        $albumstable = $setting['dbpre'].'albums';
-        $imgstable = $setting['dbpre'].'imgs';
-        
-        $rt1 = @mysql_query("CREATE TABLE IF NOT EXISTS `$admintable` (
-          `id` int(11) NOT NULL AUTO_INCREMENT,
-          `username` varchar(50) NOT NULL,
-          `userpass` varchar(50) NOT NULL,
-          PRIMARY KEY (`id`)
-        ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;",$dbconn);
-
-        $rt2 = @mysql_query("CREATE TABLE IF NOT EXISTS `$albumstable` (
-          `id` int(11) NOT NULL AUTO_INCREMENT,
-          `name` varchar(50) NOT NULL,
-          `cover` varchar(255) NOT NULL,
-          PRIMARY KEY (`id`)
-        ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;",$dbconn);
-
-        $rt3 = @mysql_query("CREATE TABLE IF NOT EXISTS `$imgstable` (
-          `id` int(11) NOT NULL AUTO_INCREMENT,
-          `album` smallint(4) NOT NULL,
-          `name` varchar(100) NOT NULL,
-          `path` varchar(255) NOT NULL,
-          `thumb` varchar(255) NOT NULL,
-          `status` tinyint(1) NOT NULL,
-          PRIMARY KEY (`id`)
-        ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;",$dbconn);
-        
-        if(!$rt1 || !$rt2 || !$rt3){
-            echo "<script> alert('创建表结构错误！');history.back();</script>";
-            exit();
-        }
-        
-        $rt4 = @mysql_query("REPLACE INTO `$admintable` (`id`, `username`, `userpass`) VALUES (1, '".$setting['username']."', '".md5($setting['userpass'])."');",$dbconn);
-        if(!$rt4){
-            echo "<script> alert('添加用户数据错误！');history.back();</script>";
-            exit();
-        }
         @file_put_contents(ROOTDIR.'conf/install.lock',date('Y-m-d H:i:s').' Installed!');
-        mysql_close($dbconn);
         
-        echo "<script>window.location.href='install.php?step=3';</script>";
+        echo "安装成功...正在跳转  <script>window.location.href='install.php?step=3';</script>";
     }elseif($action == '3'){
 ?>
     <h1 class="green">恭喜您！ 美优相册管理系统 已成功安装！</h1>
@@ -388,51 +529,6 @@ if(file_exists(ROOTDIR.'conf/install.lock') && $action!=3){
     }
 }
 ?>
-<script>
-function checkSubmit(o){
-    if(o.dbhost.value == ''){
-        alert('数据库主机不能为空！');
-        return false;
-    }
-    
-    if(o.dbport.value == ''){
-        alert('端口号不能为空！');
-        return false;
-    }
-    if(o.dbhost.value == ''){
-        alert('数据库主机不能为空！');
-        return false;
-    }
-    if(o.dbuser.value == ''){
-        alert('数据库用户名不能为空！');
-        return false;
-    }
-    if(o.dbname.value == ''){
-        alert('数据库名不能为空！');
-        return false;
-    }
-    
-    if(o.username.value == ''){
-        alert('管理员用户名不能为空！');
-        return false;
-    }
-    if(o.userpass.value == ''){
-        alert('管理员密码不能为空！');
-        return false;
-    }
-    
-    if(o.passagain.value != o.userpass.value){
-        alert('两次密码不一致！');
-        return false;
-    }
-    
-    if(o.url.value == ''){
-        alert('站点URL不能为空!');
-        return false;
-    }
-    o.submit();
-}
-</script>
 </div>
 </body>
 </html>
