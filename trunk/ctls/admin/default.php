@@ -11,8 +11,8 @@ class controller extends pagefactory{
         if(!$page){
             $page = 1;
         }
-        $this->db->select('#imgs',"*",'','id desc');
-        $pics = $this->db->toPage($page,PAGE_SET);
+        $mdl_picture = & load_model('picture');
+        $pics = $mdl_picture->get_all_pic($page);
         $pageurl='index.php?page=[#page#]';
         $this->output->set('pics',$pics['ls']);
         $this->output->set('pageset',pageshow($pics['total'],$pics['start'],$pageurl));
@@ -48,8 +48,9 @@ class controller extends pagefactory{
         redirect('index.php?ctl=default&act=login&flag=2');
     }
     
-    function setting(){
-        global $setting;
+    function setting(){        
+        $mdl_setting =& load_model('setting');
+        
         if($this->isPost()){
             $new_setting = $_POST['setting'];
             foreach($new_setting as $k=>$v){
@@ -102,29 +103,15 @@ class controller extends pagefactory{
             if(empty($new_setting['pageset']) || !is_numeric($new_setting['size_allow'])){
                 showInfo('分页设置只能为数字！',false);
             }
-            $setting_content = "<?php \n";
-
-            $setting_content .= "\$setting['url'] = '".$new_setting['url']."';\n";
-            $setting_content .= "\$setting['imgdir'] = '".$new_setting['imgdir']."';\n";
-            $setting_content .= "\$setting['upload_runtimes'] = '".$new_setting['upload_runtimes']."';\n";
-            $setting_content .= "\$setting['open_pre_resize'] = ".$new_setting['open_pre_resize'].";\n";
-            $setting_content .= "\$setting['resize_img_width'] = '".$new_setting['resize_img_width']."';\n";
-            $setting_content .= "\$setting['resize_img_height'] = '".$new_setting['resize_img_height']."';\n";
-            $setting_content .= "\$setting['resize_quality'] = '".$new_setting['resize_quality']."';\n";
-            $setting_content .= "\$setting['imgdir_type'] = '".$new_setting['imgdir_type']."';\n";
-            $setting_content .= "\$setting['extension_allow'] = '".$new_setting['extension_allow']."';\n";
-            $setting_content .= "\$setting['size_allow'] = '".$new_setting['size_allow']."';\n";
-            $setting_content .= "\$setting['pageset'] = '".$new_setting['pageset']."';\n";
-            $setting_content .= "?>";
             
-            if(@file_put_contents(ROOTDIR.'conf/setting.php',$setting_content)){
+            if($mdl_setting->save_setting($new_setting)){
                 showInfo('修改网站配置成功！',true,'index.php?ctl=default&act=setting');
             }else{
                 showInfo('写入配置失败,请检查conf/setting.php文件是否可写！',false);
             }
             
         }else{
-            $this->output->set('setting',$setting);
+            $this->output->set('setting',$mdl_setting->get_setting());
             $this->view->display('setting.php');
         }
     }
@@ -143,8 +130,8 @@ class controller extends pagefactory{
         $id = $this->auth->getInfo('id');
         $loginname = $this->auth->getInfo('username');
         $newpass = md5($_POST['newpass']);
-        $this->db->update('#admin','id='.intval($id),array('userpass'=>$newpass));
-        if($this->db->query()){
+        $mdl_setting =& load_model('setting');
+        if($mdl_setting->change_admin_pass(intval($id),$newpass)){
             $this->auth->setLogin($loginname,$newpass);
             showInfo('密码修改成功！',true,'index.php?ctl=default&act=setting');
         }else{

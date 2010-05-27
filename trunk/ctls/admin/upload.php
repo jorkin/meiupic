@@ -6,7 +6,9 @@ class controller extends pagefactory{
 
     function controller(){
         parent::pagefactory();
-        
+        $this->mdl_album = & load_model('album');
+        $this->mdl_upload = & load_model('upload');
+        $this->mdl_picture = & load_model('picture');
         if(!$this->auth->isLogedin()){
             redirect_c('default','login');
         }
@@ -14,8 +16,7 @@ class controller extends pagefactory{
     }
     
     function index(){
-        $this->db->select('#albums','*');
-        $this->output->set('albums_list',$this->db->getAll());
+        $this->output->set('albums_list',$this->mdl_album->get_all_album());
         $this->view->display('upload_step1.php');
     }
     
@@ -46,85 +47,9 @@ class controller extends pagefactory{
     }
     
     function process(){
-        header('Content-type: text/plain; charset=UTF-8');
-        header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-        header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-        header("Cache-Control: no-store, no-cache, must-revalidate");
-        header("Cache-Control: post-check=0, pre-check=0", false);
-        header("Pragma: no-cache");
-
-        $tmp_dir = where_is_tmp();
-        $targetDir =  $tmp_dir. DIRECTORY_SEPARATOR . "plupload";
-
-        $cleanupTargetDir = false; //移除旧的临时文件
-        $maxFileAge = 60 * 60; //临时文件超时时间
-
-        // 5 分钟的执行时间
-        @set_time_limit(5 * 60);
-
-
-        $chunk = isset($_REQUEST["chunk"]) ? $_REQUEST["chunk"] : 0;
-        $chunks = isset($_REQUEST["chunks"]) ? $_REQUEST["chunks"] : 0;
-        $fileName = isset($_REQUEST["name"]) ? $_REQUEST["name"] : '';
-
-        $fileName = preg_replace('/[^\w\._]+/', '', $fileName);
-
-        if (!file_exists($targetDir))
-            @mkdir($targetDir);
-
-        if (is_dir($targetDir) && ($dir = opendir($targetDir))) {
-            while (($file = readdir($dir)) !== false) {
-                $filePath = $targetDir . DIRECTORY_SEPARATOR . $file;
-                if (preg_match('/\\.tmp$/', $file) && (filemtime($filePath) < time() - $maxFileAge))
-                    @unlink($filePath);
-            }
-            closedir($dir);
-        } else
-            die('{"jsonrpc" : "2.0", "error" : {"code": 100, "message": "Failed to open temp directory."}, "id" : "id"}');
-
-        // 查看 header信息: content type
-        if (isset($_SERVER["HTTP_CONTENT_TYPE"]))
-            $contentType = $_SERVER["HTTP_CONTENT_TYPE"];
-
-        if (isset($_SERVER["CONTENT_TYPE"]))
-            $contentType = $_SERVER["CONTENT_TYPE"];
-
-        if (strpos($contentType, "multipart") !== false) {
-            if (isset($_FILES['file']['tmp_name']) && is_uploaded_file($_FILES['file']['tmp_name'])) {
-                $out = fopen($targetDir . DIRECTORY_SEPARATOR . $fileName, $chunk == 0 ? "wb" : "ab");
-                if ($out) {
-                    $in = fopen($_FILES['file']['tmp_name'], "rb");
-
-                    if ($in) {
-                        while ($buff = fread($in, 4096))
-                            fwrite($out, $buff);
-                    } else
-                        die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "Failed to open input stream."}, "id" : "id"}');
-
-                    fclose($out);
-                    unlink($_FILES['file']['tmp_name']);
-                } else
-                    die('{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "Failed to open output stream."}, "id" : "id"}');
-            } else
-                die('{"jsonrpc" : "2.0", "error" : {"code": 103, "message": "Failed to move uploaded file."}, "id" : "id"}');
-        } else {
-            $out = fopen($targetDir . DIRECTORY_SEPARATOR . $fileName, $chunk == 0 ? "wb" : "ab");
-            if ($out) {
-                $in = fopen("php://input", "rb");
-
-                if ($in) {
-                    while ($buff = fread($in, 4096))
-                        fwrite($out, $buff);
-                } else
-                    die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "Failed to open input stream."}, "id" : "id"}');
-
-                fclose($out);
-            } else
-                die('{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "Failed to open output stream."}, "id" : "id"}');
-        }
-        
-        die('{"jsonrpc" : "2.0", "result" : null, "id" : "id"}');
+        $this->mdl_upload->plupload();
     }
+    
     function dopicupload(){
         $date = get_updir_name($this->setting['imgdir_type']);
         if(!is_dir(DATADIR.$date)){
@@ -152,11 +77,10 @@ class controller extends pagefactory{
                 
                 if(@move_uploaded_file($tmpfile,$realpath)){
                     ResizeImage($realpath,$this->thumb_width,$this->thumb_height,$thumbrealpath);
-                    $this->db->insert('#imgs',array('album'=>$_GET['album'],
+                    $this->mdl_picture->insert_pic(array('album'=>$_GET['album'],
                                                     'name'=>$filename,
                                                     'path'=>$imgpath,
                                                     'thumb'=>$thumbpath));
-                    $this->db->query();
                 }else{
                     showInfo('文件上传失败！',false);
                     exit;
@@ -168,8 +92,7 @@ class controller extends pagefactory{
     function doupload(){
         $this->_save_and_resize();
         
-        $this->db->select('#imgs','*','status=0','id asc');
-        $pics = $this->db->getAll();
+        $pics = $this->mdl_picture->get_tmp_pic();
         $this->output->set('uploaded_pics',$pics);
         $this->output->set('album',$_GET['album']);
         $this->view->display('upload_step3.php');
@@ -197,11 +120,10 @@ class controller extends pagefactory{
             if($status == 'done' && file_exists($tmpfile)){
                 if(@copy($tmpfile,$realpath)){
                     ResizeImage($realpath,$this->thumb_width,$this->thumb_height,$thumbrealpath);
-                    $this->db->insert('#imgs',array('album'=>$_GET['album'],
+                    $this->mdl_picture->insert_pic(array('album'=>$_GET['album'],
                                                     'name'=>$filename,
                                                     'path'=>$imgpath,
                                                     'thumb'=>$thumbpath));
-                    $this->db->query();
                 }
             }
         }
@@ -212,31 +134,17 @@ class controller extends pagefactory{
         $album = $_GET['album'];
         if($imgname){
             foreach($imgname as $k=>$v){
-                $this->db->update('#imgs','id='.intval($k),array('name'=>$v,'status'=>'1'));
-                $this->db->query();
+                $this->mdl_picture->update_pic(intval($k),$v);
             }
         }
         
         redirect('index.php?ctl=album&act=photos&album='.$album);
     }
     
-    function ajax_create_album(){
-        $album_name = $_POST['album_name'];
-        $this->db->insert('#albums',array('name'=>$album_name));
-        if($this->db->query()){
-            $this->db->select('#albums','*');
-            $list = $this->db->getAssoc();
-            echo json_encode(array('ret'=>true,'list'=>$list));
-        }else{
-            echo json_encode(array('ret'=>false,'msg'=>'创建相册失败！'));
-        }
-    }
-    
     function reupload(){
         $id = intval($_GET['id']);
     
-        $this->db->select('#imgs','*','id='.$id);
-        $row = $this->db->getRow();
+        $row = $this->mdl_picture->get_one_pic($id);
         if(!$row){
             echo '<script> top.reupload_alert("此照片不存在或已被删除!");</script>';
             exit;
@@ -245,10 +153,7 @@ class controller extends pagefactory{
             echo '<script> top.reupload_alert("请先选择要上传的图片!");</script>';
             exit;
         }
-        $date = get_updir_name($this->setting['imgdir_type']);
-        if(!is_dir(DATADIR.$date)){
-            @mkdir(DATADIR.$date);
-        }
+        
         $filename = $_FILES['imgs']['name'];
         $tmpfile = $_FILES['imgs']['tmp_name'];
         $fileext = strtolower(end(explode('.',$filename)));

@@ -17,6 +17,8 @@ Define('ROOTDIR',dirname(FCPATH).'/');
 Define('LIBDIR',ROOTDIR.'libs/');
 Define('CTLDIR',ROOTDIR.'ctls/');
 Define('VIEWDIR',ROOTDIR.'views/');
+Define('MODELDIR',ROOTDIR.'models/');
+
 Define('DATADIR',ROOTDIR.$setting['imgdir'].'/');
 
 Define('SITE_URL',$setting['url']);
