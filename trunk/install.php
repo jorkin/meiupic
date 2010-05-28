@@ -378,9 +378,21 @@ function selected_adapter(val){
     if(val == 'sqlite'){
         document.getElementById('sqlite_div').style.display = '';
         document.getElementById('mysql_div').style.display = 'none';
+        document.getElementById('dbauth_div').style.display = 'none';
+        document.getElementById('pre_div').style.display = '';
+        document.getElementById('dbpath_div').style.display = 'none';
+    }else if(val == 'txtsql'){
+        document.getElementById('sqlite_div').style.display = 'none';
+        document.getElementById('mysql_div').style.display = 'none';
+        document.getElementById('dbauth_div').style.display = '';
+        document.getElementById('dbpath_div').style.display = '';
+        document.getElementById('pre_div').style.display = 'none';
     }else{
         document.getElementById('sqlite_div').style.display = 'none';
         document.getElementById('mysql_div').style.display = '';
+        document.getElementById('dbauth_div').style.display = '';
+        document.getElementById('pre_div').style.display = '';
+        document.getElementById('dbpath_div').style.display = 'none';
     }
 }
 </script>
@@ -436,41 +448,66 @@ if(file_exists(ROOTDIR.'conf/install.lock') && $action!=3){
             echo "<div align=\"center\"><input type=\"button\" onclick=\"window.location.href='install.php?step=2'\" value=\"下一步\" class=\"btn\" /></div>";
         }
     }elseif($action == '2'){
-        echo "<h1 class=\"blue\">欢迎使用美优相册管理系统！ <span class=\"orange\">安装第二步：配置系统</span></h1>\n";
-        echo "<h2>数据库配置</h2>\n";
-        echo "<form action=\"install.php?step=install\" method=\"post\" onsubmit=\"checkSubmit(this);return false;\">";
-        echo '<table class="setting">'."\n";
-        echo '<tbody>'."\n";
-         echo '<tr><th>数据库类型</th><td><select id="sel_dbadapter" name="dbadapter" onchange="selected_adapter(this.value)"><option value="mysql" selected="selected">Mysql</option><option value="mysqli">Mysqli</option><option value="sqlite">Sqlite</option></select></td>'."\n";
-         echo '</tbody>'."\n";
-        echo '<tbody id="mysql_div">'."\n";
-        echo '<tr><th>数据库主机</th><td><input name="dbhost" type="text" value="localhost" /></td>'."\n";
-        echo '<tr><th>端口号</th><td><input name="dbport" type="text" value="3306" /></td>'."\n";
-        echo '<tr><th>用户名</th><td><input name="dbuser" type="text" value="root" /></td>'."\n";
-        echo '<tr><th>密码</th><td><input name="dbpass" type="password" value="" /></td>'."\n";
-        echo '<tr><th>数据库名</th><td><input name="dbname" type="text" value="" /> <input type="checkbox" name="create_db" value="1" /> 自动创建数据库</td>'."\n";
-        echo '</tbody>'."\n";
-        echo '<tbody>'."\n";
-        echo '<tr><th>表前缀</th><td><input name="dbpre" type="text" value="meu_" /></td>'."\n";
-        echo '</tbody>'."\n";
-        echo '<tbody id="sqlite_div" style="display:none;">'."\n";
-        echo '<tr><th>数据库路径</th><td><input name="sqlitedbname" type="text" value="conf/database.php" /></td>'."\n";
-        echo '</tbody>'."\n";
-        echo '</table>'."\n";
-        
-        echo "<h2>管理员帐号</h2>\n";
-        echo '<table class="setting">'."\n";
-        echo '<tr><th>登录名</th><td><input name="username" type="text" value="" /></td>'."\n";
-        echo '<tr><th>登录密码</th><td><input name="userpass" type="password" value="" /></td>'."\n";
-        echo '<tr><th>密码确认</th><td><input name="passagain" type="password" value="" /></td>'."\n";
-        echo '</table>'."\n";
-        echo "<h2>其他设置</h2>\n";
-        echo '<table class="setting">'."\n";
-        echo '<tr><th>站点URL</th><td><input name="url" type="text" value="" /> 请带上URL末端的"/" </td>'."\n";
-        echo '</table>'."\n";
-        echo "<div align=\"left\" style=\"margin-top:10px;padding-left:200px\"><input type=\"button\" onclick=\"window.location.href='install.php?step=1'\" value=\"上一步\" class=\"btn\" />&nbsp;&nbsp;&nbsp;&nbsp; <input type=\"submit\" value=\"立即安装\" class=\"btn\" /></div>";
-        echo '</form>'."\n";
-        echo '<script>selected_adapter(document.getElementById("sel_dbadapter").value);</script>';
+ ?>
+    <h1 class="blue">欢迎使用美优相册管理系统！ <span class="orange">安装第二步：配置系统</span></h1>
+<h2>数据库配置</h2>
+
+<form action="install.php?step=install" method="post" onsubmit="checkSubmit(this);return false;"><table class="setting">
+<tbody>
+<tr><th>数据库类型</th><td>
+    <select id="sel_dbadapter" name="dbadapter" onchange="selected_adapter(this.value)">
+    <?php 
+    if(function_exists('mysql_connect')){
+        echo '<option value="mysql">Mysql</option>';
+    }
+
+    if(function_exists('mysqli_connect')){
+        echo '<option value="mysqli">Mysqli</option>';
+    }
+
+    if(function_exists('sqlite_open')){
+        echo '<option value="sqlite">Sqlite</option>';
+    }
+    ?>
+        <option value="txtsql">txtSQL</option>
+    </select></td>
+</tbody>
+<tbody id="mysql_div">
+<tr><th>数据库主机</th><td><input name="dbhost" type="text" value="localhost" /></td>
+<tr><th>端口号</th><td><input name="dbport" type="text" value="3306" /></td>
+</tbody>
+<tbody id="dbpath_div">
+<tr><th>数据库路径</th><td><input name="dbpath" type="text" value="database" /></td>
+
+</tbody>
+<tbody id="dbauth_div">
+<tr><th>用户名</th><td><input name="dbuser" type="text" value="root" /></td>
+<tr><th>密码</th><td><input name="dbpass" type="password" value="" /></td>
+<tr><th>数据库名</th><td><input name="dbname" type="text" value="" /> <input type="checkbox" name="create_db" value="1" /> 自动创建数据库</td>
+</tbody>
+<tbody id="pre_div">
+<tr><th>表前缀</th><td><input name="dbpre" type="text" value="meu_" /></td>
+</tbody>
+<tbody id="sqlite_div" style="display:none;">
+
+<tr><th>数据库路径</th><td><input name="sqlitedbname" type="text" value="conf/database.php" /></td>
+</tbody>
+</table>
+<h2>管理员帐号</h2>
+<table class="setting">
+<tr><th>登录名</th><td><input name="username" type="text" value="" /></td>
+<tr><th>登录密码</th><td><input name="userpass" type="password" value="" /></td>
+<tr><th>密码确认</th><td><input name="passagain" type="password" value="" /></td>
+</table>
+<h2>其他设置</h2>
+<table class="setting">
+
+<tr><th>站点URL</th><td><input name="url" type="text" value="" /> 请带上URL末端的"/" </td>
+</table>
+<div align="left" style="margin-top:10px;padding-left:200px"><input type="button" onclick="window.location.href='install.php?step=1'" value="上一步" class="btn" />&nbsp;&nbsp;&nbsp;&nbsp; <input type="submit" value="立即安装" class="btn" /></div></form>
+<script>selected_adapter(document.getElementById("sel_dbadapter").value);</script>
+
+ <?php
     }elseif($action == 'install'){
         $setting['dbhost'] = trim($_POST['dbhost']);
         $setting['dbport'] = trim($_POST['dbport']);
@@ -518,6 +555,7 @@ if(file_exists(ROOTDIR.'conf/install.lock') && $action!=3){
         @file_put_contents(ROOTDIR.'conf/install.lock',date('Y-m-d H:i:s').' Installed!');
         
         echo "安装成功...正在跳转  <script>window.location.href='install.php?step=3';</script>";
+
     }elseif($action == '3'){
 ?>
     <h1 class="green">恭喜您！ 美优相册管理系统 已成功安装！</h1>
