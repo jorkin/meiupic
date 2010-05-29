@@ -32,8 +32,7 @@ class auth {
             $uid = isset($auth[1])?$auth[1]:0;
             $upass = isset($auth[0])?$auth[0]:'';
 
-            $this->db->select($this->config['db_table'],'*',$this->config['db_uid']."='$uid'");
-            $member_info = $this->db->getRow();
+            $member_info = $this->_get_minfo_by_uid($uid);
 
             if(!$member_info){
                 $this->LOGIN_FLAG = false;
@@ -50,6 +49,45 @@ class auth {
         }
     }
     
+    function _get_minfo_by_uid($uid){
+        global $db_config;
+        if($db_config['adapter'] == 'txtsql'){
+            $data = $this->db->select( array(
+                    'table' => str_replace('#','',$this->config['db_table']),
+                    'where' => array($this->config['db_uid'].' = '.intval($uid))
+                    )
+            );
+            if(count($data) > 0){
+                $member_info = $data[0];
+            }else{
+                $member_info = false;
+            }
+        }else{
+            $this->db->select($this->config['db_table'],'*',$this->config['db_uid']."='$uid'");
+            $member_info = $this->db->getRow();
+        }
+        return $member_info;
+    }
+    
+    function _get_minfo_by_loginname($loginname){
+        global $db_config;
+        if($db_config['adapter'] == 'txtsql'){
+            $data = $this->db->select( array(
+                    'table' => str_replace('#','',$this->config['db_table']),
+                    'where' => array($this->config['db_loginname'].' = '.$loginname)
+                    )
+            );
+            if(count($data) > 0){
+                $member_info = $data[0];
+            }else{
+                $member_info = false;
+            }
+        }else{
+            $this->db->select($this->config['db_table'],'*',$this->config['db_loginname']."='$loginname'");
+            $member_info = $this->db->getRow();
+        }
+        return $member_info;
+    }
     /**
      * 判断用户是否登陆
      *
@@ -80,9 +118,7 @@ class auth {
      */
     function setLogin($loginname,$password,$expire_time = 0){
 
-        $this->db->select($this->config['db_table'],'*',$this->config['db_loginname']."='$loginname'");
-
-        $member_info = $this->db->getRow();
+        $member_info = $this->_get_minfo_by_loginname($loginname);
 
         if($member_info && $member_info[$this->config['db_upass']] == $password){
 
