@@ -12,7 +12,9 @@ function &db($name = 'default',$config = ''){
         
         if($config['adapter'] == 'txtsql'){
             require_once (LIBDIR.'txtSQL.class.php');
-            $database[$name] =& new txtSQL($config);
+            $database[$name] =& new txtSQL($config['path']);
+            $database[$name]->connect($config['dbuser'],$config['dbpass']);
+            $database[$name]->selectdb ($config['dbname']);
         }else{
             require_once (LIBDIR.'db.class.php');
             $database[$name] =& new db($config);
@@ -22,10 +24,15 @@ function &db($name = 'default',$config = ''){
 }
 
 function &load_model($model){
+    global $db_config;
     static $models = array();
     
     if(!isset($models[$model])){
-        $modelPath = MODELDIR.$model.'.php';
+        if($db_config['adapter'] == 'txtsql'){
+            $modelPath = MODELDIR.'txtsql/'.$model.'.php';
+        }else{
+            $modelPath = MODELDIR.$model.'.php';
+        }
         if(file_exists($modelPath)) {
             require_once(LIBDIR.'modelfactory.php');
             require_once($modelPath);

@@ -6,7 +6,6 @@ class controller extends pagefactory{
         if(!$this->auth->isLogedin()){
             redirect_c('default','login');
         }
-
         $page = $_GET['page'];
         if(!$page){
             $page = 1;
