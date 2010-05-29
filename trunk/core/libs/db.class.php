@@ -1,9 +1,10 @@
 <?php
 /**
- * 数据库访问类
- * @author lingter
- * @copyright baoling@yeah.net
+ * $Id$
  * 
+ * @author : Lingter
+ * @support : http://www.meiu.cn
+ * @copyright : (c)2010 meiu.cn lingter@gmail.com
  */
 
 class db{

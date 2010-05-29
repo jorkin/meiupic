@@ -1,10 +1,12 @@
 <?php
 /**
- * Mysqli访问类
- * @author lingter
- * @copyright baoling@yeah.net
+ * $Id$
  * 
+ * @author : Lingter
+ * @support : http://www.meiu.cn
+ * @copyright : (c)2010 meiu.cn lingter@gmail.com
  */
+
 Class adapter_mysqli{
     /**
      * 数据库请求次数
