@@ -13,11 +13,11 @@ Define('ROOTDIR',dirname(FCPATH).'/');
 
 require_once('conf/setting.php');
 require_once('conf/config.php');
-
-Define('LIBDIR',ROOTDIR.'libs/');
-Define('CTLDIR',ROOTDIR.'ctls/');
-Define('VIEWDIR',ROOTDIR.'views/');
-Define('MODELDIR',ROOTDIR.'models/');
+define('COREDIR',ROOTDIR.'core/');
+Define('LIBDIR',COREDIR.'libs/');
+Define('CTLDIR',COREDIR.'ctls/');
+Define('VIEWDIR',COREDIR.'views/');
+Define('MODELDIR',COREDIR.'models/');
 
 Define('DATADIR',ROOTDIR.$setting['imgdir'].'/');
 
