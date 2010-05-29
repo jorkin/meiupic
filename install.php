@@ -1,4 +1,12 @@
-<?php    
+<?php
+/**
+ * $Id$
+ * 
+ * @author : Lingter
+ * @support : http://www.meiu.cn
+ * @copyright : (c)2010 meiu.cn lingter@gmail.com
+ */
+
     function get_gd_version()
     {
         static $version = -1;
