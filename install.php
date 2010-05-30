@@ -547,7 +547,7 @@ if(file_exists(ROOTDIR.'conf/install.lock') && $action!=3){
         }
         
         echo "</ul>\n";
-        if(!function_exists('mysql_connect') || !get_gd_version() || $dir_error){
+        if(!get_gd_version() || $dir_error){
             echo "<div align=\"center\" class=\"red\">检查到您的配置有问题，无法进行下一步安装</div>";
         }else{
             echo "<div align=\"center\"><input type=\"button\" onclick=\"window.location.href='install.php?step=2'\" value=\"下一步\" class=\"btn\" /></div>";
