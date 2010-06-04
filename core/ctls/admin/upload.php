@@ -47,7 +47,7 @@ class controller extends pagefactory{
         $album_id = $_GET['album_id'];
         if($album_id){
             $this->output->set('album_id',$_GET['album_id']);
-            $this->view->display('upload_step2_1.php');
+            $this->view->display('admin/upload_step2_1.php');
         }else{
             showInfo('非法参数:album_id不能为空！',false);
         }
@@ -62,7 +62,7 @@ class controller extends pagefactory{
         if(!is_dir(DATADIR.$date)){
             @mkdir(DATADIR.$date);
         }
-        
+        $empty_num = 0;
         foreach($_FILES['imgs']['name'] as $k=>$upfile){
             $tmpfile = $_FILES['imgs']['tmp_name'][$k];
             if (!empty($upfile)) {
@@ -92,7 +92,14 @@ class controller extends pagefactory{
                     showInfo('文件上传失败！',false);
                     exit;
                 }
+            }else{
+                $empty_num++;
             }
+        }
+        if($empty_num == count($_FILES['imgs']['name'])){
+            echo '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />';
+            echo '<script> alert("您没有选择图片上传，请重新上传!");history.back();</script>';
+            exit;
         }
         header('Location: index.php?ctl=upload&act=doupload&album='.$_GET['album']);
     }

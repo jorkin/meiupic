@@ -4,8 +4,31 @@
         <h1 class="album_title"><?php echo $res->get('album_name');?></h1>
         <span class="total_count">共 <strong><?php echo $res->get('total_num');?></strong> 张图片</span> <input type="button" class="btn" value="上传图片" onclick="window.location.href='index.php?ctl=upload&act=step2&album_id=<?php echo $res->get('album');?>'" />
     </div>
-    <div id="batch_ctrl"> <input type="button" value="幻灯片查看" class="btn" onclick="slideshow(<?php echo $res->get('album');?>)" /></div>
-    <ul class="album highslide-gallery">
+    <form name="pics_form" action="index.php?ctl=photo&act=bat&album=<?php echo $res->get('album');?>&referf=album&referp=<?php echo $res->get('page');?>" method="post" onsubmit="submit_bat(this);return false;">
+    <div id="batch_ctrl"> 
+        <input type="button" class="btn" value="全选" onclick="checkall('pics_form')" />  
+        <input type="button" class="btn" value="取消全选" onclick="uncheckall('pics_form')" /> 
+        <select name="do_action">
+            <option value="-1">批量操作</option>
+            <option value="delete">选中图片彻底删除</option>
+            <option value="move">选中图片移动到</option>
+        </select>
+        <select name="albums" style="display:none">
+            <option value="-1">选择相册</option>
+        <?php 
+            $ls = $res->get('albums_list');
+            if($ls){
+                foreach($ls as $k=>$v){
+                    echo "<option value=\"".$k."\">".$v."</option>\n";
+                }
+            }
+        ?>
+        </select>
+         <input name="do_pic_act" type="submit" value="执行" class="btn" disabled /> 
+         <input type="button" value="幻灯片查看" class="btn" onclick="slideshow(<?php echo $res->get('album');?>)" />
+    </div>
+    <?php if($res->get('msginfo')){ echo $res->get('msginfo');}?>
+    <ul class="album">
     <?php 
     $ls = $res->get('pics');
     if($ls):
@@ -35,6 +58,10 @@
     endif;
     ?>
     </ul>
+    </form>
     <div class="pageset"><?php echo $res->get('pageset');?></div>
 </div>
+<script type="text/javascript">
+init_submit_bat();
+</script>
 <?php include('foot.php');?>

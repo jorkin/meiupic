@@ -13,15 +13,34 @@ class controller extends pagefactory{
         if(!$this->auth->isLogedin()){
             redirect_c('default','login');
         }
-
+        $flag = isset($_GET['flag'])?$_GET['flag']:0;
+        
+        switch($flag){
+            case '1':
+            $msginfo = '<div id="msginfo" class="fail">操作失败！请先选择要操作的图片！ <a href="javascript:void(0)"onclick="$(\'#msginfo\').hide()">[关闭]</a></div>';
+            break;
+            case '2':
+            $msginfo = '<div id="msginfo" class="fail">操作失败！请选择要移动的相册！<a href="javascript:void(0)"onclick="$(\'#msginfo\').hide()">[关闭]</a></div>';
+            break;
+            case '3':
+            $msginfo = '<div id="msginfo" class="succ">操作成功！<a href="javascript:void(0)"onclick="$(\'#msginfo\').hide()">[关闭]</a></div>';
+            break;
+            default:
+            $msginfo = '';
+        }
+        
         $page = $_GET['page'];
         if(!$page){
             $page = 1;
         }
         $mdl_picture = & load_model('picture');
+        $mdl_album =& load_model('album');
         $pics = $mdl_picture->get_all_pic($page);
         $pageurl='index.php?page=[#page#]';
+        $this->output->set('albums_list',$mdl_album->get_albums_assoc());
         $this->output->set('pics',$pics['ls']);
+        $this->output->set('page',$page);
+        $this->output->set('msginfo',$msginfo);
         $this->output->set('pageset',pageshow($pics['total'],$pics['start'],$pageurl));
         $this->output->set('total_num',$pics['count']);
         $this->output->set('current_nav','all');

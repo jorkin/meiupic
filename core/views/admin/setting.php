@@ -71,15 +71,15 @@
 <table>
     <tr>
         <td class="tt">原密码:</td>
-        <td><input type="password" name="oldpass" /></td>
+        <td><input class="txtinput" type="password" name="oldpass" /></td>
     </tr>
     <tr>
         <td class="tt">新密码:</td>
-        <td><input type="password" name="newpass" /></td>
+        <td><input class="txtinput" type="password" name="newpass" /></td>
     </tr>
     <tr>
         <td class="tt">再次输入密码:</td>
-        <td><input type="password" name="passagain" /></td>
+        <td><input class="txtinput" type="password" name="passagain" /></td>
     </tr>
     <tr>
         <td></td>

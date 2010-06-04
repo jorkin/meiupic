@@ -17,8 +17,8 @@
                 }
             }
         ?>
-    </select> <a href="javascript:void(0);" onclick="create_album(0)">新建相册</a>
-    
+    </select> <input type="button" style="margin-left:10px;" class="btn" onclick="create_album(0)" value="新建相册" />
+
     <div class="buttons"><input class="btn" type="button" value="下一步" onclick="go_upload_step2()" /></div>
 </div>
 

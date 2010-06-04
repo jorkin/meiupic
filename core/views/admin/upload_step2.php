@@ -8,7 +8,7 @@
 $(function() {
 	plupload.addI18n({
     	'Select files' : '选择图片',
-    	'Add files to the upload queue and click the start button.' : '添加图片并点击开始按钮.',
+    	'Add files to the upload queue and click the start button.' : '添加图片并点击开始按钮,可以同时选择多个图片。',
     	'Filename' : '文件名',
     	'Status' : '状态',
     	'Size' : '大小',
@@ -65,7 +65,7 @@ $(function() {
 
 <div id="upload_field">
     <form id="upload_photos_form" method="post" action="index.php?ctl=upload&act=doupload&album=<?php echo $res->get('album_id')?>">
-    <div id="flash_uploader" style="width: 100%; height: 330px;">
+    <div id="flash_uploader" style="width: 100%; height: 330px;margin-top:10px;">
         <div style="font-size:14px;margin:20px;color:red">您的浏览器不支持此种上传模式，切换至 <a href="index.php?ctl=upload&act=step2_1&album_id=<?php echo $res->get('album_id')?>" style="font-size:14px;">普通上传模式</a> ？</div>
     </div>
     <div align="center"><input type="submit" class="btn" value="下一步" /></div>

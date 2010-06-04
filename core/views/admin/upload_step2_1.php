@@ -9,7 +9,7 @@
 
 <div id="upload_field">
     <form id="upload_photos_form" method="post" enctype="multipart/form-data" action="index.php?ctl=upload&act=dopicupload&album=<?php echo $res->get('album_id')?>">
-    <div id="uploader" style="width: 100%; height: 210px;margin-top:10px">
+    <div id="uploader" style="width: 100%; height: 210px;margin:10px;">
         请选择您要上传的图片：<br /><br />
         1. <input type="file" name="imgs[]" /><br /><br />
         2. <input type="file" name="imgs[]" /><br /><br />
