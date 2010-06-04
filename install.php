@@ -6,6 +6,15 @@
  * @support : http://www.meiu.cn
  * @copyright : (c)2010 meiu.cn lingter@gmail.com
  */
+    function get_basepath(){
+        if ($dir = trim(dirname($_SERVER['SCRIPT_NAME']), '\,/')) {
+          $base_path = "/$dir";
+          $base_path .= '/';
+        } else {
+          $base_path = '/';
+        }
+        return $base_path;
+    }
 
     function get_gd_version()
     {
@@ -588,7 +597,7 @@ if(file_exists(ROOTDIR.'conf/install.lock') && $action!=3){
 <tbody id="dbauth_div">
 <tr><th>用户名</th><td><input name="dbuser" type="text" value="root" /></td>
 <tr><th>密码</th><td><input name="dbpass" type="password" value="" /></td>
-<tr><th>数据库名</th><td><input name="dbname" type="text" value="" /> <input type="checkbox" name="create_db" value="1" /> 自动创建数据库</td>
+<tr><th>数据库名</th><td><input name="dbname" type="text" value="meiupic" /> <input type="checkbox" name="create_db" value="1" checked="checked" /> 自动创建数据库</td>
 </tbody>
 <tbody id="pre_div">
 <tr><th>表前缀</th><td><input name="dbpre" type="text" value="meu_" /></td>
@@ -607,7 +616,7 @@ if(file_exists(ROOTDIR.'conf/install.lock') && $action!=3){
 <h2>其他设置</h2>
 <table class="setting">
 
-<tr><th>站点URL</th><td><input name="url" type="text" value="" /> 请带上URL末端的"/" </td>
+<tr><th>站点URL</th><td><input name="url" size="40" type="text" value="<?php echo 'http://'.$_SERVER['SERVER_NAME'].get_basepath(); ?>" /> 请带上URL末端的"/" </td>
 </table>
 <div align="left" style="margin-top:10px;padding-left:200px"><input type="button" onclick="window.location.href='install.php?step=1'" value="上一步" class="btn" />&nbsp;&nbsp;&nbsp;&nbsp; <input type="submit" value="立即安装" class="btn" /></div></form>
 <script>selected_adapter(document.getElementById("sel_dbadapter").value);</script>

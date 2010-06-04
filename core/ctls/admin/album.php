@@ -39,7 +39,7 @@ class controller extends pagefactory{
         $this->output->set('albums',$albums['ls']);
         $this->output->set('pageset',pageshow($albums['total'],$albums['start'],$pageurl));
         $this->output->set('total_num',$albums['count']);
-        $this->view->display('album.php');
+        $this->view->display('admin/album.php');
     }
     
     function photos(){
@@ -57,7 +57,7 @@ class controller extends pagefactory{
         $this->output->set('album',$album);
         $this->output->set('pageset',pageshow($pics['total'],$pics['start'],$pageurl));
         $this->output->set('total_num',$pics['count']);
-        $this->view->display('album_photos.php');
+        $this->view->display('admin/album_photos.php');
     }
     
     function ajax_create_album(){

@@ -24,7 +24,7 @@ class controller extends pagefactory{
     
     function index(){
         $this->output->set('albums_list',$this->mdl_album->get_all_album());
-        $this->view->display('upload_step1.php');
+        $this->view->display('admin/upload_step1.php');
     }
     
     function step2(){
@@ -37,7 +37,7 @@ class controller extends pagefactory{
             $this->output->set('resize_img_height',$this->setting['resize_img_height']);
             $this->output->set('extension_allow',$this->setting['extension_allow']);
             $this->output->set('resize_quality',$this->setting['resize_quality']);
-            $this->view->display('upload_step2.php');
+            $this->view->display('admin/upload_step2.php');
         }else{
             showInfo('非法参数:album_id不能为空！',false);
         }
@@ -102,7 +102,7 @@ class controller extends pagefactory{
         $pics = $this->mdl_picture->get_tmp_pic();
         $this->output->set('uploaded_pics',$pics);
         $this->output->set('album',$_GET['album']);
-        $this->view->display('upload_step3.php');
+        $this->view->display('admin/upload_step3.php');
     }
     
     function _save_and_resize(){

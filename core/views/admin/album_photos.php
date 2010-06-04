@@ -2,8 +2,9 @@
 <div id="allpic">
     <div id="album_nav" class="album_detail">
         <h1 class="album_title"><?php echo $res->get('album_name');?></h1>
-        <span class="total_count">共 <strong><?php echo $res->get('total_num');?></strong> 张图片</span> <input type="button" class="btn" value="上传图片" onclick="window.location.href='index.php?ctl=upload&act=step2&album_id=<?php echo $res->get('album');?>'" /></div>
-    
+        <span class="total_count">共 <strong><?php echo $res->get('total_num');?></strong> 张图片</span> <input type="button" class="btn" value="上传图片" onclick="window.location.href='index.php?ctl=upload&act=step2&album_id=<?php echo $res->get('album');?>'" />
+    </div>
+    <div id="batch_ctrl"> <input type="button" value="幻灯片查看" class="btn" onclick="slideshow(<?php echo $res->get('album');?>)" /></div>
     <ul class="album highslide-gallery">
     <?php 
     $ls = $res->get('pics');
@@ -12,7 +13,7 @@
     ?>
     <li id="i_<?php echo $v['id'];?>" rel="<?php echo SITE_URL.imgSrc($v['path']); ?>">
         <span class="img">
-            <a class="highslide" href="<?php echo imgSrc($v['path']); ?>" target="_blank" onclick="return hs.expand(this)">
+            <a href="index.php?ctl=photo&act=view&id=<?php echo $v['id'];?>">
                 <img src="<?php echo imgSrc($v['thumb']); ?>" source="<?php echo SITE_URL.imgSrc($v['path']); ?>" alt="<?php echo $v['name'];?>" />
             </a>
         </span>
@@ -24,6 +25,8 @@
             <a href="javascript:void(0)" onclick="reupload_pic(this,<?php echo $v['id'];?>)"><img src="img/re_upload.gif" alt="重新上传" title="重新上传此图片" /></a> 
             <a href="javascript:void(0)" onclick="set_pic_cover(this,<?php echo $v['id'];?>)"><img src="img/cover.gif" alt="设为封面" title="设为封面" /></a> 
             <a href="javascript:void(0)" onclick="move_pic_to(2,this,<?php echo $v['id'];?>)"><img src="img/moveto.gif" alt="移动到相册" title="移动到相册" /></a></span>
+        <div class="cb"><input type="checkbox" name="picture[]" value="<?php echo $v['id'];?>" onclick="select_pic(this,<?php echo $v['id'];?>)" /></div>
+        <div class="selected"></div>
     </li>
     <?php
     endforeach;

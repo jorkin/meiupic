@@ -9,43 +9,7 @@
 <script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript" src="js/common.js"></script>
 <script type="text/javascript" src="js/zeroclipboard/ZeroClipboard.js"></script>
-
-<script type="text/javascript" src="highslide/highslide-with-gallery.js"></script>
-<link rel="stylesheet" type="text/css" href="highslide/highslide.css" />
-<!--[if lt IE 7]>
-<link rel="stylesheet" type="text/css" href="highslide/highslide-ie6.css" />
-<![endif]-->
-<script type="text/javascript">
-hs.graphicsDir = 'highslide/graphics/';
-hs.align = 'center';
-hs.transitions = ['expand', 'crossfade'];
-hs.fadeInOut = true;
-hs.dimmingOpacity = 0.8;
-hs.outlineType = 'rounded-white';
-hs.captionEval = 'this.thumb.alt';
-hs.marginBottom = 105; // make room for the thumbstrip and the controls
-hs.numberPosition = 'caption';
-
-// Add the slideshow providing the controlbar and the thumbstrip
-hs.addSlideshow({
-	//slideshowGroup: 'group1',
-	interval: 5000,
-	repeat: false,
-	useControls: true,
-	overlayOptions: {
-		className: 'text-controls',
-		position: 'bottom center',
-		relativeTo: 'viewport',
-		offsetY: -60
-	},
-	thumbstrip: {
-		position: 'bottom center',
-		mode: 'horizontal',
-		relativeTo: 'viewport'
-	}
-});
-</script>
-
+<script type="text/javascript" src="js/swfobject.js"></script>
 </head>
 
 <body>

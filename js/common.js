@@ -502,7 +502,7 @@ function reupload_ok(id,big,thumb){
     $('#reuploadpic').find('div.uploading').hide();
     $('#reuploadpic').hide();
     $('#i_'+id).find('span.img img').attr('src',thumb+'?rand='+rand);
-    $('#i_'+id).find('span.img a').attr('href',big+'?rand='+rand);
+    //$('#i_'+id).find('span.img a').attr('href',big+'?rand='+rand);
 }
 function switch_div(o,d){
     if(o.checked){
@@ -529,6 +529,35 @@ function check_form(o){
     
     o.submit();
 }
+
+function slideshow(id){
+	$("body").prepend('<div id="slide_show" style="width: '+ $(document).width() +'px;height: '+ $(document).height() + 'px;"></div>');
+	var flashvars = {};
+	flashvars.galleryURL = escape("index.php?ctl=photo&act=gallery&album="+id);
+	var params = {};
+	params.allowfullscreen = true;
+	params.wmode = 'transparent';
+	params.allowscriptaccess = "always";
+	params.bgcolor = "222222";
+	swfobject.embedSWF("js/simpleviewer.swf", "slide_show", "100%", "100%", "9.0.124", false, flashvars, params);
+	$("body").prepend('<div id="slide_show_close" onclick="close_slideshow()" title="关闭"></div>');
+}
+
+function close_slideshow(){
+	$("#slide_show").remove();
+	$("#slide_show_close").remove();
+}
+
+function select_pic(o){
+	var select_div = $(o).parent().parent().find('div.selected');
+	if(o.checked){
+		select_div.show();
+	}else{
+		select_div.hide();
+	}
+}
+
+
 $(function(){
 	$('.dragable').jqDrag('.draghandle');
 	$('ul.album').find('li').each(function(i){
@@ -536,5 +565,9 @@ $(function(){
 	        $('ul.album').find('li').removeClass('hover');
 	        $(this).addClass('hover');
 	    }
+
+		if($(this).find('input[type=checkbox]').attr('checked')){
+			$(this).find('div.selected').show();
+		}
 	});
 });
