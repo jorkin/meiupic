@@ -25,7 +25,7 @@ class controller extends pagefactory{
         $this->output->set('pageset',pageshow($pics['total'],$pics['start'],$pageurl));
         $this->output->set('total_num',$pics['count']);
         $this->output->set('current_nav','all');
-        $this->view->display('default.php');
+        $this->view->display('admin/default.php');
     }
     
     function login(){
@@ -46,7 +46,7 @@ class controller extends pagefactory{
         }else{
             $flag = $_GET['flag'];
             $this->output->set('flag',$flag);
-            $this->view->display('login.php');
+            $this->view->display('admin/login.php');
         }
     }
     
@@ -119,7 +119,7 @@ class controller extends pagefactory{
             
         }else{
             $this->output->set('setting',$mdl_setting->get_setting());
-            $this->view->display('setting.php');
+            $this->view->display('admin/setting.php');
         }
     }
     
