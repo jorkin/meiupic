@@ -19,27 +19,65 @@ class controller extends pagefactory{
         $this->output->set('current_nav','album');
     }
     
-    function index(){
+    function view(){
+        $id = intval($_GET['id']);
         
-        $page = $_GET['page'];
-        if(!$page){
-            $page = 1;
+        $row = $this->mdl_picture->get_one_pic($id);
+        if(!$row){
+            showInfo(false,'您要查看的图片不存在！');
         }
         
-        $albums = $this->mdl_album->get_all_album($page);
-        
-        $pageurl='index.php?page=[#page#]';
-        if($albums['ls']){
-            foreach($albums['ls'] as $k=>$v){
-                if(!$v['cover']){
-                    $albums['ls'][$k]['cover'] = $this->mdl_album->get_cover($v['id']);
+        $this->output->set('pic',$row);
+        $this->output->set('album_name',$this->mdl_album->get_album_name($row['album']));
+        $this->view->display('admin/viewphoto.php');
+    }
+    
+    function bat(){
+        $action = $_POST['do_action'];
+        $pics = $_POST['picture'];
+        $referfunc = $_GET['referf'];
+        $referpage = $_GET['referp'];
+        $album_id = isset($_GET['album'])?$_GET['album']:0;
+        if(!is_array($pics)){
+            if($referfunc=='default'){
+                header('Location: index.php?page='.$referpage.'&flag=1');
+            }elseif($referfunc=='album'){
+                header('Location: index.php?ctl=album&act=photos&album='.$album.'&page='.$referpage.'&flag=1');
+            }
+            exit;
+        }
+        if($action == 'delete'){
+            foreach($pics as $v){
+                $row = $this->mdl_picture->get_one_pic($v);
+                if($row){
+                    @unlink(DATADIR.$row['path']);
+                    @unlink(DATADIR.$row['thumb']);
+
+                    $this->mdl_album->remove_cover($v);
+                    $this->mdl_picture->del_pic($v);
+                }
+            }
+        }elseif($action == 'move'){
+            $album = intval($_POST['albums']);
+            if(!$album || $album == '-1'){
+                 header('Location: index.php?ctl=album&act=photos&album='.$album_id.'&page='.$referpage.'&flag=2');
+                 exit;
+            }
+            
+            foreach($pics as $v){
+                $row = $this->mdl_picture->get_one_pic($v);
+                if($row){
+                    $this->mdl_album->remove_cover($v);
+                    $this->mdl_picture->update_pic($v,$row['name'],$album);
                 }
             }
         }
-        $this->output->set('albums',$albums['ls']);
-        $this->output->set('pageset',pageshow($albums['total'],$albums['start'],$pageurl));
-        $this->output->set('total_num',$albums['count']);
-        $this->view->display('admin/album.php');
+        if($referfunc=='default'){
+            header('Location: index.php?page='.$referpage.'&flag=3');
+        }elseif($referfunc=='album'){
+            header('Location: index.php?ctl=album&act=photos&album='.$album_id.'&page='.$referpage.'&flag=3');
+        }
+        exit;
     }
     
     function gallery(){

@@ -79,22 +79,7 @@ var is_mac = userAgent.indexOf('mac') != -1;
     };
 })(jQuery);
 //-------------------End Drag and Resize
-
 jQuery.fn.addOption = function(text,value){jQuery(this).get(0).options.add(new Option(text,value));}
-
-function checkall(form){
-	for(var i = 0;i < form.elements.length; i++) {
-		var e = form.elements[i];
-		if(e.type == 'checkbox' && e.name != 'chkall' && e.disabled != true){
-			e.checked = form.chkall.checked;
-			if(form.chkall.checked == true){
-				$(e).parent().parent().addClass('on');
-			}else{
-				$(e).parent().parent().removeClass('on');
-			}
-		}
-	}
-}
 
 /*-<UI*/
 var mydiv = {
@@ -195,6 +180,13 @@ function create_album(t){
     $('#floatwin').find('h2 span').html('创建相册');
     $('#floatFoot').html('<input type="button" value="确定" class="btn" onclick="'+func+'" /> <input type="button" value="取消" class="btn gray" onclick="mydiv.Close()" />');
 	$('#floatContent').html('<div class="album_name_f"><span>相册名</span><input class="ipt_1" name="album_name" value="" /></div>');
+	$('#floatContent').find('input[name=album_name]').unbind('keypress').bind('keypress',
+        function(e){
+            if(e.keyCode == 13){
+                eval(func);
+            }
+        }
+    );
 }
 function go_upload_step2(){
     var abid=$('#sel_album').find('select[name=albums]').val();
@@ -317,6 +309,7 @@ function rename_pic(o,id){
     info.html('<input id="input_id_'+id+'" type="text" value="'+info_txt+'" class="ipt_2" />');
     var input = $('#input_id_'+id);
     input.focus();
+    input.select();
     input.blur(
         function(){
                 var url = 'index.php?ctl=album&act=ajax_renamephoto&id='+id;
@@ -369,6 +362,7 @@ function rename_album(o,id){
     info.html('<input id="input_id_'+id+'" type="text" value="'+info_txt+'" class="ipt_2" />');
     var input = $('#input_id_'+id);
     input.focus();
+    input.select();
     input.blur(
         function(){
                 var url = 'index.php?ctl=album&act=ajax_renamealbum&id='+id;
@@ -557,6 +551,78 @@ function select_pic(o){
 	}
 }
 
+function checkall(form){
+	$('form[name='+form+']').find('input[type=checkbox]').each(function(i){
+	    this.checked = true;
+	    $(this).parent().parent().find('div.selected').show();
+	})
+}
+
+function uncheckall(form){
+    $('form[name='+form+']').find('input[type=checkbox]').each(function(i){
+	    this.checked = false;
+	    $(this).parent().parent().find('div.selected').hide();
+	})
+}
+function submit_bat(form){
+    var selected_ids=0
+	$(form).find("input[name='picture\[\]']:checked").each(
+		function(i){
+			selected_ids++;
+		}
+	)
+	if(selected_ids==0){
+	    alert('请先选择图片！');
+	    return false;
+	}
+    var v = $(form).find('select[name=do_action]').val();
+    if(v=='delete' && confirm('确定要删除这些记录吗?')){
+		form.submit();
+	}else if(v=='move' && confirm('确定要移动这些图片?')){
+	    form.submit();
+	}
+}
+function init_submit_bat(){
+    $('#batch_ctrl select[name=do_action]').find('option').each(function(i){
+        if(this.value=='-1'){
+            this.selected = true;
+        }else{
+            this.selected = false;
+        }
+    })
+    $('#batch_ctrl select[name=albums]').find('option').each(function(i){
+        if(this.value=='-1'){
+            this.selected = true;
+        }else{
+            this.selected = false;
+        }
+    })
+    $('#batch_ctrl select[name=do_action]').change(function(){
+    	var v = $('#batch_ctrl select[name=do_action] option:selected').val();
+    	if(v == -1){
+    	    $('#batch_ctrl select[name=albums]').hide();
+    	    $('#batch_ctrl input[name=do_pic_act]').attr('disabled',true);
+    	    return 
+	    }
+
+    	if(v=='delete'){
+    		$('#batch_ctrl select[name=albums]').hide();
+    		$('#batch_ctrl input[name=do_pic_act]').attr('disabled',false);
+    	}else if(v=='move'){
+    	    $('#batch_ctrl select[name=albums]').show();
+    	    $('#batch_ctrl input[name=do_pic_act]').attr('disabled',true);
+    	}else{
+    		$('#batch_ctrl select[name=albums]').hide();
+    	}
+    });
+
+    $('#batch_ctrl select[name=albums]').change(function(){
+    	var v = $('#batch_ctrl select[name=albums] option:selected').val();
+    	if(v == -1) 
+    	    return $('#batch_ctrl input[name=do_pic_act]').attr('disabled',true);
+    	$('#batch_ctrl input[name=do_pic_act]').attr('disabled',false);
+    });
+}
 
 $(function(){
 	$('.dragable').jqDrag('.draghandle');
