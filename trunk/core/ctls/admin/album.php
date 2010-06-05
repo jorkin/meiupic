@@ -31,9 +31,7 @@ class controller extends pagefactory{
         $pageurl='index.php?page=[#page#]';
         if($albums['ls']){
             foreach($albums['ls'] as $k=>$v){
-                if(!$v['cover']){
-                    $albums['ls'][$k]['cover'] = $this->mdl_album->get_cover($v['id']);
-                }
+                $albums['ls'][$k]['cover'] = $this->mdl_album->get_cover($v['id'],$v['cover']);
             }
         }
         $this->output->set('albums',$albums['ls']);
@@ -192,7 +190,7 @@ class controller extends pagefactory{
                 echo json_encode(array('ret'=>false,'msg'=>'图片已被删除无法设为封面！'));
                 exit;
             }
-            if($this->mdl_album->set_cover($row['album'],$row['thumb'])){
+            if($this->mdl_album->set_cover($row['album'],$id)){
                 echo json_encode(array('ret'=>true));
             }else{
                 echo json_encode(array('ret'=>false,'msg'=>'未能设为封面！'));

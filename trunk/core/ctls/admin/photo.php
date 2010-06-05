@@ -21,15 +21,73 @@ class controller extends pagefactory{
     
     function view(){
         $id = intval($_GET['id']);
-        
+        $album = intval($_GET['album']);
         $row = $this->mdl_picture->get_one_pic($id);
         if(!$row){
-            showInfo(false,'您要查看的图片不存在！');
+            showInfo('您要查看的图片不存在！',false);
         }
-        
+        $imginfo = GetImageInfo(imgSrc($row['path']));
+        if($imginfo){
+            $nimginfo['相机品牌'] = $imginfo['制造商'];
+            $nimginfo['相机型号'] = $imginfo['型号'];
+            $nimginfo['曝光模式'] = $imginfo['曝光模式'];
+            $nimginfo['闪光灯'] = $imginfo['闪光灯'];
+            $nimginfo['焦距'] = $imginfo['焦距'];
+            $nimginfo['光圈'] = $imginfo['快门光圈'];
+            $nimginfo['快门速度'] = $imginfo['曝光时间'].' sec';
+            $nimginfo['ISO感光度'] = $imginfo['ISO感光度'];
+            $nimginfo['白平衡'] = $imginfo['白平衡'];
+            $nimginfo['曝光补偿'] = $imginfo['曝光补偿'];
+            $nimginfo['拍摄时间'] = $imginfo['拍摄时间']; 
+        }else{
+            $nimginfo = false;
+        }
         $this->output->set('pic',$row);
+        $this->output->set('album',$album);
+        $this->output->set('pre_pic',$this->mdl_picture->get_pre_pic($id,$album));
+        $this->output->set('next_pic',$this->mdl_picture->get_next_pic($id,$album));
+        $this->output->set('imgexif',$nimginfo);
         $this->output->set('album_name',$this->mdl_album->get_album_name($row['album']));
         $this->view->display('admin/viewphoto.php');
+    }
+    
+    function resize(){
+        //sleep(2);
+        $size = $_GET['size'];
+        $id = $_GET['id'];
+        $pic = $this->mdl_picture->get_one_pic($id);
+        if(!in_array($size,array('small','square','medium','big','thumb')) || !$pic){
+            header('Location: '.imgSrc('nopic.jpg'));
+            exit;
+        }
+        
+        $square = false;
+        if($size=='small'){
+            $width = '240';
+            $height = '240';
+        }elseif($size=='thumb'){
+            $width = '110';
+            $height = '110';
+        }elseif($size=='square'){
+            $width = '75';
+            $height = '75';
+            $square = true;
+        }elseif($size=='medium'){
+            $width = '500';
+            $height = '500';
+        }elseif($size=='big'){
+            $width = '700';
+            $height = '700';
+        }
+        $namearr = explode('.',$pic['path']);
+        $resized_img = $namearr[0].'_'.$size.'.'.$namearr[1];
+        if(file_exists(DATADIR.$resized_img)){
+            header('Location: '.imgSrc($resized_img));
+            exit;
+        }
+        
+        ResizeImage(DATADIR.$pic['path'],$width,$height,DATADIR.$resized_img);
+        header('Location: '.imgSrc($resized_img));
     }
     
     function bat(){

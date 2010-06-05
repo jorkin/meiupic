@@ -16,7 +16,7 @@
         <td class="tt">高级上传引擎：</td><td class="tc"><input name="setting[upload_runtimes]" class="txtinput" type="text" value="<?php echo $setting['upload_runtimes'];?>" style="width:250px" /></td><td class="ti">目前支持的引擎有 html5,flash,gears,silverlight,browserplus,html4</td>
     </tr>
     <tr>
-        <td class="tt">是否开启客户端预处理：</td><td class="tc"><input id="setting_open_pre_resize" name="setting[open_pre_resize]" class="txtinput" type="checkbox" value="1" <?php if($setting['open_pre_resize']){ echo 'checked="checked"';} ?> onclick="switch_div(this,'imgsetting_div');" /></td><td class="ti">在客户端预处理可以大大减少网络传输，缩短上传时间。</td>
+        <td class="tt">是否开启客户端预处理：</td><td class="tc"><input id="setting_open_pre_resize" name="setting[open_pre_resize]" class="txtinput" type="checkbox" value="1" <?php if($setting['open_pre_resize']){ echo 'checked="checked"';} ?> onclick="switch_div(this,'imgsetting_div');" /></td><td class="ti">在客户端预处理可以大大减少网络传输，缩短上传时间。开启后无法获取照片EXIF信息</td>
     </tr>
     </tbody>
     <tbody id="imgsetting_div">

@@ -280,7 +280,7 @@ color:#D12907;
 }
 #reuploadpic .uploading{
     position:absolute;z-index:97;
-    width:308px;
+    width:300px;
     height:24px;
     background:#fff;
     text-align:center;
@@ -313,11 +313,14 @@ color:#D12907;
     font-size:12px;
     padding-left:20px;
 }
-#album_nav input{
+#album_nav input.btn{
     /*margin-left:30px;*/
     position:absolute;
     right:30px;
     bottom:5px;
+}
+#album_nav input.bt2{
+    right:120px;
 }
 #album_nav div.photoinfo{
     padding-left:20px;
@@ -460,9 +463,16 @@ margin-bottom:10px;
 	background:#222;
 
 }
+#slide_show_flash{
+    position:absolute;
+	z-index:1000;
+	top: 0;
+	left: 0;
+	background:#222;
+}
 #slide_show_close{
 	position:absolute;
-	z-index:1000;
+	z-index:1001;
 	top:15px;
 	right:100px;
 	width:30px;
@@ -488,7 +498,13 @@ margin-bottom:10px;
 }
 
 
-
+#photo-body .picnt{
+    width:710px;
+    height:470px;
+    height:auto !important;
+    min-height:470px;
+    float:left;
+}
 #photo-body .sh1 {
     background:url(s1.png) no-repeat right bottom transparent;
     float:left;
@@ -501,4 +517,104 @@ margin-bottom:10px;
     display:block;
     padding:0 6px 6px 0;
     position:relative;
+}
+.photo-right{
+    float:right;
+    width:260px;
+}
+
+#exif_info{
+    display:none;
+    position:absolute;
+    z-index:988;
+}
+#exif_info .top{
+    height:28px;
+    border:1px solid #CEE1EE;
+    border-bottom:1px solid #fff;
+    width:90px;
+    position:absolute;
+    z-index:10;
+    margin-left:210px;
+    background:#fff;
+    text-align:center;
+    line-height:28px;
+}
+#exif_info .content{
+    border:1px solid #CEE1EE;
+    background:#fff;
+    position:absolute;
+    margin-top:29px;
+    width:300px;
+    z-index:9;
+}
+#exif_info .inf{
+    padding:10px;
+    text-align:center;
+}
+#exif_info h2{
+    background:#F0F5F8;
+    font-size:14px;
+    padding:4px;
+}
+#exif_info ul{
+    list-style:none;
+    padding:4px;
+}
+#exif_info ul li{
+    line-height:23px;
+    height:23px;
+    color:#444;
+    clear:both;
+}
+#exif_info ul li span.exif_tit{
+    width:80px;
+    display:block;
+    float:left;
+}
+
+#photo_control{
+    position:relative;
+    width:250px;
+    height:100px;
+    border:1px solid #CEE1EE;
+    padding:5px 0 5px 5px;
+}
+#photo_control .prebtn{
+    position:absolute;
+    bottom:4px;
+    left:4px;
+}
+#photo_control .nextbtn{
+    position:absolute;
+    bottom:4px;
+    right:9px;
+}
+#photo_control .slideshow{
+    position:absolute;
+    bottom:4px;
+    right:110px;
+}
+#photo_control ul li{
+    float:left;
+    margin-right:5px;
+    border:1px solid #ccc;
+    padding:3px;
+    width:70px;
+    height:70px;
+    background:#eee;
+    list-style:none;
+    text-align:center;
+}
+#photo_control ul li a{
+    width:70px;
+    height:70px;
+    display:block;
+    text-align:center;
+    overflow:hidden;
+    background:#eee;
+}
+#photo_control ul li.current,#photo_control ul li:hover{
+    border:4px solid #005EAC;
+    padding:0;
 }

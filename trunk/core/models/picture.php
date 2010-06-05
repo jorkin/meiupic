@@ -33,6 +33,23 @@ class picture extends modelfactory{
         return $this->db->getRow();
     }
     
+    function get_pre_pic($id,$album=0){
+        $where = '';
+        if($album>0){
+            $where = ' and album='.intval($album);
+        }
+        $this->db->select('#imgs','*','id>'.intval($id).$where,'id asc limit 1');
+        return $this->db->getRow();
+    }
+    function get_next_pic($id,$album=0){
+        $where = '';
+        if($album>0){
+            $where = ' and album='.intval($album);
+        }
+        $this->db->select('#imgs','*','id<'.intval($id).$where,'id desc limit 1');
+        return $this->db->getRow();
+    }
+    
     function insert_pic($arr){
         $this->db->insert('#imgs',$arr);
         return $this->db->query();

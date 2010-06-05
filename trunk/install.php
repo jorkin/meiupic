@@ -193,7 +193,7 @@
         $rt2 = @mysql_query("CREATE TABLE IF NOT EXISTS `$albumstable` (
           `id` int(11) NOT NULL AUTO_INCREMENT,
           `name` varchar(50) NOT NULL,
-          `cover` varchar(255) NOT NULL,
+          `int` int(11) NOT NULL DEFAULT '0',
           PRIMARY KEY (`id`)
         ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;",$dbconn);
 
@@ -251,7 +251,7 @@
         sqlite_query("CREATE TABLE $albumstable (
                   id INTEGER NOT NULL PRIMARY KEY,
                   name varchar(50) NOT NULL,
-                  cover varchar(255) NOT NULL DEFAULT ''
+                  cover int(11) NOT NULL DEFAULT '0'
                 )",$conn);
 
 
@@ -267,88 +267,6 @@
         sqlite_query("INSERT INTO $admintable (id, username, userpass) VALUES (1, '".$adminuser."', '".md5($adminpass)."')",$conn);
         
         sqlite_close($conn);
-    }
-    
-    function creat_txtsql($setting){
-        if(file_exists($setting['dbpath']) && !is_dir($setting['dbpath'])){
-            echo "<script> alert('请确保".$setting['dbpath']."是目录！');history.back();</script>";
-            exit();
-        }
-        if(!is_dir($setting['dbpath'])){
-            @mkdir($setting['dbpath'],0755);
-        }
-        if(!is_writable($setting['dbpath'])){
-            echo "<script> alert('请确认数据库路径可写！');history.back();</script>";
-            exit();
-        }
-        
-        @mkdir($setting['dbpath'].'/txtsql',0755);
-        $arr[$setting['dbuser']] = md5($setting['dbpass']);
-        $txtsqldb = $setting['dbpath'].'/txtsql/txtsql.MYI';
-        if(! @file_put_contents($txtsqldb,serialize($arr))){
-            echo "<script> alert('请确认数据库路径可写！');history.back();</script>";
-            exit;
-        }
-        @chmod($txtsqldb,0755);
-        include_once(ROOTDIR.'libs/txtSQL.class.php');
-        $db = new txtSQL($setting['dbpath']);
-        $db->connect($setting['dbuser'],$setting['dbpass']);
-        $db->createdb(array('db' => $setting['dbname']));
-        
-        $config_file_content = "<?php\n";
-        $config_file_content .= "\$db_config = array(\n";
-        $config_file_content .= "'adapter'  => 'txtsql',\n";
-        $config_file_content .= "'path'     => '".$setting['dbpath']."',\n";
-        $config_file_content .= "'dbuser'   => '".$setting['dbuser']."',\n";
-        $config_file_content .= "'dbpass'   => '".$setting['dbpass']."',\n";
-        $config_file_content .= "'dbname'   => '".$setting['dbname']."'\n";
-        $config_file_content .= ");\n";
-        $config_file_content .= "?>";
-        if(!@file_put_contents(ROOTDIR.'conf/config.php',$config_file_content)){
-            echo "<script> alert('无法创建数据库配置文件！');history.back();</script>";
-            exit();
-        }
-        @chmod(ROOTDIR.'conf/config.php',0755);
-        
-        $db->selectdb($setting['dbname']);
-        $db->createtable( array(
-                          'table' => 'admin',
-                          'columns' => array(
-                              'id'    => array('type' => 'int', 'auto_increment' => 1, 'permanent' => 1 ),
-                              'username'  => array('type' => 'string', 'max' => 50),
-                              'userpass' => array('type' => 'string', 'max' => 50)
-                              ) 
-                           )
-                       );
-        $db->createtable( array(
-                         'table' => 'albums',
-                         'columns' => array(
-                             'id'    => array('type' => 'int', 'auto_increment' => 1, 'permanent' => 1 ),
-                             'name'  => array('type' => 'string', 'max' => 50),
-                             'cover' => array('type' => 'string', 'max' => 255, 'default' => '')
-                             ) 
-                          )
-                      );
-        $db->createtable( array(
-                       'table' => 'imgs',
-                       'columns' => array(
-                           'id'    => array('type' => 'int', 'auto_increment' => 1, 'permanent' => 1 ),
-                           'album'  => array('type' => 'int', 'max' => 4),
-                           'name' => array('type' => 'string', 'max' => 100, 'default' => ''),
-                           'path' => array('type' => 'string', 'max' => 255, 'default' => ''),
-                           'thumb' => array('type' => 'string', 'max' => 255, 'default' => ''),
-                           'status' => array('type' => 'int', 'max' => 1, 'default' => 0)
-                           )
-                        )
-                    );
-        $db->insert(array(
-                    'table' => 'admin',
-                    'values' => array(
-                                'username' => $setting['username'],
-                                'userpass' => md5($setting['userpass'])
-                                )
-                    ));
-        $db->disconnect();
     }
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -447,19 +365,6 @@ function checkSubmit(o){
             alert('数据库名不能为空！');
             return false;
         }
-    }else if(o.dbadapter.value == 'txtsql'){
-        if(o.dbpath.value == ''){
-            alert('数据库路径不能为空！');
-            return false;
-        }
-        if(o.dbuser.value == ''){
-            alert('数据库用户名不能为空！');
-            return false;
-        }
-        if(o.dbname.value == ''){
-            alert('数据库名不能为空！');
-            return false;
-        }
     }else if(o.dbadapter.value == 'sqlite'){
         if(o.sqlitedbname.value == ''){
             alert('Sqlite数据库路径不能为空！');
@@ -495,12 +400,6 @@ function selected_adapter(val){
         document.getElementById('dbauth_div').style.display = 'none';
         document.getElementById('pre_div').style.display = '';
         document.getElementById('dbpath_div').style.display = 'none';
-    }else if(val == 'txtsql'){
-        document.getElementById('sqlite_div').style.display = 'none';
-        document.getElementById('mysql_div').style.display = 'none';
-        document.getElementById('dbauth_div').style.display = '';
-        document.getElementById('dbpath_div').style.display = '';
-        document.getElementById('pre_div').style.display = 'none';
     }else{
         document.getElementById('sqlite_div').style.display = 'none';
         document.getElementById('mysql_div').style.display = '';
@@ -583,16 +482,11 @@ if(file_exists(ROOTDIR.'conf/install.lock') && $action!=3){
         echo '<option value="sqlite">Sqlite</option>';
     }
     ?>
-        <option value="txtsql">txtSQL</option>
-    </select> <span style="padding-left:90px;">不推荐使用txtSQL，其效率较低。</span></td>
+    </select></td>
 </tbody>
 <tbody id="mysql_div">
 <tr><th>数据库主机</th><td><input name="dbhost" type="text" value="localhost" /></td>
 <tr><th>端口号</th><td><input name="dbport" type="text" value="3306" /></td>
-</tbody>
-<tbody id="dbpath_div">
-<tr><th>数据库路径</th><td><input name="dbpath" type="text" value="data/database" /></td>
-
 </tbody>
 <tbody id="dbauth_div">
 <tr><th>用户名</th><td><input name="dbuser" type="text" value="root" /></td>
@@ -642,8 +536,6 @@ if(file_exists(ROOTDIR.'conf/install.lock') && $action!=3){
                 exit();
             }
             creat_sqlite($setting['sqlitedbname'],$setting['dbpre'],$setting['username'],$setting['userpass']);
-        }elseif($setting['dbadapter'] == 'txtsql'){
-            creat_txtsql($setting);
         }else{
             creat_mysql($setting);
         }

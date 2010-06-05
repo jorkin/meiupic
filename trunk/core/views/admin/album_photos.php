@@ -36,7 +36,7 @@
     ?>
     <li id="i_<?php echo $v['id'];?>" rel="<?php echo SITE_URL.imgSrc($v['path']); ?>">
         <span class="img">
-            <a href="index.php?ctl=photo&act=view&id=<?php echo $v['id'];?>">
+            <a href="index.php?ctl=photo&act=view&id=<?php echo $v['id'];?>&album=<?php echo $res->get('album');?>">
                 <img src="<?php echo imgSrc($v['thumb']); ?>" source="<?php echo SITE_URL.imgSrc($v['path']); ?>" alt="<?php echo $v['name'];?>" />
             </a>
         </span>

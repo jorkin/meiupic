@@ -25,6 +25,7 @@ require_once('conf/setting.php');
 require_once('conf/config.php');
 define('COREDIR',ROOTDIR.'core/');
 define('LIBDIR',COREDIR.'libs/');
+define('INCDIR',COREDIR.'include/');
 define('CTLDIR',COREDIR.'ctls/');
 define('VIEWDIR',COREDIR.'views/');
 define('MODELDIR',COREDIR.'models/');
@@ -34,6 +35,6 @@ define('DATADIR',ROOTDIR.$setting['imgdir'].'/');
 define('SITE_URL',$setting['url']);
 define('PAGE_SET',$setting['pageset']);
 
-require_once(LIBDIR.'func.php');
-
+require_once(INCDIR.'base.php');
+require_once(INCDIR.'func.php');
 run();

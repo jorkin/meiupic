@@ -15,7 +15,7 @@
         <?php 
             $ls = $res->get('albums_list');
             if($ls){
-                foreach($ls as $v){
+                foreach($ls as $k=>$v){
                     echo "<option value=\"".$k."\">".$v."</option>\n";
                 }
             }

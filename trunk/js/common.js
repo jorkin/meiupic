@@ -481,7 +481,7 @@ function reupload_pic(o,id){
     $('#reuploadpic').find('span.upfield').html('<input type="file" name="imgs">');
     $('#reuploadpic').find('form').attr('action','index.php?ctl=upload&act=reupload&id='+id);
     $('#reuploadpic').find('form').submit(function(){
-        $('#reuploadpic').find('div.uploading').show();
+        $('#reuploadpic').find('div.uploading').width($('#reuploadpic').find('form').width()).show();
     });
     $('#reuploadpic').find('input[name=close]').unbind('click').bind('click',function(){
         $('#reuploadpic').hide();
@@ -525,7 +525,7 @@ function check_form(o){
 }
 
 function slideshow(id){
-	$("body").prepend('<div id="slide_show" style="width: '+ $(document).width() +'px;height: '+ $(document).height() + 'px;"></div>');
+	$("body").prepend('<div id="slide_show" style="width: '+ $(document).width() +'px;height: '+ $(document).height() + 'px;"></div><div id="slide_show_flash"></div>');
 	var flashvars = {};
 	flashvars.galleryURL = escape("index.php?ctl=photo&act=gallery&album="+id);
 	var params = {};
@@ -533,13 +533,14 @@ function slideshow(id){
 	params.wmode = 'transparent';
 	params.allowscriptaccess = "always";
 	params.bgcolor = "222222";
-	swfobject.embedSWF("js/simpleviewer.swf", "slide_show", "100%", "100%", "9.0.124", false, flashvars, params);
+	swfobject.embedSWF("js/simpleviewer.swf", "slide_show_flash", "100%", "100%", "9.0.124", false, flashvars, params);
 	$("body").prepend('<div id="slide_show_close" onclick="close_slideshow()" title="关闭"></div>');
 }
 
 function close_slideshow(){
 	$("#slide_show").remove();
 	$("#slide_show_close").remove();
+	$("#slide_show_flash").remove();
 }
 
 function select_pic(o){
@@ -624,6 +625,27 @@ function init_submit_bat(){
     });
 }
 
+function show_exif(o){
+    var pos = getElementOffset(o);
+    
+    $('#exif_info').css({'left':pos.left-220,'top':pos.top-2});
+    $('#exif_info').show();
+    $(document).bind("mousedown",function(e){
+        var popup = $('#exif_info').get(0);
+        var e = e || window.event;
+        var target = e.target || e.srcElement;
+        while (target != document && target != popup) {
+            target = target.parentNode;
+        }
+        if (target == document) {
+            close_exif();
+        }
+    });
+}
+function close_exif(){
+    $('#exif_info').hide();
+    $(document).unbind("mousedown");
+}
 $(function(){
 	$('.dragable').jqDrag('.draghandle');
 	$('ul.album').find('li').each(function(i){
