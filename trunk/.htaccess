@@ -1,0 +1,6 @@
+<ifmodule mod_rewrite.c>
+RewriteEngine On
+Options +FollowSymLinks
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule data/(.*)/(.*)_(.*)\.(jpg|gif|png)$ index.php?ctl=photo&act=resize&size=$3&key=$2 [L]
+</ifmodule>
