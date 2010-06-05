@@ -33,14 +33,18 @@ class album extends modelfactory{
         return $this->db->getRow();
     }
     
-    function get_cover($album_id){
-           $this->db->select('#imgs',"*",'album='.intval($album_id),'id asc limit 1');
-           $row = $this->db->getRow();
-           if($row){
-               return $row['thumb'];
-           }else{
-               return 'nopic.jpg';
-           }
+    function get_cover($album_id,$cover_id = 0){
+        $where = '';
+        if($cover_id >0){
+            $where = 'and id='.intval($cover_id);
+        }
+        $this->db->select('#imgs',"*",'album='.intval($album_id).$where,'id asc limit 1');
+       $row = $this->db->getRow();
+       if($row){
+           return $row['thumb'];
+       }else{
+           return 'nopic.jpg';
+       }
     }
     
     function set_cover($id,$thumb){
@@ -72,10 +76,7 @@ class album extends modelfactory{
     }
     
     function remove_cover($picid){
-        $this->db->select('#imgs','*','id='.intval($picid));
-        $row = $this->db->getRow();
-        
-        $this->db->update('#albums',"cover='".$row['thumb']."' and id =".intval($row['album']),array('cover'=>''));
+        $this->db->update('#albums',"cover='".$picid."'",array('cover'=>'0'));
         return $this->db->query();
     }
 }

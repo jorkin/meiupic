@@ -7,8 +7,8 @@
  * @copyright : (c)2010 meiu.cn lingter@gmail.com
  */
 
-require_once(LIBDIR.'view.php');
-require_once(LIBDIR.'auth.php');
+require_once(LIBDIR.'view.class.php');
+require_once(LIBDIR.'auth.class.php');
 class pagefactory{
     
     function pagefactory(){
