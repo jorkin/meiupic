@@ -495,7 +495,7 @@ function reupload_ok(id,big,thumb){
     var rand = Math.random();
     $('#reuploadpic').find('div.uploading').hide();
     $('#reuploadpic').hide();
-    $('#i_'+id).find('span.img img').attr('src',thumb+'?rand='+rand);
+    $('#i_'+id).find('span.img img').attr('src',thumb+'#rand='+rand);
     //$('#i_'+id).find('span.img a').attr('href',big+'?rand='+rand);
 }
 function switch_div(o,d){

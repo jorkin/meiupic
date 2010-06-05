@@ -31,7 +31,8 @@ class controller extends pagefactory{
         $pageurl='index.php?page=[#page#]';
         if($albums['ls']){
             foreach($albums['ls'] as $k=>$v){
-                $albums['ls'][$k]['cover'] = $this->mdl_album->get_cover($v['id'],$v['cover']);
+                $cover = $this->mdl_album->get_cover($v['id'],$v['cover']);
+                $albums['ls'][$k]['cover'] = $cover?mkImgLink($cover['dir'],$cover['key'],$cover['ext'],'thumb'):'data/nopic.jpg';
             }
         }
         $this->output->set('albums',$albums['ls']);
@@ -98,8 +99,8 @@ class controller extends pagefactory{
                 echo json_encode(array('ret'=>false,'msg'=>'要删除的图片不存在！'));
                 exit;
             }
-            @unlink(DATADIR.$row['path']);
-            @unlink(DATADIR.$row['thumb']);
+            $upload =& load_model('upload');
+            $upload->delpicfile($row['dir'],$row['key'],$row['ext']);
             
             $this->mdl_album->remove_cover($id);
             
@@ -146,9 +147,9 @@ class controller extends pagefactory{
             $albums = $this->mdl_picture->get_all_pic(NULL,$id);
             
             if($albums){
+                $upload =& load_model('upload');
                 foreach($albums as $v){
-                    @unlink(DATADIR.$v['path']);
-                    @unlink(DATADIR.$v['thumb']);
+                    $upload->delpicfile($v['dir'],$v['key'],$v['ext']);
                 }
             }
             

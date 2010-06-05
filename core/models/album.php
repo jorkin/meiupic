@@ -41,9 +41,9 @@ class album extends modelfactory{
         $this->db->select('#imgs',"*",'album='.intval($album_id).$where,'id asc limit 1');
        $row = $this->db->getRow();
        if($row){
-           return $row['thumb'];
+           return $row;
        }else{
-           return 'nopic.jpg';
+           return false;
        }
     }
     
