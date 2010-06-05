@@ -9,6 +9,13 @@
 
 class upload extends modelfactory{
     
+    function delpicfile($dir,$key,$ext){
+        $list = array('small','square','medium','big','thumb','orig');
+        foreach($list as $v){
+            @unlink(ROOTDIR.mkImgLink($dir,$key,$ext,$v));
+        }
+    }
+    
     function plupload(){
         header('Content-type: text/plain; charset=UTF-8');
         header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");

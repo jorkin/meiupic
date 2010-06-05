@@ -33,6 +33,11 @@ class picture extends modelfactory{
         return $this->db->getRow();
     }
     
+    function get_one_pic_by_key($key){
+        $this->db->select('#imgs','*','`key`="'.$key.'"');
+        return $this->db->getRow();
+    }
+    
     function get_pre_pic($id,$album=0){
         $where = '';
         if($album>0){

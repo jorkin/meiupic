@@ -33,14 +33,14 @@
             <ul>
                 
                 <?php if($pre_pic): ?>
-                <li><a href="index.php?ctl=photo&act=view&id=<?php echo $pre_pic['id'];?>&album=<?php echo $res->get("album");?>#photo-body"><img src="<?php echo imgSrc($pre_pic['thumb']);?>" /></a></li>
+                <li><a href="index.php?ctl=photo&act=view&id=<?php echo $pre_pic['id'];?>&album=<?php echo $res->get("album");?>#photo-body"><img src="<?php echo mkImgLink($pre_pic['dir'],$pre_pic['key'],$pre_pic['ext'],'thumb');?>" /></a></li>
                 <?php else:?>
                 <li>这是首张</li>
                 <?php endif;?>
-                <li class="current"><a href="javascript:void(0)"><img src="<?php echo imgSrc($ls['thumb']);?>" /></a></li>
+                <li class="current"><a href="javascript:void(0)"><img src="<?php echo mkImgLink($ls['dir'],$ls['key'],$ls['ext'],'thumb');?>" /></a></li>
                 
                 <?php if($next_pic): ?>
-                <li><a href="index.php?ctl=photo&act=view&id=<?php echo $next_pic['id'];?>&album=<?php echo $res->get("album");?>#photo-body"><img src="<?php echo imgSrc($next_pic['thumb']);?>" /></a></li>
+                <li><a href="index.php?ctl=photo&act=view&id=<?php echo $next_pic['id'];?>&album=<?php echo $res->get("album");?>#photo-body"><img src="<?php echo mkImgLink($next_pic['dir'],$next_pic['key'],$next_pic['ext'],'thumb');?>" /></a></li>
                 <?php else:?>
                 <li>这是末张</li>
                 <?php endif;?>
@@ -65,7 +65,7 @@
         }
         ?>
         var img = new Image();
-        img.src = "index.php?ctl=photo&act=resize&size=big&id=<?php echo $ls['id'];?>";
+        img.src = "<?php echo mkImgLink($ls['dir'],$ls['key'],$ls['ext'],'big');?>";
         img.onload = function(){
             var imgload = '<div class="sh1"><div class="sh2"><div class="sh3"><a class="p-tag" hidefocus="true" href="'+imghref+'" title="'+nexttile+'"><img class="p-tag" src="'+img.src+'"></a></div></div></div>';
             $('#photo-body div.picnt').html(imgload);

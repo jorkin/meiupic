@@ -193,7 +193,7 @@
         $rt2 = @mysql_query("CREATE TABLE IF NOT EXISTS `$albumstable` (
           `id` int(11) NOT NULL AUTO_INCREMENT,
           `name` varchar(50) NOT NULL,
-          `int` int(11) NOT NULL DEFAULT '0',
+          `cover` int(11) NOT NULL DEFAULT '0',
           PRIMARY KEY (`id`)
         ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;",$dbconn);
 
@@ -201,8 +201,9 @@
           `id` int(11) NOT NULL AUTO_INCREMENT,
           `album` smallint(4) NOT NULL,
           `name` varchar(100) NOT NULL,
-          `path` varchar(255) NOT NULL,
-          `thumb` varchar(255) NOT NULL,
+          `dir` varchar(10) NOT NULL,
+          `key` varchar(32) NOT NULL,
+          `ext` varchar(10) NOT NULL,
           `status` tinyint(1) NOT NULL DEFAULT '0',
           PRIMARY KEY (`id`)
         ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;",$dbconn);
@@ -217,6 +218,7 @@
             echo "<script> alert('添加用户数据错误！');history.back();</script>";
             exit();
         }
+        @mysql_query("REPLACE INTO `$albumstable` (`id`, `name`, `cover`) VALUES (1, '默认相册', '0');",$dbconn);
         mysql_close($dbconn);
     }
     
@@ -258,14 +260,15 @@
         sqlite_query("CREATE TABLE $imgstable (
                   id INTEGER NOT NULL PRIMARY KEY,
                   album smallint(4) NOT NULL,
+                  dir varchar(10) NOT NULL,
+                  key varchar(32) NOT NULL,
+                  ext varchar(10) NOT NULL,
                   name varchar(100) NOT NULL,
-                  path varchar(255) NOT NULL,
-                  thumb varchar(255) NOT NULL,
                   status tinyint(1) NOT NULL DEFAULT '0'
                 )",$conn);
         
         sqlite_query("INSERT INTO $admintable (id, username, userpass) VALUES (1, '".$adminuser."', '".md5($adminpass)."')",$conn);
-        
+        sqlite_query("INSERT INTO $albumstable (id, name, cover) VALUES (1, '默认相册', '0')",$conn);
         sqlite_close($conn);
     }
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -543,7 +546,7 @@ if(file_exists(ROOTDIR.'conf/install.lock') && $action!=3){
         $setting_content .= "\$setting['url'] = '".$setting['url']."';\n";
         $setting_content .= "\$setting['imgdir'] = 'data';\n";
         $setting_content .= "\$setting['upload_runtimes'] = 'html5,flash,gears,silverlight';\n";
-        $setting_content .= "\$setting['open_pre_resize'] = true;\n";
+        $setting_content .= "\$setting['open_pre_resize'] = false;\n";
         $setting_content .= "\$setting['resize_img_width'] = '1600';\n";
         $setting_content .= "\$setting['resize_img_height'] = '1200';\n";
         $setting_content .= "\$setting['resize_quality'] = '100';\n";

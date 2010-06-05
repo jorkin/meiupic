@@ -14,7 +14,7 @@
         if($ls):
         foreach($ls as $v):
         ?>
-        <li rel="<?php echo SITE_URL.imgSrc($v['path']); ?>"><span class="img"><img src="<?php echo imgSrc($v['thumb']); ?>" /></span><span class="info"><input class="ipt_2" name="imgname[<?php echo $v['id'];?>]" value="<?php echo $v['name'];?>"></span><span class="control"><a href="javascript:void(0)" onclick="copyUrl(this)"><img src="img/copyu.gif" alt="复制网址" title="复制网址" /></a> <a href="javascript:void(0)" onclick="copyCode(this)"><img src="img/copyc.gif" alt="复制代码" title="复制代码" /></a></span></li>
+        <li rel="<?php echo mkImgLink($v['dir'],$v['key'],$v['ext'],'orig');?>"><span class="img"><img src="<?php echo mkImgLink($v['dir'],$v['key'],$v['ext'],'thumb');?>" /></span><span class="info"><input class="ipt_2" name="imgname[<?php echo $v['id'];?>]" value="<?php echo $v['name'];?>"></span><span class="control"><a href="javascript:void(0)" onclick="copyUrl(this)"><img src="img/copyu.gif" alt="复制网址" title="复制网址" /></a> <a href="javascript:void(0)" onclick="copyCode(this)"><img src="img/copyc.gif" alt="复制代码" title="复制代码" /></a></span></li>
         <?php
         endforeach;
         endif;
