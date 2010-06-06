@@ -46,7 +46,7 @@
                 <li>这是末张</li>
                 <?php endif;?>
             </ul>
-            <div class="prebtn"><?php if($pre_pic): ?><a href="index.php?ctl=photo&act=view&id=<?php echo $pre_pic['id'];?>&album=<?php echo $res->get("album");?>#photo-body">上一张</a><?php endif;?></div><div class="nextbtn"><?php if($next_pic): ?><a href="index.php?ctl=photo&act=view&id=<?php echo $next_pic['id'];?>&album=<?php echo $res->get("album");?>#photo-body">下一张</a><?php endif;?></div><div class="slideshow"><a href="javascript:void(0)" onclick="slideshow(<?php echo $res->get("album");?>)">幻灯片</a></div>
+            <div class="prebtn"><?php if($pre_pic): ?><a class="btnpre" href="index.php?ctl=photo&act=view&id=<?php echo $pre_pic['id'];?>&album=<?php echo $res->get("album");?>#photo-body">上一张</a><?php endif;?></div><div class="nextbtn"><?php if($next_pic): ?><a class="btnnext" href="index.php?ctl=photo&act=view&id=<?php echo $next_pic['id'];?>&album=<?php echo $res->get("album");?>#photo-body">下一张</a><?php endif;?></div><div class="slideshow"><a href="javascript:void(0)" onclick="slideshow(<?php echo $res->get("album");?>)">幻灯片</a></div>
         </div>
         
         <div id="copyspics">
@@ -105,6 +105,17 @@
         img.onload = function(){
             var imgload = '<div class="sh1"><div class="sh2"><div class="sh3"><a class="p-tag" hidefocus="true" href="'+imghref+'" title="'+nexttile+'"><img class="p-tag" src="'+img.src+'"></a></div></div></div>';
             $('#photo-body div.picnt').html(imgload);
+        }
+        
+        document.onkeydown = keydown;
+        function keydown(event){
+        	event = event ? event : (window.event ? window.event : null); 
+        	if($("#photo_control").find("a.btnpre").length > 0 && event.keyCode==37){
+        		window.location=$("#photo_control").find("a.btnpre").attr("href");
+        	}
+        	if($("#photo_control").find("a.btnnext").length > 0 && event.keyCode==39){
+        		window.location=$("#photo_control").find("a.btnnext").attr("href");
+        	}
         }
     })();
     </script>

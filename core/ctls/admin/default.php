@@ -33,13 +33,15 @@ class controller extends pagefactory{
         if(!$page){
             $page = 1;
         }
+        $sort = isset($_GET['sort'])?$_GET['sort']:'id_desc';
         $mdl_picture = & load_model('picture');
         $mdl_album =& load_model('album');
-        $pics = $mdl_picture->get_all_pic($page);
-        $pageurl='index.php?page=[#page#]';
+        $pics = $mdl_picture->get_all_pic($page,0,$sort);
+        $pageurl='index.php?page=[#page#]&sort='.$sort;
         $this->output->set('albums_list',$mdl_album->get_albums_assoc());
         $this->output->set('pics',$pics['ls']);
         $this->output->set('page',$page);
+        $this->output->set('sort',$sort);
         $this->output->set('msginfo',$msginfo);
         $this->output->set('pageset',pageshow($pics['total'],$pics['start'],$pageurl));
         $this->output->set('total_num',$pics['count']);
@@ -136,7 +138,7 @@ class controller extends pagefactory{
             }
             
             if($mdl_setting->save_setting($new_setting)){
-                showInfo('修改网站配置成功！',true,'index.php?ctl=default&act=setting');
+                showInfo('修改配置成功！',true,'index.php?ctl=default&act=setting');
             }else{
                 showInfo('写入配置失败,请检查conf/setting.php文件是否可写！',false);
             }

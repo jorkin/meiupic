@@ -521,7 +521,7 @@ if(file_exists(ROOTDIR.'conf/install.lock') && $action!=3){
 </table>
 <h2>管理员帐号</h2>
 <table class="setting">
-<tr><th>登录名</th><td><input name="username" type="text" value="" /></td>
+<tr><th>登录名</th><td><input name="username" type="text" value="admin" /></td>
 <tr><th>登录密码</th><td><input name="userpass" type="password" value="" /></td>
 <tr><th>密码确认</th><td><input name="passagain" type="password" value="" /></td>
 </table>
