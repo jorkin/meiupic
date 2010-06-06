@@ -10,7 +10,7 @@
         <td class="tt">相册URL：</td><td class="tc"><input name="setting[url]" class="txtinput" type="text" value="<?php echo $setting['url'];?>" style="width:250px" /></td><td class="ti">设置复制图片地址的URL前缀, 需要带上末尾的"/"</td>
     </tr>
     <tr>
-        <td class="tt">图片保存目录：</td><td class="tc"><input name="setting[imgdir]" class="txtinput" type="text" value="<?php echo $setting['imgdir'];?>" style="width:100px" /></td><td class="ti">保存图片的目录，此目录必须存在</td>
+        <td class="tt">图片保存目录：</td><td class="tc"><input name="setting[imgdir]" class="txtinput" type="text" value="<?php echo $setting['imgdir'];?>" style="width:100px" /></td><td class="ti">保存图片的目录，此目录必须存在。有可能会影响正常功能，请谨慎修改</td>
     </tr>
     <tr>
         <td class="tt">高级上传引擎：</td><td class="tc"><input name="setting[upload_runtimes]" class="txtinput" type="text" value="<?php echo $setting['upload_runtimes'];?>" style="width:250px" /></td><td class="ti">目前支持的引擎有 html5,flash,gears,silverlight,browserplus,html4</td>
@@ -39,6 +39,19 @@
     </script>
     <tbody>
     <tr>
+        <td class="tt">按需生成各种尺寸图片：</td>
+        <td class="tc">
+            <input name="setting[demand_resize]" class="txtinput" type="checkbox" value="1" <?php if($setting['demand_resize']){ echo 'checked="checked"';} ?> /> 
+            <?php 
+            if(function_exists('apache_get_modules') && in_array('mod_rewrite',apache_get_modules())){
+                echo '<span class="green">您的服务器支持此功能！</span>';
+            }else{
+                echo '<span class="red">您的服务器不支持此功能！</span>';
+            }?>
+        </td>
+        <td class="ti">开启此项需要支持Rewrite,关闭此项则会在上传是生成各种尺寸图片</td>
+    </tr>
+    <tr>
         <td class="tt">上传子目录形式：</td><td class="tc">
             <select name="setting[imgdir_type]">
                 <option value="1" <?php if($setting['imgdir_type']=='1') echo 'selected="selected"';?>>YYYY-MM-DD</option>
@@ -46,13 +59,13 @@
                 <option value="3" <?php if($setting['imgdir_type']=='3') echo 'selected="selected"';?>>YYYY-MM</option>
                 <option value="4" <?php if($setting['imgdir_type']=='4') echo 'selected="selected"';?>>YYYYMM</option>
                 <option value="5" <?php if($setting['imgdir_type']=='5') echo 'selected="selected"';?>>YYYY</option>
-            </select></td><td class="ti">如 data/2010-05-20/xxxx.jpg</td>
+            </select></td><td class="ti">如：data/2010-05-20/xxxx.jpg</td>
     </tr>
     <tr>
-        <td class="tt">允许的图片格式：</td><td class="tc"><input name="setting[extension_allow]" class="txtinput" type="text" value="<?php echo $setting['extension_allow'];?>" /></td><td class="ti">允许上传的图片格式目前只支持jpg（jpeg）,png,gif</td>
+        <td class="tt">允许的图片格式：</td><td class="tc"><input name="setting[extension_allow]" class="txtinput" type="text" value="<?php echo $setting['extension_allow'];?>" /></td><td class="ti">允许上传的图片格式目前只支持jpg(jpeg),png,gif</td>
     </tr>
     <tr>
-        <td class="tt">普通上传允许的图片大小：</td><td class="tc"><input name="setting[size_allow]" class="txtinput" type="text" value="<?php echo $setting['size_allow'];?>" style="width:80px" /></td><td class="ti">单位字节</td>
+        <td class="tt">普通上传允许的图片大小：</td><td class="tc"><input name="setting[size_allow]" class="txtinput" type="text" value="<?php echo $setting['size_allow'];?>" style="width:80px" /></td><td class="ti">单位：字节</td>
     </tr>
     <tr>
         <td class="tt">每页显示图片数：</td><td class="tc"><input name="setting[pageset]" class="txtinput" type="text" value="<?php echo $setting['pageset'];?>" style="width:50px" /></td><td class="ti"></td>

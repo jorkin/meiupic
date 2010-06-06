@@ -6,6 +6,15 @@
  * @support : http://www.meiu.cn
  * @copyright : (c)2010 meiu.cn lingter@gmail.com
  */
+function get_basepath(){
+    if ($dir = trim(dirname($_SERVER['SCRIPT_NAME']), '\,/')) {
+      $base_path = "/$dir";
+      $base_path .= '/';
+    } else {
+      $base_path = '/';
+    }
+    return $base_path;
+}
 
 function redirect($c){
     header("Location: $c");

@@ -34,7 +34,7 @@ class picture extends modelfactory{
     }
     
     function get_one_pic_by_key($key){
-        $this->db->select('#imgs','*','`key`="'.$key.'"');
+        $this->db->select('#imgs','*','pickey="'.$key.'"');
         return $this->db->getRow();
     }
     

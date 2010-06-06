@@ -16,7 +16,7 @@ if(!file_exists('conf/config.php') || !file_exists('conf/setting.php')){
     exit;
 }
 
-define('Version','1.0b2');
+define('Version','1.0b3');
 
 define('FCPATH',__FILE__);
 define('ROOTDIR',dirname(FCPATH).'/');

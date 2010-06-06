@@ -496,7 +496,6 @@ function reupload_ok(id,big,thumb){
     $('#reuploadpic').find('div.uploading').hide();
     $('#reuploadpic').hide();
     $('#i_'+id).find('span.img img').attr('src',thumb+'#rand='+rand);
-    //$('#i_'+id).find('span.img a').attr('href',big+'?rand='+rand);
 }
 function switch_div(o,d){
     if(o.checked){
@@ -628,7 +627,7 @@ function init_submit_bat(){
 function show_exif(o){
     var pos = getElementOffset(o);
     
-    $('#exif_info').css({'left':pos.left-220,'top':pos.top-2});
+    $('#exif_info').css({'left':pos.left,'top':pos.top-2});
     $('#exif_info').show();
     $(document).bind("mousedown",function(e){
         var popup = $('#exif_info').get(0);
@@ -646,6 +645,7 @@ function close_exif(){
     $('#exif_info').hide();
     $(document).unbind("mousedown");
 }
+
 $(function(){
 	$('.dragable').jqDrag('.draghandle');
 	$('ul.album').find('li').each(function(i){
