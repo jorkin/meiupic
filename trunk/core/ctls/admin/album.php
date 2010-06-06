@@ -32,7 +32,7 @@ class controller extends pagefactory{
         if($albums['ls']){
             foreach($albums['ls'] as $k=>$v){
                 $cover = $this->mdl_album->get_cover($v['id'],$v['cover']);
-                $albums['ls'][$k]['cover'] = $cover?mkImgLink($cover['dir'],$cover['key'],$cover['ext'],'thumb'):'data/nopic.jpg';
+                $albums['ls'][$k]['cover'] = $cover?mkImgLink($cover['dir'],$cover['pickey'],$cover['ext'],'thumb'):'data/nopic.jpg';
             }
         }
         $this->output->set('albums',$albums['ls']);
@@ -100,7 +100,7 @@ class controller extends pagefactory{
                 exit;
             }
             $upload =& load_model('upload');
-            $upload->delpicfile($row['dir'],$row['key'],$row['ext']);
+            $upload->delpicfile($row['dir'],$row['pickey'],$row['ext']);
             
             $this->mdl_album->remove_cover($id);
             
@@ -149,7 +149,7 @@ class controller extends pagefactory{
             if($albums){
                 $upload =& load_model('upload');
                 foreach($albums as $v){
-                    $upload->delpicfile($v['dir'],$v['key'],$v['ext']);
+                    $upload->delpicfile($v['dir'],$v['pickey'],$v['ext']);
                 }
             }
             

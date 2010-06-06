@@ -8,8 +8,6 @@
  */
 
 class controller extends pagefactory{
-    var $thumb_width = 110;
-    var $thumb_height = 150;
 
     function controller(){
         parent::pagefactory();
@@ -58,6 +56,7 @@ class controller extends pagefactory{
     }
     
     function dopicupload(){
+        set_time_limit(0);
         $date = get_updir_name($this->setting['imgdir_type']);
         if(!is_dir(DATADIR.$date)){
             @mkdir(DATADIR.$date);
@@ -80,21 +79,16 @@ class controller extends pagefactory{
                 $key = md5(str_replace('.','',microtime(true)));
                 $imgpath = $date.'/'.$key.'.'.$fileext;
                 $realpath = DATADIR.$imgpath;
-                $thumbpath = $date.'/'.$name.'_thumb.jpg';
-                $thumbrealpath = DATADIR.$thumbpath;
                 
                 if(@move_uploaded_file($tmpfile,$realpath)){
-                    /*include_once(LIBDIR.'image.class.php');
-                    $imgobj = new Image();
-                    $imgobj->load($realpath);
-                    $imgobj->setQuality(90);
-                    $imgobj->resizeScale($this->thumb_width,$this->thumb_height);
-                    $imgobj->save($thumbrealpath);*/
+                    if(!$this->setting['demand_resize']){
+                        $this->mdl_upload->generatepic($date,$key,$fileext);
+                    }
                     @chmod($realpath,0755);
                     $this->mdl_picture->insert_pic(array('album'=>$_GET['album'],
                                                     'name'=>$filename,
                                                     'dir'=>$date,
-                                                    'key'=>$key,
+                                                    'pickey'=>$key,
                                                     'ext'=>$fileext));
                 }else{
                     showInfo('文件上传失败！',false);
@@ -112,6 +106,7 @@ class controller extends pagefactory{
         header('Location: index.php?ctl=upload&act=doupload&album='.$_GET['album']);
     }
     function doupload(){
+        set_time_limit(0);
         $this->_save_and_resize();
         
         $pics = $this->mdl_picture->get_tmp_pic();
@@ -127,6 +122,7 @@ class controller extends pagefactory{
         $date = get_updir_name($this->setting['imgdir_type']);
         if(!is_dir(DATADIR.$date)){
             @mkdir(DATADIR.$date);
+            @chmod(DATADIR.$date,0755);
         }
         $files_count = intval($_POST['flash_uploader_count']);
         for($i=0;$i<$files_count;$i++){
@@ -137,21 +133,16 @@ class controller extends pagefactory{
             $key = md5(str_replace('.','',microtime(true)));
             $imgpath = $date.'/'.$key.'.'.$fileext;
             $realpath = DATADIR.$imgpath;
-            $thumbpath = $date.'/'.$key.'_thumb.jpg';
-            $thumbrealpath = DATADIR.$thumbpath;
             if($status == 'done' && file_exists($tmpfile)){
-                if(@copy($tmpfile,$realpath)){
-                    /*include_once(LIBDIR.'image.class.php');
-                    $imgobj = new Image();
-                    $imgobj->load($realpath);
-                    $imgobj->setQuality(90);
-                    $imgobj->resizeScale($this->thumb_width,$this->thumb_height);
-                    $imgobj->save($thumbrealpath);*/
+                if(@copy($tmpfile,$realpath)){                    
+                    if(!$this->setting['demand_resize']){
+                        $this->mdl_upload->generatepic($date,$key,$fileext);
+                    }
                     @chmod($realpath,0755);
                     $this->mdl_picture->insert_pic(array('album'=>$_GET['album'],
                                                     'name'=>$filename,
                                                     'dir'=>$date,
-                                                    'key'=>$key,
+                                                    'pickey'=>$key,
                                                     'ext'=>$fileext));
                 }
             }
@@ -195,19 +186,15 @@ class controller extends pagefactory{
             echo '<script> top.reupload_alert("上传图片过大！不得大于'.$this->setting['size_allow'].'字节！");</script>';
             exit;
         }
-        $realpath = ROOTDIR.mkImgLink($row['dir'],$row['key'],$row['ext'],'orig');
-        $thumbrealpath = ROOTDIR.mkImgLink($row['dir'],$row['key'],$row['ext'],'thumb');
+        $realpath = ROOTDIR.mkImgLink($row['dir'],$row['pickey'],$row['ext'],'orig');
         
-        $this->mdl_upload->delpicfile($row['dir'],$row['key'],$row['ext']);
+        $this->mdl_upload->delpicfile($row['dir'],$row['pickey'],$row['ext']);
         if(@move_uploaded_file($tmpfile,$realpath)){
-            /*include_once(LIBDIR.'image.class.php');
-            $imgobj = new Image();
-            $imgobj->load($realpath);
-            $imgobj->setQuality(90);
-            $imgobj->resizeScale($this->thumb_width,$this->thumb_height);
-            $imgobj->save($thumbrealpath);*/
+            if(!$this->setting['demand_resize']){
+                $this->mdl_upload->generatepic($row['dir'],$row['pickey'],$row['ext']);
+            }
             @chmod($realpath,0755);
-            echo '<script> top.reupload_ok("'.$id.'","'.mkImgLink($row['dir'],$row['key'],$row['ext'],'orig').'","'.mkImgLink($row['dir'],$row['key'],$row['ext'],'thumb').'");</script>';
+            echo '<script> top.reupload_ok("'.$id.'","'.mkImgLink($row['dir'],$row['pickey'],$row['ext'],'orig').'","'.mkImgLink($row['dir'],$row['pickey'],$row['ext'],'thumb').'");</script>';
         }else{
             echo '<script> top.reupload_alert("文件上传失败!");</script>';
         }

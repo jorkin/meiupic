@@ -16,6 +16,65 @@ class upload extends modelfactory{
         }
     }
     
+    function generatepic($dir,$key,$ext){
+        $realpath = ROOTDIR.mkImgLink($dir,$key,$ext,'orig');
+        include_once(LIBDIR.'image.class.php');
+        $imgobj = new Image();
+        $imgobj->load($realpath);
+        $imgobj->setQuality(95);
+        
+        $size = 'big';
+        $width = '700';
+        $height = '700';
+        $bigpath = ROOTDIR.mkImgLink($dir,$key,$ext,$size);
+        $imgobj->resizeScale($width,$height );
+        $imgobj->save($bigpath);
+        @chmod($newpath,0755);
+        
+        $imgobj = new Image();
+        $imgobj->load($bigpath);
+        
+        $size = 'medium';
+        $width = '500';
+        $height = '500';
+        $newpath = ROOTDIR.mkImgLink($dir,$key,$ext,$size);
+        $imgobj->resizeScale($width,$height );
+        $imgobj->save($newpath);
+        @chmod($newpath,0755);
+        
+        $imgobj = new Image();
+        $imgobj->load($bigpath);
+        
+        $size = 'small';
+        $width = '240';
+        $height = '240';
+        $newpath = ROOTDIR.mkImgLink($dir,$key,$ext,$size);
+        $imgobj->resizeScale($width,$height );
+        $imgobj->save($newpath);
+        @chmod($newpath,0755);
+        
+        $imgobj = new Image();
+        $imgobj->load($bigpath);
+        
+        $size = 'thumb';
+        $width = '110';
+        $height = '150';
+        $newpath = ROOTDIR.mkImgLink($dir,$key,$ext,$size);
+        $imgobj->resizeScale($width,$height );
+        $imgobj->save($newpath);
+        @chmod($newpath,0755);
+        
+        $imgobj = new Image();
+        $imgobj->load($bigpath);
+        
+        $size = 'square';
+        $width = '75';
+        $newpath = ROOTDIR.mkImgLink($dir,$key,$ext,$size);
+        $imgobj->square($width);
+        $imgobj->save($newpath);
+        @chmod($newpath,0755);
+    }
+    
     function plupload(){
         header('Content-type: text/plain; charset=UTF-8');
         header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");

@@ -174,6 +174,25 @@ class Image {
             return $this->resizeToHeight($h);
         }
     }
+    /**
+	 * 等比例缩小到指定宽度，并切成方形
+	 * 
+	 * @param int $v 指定宽度/高度
+	 */
+    function square($v){
+        $width = $this->getWidth();
+        $height = $this->getHeight();
+        $left = 0;
+        $right = 0;
+        if($width>$height){
+            $this->resizeToHeight($v);
+            $left = ceil(($v/$height * $width - $v)/2); 
+        }else{
+            $this->resizeToWidth($v);
+            $top = ceil(($v/$width * $height - $v)/2); 
+        }
+        $this->cut($v,$v,$left,$top);
+    }
 	/**
 	 * 等比例缩小到指定宽度
 	 * 
@@ -220,9 +239,9 @@ class Image {
 	 * @param int $width 指定宽度
 	 * @param int $height 指定高度
 	 */
-	function cut($width,$height){
+	function cut($width,$height,$left = 0,$top = 0){
 		$new_image = imagecreatetruecolor($width, $height);
-		imagecopy($new_image, $this->image, 0, 0, 0, 0, $width, $height);
+		imagecopy($new_image, $this->image, 0, 0, $left, $top, $width, $height);
 		$this->image = $new_image;
 	}
 

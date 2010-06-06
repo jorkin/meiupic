@@ -22,6 +22,8 @@ a{
 a:hover{
     text-decoration:underline;
 }
+.green{color:green;}
+.red{color:red;}
 select{
     max-width:300px;
     min-width:100px;
@@ -535,7 +537,6 @@ margin-bottom:10px;
     width:90px;
     position:absolute;
     z-index:10;
-    margin-left:210px;
     background:#fff;
     text-align:center;
     line-height:28px;
@@ -545,7 +546,7 @@ margin-bottom:10px;
     background:#fff;
     position:absolute;
     margin-top:29px;
-    width:300px;
+    width:260px;
     z-index:9;
 }
 #exif_info .inf{
@@ -568,12 +569,13 @@ margin-bottom:10px;
     clear:both;
 }
 #exif_info ul li span.exif_tit{
-    width:80px;
+    width:70px;
     display:block;
     float:left;
 }
 
 #photo_control{
+    margin-top:10px;
     position:relative;
     width:250px;
     height:100px;
@@ -614,7 +616,15 @@ margin-bottom:10px;
     overflow:hidden;
     background:#eee;
 }
+#photo_control ul li img{
+    width:70px;
+    height:70px;
+}
 #photo_control ul li.current,#photo_control ul li:hover{
     border:4px solid #005EAC;
     padding:0;
+}
+
+#copyspics{
+    margin-top:10px;
 }

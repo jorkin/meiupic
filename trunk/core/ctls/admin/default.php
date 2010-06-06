@@ -105,6 +105,11 @@ class controller extends pagefactory{
             }else{
                 $new_setting['open_pre_resize'] = 'false';
             }
+            if($new_setting['demand_resize'] == 1){
+                $new_setting['demand_resize'] = 'true';
+            }else{
+                $new_setting['demand_resize'] = 'false';
+            }
             if(empty($new_setting['resize_img_width']) || !is_numeric($new_setting['resize_img_width'])){
                 showInfo('图片宽只能为数字！',false);
             }

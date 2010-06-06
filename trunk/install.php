@@ -91,6 +91,14 @@
         /* 检查Sqlite支持情况*/
         $sqlite_enabled = function_exists('sqlite_open') ? "支持" : "<b class=\"red\">不支持</b>";
         $system_info[] = array("Sqlite 数据库支持", $sqlite_enabled);
+        
+        /* 检查Rewrite支持情况*/
+        if ( function_exists('apache_get_modules') && in_array('mod_rewrite',apache_get_modules()) ){
+            $rewrite_enabled =  '支持';
+        }else{
+            $rewrite_enabled =  '<b class=\"red\">不支持</b>';
+        }
+        $system_info[] = array("Rewrite 支持", $rewrite_enabled);
         /* 检查图片处理函数库 */
         $gd_ver = get_gd_version();
         $gd_ver = empty($gd_ver) ? "<b class=\"red\">不支持</b>" : $gd_ver;
@@ -129,7 +137,11 @@
         $system_info[] = array("JPG组件支持", $jpeg_enabled);
         $system_info[] = array("GIF组件支持",  $gif_enabled);
         $system_info[] = array("PNG组件支持",  $png_enabled);
-
+        
+        /* 检查EXIF支持情况*/
+        $exif_enabled = function_exists('exif_read_data') ? "支持" : "<b class=\"red\">不支持</b>";
+        $system_info[] = array("EXIF 支持", $exif_enabled);
+        
         /* 服务器是否安全模式开启 */
         $safe_mode = ini_get('safe_mode') == '1' ? "打开" : "关闭";
         $system_info[] = array("安全模式", $safe_mode);
@@ -194,7 +206,8 @@
           `id` int(11) NOT NULL AUTO_INCREMENT,
           `name` varchar(50) NOT NULL,
           `cover` int(11) NOT NULL DEFAULT '0',
-          PRIMARY KEY (`id`)
+          PRIMARY KEY (`id`),
+          KEY `cover` (`cover`)
         ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;",$dbconn);
 
         $rt3 = @mysql_query("CREATE TABLE IF NOT EXISTS `$imgstable` (
@@ -202,10 +215,11 @@
           `album` smallint(4) NOT NULL,
           `name` varchar(100) NOT NULL,
           `dir` varchar(10) NOT NULL,
-          `key` varchar(32) NOT NULL,
+          `pickey` varchar(32) NOT NULL,
           `ext` varchar(10) NOT NULL,
           `status` tinyint(1) NOT NULL DEFAULT '0',
-          PRIMARY KEY (`id`)
+          PRIMARY KEY (`id`),
+          KEY `pickey` (`pickey`)
         ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;",$dbconn);
         
         if(!$rt1 || !$rt2 || !$rt3){
@@ -255,17 +269,18 @@
                   name varchar(50) NOT NULL,
                   cover int(11) NOT NULL DEFAULT '0'
                 )",$conn);
-
+        sqlite_query("CREATE INDEX cover on $albumstable (cover)",$conn);
 
         sqlite_query("CREATE TABLE $imgstable (
                   id INTEGER NOT NULL PRIMARY KEY,
                   album smallint(4) NOT NULL,
                   dir varchar(10) NOT NULL,
-                  key varchar(32) NOT NULL,
+                  pickey varchar(32) NOT NULL,
                   ext varchar(10) NOT NULL,
                   name varchar(100) NOT NULL,
                   status tinyint(1) NOT NULL DEFAULT '0'
                 )",$conn);
+        sqlite_query("CREATE INDEX pickey on $imgstable (pickey)",$conn);
         
         sqlite_query("INSERT INTO $admintable (id, username, userpass) VALUES (1, '".$adminuser."', '".md5($adminpass)."')",$conn);
         sqlite_query("INSERT INTO $albumstable (id, name, cover) VALUES (1, '默认相册', '0')",$conn);
@@ -501,7 +516,7 @@ if(file_exists(ROOTDIR.'conf/install.lock') && $action!=3){
 </tbody>
 <tbody id="sqlite_div" style="display:none;">
 
-<tr><th>数据库路径</th><td><input name="sqlitedbname" type="text" value="conf/database.php" /></td>
+<tr><th>数据库路径</th><td><input name="sqlitedbname" type="text" value="data/database.php" /></td>
 </tbody>
 </table>
 <h2>管理员帐号</h2>
@@ -550,6 +565,7 @@ if(file_exists(ROOTDIR.'conf/install.lock') && $action!=3){
         $setting_content .= "\$setting['resize_img_width'] = '1600';\n";
         $setting_content .= "\$setting['resize_img_height'] = '1200';\n";
         $setting_content .= "\$setting['resize_quality'] = '100';\n";
+        $setting_content .= "\$setting['demand_resize'] = false;\n";
         $setting_content .= "\$setting['imgdir_type'] = '4';\n";
         $setting_content .= "\$setting['extension_allow'] = 'jpg,jpeg,gif,png';\n";
         $setting_content .= "\$setting['size_allow'] = '1024000';\n";

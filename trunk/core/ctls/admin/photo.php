@@ -28,7 +28,7 @@ class controller extends pagefactory{
         }
         include_once(LIBDIR.'image.class.php');
         $imgobj = new Image();
-        $imginfo = $imgobj->GetImageInfo(ROOTDIR.mkImgLink($row['dir'],$row['key'],$row['ext'],'orig'));
+        $imginfo = $imgobj->GetImageInfo(ROOTDIR.mkImgLink($row['dir'],$row['pickey'],$row['ext'],'orig'));
 
         $this->output->set('pic',$row);
         $this->output->set('album',$album);
@@ -46,7 +46,7 @@ class controller extends pagefactory{
         
         $pic = $this->mdl_picture->get_one_pic_by_key($key);
         if(!in_array($size,array('small','square','medium','big','thumb')) || !$pic){
-            header('Location: '.$this->setting['url'].imgSrc('nopic.jpg'));
+            header('Location: '.get_basepath().imgSrc('nopic.jpg'));
             exit;
         }
         $square = false;
@@ -71,19 +71,25 @@ class controller extends pagefactory{
         $resized = mkImgLink($pic['dir'],$key,$pic['ext'],$size); 
         
         if(file_exists(ROOTDIR.$resized)){
-            header('Location: '.$this->setting['url'].$resized);
+            header('Location: '.get_basepath().$resized);
             exit;
         }
         include_once(LIBDIR.'image.class.php');
         $imgobj = new Image();
         $imgobj->load(ROOTDIR.$orig);
-        $imgobj->setQuality(90);
-        $imgobj->resizeScale($width,$height);
+        $imgobj->setQuality(95);
+        if($square){
+            $imgobj->square($width);
+        }else{
+            $imgobj->resizeScale($width,$height);
+        }
         $imgobj->save(ROOTDIR.$resized);
+        @chmod(ROOTDIR.$resized,0755);
+        
         header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
         header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
         header("Cache-Control: no-store, no-cache, must-revalidate");
-        header('Location: '.$this->setting['url'].$resized);
+        header('Location: '.get_basepath().$resized);
     }
     
     function bat(){
@@ -105,7 +111,7 @@ class controller extends pagefactory{
             foreach($pics as $v){
                 $row = $this->mdl_picture->get_one_pic($v);
                 if($row){
-                    $upload->delpicfile($row['dir'],$row['key'],$row['ext']);
+                    $upload->delpicfile($row['dir'],$row['pickey'],$row['ext']);
                     $this->mdl_album->remove_cover($v);
                     $this->mdl_picture->del_pic($v);
                 }
@@ -164,7 +170,7 @@ class controller extends pagefactory{
         $pictures = $this->mdl_picture->get_all_pic(NULL,$album);
         if(is_array($pictures)){
             foreach($pictures as $v){
-                echo '    <image imageURL="'.mkImgLink($v['dir'],$v['key'],$v['ext'],'big').'" thumbURL="'.mkImgLink($v['dir'],$v['key'],$v['ext'],'thumb').'" linkURL="'.mkImgLink($v['dir'],$v['key'],$v['ext'],'orig').'" linkTarget="">
+                echo '    <image imageURL="'.mkImgLink($v['dir'],$v['pickey'],$v['ext'],'big').'" thumbURL="'.mkImgLink($v['dir'],$v['pickey'],$v['ext'],'square').'" linkURL="'.mkImgLink($v['dir'],$v['pickey'],$v['ext'],'orig').'" linkTarget="">
         <caption><![CDATA['.$v['name'].']]></caption>	
     </image>'."\n";
             }
