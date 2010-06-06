@@ -1,7 +1,10 @@
 body{
     font-size:12px;
 	font-family:Verdana,Tahoma,Arial,Sans-Serif;
+	margin:0;
+	padding:0;
 }
+
 ul, dl, dd, p, h1, h2, h3, h4, h5, h6, form, fieldset{
 	margin:0;
 	padding:0;
@@ -50,6 +53,7 @@ input.btn:hover{
 
 #mainbox{
     border:1px solid #CEE1EE;
+	margin:10px;
 }
 #mainbox .headnav{
     height:20px;
@@ -174,8 +178,8 @@ input.btn:hover{
 }
 .ipt_2 {
 border:1px solid #BDC7D8;
-padding:3px;
-width:102px;
+padding:2px;
+width:112px;
 }
 .ipt_3{
     border:1px solid #BDC7D8;
@@ -448,14 +452,15 @@ margin-bottom:10px;
 .album li div.selected{
 	width:30px;
 	height:30px;
-	background:url(checked.png) no-repeat;
+	background:url(checked.png) no-repeat !important;
 	position:absolute;
 	left:47px;
 	top:20px;
 	display:none;
-	progid:DXImageTransform.Microsoft.AlphaImageLoader(src='checked.png',sizingMethod='scale');
+	z-index:2;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='img/checked.png', sizingMethod='scale');
+	_background:none;
 }
-
 /**幻灯片设置**/
 #slide_show{
 	position:absolute;
@@ -479,8 +484,9 @@ margin-bottom:10px;
 	right:100px;
 	width:30px;
 	height:30px;
-	background:url(close.png) no-repeat;
-	progid:DXImageTransform.Microsoft.AlphaImageLoader(src='close.png',sizingMethod='scale');
+	background:url(close.png) no-repeat !important;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='img/close.png', sizingMethod='scale');
+	_background:none;
 	color:#fff;
 	cursor:pointer;
 }

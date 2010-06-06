@@ -62,29 +62,14 @@
         </div>
     </div>
     <div class="clearfix"></div>
-    <script>
-    var clip = new ZeroClipboard.Client();
-    clip.setText('');
-    clip.setHandCursor( true );
-    clip.glue('copyspics_click');
-    
+</div>
+<?php include('foot.php');?>
+<script type="text/javascript">
     function select_copypics(url){
         $("#copyspics textarea").val('<div align="center"><img src="'+url+'" /></div><br />');
-        clip.addEventListener('mouseOver',function(client) { 
-        	clip.setText($('#copyspics_content').val());
-        });
-        clip.addEventListener('complete',function(o){
-            copyspics_click_button();
-        })
-    }
-    function copyspics_click_button(){
-        var pos = getElementOffset($('#copyspics_click').get(0));
-        $('#copyedok').css('left',pos.left);
-        $('#copyedok').css('top',pos.top+22);
-        $('#copyedok').show().animate({opacity: 1.0}, 1000).fadeOut();
     }
     
-    (function(){
+    $(function(){
         var select_url = $('#copyspics input[name=size]:checked').val();
         select_copypics(select_url);
         <?php 
@@ -105,8 +90,24 @@
         img.onload = function(){
             var imgload = '<div class="sh1"><div class="sh2"><div class="sh3"><a class="p-tag" hidefocus="true" href="'+imghref+'" title="'+nexttile+'"><img class="p-tag" src="'+img.src+'"></a></div></div></div>';
             $('#photo-body div.picnt').html(imgload);
-        }
+        };
+
+        var clip = new ZeroClipboard.Client();
+        clip.setText('');
+        clip.setHandCursor( true );
+        clip.glue('copyspics_click');
+        clip.addEventListener('mouseOver',function(client) { 
+            clip.setText($('#copyspics_content').val());
+        });
+        clip.addEventListener('complete',function(o){
+            var pos = getElementOffset($('#copyspics_click').get(0));
+            $('#copyedok').css('left',pos.left);
+            $('#copyedok').css('top',pos.top+22);
+            $('#copyedok').show().animate({opacity: 1.0}, 1000).fadeOut();
+        });
         
+        
+
         document.onkeydown = keydown;
         function keydown(event){
         	event = event ? event : (window.event ? window.event : null); 
@@ -117,7 +118,5 @@
         		window.location=$("#photo_control").find("a.btnnext").attr("href");
         	}
         }
-    })();
-    </script>
-</div>
-<?php include('foot.php');?>
+    });
+</script>

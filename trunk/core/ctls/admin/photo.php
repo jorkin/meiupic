@@ -44,9 +44,13 @@ class controller extends pagefactory{
         $size = $_GET['size'];
         $key = $_GET['key']; 
         
+        include_once(LIBDIR.'image.class.php');
+        $imgobj = new Image();
+
         $pic = $this->mdl_picture->get_one_pic_by_key($key);
         if(!in_array($size,array('small','square','medium','big','thumb')) || !$pic){
-            header('Location: '.get_basepath().imgSrc('nopic.jpg'));
+            $imgobj->load(DATADIR.'nopic.jpg');
+            $imgobj->output();
             exit;
         }
         $square = false;
@@ -71,11 +75,11 @@ class controller extends pagefactory{
         $resized = mkImgLink($pic['dir'],$key,$pic['ext'],$size); 
         
         if(file_exists(ROOTDIR.$resized)){
-            header('Location: '.get_basepath().$resized);
+            $imgobj->load(ROOTDIR.$resized);
+            $imgobj->output();
             exit;
         }
-        include_once(LIBDIR.'image.class.php');
-        $imgobj = new Image();
+        
         $imgobj->load(ROOTDIR.$orig);
         $imgobj->setQuality(95);
         if($square){
@@ -85,11 +89,7 @@ class controller extends pagefactory{
         }
         $imgobj->save(ROOTDIR.$resized);
         @chmod(ROOTDIR.$resized,0755);
-        
-        header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-        header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-        header("Cache-Control: no-store, no-cache, must-revalidate");
-        header('Location: '.get_basepath().$resized);
+        $imgobj->output();
     }
     
     function bat(){

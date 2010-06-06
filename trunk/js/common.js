@@ -524,7 +524,7 @@ function check_form(o){
 }
 
 function slideshow(id){
-	$("body").prepend('<div id="slide_show" style="width: '+ $(document).width() +'px;height: '+ $(document).height() + 'px;"></div><div id="slide_show_flash"></div>');
+	$("body").prepend('<iframe id="slide_show_iframe" frameborder="0" style="border:0;position:absolute;z-index:998px;width:'+$(document).width()+'px;height:'+ $(document).height() + 'px;"></iframe><div id="slide_show" style="width: '+ $(document).width() +'px;height: '+ $(document).height() + 'px;"></div><div id="slide_show_flash"></div>');
 	var flashvars = {};
 	flashvars.galleryURL = escape("index.php?ctl=photo&act=gallery&album="+id);
 	var params = {};
@@ -537,6 +537,7 @@ function slideshow(id){
 }
 
 function close_slideshow(){
+	$("#slide_show_iframe").remove();
 	$("#slide_show").remove();
 	$("#slide_show_close").remove();
 	$("#slide_show_flash").remove();
