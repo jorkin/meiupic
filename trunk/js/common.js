@@ -646,6 +646,11 @@ function close_exif(){
     $(document).unbind("mousedown");
 }
 
+function change_order(v){
+    if(v != '-1'){
+        window.location.href = v;
+    }
+}
 $(function(){
 	$('.dragable').jqDrag('.draghandle');
 	$('ul.album').find('li').each(function(i){

@@ -63,14 +63,17 @@ class controller extends pagefactory{
             default:
             $msginfo = '';
         }
+        $sort = isset($_GET['sort'])?$_GET['sort']:'id_desc';
         
-        $pics = $this->mdl_picture->get_all_pic($page,$album);
+        $pics = $this->mdl_picture->get_all_pic($page,$album,$sort);
         
-        $pageurl="index.php?ctl=album&act=photos&album={$album}&page=[#page#]";
+        $pageurl="index.php?ctl=album&act=photos&album={$album}&page=[#page#]&sort=".$sort;
+        
         $this->output->set('pics',$pics['ls']);
         $this->output->set('albums_list',$this->mdl_album->get_albums_assoc($album));
         $this->output->set('album_name',$this->mdl_album->get_album_name($album));
         $this->output->set('album',$album);
+        $this->output->set('sort',$sort);
         $this->output->set('page',$page);
         $this->output->set('msginfo',$msginfo);
         $this->output->set('pageset',pageshow($pics['total'],$pics['start'],$pageurl));

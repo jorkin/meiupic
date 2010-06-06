@@ -29,7 +29,7 @@ class upload extends modelfactory{
         $bigpath = ROOTDIR.mkImgLink($dir,$key,$ext,$size);
         $imgobj->resizeScale($width,$height );
         $imgobj->save($bigpath);
-        @chmod($newpath,0755);
+        @chmod($bigpath,0755);
         
         $imgobj = new Image();
         $imgobj->load($bigpath);
