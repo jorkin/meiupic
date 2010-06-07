@@ -13,7 +13,7 @@ class controller extends pagefactory{
         parent::pagefactory();
         $this->mdl_album = & load_model('album');
         $this->mdl_picture = & load_model('picture');
-        if(!$this->auth->isLogedin()){
+        if(!$this->auth->isLogedin() && IN_ACT!='resize'){
             redirect_c('default','login');
         }
         $this->output->set('current_nav','album');

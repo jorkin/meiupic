@@ -57,7 +57,8 @@ function run(){
     if(file_exists(CTLDIR.'admin/'.$ctl.'.php')){
         require_once(INCDIR.'pagefactory.php');
         require_once(CTLDIR.'admin/'.$ctl.'.php');
-        
+        define('IN_CTL',$ctl);
+        define('IN_ACT',$act);
         $controller = new controller();
         if(is_callable(array(&$controller,$act))){
             call_user_func(array(&$controller,$act));
