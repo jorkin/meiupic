@@ -524,7 +524,14 @@ function check_form(o){
 }
 
 function slideshow(id){
-	$("body").prepend('<iframe id="slide_show_iframe" frameborder="0" style="border:0;position:absolute;z-index:998px;width:'+$(document).width()+'px;height:'+ $(document).height() + 'px;"></iframe><div id="slide_show" style="width: '+ $(document).width() +'px;height: '+ $(document).height() + 'px;"></div><div id="slide_show_flash"></div>');
+	$("body").prepend('<div id="slide_show_flash"></div>');
+	$("body").prepend('<iframe id="slide_show_iframe" frameborder="0" style="z-index:988;border:0;position:absolute;z-index:998px;width:100%;height:100%"></iframe>');
+	var height = document.body.scrollHeight > document.body.offsetHeight ? document.body.scrollHeight : document.body.offsetHeight;
+	var top = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop;
+	$('#slide_show').height(height);
+	$('#slide_show').css('top',top);
+	$('#slide_show_iframe').height(height);
+	
 	var flashvars = {};
 	flashvars.galleryURL = escape("index.php?ctl=photo&act=gallery&album="+id);
 	var params = {};
@@ -534,11 +541,17 @@ function slideshow(id){
 	params.bgcolor = "222222";
 	swfobject.embedSWF("js/simpleviewer.swf", "slide_show_flash", "100%", "100%", "9.0.124", false, flashvars, params);
 	$("body").prepend('<div id="slide_show_close" onclick="close_slideshow()" title="关闭"></div>');
+	$('#slide_show_flash').css('top',top);
+	$('#slide_show_close').css('top',top+16);
+	window.onscroll = function(){
+	    var top = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop;
+	    $('#slide_show_flash').css('top',top);
+    	$('#slide_show_close').css('top',top+16);
+	}
 }
 
 function close_slideshow(){
 	$("#slide_show_iframe").remove();
-	$("#slide_show").remove();
 	$("#slide_show_close").remove();
 	$("#slide_show_flash").remove();
 }
