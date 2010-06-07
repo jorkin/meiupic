@@ -215,7 +215,7 @@ input.txtinput:focus{
     list-style:none outside none;
 }
  ul.album li{
-     margin:0 5px 5px 10px;
+     margin:0 5px 5px 8px;
      padding:5px;
      vertical-align:bottom;
      display:inline-block;
