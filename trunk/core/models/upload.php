@@ -31,7 +31,7 @@ class upload extends modelfactory{
         $imgobj->save($bigpath);
         @chmod($bigpath,0755);
         
-        $imgobj = new Image();
+        //$imgobj = new Image();
         $imgobj->load($bigpath);
         
         $size = 'medium';
@@ -42,7 +42,7 @@ class upload extends modelfactory{
         $imgobj->save($newpath);
         @chmod($newpath,0755);
         
-        $imgobj = new Image();
+        //$imgobj = new Image();
         $imgobj->load($bigpath);
         
         $size = 'small';
@@ -53,7 +53,7 @@ class upload extends modelfactory{
         $imgobj->save($newpath);
         @chmod($newpath,0755);
         
-        $imgobj = new Image();
+        //$imgobj = new Image();
         $imgobj->load($bigpath);
         
         $size = 'thumb';
@@ -64,7 +64,7 @@ class upload extends modelfactory{
         $imgobj->save($newpath);
         @chmod($newpath,0755);
         
-        $imgobj = new Image();
+        //$imgobj = new Image();
         $imgobj->load($bigpath);
         
         $size = 'square';
