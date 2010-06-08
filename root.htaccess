@@ -1,7 +1,7 @@
 <ifmodule mod_rewrite.c>
 RewriteEngine On
 Options +FollowSymLinks
-RewriteRule database\.php / [F]
+RewriteRule database\.db / [F]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule (.*)/(.*)_(.*)\.(jpg|gif|png)$ ../index.php?ctl=photo&act=resize&size=$3&key=$2 [L]
 </ifmodule>

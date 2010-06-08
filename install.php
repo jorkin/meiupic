@@ -388,6 +388,9 @@ function checkSubmit(o){
             alert('Sqlite数据库路径不能为空！');
             return false;
         }
+    }else{
+        alert('请选择数据库类型！');
+        return false;
     }
     
     if(o.username.value == ''){
@@ -516,7 +519,7 @@ if(file_exists(ROOTDIR.'conf/install.lock') && $action!=3){
 </tbody>
 <tbody id="sqlite_div" style="display:none;">
 
-<tr><th>数据库路径</th><td><input name="sqlitedbname" type="text" value="data/database.php" /></td>
+<tr><th>数据库路径</th><td><input name="sqlitedbname" type="text" value="data/database.db" /></td>
 </tbody>
 </table>
 <h2>管理员帐号</h2>
