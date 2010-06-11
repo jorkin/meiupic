@@ -28,7 +28,7 @@ class controller extends pagefactory{
         
         $albums = $this->mdl_album->get_all_album($page);
         
-        $pageurl='index.php?page=[#page#]';
+        $pageurl='index.php?ctl=album&page=[#page#]';
         if($albums['ls']){
             foreach($albums['ls'] as $k=>$v){
                 $cover = $this->mdl_album->get_cover($v['id'],$v['cover']);
