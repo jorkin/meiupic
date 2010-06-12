@@ -24,6 +24,8 @@ class Image {
     
     var $image_quality=90;
 
+    var $true_color = false;
+
     /**
      * 装载图像
      *
@@ -42,6 +44,9 @@ class Image {
             $this->image = imagecreatefrompng($filename);
         }else{
             return false;
+        }
+        if(function_exists("imagecopyresampled") && function_exists("imagecreatetruecolor") && $this->image_type != IMAGETYPE_GIF){
+            $this->true_color = true;
         }
     }
     
@@ -228,7 +233,7 @@ class Image {
      * @param int $height 指定高度
      */
     function resize($width,$height) {
-        if(function_exists("imagecopyresampled")){
+        if($this->true_color){
             $newim = imagecreatetruecolor($width, $height);
             imagecopyresampled($newim, $this->image, 0, 0, 0, 0, $width, $height, $this->getWidth(), $this->getHeight());
         }else{
@@ -245,7 +250,11 @@ class Image {
      * @param int $height 指定高度
      */
     function cut($width,$height,$left = 0,$top = 0){
-        $new_image = imagecreatetruecolor($width, $height);
+        if($this->true_color){
+            $new_image = imagecreatetruecolor($width, $height);
+        }else{
+            $new_image = imagecreate($width, $height);
+        }
         imagecopy($new_image, $this->image, 0, 0, $left, $top, $width, $height);
         $this->image = $new_image;
     }
@@ -260,7 +269,11 @@ class Image {
         $width = $this->getWidth();
         $height = $this->getHeight()-$top+$height;
         if($height<200) return;
-        $new_image = imagecreatetruecolor($width, $height);
+        if($this->true_color){
+            $new_image = imagecreatetruecolor($width, $height);
+        }else{
+            $new_image = imagecreate($width, $height);
+        }
         imagecopy($new_image, $this->image, 0, 0, 0, $top, $width, $height);
         $this->image = $new_image;
     }
