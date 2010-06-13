@@ -22,7 +22,7 @@ function redirect($c){
 }
 
 function redirect_c($ctl,$act='index'){
-    header("Location: index.php?ctl=$ctl&act=$act");
+    header("Location: admin.php?ctl=$ctl&act=$act");
     exit();
 }
 

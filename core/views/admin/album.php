@@ -9,7 +9,7 @@
     ?>
     <li>
         <span class="img">
-            <a href="index.php?ctl=album&act=photos&album=<?php echo $v['id']; ?>"><img src="<?php echo $v['cover'];?>" alt="<?php echo $v['name'];?>" /></a>
+            <a href="admin.php?ctl=album&act=photos&album=<?php echo $v['id']; ?>"><img src="<?php echo $v['cover'];?>" alt="<?php echo $v['name'];?>" /></a>
         </span>
         <span class="info"><a onclick="rename_album(this,<?php echo $v['id'];?>)"><?php echo $v['name'];?></a></span>
         <span class="control"><a href="javascript:void(0)" onclick="delete_album(this,<?php echo $v['id'];?>)"><img src="img/delete.gif" alt="删除相册" title="删除相册" /></a></span>

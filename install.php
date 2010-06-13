@@ -6,6 +6,9 @@
  * @support : http://www.meiu.cn
  * @copyright : (c)2010 meiu.cn lingter@gmail.com
  */
+ error_reporting(E_ERROR);
+ header("Content-type: text/html; charset=utf-8");
+ 
     function get_basepath(){
         if ($dir = trim(dirname($_SERVER['SCRIPT_NAME']), '\,/')) {
           $base_path = "/$dir";
@@ -439,7 +442,7 @@ if (PHP_VERSION >= "5.1.0") {
 }
 define('ROOTDIR',dirname(__FILE__).'/');
 define('LIBDIR',ROOTDIR.'libs/');
-$action = $_GET['step']?$_GET['step']:'1';
+$action = isset($_GET['step'])?$_GET['step']:'1';
 
 if(file_exists(ROOTDIR.'conf/install.lock') && $action!=3){
 ?>
@@ -573,6 +576,10 @@ if(file_exists(ROOTDIR.'conf/install.lock') && $action!=3){
         $setting_content .= "\$setting['extension_allow'] = 'jpg,jpeg,gif,png';\n";
         $setting_content .= "\$setting['size_allow'] = '1024000';\n";
         $setting_content .= "\$setting['pageset'] = '24';\n";
+        $setting_content .= "\$setting['open_photo'] = false;\n";
+        $setting_content .= "\$setting['gallery_limit'] = '60';\n";
+        $setting_content .= "\$setting['access_ctl'] = false;\n";
+        $setting_content .= "\$setting['access_domain'] = '".$_SERVER['SERVER_NAME']."';\n";
         $setting_content .= "?>";
         if(!@file_put_contents(ROOTDIR.'conf/setting.php',$setting_content)){
             echo "<script> alert('无法创建基本配置文件！');history.back();</script>";
@@ -590,7 +597,7 @@ if(file_exists(ROOTDIR.'conf/install.lock') && $action!=3){
     <h1 class="green">恭喜您！ 美优相册管理系统 已成功安装！</h1>
     <ul class="info">
     <li class="red">请记得删除install.php文件！</li>
-    <li><a href="index.php">开始登录相册上传图片吧！</a></li>
+    <li><a href="admin.php">开始登录相册上传图片吧！</a></li>
     </ul>
 <?php
     }

@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id$
+ * $Id: pagefactory.php 18 2010-06-05 17:03:28Z lingter $
  * 
  * @author : Lingter
  * @support : http://www.meiu.cn
@@ -9,21 +9,15 @@
 
 require_once(LIBDIR.'view.class.php');
 require_once(LIBDIR.'auth.class.php');
-class pagefactory{
+require_once(INCDIR.'pagecore.php');
+class adminpage extends pagecore{
     
-    function pagefactory(){
+    function adminpage(){
         global $setting;
         $this->setting = $setting;
         $this->output =& get_output();
         $this->view = new View();
         $this->db =& db();
         $this->auth = new auth();
-    }
-    
-    function isPost(){
-        if(strtolower($_SERVER['REQUEST_METHOD']) == 'post'){
-            return true;
-        }
-        return false;
     }
 }

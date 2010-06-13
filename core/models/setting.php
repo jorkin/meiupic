@@ -10,17 +10,48 @@
 class setting extends modelfactory{
     
     function save_setting($new_setting){
-        if($new_setting['demand_resize'] == 'true'){
-            if(!file_exists(DATADIR.'.htaccess')){
-                if(function_exists('apache_get_modules') && in_array('mod_rewrite',apache_get_modules())){
-                    @copy(ROOTDIR.'root.htaccess',DATADIR.'.htaccess');
-                    @chmod(DATADIR.'.htaccess',0755);
-                }else{
-                    $new_setting['demand_resize'] = 'false';
+        $htaccess_content = '<ifmodule mod_rewrite.c>
+RewriteEngine On
+Options +FollowSymLinks
+# sqlite database path
+RewriteRule database\.db / [F]'."\n";
+        
+        if($new_setting['access_ctl'] == 'true'){
+            if('' != trim($new_setting['access_domain'])){
+                $htaccess_content .= '#access'."\n";
+                $htaccess_content .= 'RewriteCond %{HTTP_REFERER} !^$ [NC]'."\n";
+                $access_arr = explode("\n",$new_setting['access_domain']);
+                foreach($access_arr as $v){
+                    if('' != trim($v)){
+                        $htaccess_content .= 'RewriteCond %{HTTP_REFERER} !^(http|https)://'.trim($v).' [NC]'."\n";
+                    }
                 }
+                $htaccess_content .= 'RewriteRule .*\.(jpg|jpeg|gif|png)$ ../img/noaccess.jpg [NC,L]'."\n";
             }
+        }
+        
+        if($new_setting['demand_resize'] == 'true'){
+            if(function_exists('apache_get_modules') && in_array('mod_rewrite',apache_get_modules())){
+                $htaccess_content .= '#auto resize'."\n";
+                $htaccess_content .= 'RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule .*/(.*)_(.*)\.(jpg|gif|png)$ ../index.php?ctl=photo&act=resize&size=$2&key=$1 [NC,L]'."\n";
+            }else{
+                $new_setting['demand_resize'] = 'false';
+            }
+        }
+        
+        $htaccess_content .= '</ifmodule>';
+        
+        if($new_setting['demand_resize'] == 'true' || $new_setting['access_ctl'] == 'true'){
+            @file_put_contents(DATADIR.'.htaccess',$htaccess_content);
+            @chmod(DATADIR.'.htaccess',0755);
         }else{
-            $f = @unlink(DATADIR.'.htaccess');
+            @unlink(DATADIR.'.htaccess');
+        }
+        
+        if(!get_magic_quotes_gpc())
+        {
+            $new_setting['access_domain'] = addslashes($new_setting['access_domain']);
         }
         
         $setting_content = "<?php \n";
@@ -36,6 +67,10 @@ class setting extends modelfactory{
         $setting_content .= "\$setting['extension_allow'] = '".$new_setting['extension_allow']."';\n";
         $setting_content .= "\$setting['size_allow'] = '".$new_setting['size_allow']."';\n";
         $setting_content .= "\$setting['pageset'] = '".$new_setting['pageset']."';\n";
+        $setting_content .= "\$setting['open_photo'] = ".$new_setting['open_photo'].";\n";
+        $setting_content .= "\$setting['gallery_limit'] = '".$new_setting['gallery_limit']."';\n";
+        $setting_content .= "\$setting['access_ctl'] = ".$new_setting['access_ctl'].";\n";
+        $setting_content .= "\$setting['access_domain'] = '".$new_setting['access_domain']."';\n";
         $setting_content .= "?>";
         
         return @file_put_contents(ROOTDIR.'conf/setting.php',$setting_content);

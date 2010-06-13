@@ -1,7 +1,7 @@
 <?php include('head.php');?>
 <div id="allpic">
-    <div id="album_nav"> <span class="total_count">共 <strong><?php echo $res->get('total_num');?></strong> 张图片</span> <input type="button" class="btn" value="我要上传图片" onclick="window.location.href='index.php?ctl=upload'" /></div>
-    <form name="pics_form" action="index.php?ctl=photo&act=bat&referf=default&referp=<?php echo $res->get('page');?>" method="post" onsubmit="submit_bat(this);return false;">
+    <div id="album_nav"> <span class="total_count">共 <strong><?php echo $res->get('total_num');?></strong> 张图片</span> <input type="button" class="btn" value="我要上传图片" onclick="window.location.href='admin.php?ctl=upload'" /></div>
+    <form name="pics_form" action="admin.php?ctl=photo&act=bat&referf=default&referp=<?php echo $res->get('page');?>" method="post" onsubmit="submit_bat(this);return false;">
     <div id="batch_ctrl"> 
         <input type="button" class="btn" value="全选" onclick="checkall('pics_form')" />  
         <input type="button" class="btn" value="取消全选" onclick="uncheckall('pics_form')" /> 
@@ -24,8 +24,8 @@
          <input name="do_pic_act" type="submit" value="执行" class="btn" disabled /> 
          <select name="do_sort" onchange="change_order(this.value);">
              <option value="-1">选择排序</option>
-             <option value="index.php?sort=id_desc&page=<?php echo $res->get('page');?>" <?php if($res->get('sort')=='id_desc'){ echo 'selected="selected"';} ?>>按照时间从近到远排序</option>
-             <option value="index.php?sort=id_asc&page=<?php echo $res->get('page');?>" <?php if($res->get('sort')=='id_asc'){ echo 'selected="selected"';} ?>>按照时间从远到近排序</option>
+             <option value="admin.php?sort=id_desc&page=<?php echo $res->get('page');?>" <?php if($res->get('sort')=='id_desc'){ echo 'selected="selected"';} ?>>按照时间从近到远排序</option>
+             <option value="admin.php?sort=id_asc&page=<?php echo $res->get('page');?>" <?php if($res->get('sort')=='id_asc'){ echo 'selected="selected"';} ?>>按照时间从远到近排序</option>
          </select>
          <input type="button" value="幻灯片查看" class="btn" onclick="slideshow(0)" />
     </div>
@@ -38,7 +38,7 @@
     ?>
     <li id="i_<?php echo $v['id'];?>" rel="<?php echo SITE_URL.mkImgLink($v['dir'],$v['pickey'],$v['ext'],'orig');?>">
         <span class="img">
-            <a href="index.php?ctl=photo&act=view&id=<?php echo $v['id'];?>"><img src="<?php echo mkImgLink($v['dir'],$v['pickey'],$v['ext'],'thumb');?>" alt="<?php echo $v['name'];?>" /></a>
+            <a href="admin.php?ctl=photo&act=view&id=<?php echo $v['id'];?>"><img src="<?php echo mkImgLink($v['dir'],$v['pickey'],$v['ext'],'thumb');?>" alt="<?php echo $v['name'];?>" /></a>
         </span>
         <span class="info"><a onclick="rename_pic(this,<?php echo $v['id'];?>)"><?php echo $v['name'];?></a></span>
         <span class="control">

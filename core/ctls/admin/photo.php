@@ -7,10 +7,10 @@
  * @copyright : (c)2010 meiu.cn lingter@gmail.com
  */
 
-class controller extends pagefactory{
+class controller extends adminpage{
     
     function controller(){
-        parent::pagefactory();
+        parent::adminpage();
         $this->mdl_album = & load_model('album');
         $this->mdl_picture = & load_model('picture');
         if(!$this->auth->isLogedin() && IN_ACT!='resize'){
@@ -20,8 +20,8 @@ class controller extends pagefactory{
     }
     
     function view(){
-        $id = intval($_GET['id']);
-        $album = intval($_GET['album']);
+        $id = intval($this->getGet('id',0));
+        $album = intval($this->getGet('album',0));
         $row = $this->mdl_picture->get_one_pic($id);
         if(!$row){
             showInfo('您要查看的图片不存在！',false);
@@ -39,70 +39,17 @@ class controller extends pagefactory{
         $this->view->display('admin/viewphoto.php');
     }
     
-    function resize(){
-        //sleep(2);
-        $size = $_GET['size'];
-        $key = $_GET['key']; 
-        
-        include_once(LIBDIR.'image.class.php');
-        $imgobj = new Image();
-
-        $pic = $this->mdl_picture->get_one_pic_by_key($key);
-        if(!in_array($size,array('small','square','medium','big','thumb')) || !$pic){
-            $imgobj->load(DATADIR.'nopic.jpg');
-            $imgobj->output();
-            exit;
-        }
-        $square = false;
-        if($size=='small'){
-            $width = '240';
-            $height = '240';
-        }elseif($size=='thumb'){
-            $width = '110';
-            $height = '150';
-        }elseif($size=='square'){
-            $width = '75';
-            $height = '75';
-            $square = true;
-        }elseif($size=='medium'){
-            $width = '500';
-            $height = '500';
-        }elseif($size=='big'){
-            $width = '700';
-            $height = '700';
-        }
-        $orig = mkImgLink($pic['dir'],$key,$pic['ext'],'orig'); 
-        $resized = mkImgLink($pic['dir'],$key,$pic['ext'],$size); 
-        
-        if(file_exists(ROOTDIR.$resized)){
-            $imgobj->load(ROOTDIR.$resized);
-            $imgobj->output();
-            exit;
-        }
-        
-        $imgobj->load(ROOTDIR.$orig);
-        $imgobj->setQuality(95);
-        if($square){
-            $imgobj->square($width);
-        }else{
-            $imgobj->resizeScale($width,$height);
-        }
-        $imgobj->save(ROOTDIR.$resized);
-        @chmod(ROOTDIR.$resized,0755);
-        $imgobj->output();
-    }
-    
     function bat(){
-        $action = $_POST['do_action'];
-        $pics = $_POST['picture'];
-        $referfunc = $_GET['referf'];
-        $referpage = $_GET['referp'];
-        $album_id = isset($_GET['album'])?$_GET['album']:0;
+        $action = $this->getPost('do_action');
+        $pics = $this->getPost('picture');
+        $referfunc = $this->getGet('referf');
+        $referpage = $this->getGet('referp');
+        $album_id = $this->getGet('album',0);
         if(!is_array($pics)){
             if($referfunc=='default'){
-                header('Location: index.php?page='.$referpage.'&flag=1');
+                header('Location: admin.php?page='.$referpage.'&flag=1');
             }elseif($referfunc=='album'){
-                header('Location: index.php?ctl=album&act=photos&album='.$album.'&page='.$referpage.'&flag=1');
+                header('Location: admin.php?ctl=album&act=photos&album='.$album.'&page='.$referpage.'&flag=1');
             }
             exit;
         }
@@ -117,9 +64,9 @@ class controller extends pagefactory{
                 }
             }
         }elseif($action == 'move'){
-            $album = intval($_POST['albums']);
+            $album = intval($this->getPost('albums'));
             if(!$album || $album == '-1'){
-                 header('Location: index.php?ctl=album&act=photos&album='.$album_id.'&page='.$referpage.'&flag=2');
+                 header('Location: admin.php?ctl=album&act=photos&album='.$album_id.'&page='.$referpage.'&flag=2');
                  exit;
             }
             
@@ -132,15 +79,15 @@ class controller extends pagefactory{
             }
         }
         if($referfunc=='default'){
-            header('Location: index.php?page='.$referpage.'&flag=3');
+            header('Location: admin.php?page='.$referpage.'&flag=3');
         }elseif($referfunc=='album'){
-            header('Location: index.php?ctl=album&act=photos&album='.$album_id.'&page='.$referpage.'&flag=3');
+            header('Location: admin.php?ctl=album&act=photos&album='.$album_id.'&page='.$referpage.'&flag=3');
         }
         exit;
     }
     
     function gallery(){
-        $album = intval($_GET['album']);
+        $album = intval($this->getGet('album'));
         if($album > 0){
             $title = $this->mdl_album->get_album_name($album);
         }else{
@@ -167,7 +114,7 @@ class controller extends pagefactory{
  flickrTags=""
  languageCode="AUTO"
  languageList="">'."\n";
-        $pictures = $this->mdl_picture->get_all_pic(NULL,$album);
+        $pictures = $this->mdl_picture->get_all_pic(NULL,$album,'id asc',$this->setting['gallery_limit']);
         if(is_array($pictures)){
             foreach($pictures as $v){
                 echo '    <image imageURL="'.mkImgLink($v['dir'],$v['pickey'],$v['ext'],'big').'" thumbURL="'.mkImgLink($v['dir'],$v['pickey'],$v['ext'],'square').'" linkURL="'.mkImgLink($v['dir'],$v['pickey'],$v['ext'],'orig').'" linkTarget="">

@@ -7,10 +7,10 @@
  * @copyright : (c)2010 meiu.cn lingter@gmail.com
  */
 
-class controller extends pagefactory{
+class controller extends adminpage{
 
     function controller(){
-        parent::pagefactory();
+        parent::adminpage();
         $this->mdl_album = & load_model('album');
         $this->mdl_upload = & load_model('upload');
         $this->mdl_picture = & load_model('picture');
@@ -26,9 +26,9 @@ class controller extends pagefactory{
     }
     
     function step2(){
-        $album_id = $_GET['album_id'];
+        $album_id = $this->getGet('album_id');
         if($album_id){
-            $this->output->set('album_id',$_GET['album_id']);
+            $this->output->set('album_id',$album_id);
             $this->output->set('upload_runtimes',$this->setting['upload_runtimes']);
             $this->output->set('open_pre_resize',$this->setting['open_pre_resize']);
             $this->output->set('resize_img_width',$this->setting['resize_img_width']);
@@ -42,9 +42,9 @@ class controller extends pagefactory{
     }
     
     function step2_1(){
-        $album_id = $_GET['album_id'];
+        $album_id = $this->getGet('album_id');
         if($album_id){
-            $this->output->set('album_id',$_GET['album_id']);
+            $this->output->set('album_id',$album_id);
             $this->view->display('admin/upload_step2_1.php');
         }else{
             showInfo('非法参数:album_id不能为空！',false);
@@ -85,7 +85,7 @@ class controller extends pagefactory{
                         $this->mdl_upload->generatepic($date,$key,$fileext);
                     }
                     @chmod($realpath,0755);
-                    $this->mdl_picture->insert_pic(array('album'=>$_GET['album'],
+                    $this->mdl_picture->insert_pic(array('album'=>$this->getGet('album'),
                                                     'name'=>$filename,
                                                     'dir'=>$date,
                                                     'pickey'=>$key,
@@ -103,7 +103,7 @@ class controller extends pagefactory{
             echo '<script> alert("您没有选择图片上传，请重新上传!");history.back();</script>';
             exit;
         }
-        header('Location: index.php?ctl=upload&act=doupload&album='.$_GET['album']);
+        header('Location: admin.php?ctl=upload&act=doupload&album='.$this->getGet('album'));
     }
     function doupload(){
         set_time_limit(0);
@@ -111,7 +111,7 @@ class controller extends pagefactory{
         
         $pics = $this->mdl_picture->get_tmp_pic();
         $this->output->set('uploaded_pics',$pics);
-        $this->output->set('album',$_GET['album']);
+        $this->output->set('album',$this->getGet('album'));
         $this->view->display('admin/upload_step3.php');
     }
     
@@ -124,11 +124,11 @@ class controller extends pagefactory{
             @mkdir(DATADIR.$date);
             @chmod(DATADIR.$date,0755);
         }
-        $files_count = intval($_POST['flash_uploader_count']);
+        $files_count = intval($this->getPost('flash_uploader_count'));
         for($i=0;$i<$files_count;$i++){
-            $tmpfile = $targetDir . DIRECTORY_SEPARATOR . $_POST["flash_uploader_{$i}_tmpname"];
-            $filename = $_POST["flash_uploader_{$i}_name"];
-            $status =  $_POST["flash_uploader_{$i}_status"];
+            $tmpfile = $targetDir . DIRECTORY_SEPARATOR . $this->getPost("flash_uploader_{$i}_tmpname");
+            $filename = $this->getPost("flash_uploader_{$i}_name");
+            $status =  $this->getPost("flash_uploader_{$i}_status");
             $fileext = strtolower(end(explode('.',$filename)));
             $key = md5(str_replace('.','',microtime(true)));
             $imgpath = $date.'/'.$key.'.'.$fileext;
@@ -139,7 +139,7 @@ class controller extends pagefactory{
                         $this->mdl_upload->generatepic($date,$key,$fileext);
                     }
                     @chmod($realpath,0755);
-                    $this->mdl_picture->insert_pic(array('album'=>$_GET['album'],
+                    $this->mdl_picture->insert_pic(array('album'=>$this->getGet('album'),
                                                     'name'=>$filename,
                                                     'dir'=>$date,
                                                     'pickey'=>$key,
@@ -150,19 +150,19 @@ class controller extends pagefactory{
     }
     
     function saveimgname(){
-        $imgname = $_POST['imgname'];
-        $album = $_GET['album'];
+        $imgname = $this->getPost('imgname');
+        $album = $this->getGet('album');
         if($imgname){
             foreach($imgname as $k=>$v){
                 $this->mdl_picture->update_pic(intval($k),$v);
             }
         }
         
-        redirect('index.php?ctl=album&act=photos&album='.$album);
+        redirect('admin.php?ctl=album&act=photos&album='.$album);
     }
     
     function reupload(){
-        $id = intval($_GET['id']);
+        $id = intval($this->getGet('id'));
     
         $row = $this->mdl_picture->get_one_pic($id);
         if(!$row){

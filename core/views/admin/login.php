@@ -49,7 +49,7 @@ function fEvent(sType,oInput){
                 
         <div id="logo">
         </div>
-        <form method="post" target="_top" action="index.php?ctl=default&act=login" name="login_soft">
+        <form method="post" target="_top" action="admin.php?ctl=default&act=login" name="login_soft">
             <p class="label">帐 号：<br /><input type="text" class="login_input" name="loginname" onMouseOver="fEvent('mouseover',this)" onFocus="fEvent('focus',this)" onBlur="fEvent('blur',this)" onMouseOut="fEvent('mouseout',this)"></p>
 
             <p class="label">密 码：<br /><input type="password" class="login_input" name="operatorpw" onMouseOver="fEvent('mouseover',this)" onFocus="fEvent('focus',this)" onBlur="fEvent('blur',this)" onMouseOut="fEvent('mouseout',this)"></p>
