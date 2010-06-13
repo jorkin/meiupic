@@ -7,7 +7,7 @@
 </div>
 
 <div id="save_album">
-    <form method="post" action="index.php?ctl=upload&act=saveimgname&album=<?php echo $res->get('album'); ?>">
+    <form method="post" action="admin.php?ctl=upload&act=saveimgname&album=<?php echo $res->get('album'); ?>">
     <ul class="album">
         <?php 
         $ls = $res->get('uploaded_pics');

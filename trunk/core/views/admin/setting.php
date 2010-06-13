@@ -1,14 +1,34 @@
 <?php include('head.php');?>
-<div id="setting">
-
-<h1 class="album_title1">系统设置</h1>
 <?php $setting = $res->get('setting');?>
-<form method="post" action="index.php?ctl=default&act=setting">
+
+<form method="post" action="admin.php?ctl=setting">
+<div id="base_setting" class="stab">
+<h1 class="album_title1">基本设置</h1>
 <table>
     <tbody>
     <tr>
         <td class="tt">相册URL：</td><td class="tc"><input name="setting[url]" class="txtinput" type="text" value="<?php echo $setting['url'];?>" style="width:250px" /></td><td class="ti">设置复制图片地址的URL前缀, 需要带上末尾的"/"</td>
     </tr>
+    <tr>
+        <td class="tt">按需生成各种尺寸图片：</td>
+        <td class="tc">
+            <input name="setting[demand_resize]" type="checkbox" value="1" <?php if($setting['demand_resize']){ echo 'checked="checked"';} ?> /> 
+            <?php 
+            if(function_exists('apache_get_modules') && in_array('mod_rewrite',apache_get_modules())){
+                echo '<span class="green">您的服务器支持此功能！</span>';
+            }else{
+                echo '<span class="red">您的服务器不支持此功能！</span>';
+            }?>
+        </td>
+        <td class="ti">开启此项需要支持Rewrite,关闭此项则会在上传是生成各种尺寸图片</td>
+    </tr>
+    </tbody>
+</table>
+</div>
+<div id="upload_setting" class="stab">
+<h1 class="album_title1">上传设置</h1>
+<table>
+    <tbody>
     <tr>
         <td class="tt">图片保存目录：</td><td class="tc"><input name="setting[imgdir]" class="txtinput" type="text" value="<?php echo $setting['imgdir'];?>" style="width:100px" /></td><td class="ti">保存图片的目录，此目录必须存在。有可能会影响正常功能，请谨慎修改</td>
     </tr>
@@ -39,19 +59,6 @@
     </script>
     <tbody>
     <tr>
-        <td class="tt">按需生成各种尺寸图片：</td>
-        <td class="tc">
-            <input name="setting[demand_resize]" type="checkbox" value="1" <?php if($setting['demand_resize']){ echo 'checked="checked"';} ?> /> 
-            <?php 
-            if(function_exists('apache_get_modules') && in_array('mod_rewrite',apache_get_modules())){
-                echo '<span class="green">您的服务器支持此功能！</span>';
-            }else{
-                echo '<span class="red">您的服务器不支持此功能！</span>';
-            }?>
-        </td>
-        <td class="ti">开启此项需要支持Rewrite,关闭此项则会在上传是生成各种尺寸图片</td>
-    </tr>
-    <tr>
         <td class="tt">上传子目录形式：</td><td class="tc">
             <select name="setting[imgdir_type]">
                 <option value="1" <?php if($setting['imgdir_type']=='1') echo 'selected="selected"';?>>YYYY-MM-DD</option>
@@ -67,20 +74,46 @@
     <tr>
         <td class="tt">普通上传允许的图片大小：</td><td class="tc"><input name="setting[size_allow]" class="txtinput" type="text" value="<?php echo $setting['size_allow'];?>" style="width:80px" /></td><td class="ti">单位：字节</td>
     </tr>
+    </tbody>
+</table>
+</div>
+<div id="display_setting" class="stab">
+<h1 class="album_title1">显示设置</h1>
+<table>
+    <tbody>
     <tr>
         <td class="tt">每页显示图片数：</td><td class="tc"><input name="setting[pageset]" class="txtinput" type="text" value="<?php echo $setting['pageset'];?>" style="width:50px" /></td><td class="ti"></td>
     </tr>
     <tr>
-        <td></td><td><input type="submit" class="btn" value="保存设置" /></td><td></td>
+        <td class="tt">幻灯片图片显示限制：</td><td class="tc"><input name="setting[gallery_limit]" class="txtinput" type="text" value="<?php echo $setting['gallery_limit'];?>" style="width:50px" /></td><td class="ti"></td>
     </tr>
     </tbody>
 </table>
-</form>
 </div>
+<div id="priv_setting" class="stab">
+<h1 class="album_title1">权限设置</h1>
+<table>
+    <tbody>
+        <tr>
+            <td class="tt">开放相册：</td><td class="tc"><input id="setting_open_photo" name="setting[open_photo]" type="checkbox" value="1" <?php if($setting['open_photo']){ echo 'checked="checked"';} ?>   /></td><td class="ti"></td>
+        </tr>
+        <tr>
+            <td class="tt">开启防盗链：</td><td class="tc"><input id="setting_access_ctl" name="setting[access_ctl]" type="checkbox" value="1" <?php if($setting['access_ctl']){ echo 'checked="checked"';} ?>   /></td><td class="ti"></td>
+        </tr>
+        <tr>
+            <td class="tt">允许的域名列表：</td><td class="tc"><textarea name="setting[access_domain]" style="margin-left: 4px; width:300px; height: 100px;"><?php echo $setting['access_domain'];?></textarea></td><td class="ti">一行一条记录</td>
+        </tr>
+        <tr>
+            <td></td><td><input type="submit" class="btn" value="保存设置" /></td><td></td>
+        </tr>
+    </tbody>
+</table>
+</div>
+</form>
 
-<div id="change_pass">
+<div id="change_pass" class="stab">
 <h1 class="album_title1">修改密码</h1>
-<form method="post" action="index.php?ctl=default&act=changepass" onsubmit="check_form(this);return false;">
+<form method="post" action="admin.php?ctl=setting&act=changepass" onsubmit="check_form(this);return false;">
 <table>
     <tr>
         <td class="tt">原密码:</td>

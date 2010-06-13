@@ -164,6 +164,7 @@ class Image {
         $width = $this->getWidth();
         $height = $this->getHeight();
         
+        $RESIZEWIDTH = $RESIZEHEIGHT = false;
         if($maxwidth && $width > $maxwidth){
             $widthratio = $maxwidth/$width;
             $RESIZEWIDTH=true;
@@ -318,17 +319,17 @@ class Image {
         {
         $exif = exif_read_data ($img,0,true);
         $new_img_info = array (
-            "相机品牌" => $exif[IFD0][Make],
-            "相机型号" => $exif[IFD0][Model],
-            "曝光模式" => ($exif[EXIF][ExposureMode]==1?"手动":"自动"),
-            "闪光灯" =>  isset($Flash_arr[$exif[EXIF][Flash]])?$Flash_arr[$exif[EXIF][Flash]]:'未知',
-            "焦距" => $exif[EXIF][FocalLength]."mm",
-            "光圈" => $exif[COMPUTED][ApertureFNumber],
-            "快门速度" => $exif[EXIF][ExposureTime],
-            "ISO感光度" => $exif[EXIF][ISOSpeedRatings],
-            "白平衡" => ($exif[EXIF][WhiteBalance]==1?"手动":"自动"),
-            "曝光补偿" => $exif[EXIF][ExposureBiasValue]."EV",
-            "拍摄时间" => $exif[EXIF][DateTimeOriginal]
+            "相机品牌" => $exif['IFD0']['Make'],
+            "相机型号" => $exif['IFD0']['Model'],
+            "曝光模式" => (isset($exif['EXIF']['ExposureMode'])?"手动":"自动"),
+            "闪光灯" =>  isset($Flash_arr[$exif['EXIF']['Flash']])?$Flash_arr[$exif['EXIF']['Flash']]:'未知',
+            "焦距" => $exif['EXIF']['FocalLength']."mm",
+            "光圈" => $exif['COMPUTED']['ApertureFNumber'],
+            "快门速度" => $exif['EXIF']['ExposureTime'],
+            "ISO感光度" => $exif['EXIF']['ISOSpeedRatings'],
+            "白平衡" => (isset($exif['EXIF']['WhiteBalance'])?"手动":"自动"),
+            "曝光补偿" => $exif['EXIF']['ExposureBiasValue']."EV",
+            "拍摄时间" => $exif['EXIF']['DateTimeOriginal']
         );
         }
         return $new_img_info;

@@ -38,12 +38,12 @@
 <div id="mainbox">
     <div class="headnav">
     <ul>
-        <li <?php if ($res->get('current_nav')=='all'): ?>class="current"<?php endif; ?>><a href="index.php">所有图片</a></li>
-        <li <?php if ($res->get('current_nav')=='album'): ?>class="current"<?php endif; ?>><a href="index.php?ctl=album">相册</a></li>
-        <li <?php if ($res->get('current_nav')=='upload'): ?>class="current"<?php endif; ?>><a href="index.php?ctl=upload">上传图片</a></li>
+        <li <?php if ($res->get('current_nav')=='all'): ?>class="current"<?php endif; ?>><a href="admin.php">所有图片</a></li>
+        <li <?php if ($res->get('current_nav')=='album'): ?>class="current"<?php endif; ?>><a href="admin.php?ctl=album">相册</a></li>
+        <li <?php if ($res->get('current_nav')=='upload'): ?>class="current"<?php endif; ?>><a href="admin.php?ctl=upload">上传图片</a></li>
         
     </ul>
-    <div class="setting"><a href="index.php?ctl=default&act=setting">系统设置</a> <a href="index.php?ctl=default&act=logout">退出登录</a></div>
+    <div class="setting"><a href="admin.php?ctl=setting">系统设置</a> <a href="admin.php?ctl=default&act=logout">退出登录</a></div>
     </div>
     <div class="mainbody">
     

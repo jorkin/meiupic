@@ -396,24 +396,29 @@ font-weight:700;
 margin-bottom:10px;
 }
 
-
-#setting table,#change_pass table{
+.stab{
+    margin-top:10px;
+}
+.stab table{
     width:100%;
     margin:10px 20px 10px;
 }
 
-#setting table td,#change_pass table td{
+.stab table td{
     padding:3px;
     border-bottom:1px solid #F0F5F8;
 }
-#setting table td.tt,#change_pass table td.tt{
+.stab  table td.tt{
     width:200px;
 }
-#setting table td.ti,#change_pass table td.ti{
+.stab  table td.tc{
+    width:350px;
+}
+.stab  table td.ti{
     color:#aaa;
 }
 
-#setting table td.ti:hover,#change_pass table td.ti:hover{
+.stab table td.ti:hover{
     color:#444;
 }
 

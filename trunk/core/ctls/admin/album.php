@@ -7,10 +7,10 @@
  * @copyright : (c)2010 meiu.cn lingter@gmail.com
  */
 
-class controller extends pagefactory{
+class controller extends adminpage{
     
     function controller(){
-        parent::pagefactory();
+        parent::adminpage();
         $this->mdl_album = & load_model('album');
         $this->mdl_picture = & load_model('picture');
         if(!$this->auth->isLogedin()){
@@ -21,14 +21,14 @@ class controller extends pagefactory{
     
     function index(){
         
-        $page = $_GET['page'];
+        $page = $this->getGet('page',0);
         if(!$page){
             $page = 1;
         }
         
         $albums = $this->mdl_album->get_all_album($page);
         
-        $pageurl='index.php?ctl=album&page=[#page#]';
+        $pageurl='admin.php?ctl=album&page=[#page#]';
         if($albums['ls']){
             foreach($albums['ls'] as $k=>$v){
                 $cover = $this->mdl_album->get_cover($v['id'],$v['cover']);
@@ -42,13 +42,13 @@ class controller extends pagefactory{
     }
     
     function photos(){
-        $album = intval($_GET['album']);
-        $page = $_GET['page'];
+        $album = intval($this->getGet('album',0));
+        $page = $this->getGet('page',0);
         if(!$page){
             $page = 1;
         }
         
-        $flag = isset($_GET['flag'])?$_GET['flag']:0;
+        $flag = $this->getGet('flag',0);
         
         switch($flag){
             case '1':
@@ -63,11 +63,11 @@ class controller extends pagefactory{
             default:
             $msginfo = '';
         }
-        $sort = isset($_GET['sort'])?$_GET['sort']:'id_desc';
+        $sort = $this->getGet('sort','id_desc');
         
         $pics = $this->mdl_picture->get_all_pic($page,$album,$sort);
         
-        $pageurl="index.php?ctl=album&act=photos&album={$album}&page=[#page#]&sort=".$sort;
+        $pageurl="admin.php?ctl=album&act=photos&album={$album}&page=[#page#]&sort=".$sort;
         
         $this->output->set('pics',$pics['ls']);
         $this->output->set('albums_list',$this->mdl_album->get_albums_assoc($album));
@@ -82,7 +82,7 @@ class controller extends pagefactory{
     }
     
     function ajax_create_album(){
-        $album_name = $_POST['album_name'];
+        $album_name = $this->getPost('album_name','');
         
         if($this->mdl_album->insert_album(array('name'=>$album_name))){
             $list = $this->mdl_album->get_albums_assoc();
@@ -95,7 +95,7 @@ class controller extends pagefactory{
     
     function ajax_delphoto(){
         if($this->isPost()){
-            $id = intval($_GET['id']);
+            $id = intval($this->getGet('id',0));
             
             $row = $this->mdl_picture->get_one_pic($id);
             if(!$row){
@@ -117,8 +117,8 @@ class controller extends pagefactory{
     
     function ajax_renamephoto(){
         if($this->isPost()){
-            $id = intval($_GET['id']);
-            $name = trim($_POST['name']);
+            $id = intval($this->getGet('id',0));
+            $name = trim($this->getPost('name'));
 
             $row = $this->mdl_picture->get_one_pic($id);
             if(!$row){
@@ -139,7 +139,7 @@ class controller extends pagefactory{
     
     function ajax_delalbum(){
         if($this->isPost()){
-            $id = intval($_GET['id']);
+            $id = intval($this->getGet('id',0));
 
             $row = $this->mdl_album->get_one_album($id);
             if(!$row){
@@ -166,8 +166,8 @@ class controller extends pagefactory{
     
     function ajax_renamealbum(){
         if($this->isPost()){
-            $id = intval($_GET['id']);
-            $name = trim($_POST['name']);
+            $id = intval($this->getGet('id',0));
+            $name = trim($this->getPost('name'));
             
             $row = $this->mdl_album->get_one_album($id);
             if(!$row){
@@ -188,7 +188,7 @@ class controller extends pagefactory{
     
     function ajax_set_cover(){
         if($this->isPost()){
-            $id = intval($_GET['id']);
+            $id = intval($this->getGet('id',0));
             $row = $this->mdl_picture->get_one_pic($id);
             if(!$row){
                 echo json_encode(array('ret'=>false,'msg'=>'图片已被删除无法设为封面！'));
@@ -203,7 +203,7 @@ class controller extends pagefactory{
     }
     
     function ajax_get_albums(){
-        $id = intval($_POST['id']);
+        $id = intval($this->getPost('id',0));
         $row = $this->mdl_picture->get_one_pic($id);
         $album_id = $row['album'];
         
@@ -216,7 +216,7 @@ class controller extends pagefactory{
     }
     
     function ajax_move_to_albums(){
-        $id = intval($_POST['id']);
+        $id = intval($this->getPost('id',0));
         
         $row = $this->mdl_picture->get_one_pic($id);
         if(!$row){
@@ -226,7 +226,7 @@ class controller extends pagefactory{
         
         $this->mdl_album->remove_cover($id);
 
-        if($this->mdl_picture->update_pic($id,$row['name'],intval($_POST['album_id']))){
+        if($this->mdl_picture->update_pic($id,$row['name'],intval($this->getPost('album_id',0)))){
             echo json_encode(array('ret'=>true));
         }else{
             echo json_encode(array('ret'=>false,'msg'=>'未能移动照片！'));

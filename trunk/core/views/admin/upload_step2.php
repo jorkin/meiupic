@@ -21,7 +21,7 @@ $(function() {
     
 	$("#flash_uploader").pluploadQueue({
 		runtimes : '<?php echo $res->get('upload_runtimes');?>',
-		url : 'index.php?ctl=upload&act=process',
+		url : 'admin.php?ctl=upload&act=process',
 		max_file_size : '10mb',
 		chunk_size : '1mb',
 		unique_names : true,
@@ -64,14 +64,14 @@ $(function() {
 </div>
 
 <div id="upload_field">
-    <form id="upload_photos_form" method="post" action="index.php?ctl=upload&act=doupload&album=<?php echo $res->get('album_id')?>">
+    <form id="upload_photos_form" method="post" action="admin.php?ctl=upload&act=doupload&album=<?php echo $res->get('album_id')?>">
     <div id="flash_uploader" style="width: 100%; height: 330px;margin-top:10px;">
-        <div style="font-size:14px;margin:20px;color:red">您的浏览器不支持此种上传模式，切换至 <a href="index.php?ctl=upload&act=step2_1&album_id=<?php echo $res->get('album_id')?>" style="font-size:14px;">普通上传模式</a> ？</div>
+        <div style="font-size:14px;margin:20px;color:red">您的浏览器不支持此种上传模式，切换至 <a href="admin.php?ctl=upload&act=step2_1&album_id=<?php echo $res->get('album_id')?>" style="font-size:14px;">普通上传模式</a> ？</div>
     </div>
     <div align="center"><input type="submit" class="btn" value="下一步" /></div>
     </form>
     
-    <a href="index.php?ctl=upload&act=step2_1&album_id=<?php echo $res->get('album_id')?>">普通上传模式</a>
+    <a href="admin.php?ctl=upload&act=step2_1&album_id=<?php echo $res->get('album_id')?>">普通上传模式</a>
 </div>
 
 <?php include('foot.php');?>

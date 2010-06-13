@@ -1,13 +1,12 @@
 <?php
 /**
- * $Id$
+ * $Id: admin.php 21 2010-06-06 11:26:00Z lingter $
  * 
  * @author : Lingter
  * @support : http://www.meiu.cn
  * @copyright : (c)2010 meiu.cn lingter@gmail.com
  */
-
-error_reporting(E_ERROR);
+error_reporting(E_ERROR|E_WARNING|E_NOTICE);
 
 if (PHP_VERSION >= "5.1.0") {
 	date_default_timezone_set ( 'Asia/Shanghai' );
@@ -41,4 +40,4 @@ define('PAGE_SET',$setting['pageset']);
 
 require_once(INCDIR.'base.php');
 require_once(INCDIR.'func.php');
-run();
+run_admin();

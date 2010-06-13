@@ -120,7 +120,7 @@ var mydiv = {
 
 function do_create_album(){
     
-    var url = 'index.php?ctl=album&act=ajax_create_album';
+    var url = 'admin.php?ctl=album&act=ajax_create_album';
     var album_name=$.trim($('#floatContent').find('input[name=album_name]').val());
     
     if(album_name==''){
@@ -151,7 +151,7 @@ function do_create_album(){
 
 function do_create_album_a(){
     
-    var url = 'index.php?ctl=album&act=ajax_create_album';
+    var url = 'admin.php?ctl=album&act=ajax_create_album';
     var album_name=$.trim($('#floatContent').find('input[name=album_name]').val());
     
     if(album_name==''){
@@ -191,7 +191,7 @@ function create_album(t){
 function go_upload_step2(){
     var abid=$('#sel_album').find('select[name=albums]').val();
     if(abid){
-        window.location.href = 'index.php?ctl=upload&act=step2&album_id='+abid;
+        window.location.href = 'admin.php?ctl=upload&act=step2&album_id='+abid;
     }else{
         alert('请先选择相册！');
     }
@@ -284,7 +284,7 @@ function copy_clip(copy,bid,func){
 
 function delete_pic(o,id){
     if(confirm('确定要删除吗?')){
-        var url = 'index.php?ctl=album&act=ajax_delphoto&id='+id;
+        var url = 'admin.php?ctl=album&act=ajax_delphoto&id='+id;
         $.post(url,
                {},
                function(data){
@@ -312,7 +312,7 @@ function rename_pic(o,id){
     input.select();
     input.blur(
         function(){
-                var url = 'index.php?ctl=album&act=ajax_renamephoto&id='+id;
+                var url = 'admin.php?ctl=album&act=ajax_renamephoto&id='+id;
                 $.post(url,
                    {name:this.value},
                    function(data){
@@ -337,7 +337,7 @@ function rename_pic(o,id){
 
 function delete_album(o,id){
     if(confirm('确定要删除相册吗?删除相册将会删除相册内所有的图片！')){
-        var url = 'index.php?ctl=album&act=ajax_delalbum&id='+id;
+        var url = 'admin.php?ctl=album&act=ajax_delalbum&id='+id;
         $.post(url,
                {},
                function(data){
@@ -365,7 +365,7 @@ function rename_album(o,id){
     input.select();
     input.blur(
         function(){
-                var url = 'index.php?ctl=album&act=ajax_renamealbum&id='+id;
+                var url = 'admin.php?ctl=album&act=ajax_renamealbum&id='+id;
                 $.post(url,
                    {name:this.value},
                    function(data){
@@ -389,7 +389,7 @@ function rename_album(o,id){
 }
 
 function set_pic_cover(o,id){
-    var url = 'index.php?ctl=album&act=ajax_set_cover&id='+id;
+    var url = 'admin.php?ctl=album&act=ajax_set_cover&id='+id;
     $.post(url,
        {name:this.value},
        function(data){
@@ -407,7 +407,7 @@ function set_pic_cover(o,id){
 }
 
 function move_pic_to(type,o,id){
-    var url = 'index.php?ctl=album&act=ajax_get_albums';
+    var url = 'admin.php?ctl=album&act=ajax_get_albums';
     var pos = getElementOffset(o);
     
     $.post(url,
@@ -442,7 +442,7 @@ function move_pic_to(type,o,id){
 }
 
 function do_move_pic_to(type,o,al_id,id){
-    var url = 'index.php?ctl=album&act=ajax_move_to_albums';
+    var url = 'admin.php?ctl=album&act=ajax_move_to_albums';
     $.post(url,
        {album_id:al_id,id:id},
        function(data){
@@ -479,7 +479,7 @@ function reupload_pic(o,id){
     $('#reuploadpic').css('top',pos.top+pos.height);
     $('#reuploadpic').show();
     $('#reuploadpic').find('span.upfield').html('<input type="file" name="imgs">');
-    $('#reuploadpic').find('form').attr('action','index.php?ctl=upload&act=reupload&id='+id);
+    $('#reuploadpic').find('form').attr('action','admin.php?ctl=upload&act=reupload&id='+id);
     $('#reuploadpic').find('form').submit(function(){
         $('#reuploadpic').find('div.uploading').width($('#reuploadpic').find('form').width()).show();
     });
@@ -531,7 +531,7 @@ function slideshow(id){
 	$('#slide_show_iframe').height(height);
 	
 	var flashvars = {};
-	flashvars.galleryURL = escape("index.php?ctl=photo&act=gallery&album="+id);
+	flashvars.galleryURL = escape("admin.php?ctl=photo&act=gallery&album="+id);
 	var params = {};
 	params.allowfullscreen = true;
 	params.wmode = 'transparent';

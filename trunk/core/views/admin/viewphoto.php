@@ -6,7 +6,7 @@
 <div id="allpic">
     <div id="album_nav" class="album_detail">
         <h1 class="album_title"><?php echo $ls['name'];?></h1>
-        <div class="photoinfo"><input type="button" class="btn" onclick="window.location.href='index.php?ctl=album&act=photos&album=<?php echo $ls['album'];?>'" value="返回 <?php echo $res->get('album_name'); ?>" /></div>
+        <div class="photoinfo"><input type="button" class="btn" onclick="window.location.href='admin.php?ctl=album&act=photos&album=<?php echo $ls['album'];?>'" value="返回 <?php echo $res->get('album_name'); ?>" /></div>
     </div>
     <div id="photo-body">
          <div class="picnt">
@@ -34,19 +34,19 @@
             <ul>
                 
                 <?php if($pre_pic): ?>
-                <li><a href="index.php?ctl=photo&act=view&id=<?php echo $pre_pic['id'];?>&album=<?php echo $res->get("album");?>#photo-body"><img src="<?php echo mkImgLink($pre_pic['dir'],$pre_pic['pickey'],$pre_pic['ext'],'square');?>" /></a></li>
+                <li><a href="admin.php?ctl=photo&act=view&id=<?php echo $pre_pic['id'];?>&album=<?php echo $res->get("album");?>#photo-body"><img src="<?php echo mkImgLink($pre_pic['dir'],$pre_pic['pickey'],$pre_pic['ext'],'square');?>" /></a></li>
                 <?php else:?>
                 <li>这是首张</li>
                 <?php endif;?>
                 <li class="current"><a href="javascript:void(0)"><img src="<?php echo mkImgLink($ls['dir'],$ls['pickey'],$ls['ext'],'square');?>" /></a></li>
                 
                 <?php if($next_pic): ?>
-                <li><a href="index.php?ctl=photo&act=view&id=<?php echo $next_pic['id'];?>&album=<?php echo $res->get("album");?>#photo-body"><img src="<?php echo mkImgLink($next_pic['dir'],$next_pic['pickey'],$next_pic['ext'],'square');?>" /></a></li>
+                <li><a href="admin.php?ctl=photo&act=view&id=<?php echo $next_pic['id'];?>&album=<?php echo $res->get("album");?>#photo-body"><img src="<?php echo mkImgLink($next_pic['dir'],$next_pic['pickey'],$next_pic['ext'],'square');?>" /></a></li>
                 <?php else:?>
                 <li>这是末张</li>
                 <?php endif;?>
             </ul>
-            <div class="prebtn"><?php if($pre_pic): ?><a class="btnpre" href="index.php?ctl=photo&act=view&id=<?php echo $pre_pic['id'];?>&album=<?php echo $res->get("album");?>#photo-body">上一张</a><?php endif;?></div><div class="nextbtn"><?php if($next_pic): ?><a class="btnnext" href="index.php?ctl=photo&act=view&id=<?php echo $next_pic['id'];?>&album=<?php echo $res->get("album");?>#photo-body">下一张</a><?php endif;?></div><div class="slideshow"><a href="javascript:void(0)" onclick="slideshow(<?php echo $res->get("album");?>)">幻灯片</a></div>
+            <div class="prebtn"><?php if($pre_pic): ?><a class="btnpre" href="admin.php?ctl=photo&act=view&id=<?php echo $pre_pic['id'];?>&album=<?php echo $res->get("album");?>#photo-body">上一张</a><?php endif;?></div><div class="nextbtn"><?php if($next_pic): ?><a class="btnnext" href="admin.php?ctl=photo&act=view&id=<?php echo $next_pic['id'];?>&album=<?php echo $res->get("album");?>#photo-body">下一张</a><?php endif;?></div><div class="slideshow"><a href="javascript:void(0)" onclick="slideshow(<?php echo $res->get("album");?>)">幻灯片</a></div>
         </div>
         
         <div id="copyspics">
@@ -75,7 +75,7 @@
         <?php 
         if($next_pic){
         ?>
-        var imghref = 'index.php?ctl=photo&act=view&id=<?php echo $next_pic['id'];?>&album=<?php echo $res->get("album");?>#photo-body';
+        var imghref = 'admin.php?ctl=photo&act=view&id=<?php echo $next_pic['id'];?>&album=<?php echo $res->get("album");?>#photo-body';
         var nexttile = '点击查看下一张';
         <?php
         }else{

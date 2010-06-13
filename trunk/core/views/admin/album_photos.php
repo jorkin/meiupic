@@ -2,9 +2,9 @@
 <div id="allpic">
     <div id="album_nav" class="album_detail">
         <h1 class="album_title"><?php echo $res->get('album_name');?></h1>
-        <span class="total_count">共 <strong><?php echo $res->get('total_num');?></strong> 张图片</span> <input type="button" class="btn" value="上传图片" onclick="window.location.href='index.php?ctl=upload&act=step2&album_id=<?php echo $res->get('album');?>'" />
+        <span class="total_count">共 <strong><?php echo $res->get('total_num');?></strong> 张图片</span> <input type="button" class="btn" value="上传图片" onclick="window.location.href='admin.php?ctl=upload&act=step2&album_id=<?php echo $res->get('album');?>'" />
     </div>
-    <form name="pics_form" action="index.php?ctl=photo&act=bat&album=<?php echo $res->get('album');?>&referf=album&referp=<?php echo $res->get('page');?>" method="post" onsubmit="submit_bat(this);return false;">
+    <form name="pics_form" action="admin.php?ctl=photo&act=bat&album=<?php echo $res->get('album');?>&referf=album&referp=<?php echo $res->get('page');?>" method="post" onsubmit="submit_bat(this);return false;">
     <div id="batch_ctrl"> 
         <input type="button" class="btn" value="全选" onclick="checkall('pics_form')" />  
         <input type="button" class="btn" value="取消全选" onclick="uncheckall('pics_form')" /> 
@@ -27,8 +27,8 @@
          <input name="do_pic_act" type="submit" value="执行" class="btn" disabled />
          <select name="do_sort" onchange="change_order(this.value);">
               <option value="-1">选择排序</option>
-              <option value="index.php?ctl=album&act=photos&album=<?php echo $res->get('album');?>&sort=id_desc&page=<?php echo $res->get('page');?>" <?php if($res->get('sort')=='id_desc'){ echo 'selected="selected"';} ?>>按照时间从近到远排序</option>
-              <option value="index.php?ctl=album&act=photos&album=<?php echo $res->get('album');?>&sort=id_asc&page=<?php echo $res->get('page');?>" <?php if($res->get('sort')=='id_asc'){ echo 'selected="selected"';} ?>>按照时间从远到近排序</option>
+              <option value="admin.php?ctl=album&act=photos&album=<?php echo $res->get('album');?>&sort=id_desc&page=<?php echo $res->get('page');?>" <?php if($res->get('sort')=='id_desc'){ echo 'selected="selected"';} ?>>按照时间从近到远排序</option>
+              <option value="admin.php?ctl=album&act=photos&album=<?php echo $res->get('album');?>&sort=id_asc&page=<?php echo $res->get('page');?>" <?php if($res->get('sort')=='id_asc'){ echo 'selected="selected"';} ?>>按照时间从远到近排序</option>
           </select>
          <input type="button" value="幻灯片查看" class="btn" onclick="slideshow(<?php echo $res->get('album');?>)" />
     </div>
@@ -41,7 +41,7 @@
     ?>
     <li id="i_<?php echo $v['id'];?>" rel="<?php echo SITE_URL.mkImgLink($v['dir'],$v['pickey'],$v['ext'],'orig');?>">
         <span class="img">
-            <a href="index.php?ctl=photo&act=view&id=<?php echo $v['id'];?>&album=<?php echo $res->get('album');?>">
+            <a href="admin.php?ctl=photo&act=view&id=<?php echo $v['id'];?>&album=<?php echo $res->get('album');?>">
                 <img src="<?php echo mkImgLink($v['dir'],$v['pickey'],$v['ext'],'thumb');?>" source="<?php echo mkImgLink($v['dir'],$v['pickey'],$v['ext'],'orig');?>" alt="<?php echo $v['name'];?>" />
             </a>
         </span>

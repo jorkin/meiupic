@@ -9,7 +9,7 @@
 
 class picture extends modelfactory{
     
-    function get_all_pic($page = NULL,$album=0,$sort='id_desc'){
+    function get_all_pic($page = NULL,$album=0,$sort='id_desc',$limit=0){
         $where = '';
         if($album > 0){
             $where = 'album='.intval($album);
@@ -20,6 +20,9 @@ class picture extends modelfactory{
             $db_sort = 'id desc';
         }
         $this->db->select('#imgs',"*",$where,$db_sort);
+        if($limit > 0){
+            $this->db->selectLimit(NULL,$limit);
+        }
         if($page){
             $pics = $this->db->toPage($page,PAGE_SET);
         }else{

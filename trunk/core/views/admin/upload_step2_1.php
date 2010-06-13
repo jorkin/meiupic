@@ -8,7 +8,7 @@
 </div>
 
 <div id="upload_field">
-    <form id="upload_photos_form" method="post" enctype="multipart/form-data" action="index.php?ctl=upload&act=dopicupload&album=<?php echo $res->get('album_id')?>">
+    <form id="upload_photos_form" method="post" enctype="multipart/form-data" action="admin.php?ctl=upload&act=dopicupload&album=<?php echo $res->get('album_id')?>">
     <div id="uploader" style="width: 100%; height: 210px;margin:10px;">
         请选择您要上传的图片：<br /><br />
         1. <input type="file" name="imgs[]" /><br /><br />
@@ -20,7 +20,7 @@
     <div align="left"><input type="submit" class="btn" value="下一步" /></div>
     </form>
     <br />
-    <a href="index.php?ctl=upload&act=step2&album_id=<?php echo $res->get('album_id')?>">高级上传模式</a>
+    <a href="admin.php?ctl=upload&act=step2&album_id=<?php echo $res->get('album_id')?>">高级上传模式</a>
 </div>
 
 <?php include('foot.php');?>

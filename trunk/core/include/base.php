@@ -51,11 +51,37 @@ function &get_output(){
 }
 
 function run(){
+    global $setting;
+    $ctl = isset($_GET['ctl'])?$_GET['ctl']:'default';
+    $act = isset($_GET['act'])?$_GET['act']:'index';
+    
+    if(!$setting['open_photo'] && $ctl != 'photo' && $act != 'resize'){
+        header('Location: admin.php');
+        exit;
+    }
+    
+    if(file_exists(CTLDIR.'front/'.$ctl.'.php')){
+        require_once(INCDIR.'frontpage.php');
+        require_once(CTLDIR.'front/'.$ctl.'.php');
+        define('IN_CTL',$ctl);
+        define('IN_ACT',$act);
+        $controller = new controller();
+        if(is_callable(array(&$controller,$act))){
+            call_user_func(array(&$controller,$act));
+        }else{
+            showInfo('404 not found！',false);
+        }
+    }else{
+        showInfo('404 not found！',false);
+    }
+}
+
+function run_admin(){
     $ctl = isset($_GET['ctl'])?$_GET['ctl']:'default';
     $act = isset($_GET['act'])?$_GET['act']:'index';
     
     if(file_exists(CTLDIR.'admin/'.$ctl.'.php')){
-        require_once(INCDIR.'pagefactory.php');
+        require_once(INCDIR.'adminpage.php');
         require_once(CTLDIR.'admin/'.$ctl.'.php');
         define('IN_CTL',$ctl);
         define('IN_ACT',$act);
