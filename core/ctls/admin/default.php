@@ -67,7 +67,7 @@ class controller extends adminpage{
                 $expire_time = 0;
             }
             if($this->auth->setLogin($username,md5($userpass),$expire_time)){
-                redirect_c('default','index');
+                redirect_c('album','index');
             }else{
                 redirect('admin.php?ctl=default&act=login&flag=1');
             }

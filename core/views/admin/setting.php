@@ -20,7 +20,7 @@
                 echo '<span class="red">您的服务器不支持此功能！</span>';
             }?>
         </td>
-        <td class="ti">开启此项需要支持Rewrite,关闭此项则会在上传是生成各种尺寸图片</td>
+        <td class="ti">开启此项需要支持Rewrite,关闭此项则会在上传时生成各种尺寸图片</td>
     </tr>
     </tbody>
 </table>
