@@ -32,7 +32,7 @@ class controller extends adminpage{
         if($albums['ls']){
             foreach($albums['ls'] as $k=>$v){
                 $cover = $this->mdl_album->get_cover($v['id'],$v['cover']);
-                $albums['ls'][$k]['cover'] = $cover?mkImgLink($cover['dir'],$cover['pickey'],$cover['ext'],'thumb'):'data/nopic.jpg';
+                $albums['ls'][$k]['cover'] = $cover?mkImgLink($cover['dir'],$cover['pickey'],$cover['ext'],'thumb'):'img/nopic.jpg';
             }
         }
         $this->output->set('albums',$albums['ls']);
