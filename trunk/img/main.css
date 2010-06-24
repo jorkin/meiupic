@@ -8,7 +8,9 @@ html{
 	width:100%;
 	overflow-x:hidden;
 }
-
+input{
+	font-family:Verdana,Tahoma,Arial,Sans-Serif;
+}
 ul, dl, dd, p, h1, h2, h3, h4, h5, h6, form, fieldset{
 	margin:0;
 	padding:0;
@@ -182,7 +184,7 @@ input.btn:hover{
 }
 .ipt_2 {
 border:1px solid #BDC7D8;
-padding:2px;
+padding:1px;
 width:112px;
 }
 .ipt_3{

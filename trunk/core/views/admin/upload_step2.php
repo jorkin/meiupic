@@ -1,5 +1,6 @@
 <?php include('head.php');?>
 <link rel="stylesheet" href="img/plupload/plupload.queue.css" type="text/css" />
+<script type="text/javascript" src="js/gears_init.js"></script>
 <script type="text/javascript" src="js/plupload.full.min.js"></script>
 <script type="text/javascript" src="js/jquery.plupload.queue.min.js"></script>
 <script>

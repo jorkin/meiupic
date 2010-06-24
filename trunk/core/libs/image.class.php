@@ -317,20 +317,48 @@ class Image {
         }
         else
         {
-        $exif = exif_read_data ($img,0,true);
-        $new_img_info = array (
-            "相机品牌" => $exif['IFD0']['Make'],
-            "相机型号" => $exif['IFD0']['Model'],
-            "曝光模式" => (isset($exif['EXIF']['ExposureMode'])?"手动":"自动"),
-            "闪光灯" =>  isset($Flash_arr[$exif['EXIF']['Flash']])?$Flash_arr[$exif['EXIF']['Flash']]:'未知',
-            "焦距" => $exif['EXIF']['FocalLength']."mm",
-            "光圈" => $exif['COMPUTED']['ApertureFNumber'],
-            "快门速度" => $exif['EXIF']['ExposureTime'],
-            "ISO感光度" => $exif['EXIF']['ISOSpeedRatings'],
-            "白平衡" => (isset($exif['EXIF']['WhiteBalance'])?"手动":"自动"),
-            "曝光补偿" => $exif['EXIF']['ExposureBiasValue']."EV",
-            "拍摄时间" => $exif['EXIF']['DateTimeOriginal']
-        );
+            $exif = exif_read_data ($img,0,true);
+            if(isset($exif['IFD0'])){
+                if(isset($exif['IFD0']['Make'])){
+                    $new_img_info["相机品牌"] = $exif['IFD0']['Make'];
+                }
+                if(isset($exif['IFD0']['Model'])){
+                    $new_img_info["相机型号"] = $exif['IFD0']['Model'];
+                }
+            }
+            if(isset($exif['COMPUTED'])){
+                if(isset($exif['COMPUTED']['ApertureFNumber'])){
+                    $new_img_info["光圈"] = $exif['COMPUTED']['ApertureFNumber'];
+                }
+            }
+            if(isset($exif['EXIF'])){
+                if(isset($exif['EXIF']['ExposureTime'])){
+                    $new_img_info["快门速度"] = $exif['EXIF']['ExposureTime'];
+                }
+                if(isset($exif['EXIF']['ExposureMode'])){
+                    $new_img_info["曝光模式"] = "手动";
+                }else{
+                    $new_img_info["曝光模式"] = "自动";
+                }
+                if(isset($exif['EXIF']['Flash'])){
+                    $new_img_info["闪光灯"] = isset($Flash_arr[$exif['EXIF']['Flash']])?$Flash_arr[$exif['EXIF']['Flash']]:'未知';
+                }else{
+                    $new_img_info["闪光灯"] = '未知';
+                }
+                if(isset($exif['EXIF']['FocalLength'])){
+                    $new_img_info["焦距"] = $exif['EXIF']['FocalLength']."mm";
+                }
+                if(isset($exif['EXIF']['ISOSpeedRatings'])){
+                    $new_img_info["ISO感光度"] = $exif['EXIF']['ISOSpeedRatings'];
+                }
+                $new_img_info["白平衡"] = (isset($exif['EXIF']['WhiteBalance'])?"手动":"自动");
+                if(isset($exif['EXIF']['ExposureBiasValue'])){
+                    $new_img_info["曝光补偿"] = $exif['EXIF']['ExposureBiasValue']."EV";
+                }
+                if(isset($exif['EXIF']['DateTimeOriginal'])){
+                    $new_img_info["拍摄时间"] = $exif['EXIF']['DateTimeOriginal'];
+                }
+            }
         }
         return $new_img_info;
     }
