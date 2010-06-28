@@ -102,7 +102,7 @@ class auth {
                 'ENCODE',
                 md5($this->config['auth_key'])
             );
-            
+            @ob_clean();
             setcookie($this->config['cookie_name'],$my_auth,$expire_time,$this->config['cookie_path'],$this->config['cookie_domain']);
             return true;
         }else{
@@ -111,6 +111,7 @@ class auth {
     }
 
     function clearLogin(){
+        @ob_clean();
         setcookie($this->config['cookie_name'],'',- 86400 * 365,$this->config['cookie_path'],$this->config['cookie_domain']);
     }
 

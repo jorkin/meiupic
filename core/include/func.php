@@ -17,11 +17,13 @@ function get_basepath(){
 }
 
 function redirect($c){
+    @ob_clean();
     header("Location: $c");
     exit();
 }
 
 function redirect_c($ctl,$act='index'){
+    @ob_clean();
     header("Location: admin.php?ctl=$ctl&act=$act");
     exit();
 }

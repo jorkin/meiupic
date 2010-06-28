@@ -93,6 +93,8 @@ class controller extends adminpage{
         }else{
             $title = '所有图片';
         }
+        
+        @ob_clean();
         echo '<?xml version="1.0" encoding="UTF-8"?>
 <simpleviewergallery 
  title="'.$title.'"

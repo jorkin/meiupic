@@ -19,7 +19,8 @@ class View{
     function fetch($tplFile = ''){
         if(!empty($tplFile))
             $this -> tplFile =  "{$tplFile}";
-
+        
+        @ob_clean();
         ob_start();
         //模板中直接使用的对象
         $res =& get_output();
@@ -30,7 +31,7 @@ class View{
             exit("TplFile doesn't exist!");
             
         $content = ob_get_clean();
-        return $content;
+        return str_replace("\xEF\xBB\xBF", '', $content);
     }
     /**
      * 输出到浏览器
