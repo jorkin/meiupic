@@ -83,7 +83,7 @@ class controller extends adminpage{
     
     function ajax_create_album(){
         $album_name = $this->getPost('album_name','');
-        
+        @ob_clean();
         if($this->mdl_album->insert_album(array('name'=>$album_name))){
             $list = $this->mdl_album->get_albums_assoc();
             
@@ -94,6 +94,7 @@ class controller extends adminpage{
     }
     
     function ajax_delphoto(){
+        @ob_clean();
         if($this->isPost()){
             $id = intval($this->getGet('id',0));
             
@@ -109,13 +110,16 @@ class controller extends adminpage{
             
             if($this->mdl_picture->del_pic($id)){
                 echo json_encode(array('ret'=>true));
+                exit;
             }else{
                 echo json_encode(array('ret'=>false,'msg'=>'删除图片失败！'));
+                exit;
             }
         }
     }
     
     function ajax_renamephoto(){
+        @ob_clean();
         if($this->isPost()){
             $id = intval($this->getGet('id',0));
             $name = trim($this->getPost('name'));
@@ -128,16 +132,20 @@ class controller extends adminpage{
             if($name){
                 if($this->mdl_picture->update_pic($id,$name)){
                     echo json_encode(array('ret'=>true,'picname'=>$name));
+                    exit;
                 }else{
                     echo json_encode(array('ret'=>false,'msg'=>'重命名图片失败！'));
+                    exit;
                 }
             }else{
                 echo json_encode(array('ret'=>true,'picname'=>$row['name']));
+                exit;
             }
         }
     }
     
     function ajax_delalbum(){
+        @ob_clean();
         if($this->isPost()){
             $id = intval($this->getGet('id',0));
 
@@ -158,13 +166,16 @@ class controller extends adminpage{
             
             if($this->mdl_album->del_album($id)){
                 echo json_encode(array('ret'=>true));
+                exit;
             }else{
                 echo json_encode(array('ret'=>false,'msg'=>'删除相册失败！'));
+                exit;
             }
         }
     }
     
     function ajax_renamealbum(){
+        @ob_clean();
         if($this->isPost()){
             $id = intval($this->getGet('id',0));
             $name = trim($this->getPost('name'));
@@ -177,16 +188,20 @@ class controller extends adminpage{
             if($name){                
                 if($this->mdl_album->update_album($id,$name)){
                     echo json_encode(array('ret'=>true,'albumname'=>$name));
+                    exit;
                 }else{
                     echo json_encode(array('ret'=>false,'msg'=>'重命名相册失败！'));
+                    exit;
                 }
             }else{
                 echo json_encode(array('ret'=>true,'albumname'=>$row['name']));
+                exit;
             }
         }
     }
     
     function ajax_set_cover(){
+        @ob_clean();
         if($this->isPost()){
             $id = intval($this->getGet('id',0));
             $row = $this->mdl_picture->get_one_pic($id);
@@ -196,13 +211,16 @@ class controller extends adminpage{
             }
             if($this->mdl_album->set_cover($row['album'],$id)){
                 echo json_encode(array('ret'=>true));
+                exit;
             }else{
                 echo json_encode(array('ret'=>false,'msg'=>'未能设为封面！'));
+                exit;
             }
         }
     }
     
     function ajax_get_albums(){
+        @ob_clean();
         $id = intval($this->getPost('id',0));
         $row = $this->mdl_picture->get_one_pic($id);
         $album_id = $row['album'];
@@ -210,12 +228,16 @@ class controller extends adminpage{
         $list = $this->mdl_album->get_albums_assoc($album_id);
         if($list){
             echo json_encode(array('ret'=>true,'list'=>$list));
+            exit;
         }else{
             echo json_encode(array('ret'=>false,'msg'=>'目前无其他相册！'));
+            exit;
         }
     }
     
     function ajax_move_to_albums(){
+        @ob_clean();
+        
         $id = intval($this->getPost('id',0));
         
         $row = $this->mdl_picture->get_one_pic($id);
@@ -228,8 +250,10 @@ class controller extends adminpage{
 
         if($this->mdl_picture->update_pic($id,$row['name'],intval($this->getPost('album_id',0)))){
             echo json_encode(array('ret'=>true));
+            exit;
         }else{
             echo json_encode(array('ret'=>false,'msg'=>'未能移动照片！'));
+            exit;
         }
     }
 }
