@@ -49,12 +49,10 @@ RewriteRule .*/(.*)_(.*)\.(jpg|gif|png)$ ../index.php?ctl=photo&act=resize&size=
             @unlink(DATADIR.'.htaccess');
         }
         
-        if(!get_magic_quotes_gpc())
-        {
-            $new_setting['access_domain'] = addslashes($new_setting['access_domain']);
-        }
-        
         $setting_content = "<?php \n";
+        $setting_content .= "\$setting['site_title'] = '".html_replace($new_setting['site_title'])."';\n";
+        $setting_content .= "\$setting['site_keyword'] = '".html_replace($new_setting['site_keyword'])."';\n";
+        $setting_content .= "\$setting['site_description'] = '".html_replace($new_setting['site_description'])."';\n";
         $setting_content .= "\$setting['url'] = '".$new_setting['url']."';\n";
         $setting_content .= "\$setting['imgdir'] = '".$new_setting['imgdir']."';\n";
         $setting_content .= "\$setting['upload_runtimes'] = '".$new_setting['upload_runtimes']."';\n";

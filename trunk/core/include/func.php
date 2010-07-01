@@ -147,6 +147,17 @@ EOF;
     exit();
 }
 
+function html_replace($str){
+    $str = stripslashes($str);
+    $str = str_replace('&','&amp;',$str);
+    $str = str_replace('\'','&#039;',$str);
+    $str = str_replace('"','&quot;',$str);
+    $str = str_replace('<','&lt;',$str);
+    $str = str_replace('>','&gt;',$str);
+    $str = addslashes($str);
+    return $str;
+}
+
 if(!function_exists('json_encode')){
     require_once (LIBDIR.'JSON.class.php');
     function json_encode($value){

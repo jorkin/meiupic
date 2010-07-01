@@ -202,6 +202,7 @@
           `id` int(11) NOT NULL AUTO_INCREMENT,
           `username` varchar(50) NOT NULL,
           `userpass` varchar(50) NOT NULL,
+          `create_time` int(11) NOT NULL DEFAULT '0',
           PRIMARY KEY (`id`)
         ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;",$dbconn);
 
@@ -209,6 +210,8 @@
           `id` int(11) NOT NULL AUTO_INCREMENT,
           `name` varchar(50) NOT NULL,
           `cover` int(11) NOT NULL DEFAULT '0',
+          `create_time` int(11) NOT NULL DEFAULT '0',
+          `private` tinyint(1) NOT NULL DEFAULT '0',
           PRIMARY KEY (`id`),
           KEY `cover` (`cover`)
         ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;",$dbconn);
@@ -221,6 +224,9 @@
           `pickey` varchar(32) NOT NULL,
           `ext` varchar(10) NOT NULL,
           `status` tinyint(1) NOT NULL DEFAULT '0',
+          `hits` int(11) NOT NULL DEFAULT '0',
+          `create_time` int(11) NOT NULL DEFAULT '0',
+          `private` tinyint(1) NOT NULL DEFAULT '0',
           PRIMARY KEY (`id`),
           KEY `pickey` (`pickey`)
         ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;",$dbconn);
@@ -230,12 +236,12 @@
             exit();
         }
         
-        $rt4 = @mysql_query("REPLACE INTO `$admintable` (`id`, `username`, `userpass`) VALUES (1, '".$setting['username']."', '".md5($setting['userpass'])."');",$dbconn);
+        $rt4 = @mysql_query("REPLACE INTO `$admintable` (`id`, `username`, `userpass`, `create_time`) VALUES (1, '".$setting['username']."', '".md5($setting['userpass'])."','".time()."');",$dbconn);
         if(!$rt4){
             echo "<script> alert('添加用户数据错误！');history.back();</script>";
             exit();
         }
-        @mysql_query("REPLACE INTO `$albumstable` (`id`, `name`, `cover`) VALUES (1, '默认相册', '0');",$dbconn);
+        @mysql_query("REPLACE INTO `$albumstable` (`id`, `name`, `cover`,`create_time`) VALUES (1, '默认相册', '0','".time()."');",$dbconn);
         mysql_close($dbconn);
     }
     
@@ -263,14 +269,17 @@
         sqlite_query("CREATE TABLE $admintable (
                   id INTEGER NOT NULL PRIMARY KEY,
                   username varchar(50) NOT NULL,
-                  userpass varchar(50) NOT NULL
+                  userpass varchar(50) NOT NULL,
+                  create_time int(11) NOT NULL DEFAULT '0'
                 )",$conn);
         
 
         sqlite_query("CREATE TABLE $albumstable (
                   id INTEGER NOT NULL PRIMARY KEY,
                   name varchar(50) NOT NULL,
-                  cover int(11) NOT NULL DEFAULT '0'
+                  cover int(11) NOT NULL DEFAULT '0',
+                  create_time int(11) NOT NULL DEFAULT '0',
+                  private tinyint(1) NOT NULL DEFAULT '0',
                 )",$conn);
         sqlite_query("CREATE INDEX cover on $albumstable (cover)",$conn);
 
@@ -281,12 +290,15 @@
                   pickey varchar(32) NOT NULL,
                   ext varchar(10) NOT NULL,
                   name varchar(100) NOT NULL,
-                  status tinyint(1) NOT NULL DEFAULT '0'
+                  status tinyint(1) NOT NULL DEFAULT '0',
+                  hits int(11) NOT NULL DEFAULT '0',
+                  create_time int(11) NOT NULL DEFAULT '0',
+                  private tinyint(1) NOT NULL DEFAULT '0'
                 )",$conn);
         sqlite_query("CREATE INDEX pickey on $imgstable (pickey)",$conn);
         
-        sqlite_query("INSERT INTO $admintable (id, username, userpass) VALUES (1, '".$adminuser."', '".md5($adminpass)."')",$conn);
-        sqlite_query("INSERT INTO $albumstable (id, name, cover) VALUES (1, '默认相册', '0')",$conn);
+        sqlite_query("INSERT INTO $admintable (id, username, userpass,create_time) VALUES (1, '".$adminuser."', '".md5($adminpass)."','".time()."')",$conn);
+        sqlite_query("INSERT INTO $albumstable (id, name, cover ,create_time) VALUES (1, '默认相册', '0','".time()."')",$conn);
         sqlite_close($conn);
     }
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -564,6 +576,9 @@ if(file_exists(ROOTDIR.'conf/install.lock') && $action!=3){
             creat_mysql($setting);
         }
         $setting_content = "<?php \n";
+        $setting_content .= "\$setting['site_title'] = '我的相册';\n";
+        $setting_content .= "\$setting['site_keyword'] = '';\n";
+        $setting_content .= "\$setting['site_description'] = '';\n";
         $setting_content .= "\$setting['url'] = '".$setting['url']."';\n";
         $setting_content .= "\$setting['imgdir'] = 'data';\n";
         $setting_content .= "\$setting['upload_runtimes'] = 'html5,flash,gears,silverlight';\n";

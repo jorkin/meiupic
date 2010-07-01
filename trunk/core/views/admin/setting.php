@@ -6,6 +6,15 @@
 <h1 class="album_title1">基本设置</h1>
 <table>
     <tbody>
+        <tr>
+            <td class="tt">站点名称：</td><td class="tc"><input name="setting[site_title]" class="txtinput" type="text" value="<?php echo $setting['site_title'];?>" style="width:250px" /></td><td class="ti">前台显示的TITLE</td>
+        </tr>
+        <tr>
+            <td class="tt">站点关键字：</td><td class="tc"><input name="setting[site_keyword]" class="txtinput" type="text" value="<?php echo $setting['site_keyword'];?>" style="width:250px" /></td><td class="ti">前台META KEYWORD，关键字使用空格或,分割</td>
+        </tr>
+        <tr>
+            <td class="tt">站点描述：</td><td class="tc"><input name="setting[site_description]" class="txtinput" type="text" value="<?php echo $setting['site_description'];?>" style="width:250px" /></td><td class="ti">前台META DESCRIPTION</td>
+        </tr>
     <tr>
         <td class="tt">相册URL：</td><td class="tc"><input name="setting[url]" class="txtinput" type="text" value="<?php echo $setting['url'];?>" style="width:250px" /></td><td class="ti">设置复制图片地址的URL前缀, 需要带上末尾的"/"</td>
     </tr>

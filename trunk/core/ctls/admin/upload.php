@@ -62,7 +62,18 @@ class controller extends adminpage{
             @mkdir(DATADIR.$date);
             @chmod(DATADIR.$date,0755);
         }
+        
+        $uploadtime = time();
+        $album_id = intval($this->getGet('album'));
+        $album_arr = $this->mdl_album->get_one_album($album_id);
+        if($album_arr){
+            $photo_private = $album_arr['private'];
+        }else{
+            $photo_private = 1;
+        }
+        
         $empty_num = 0;
+        
         foreach($_FILES['imgs']['name'] as $k=>$upfile){
             $tmpfile = $_FILES['imgs']['tmp_name'][$k];
             if (!empty($upfile)) {
@@ -85,11 +96,14 @@ class controller extends adminpage{
                         $this->mdl_upload->generatepic($date,$key,$fileext);
                     }
                     @chmod($realpath,0755);
-                    $this->mdl_picture->insert_pic(array('album'=>$this->getGet('album'),
+                    $this->mdl_picture->insert_pic(array('album'=>$album_id,
                                                     'name'=>$filename,
                                                     'dir'=>$date,
                                                     'pickey'=>$key,
-                                                    'ext'=>$fileext));
+                                                    'ext'=>$fileext,
+                                                    'create_time'=>$uploadtime,
+                                                    'private' => $photo_private
+                                                    ));
                 }else{
                     showInfo('文件上传失败！',false);
                     exit;
@@ -103,7 +117,7 @@ class controller extends adminpage{
             echo '<script> alert("您没有选择图片上传，请重新上传!");history.back();</script>';
             exit;
         }
-        header('Location: admin.php?ctl=upload&act=doupload&album='.$this->getGet('album'));
+        header('Location: admin.php?ctl=upload&act=doupload&album='.$album_id);
     }
     function doupload(){
         set_time_limit(0);
@@ -118,6 +132,15 @@ class controller extends adminpage{
     function _save_and_resize(){
         $tmp_dir = where_is_tmp();
         $targetDir =  $tmp_dir. DIRECTORY_SEPARATOR . "plupload";
+        
+        $uploadtime = time();
+        $album_id = intval($this->getGet('album'));
+        $album_arr = $this->mdl_album->get_one_album($album_id);
+        if($album_arr){
+            $photo_private = $album_arr['private'];
+        }else{
+            $photo_private = 1;
+        }
         
         $date = get_updir_name($this->setting['imgdir_type']);
         if(!is_dir(DATADIR.$date)){
@@ -139,11 +162,14 @@ class controller extends adminpage{
                         $this->mdl_upload->generatepic($date,$key,$fileext);
                     }
                     @chmod($realpath,0755);
-                    $this->mdl_picture->insert_pic(array('album'=>$this->getGet('album'),
+                    $this->mdl_picture->insert_pic(array('album'=>$album_id,
                                                     'name'=>$filename,
                                                     'dir'=>$date,
                                                     'pickey'=>$key,
-                                                    'ext'=>$fileext));
+                                                    'ext'=>$fileext,
+                                                    'create_time'=>$uploadtime,
+                                                    'private' => $photo_private
+                                                    ));
                 }
             }
         }

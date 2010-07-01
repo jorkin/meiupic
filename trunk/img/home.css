@@ -20,6 +20,21 @@ a{
     text-decoration:none;
 }
 
+.table100{
+    width:100%;
+}
+.phototd{
+     text-align:center;
+     vertical-align:middle;
+     height:250px;
+}
+.phototd img{
+    padding:10px;
+    border:1px solid #B0D5EE
+}
+.line35{
+    line-height:35px;
+}
 .header{
     background:#fff url(bg_head_repeat.png) repeat-x;
     height:78px;
@@ -97,6 +112,8 @@ a{
     line-height:25px;
     padding:0 10px;
 }
+
+
 .box1{
     background:#fff;
     border:1px solid #B0D5EE;

@@ -17,6 +17,10 @@ class frontpage extends pagecore{
         $this->output =& get_output();
         $this->view = new View();
         $this->db =& db();
+        
+        $this->output->set('site_title',$this->setting['site_title']);
+        $this->output->set('site_keyword',$this->setting['site_keyword']);
+        $this->output->set('site_description',$this->setting['site_description']);
     }
     
 }

@@ -9,12 +9,17 @@
 
 class picture extends modelfactory{
     
-    function get_all_pic($page = NULL,$album=0,$sort='id_desc',$limit=0){
+    function get_all_pic($page = NULL,$album=0,$sort='id_desc',$limit=0,$filter_private=false){
         $where = '';
         if($album > 0){
-            $where = 'album='.intval($album);
+            $where .= 'album='.intval($album);
         }
-        if($sort == 'id_asc'){
+        if($filter_private){
+            $where .= ' private=0';
+        }
+        if($sort == 'hot'){
+            $db_sort = 'hits desc,id desc';
+        }elseif($sort == 'id_asc'){
             $db_sort = 'id asc';
         }else{
             $db_sort = 'id desc';
@@ -72,7 +77,12 @@ class picture extends modelfactory{
         $arr['name'] = $name;
         $arr['status'] = 1;
         if($album>0){
-            $arr['album'] = intval($album);
+            $album_model = & load_model('album');
+            $album_arr = $album_model->get_one_album(intval($album));
+            if($album_arr){
+                $arr['private'] = $album_arr['private'];
+                $arr['album'] = intval($album);
+            }
         }
         
         $this->db->update('#imgs','id='.intval($id),$arr);
