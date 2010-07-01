@@ -1,0 +1,110 @@
+body{
+    font-size:12px;
+	font-family:Verdana,Tahoma,Arial,Sans-Serif;
+	margin:0;
+	padding:0;
+}
+html{
+	width:100%;
+	overflow-x:hidden;
+}
+input{
+	font-family:Verdana,Tahoma,Arial,Sans-Serif;
+}
+ul,li, dl, dd, p, h1, h2, h3, h4, h5, h6, form, fieldset{
+	margin:0;
+	padding:0;
+}
+
+a{
+    text-decoration:none;
+}
+
+.header{
+    background:#fff url(bg_head_repeat.png) repeat-x;
+    height:78px;
+    border-bottom:2px solid #F2A533;
+}
+.header .header_box{
+    width:998px;
+    margin:0 auto;
+    position:relative;
+}
+.header .header_box .logo{
+    top:12px;
+    position:absolute;
+}
+.header ul.nav{
+    background:url("nav-bg.png") repeat-x 0 -45px transparent;
+    height:35px;
+    position:absolute;
+    left:300px;
+    top:43px;
+    display:inline;
+    list-style:none;
+}
+
+.header ul.nav li{
+    float:left;
+    padding:0 25px;
+    position:relative;
+    line-height:35px;
+}
+.header ul.nav li.first{
+    background:url("nav-bg.png") no-repeat left top;
+    height:35px;
+    left:-3px;
+}
+
+.header ul.nav li.last{
+    background:url("nav-bg.png") no-repeat right -90px;
+    height:35px;
+    right:-3px;
+}
+
+.header ul.nav li a{
+    font-size:14px;
+    color:#CBF4FD;
+    font-weight:bold;
+}
+.header ul.nav li.now sub{
+    background:url("nav-bg.png") no-repeat 0 -130px;
+    height:6px;
+    left:50%;
+    margin-left:-5px;
+    position:absolute;
+    text-indent:-99999px;
+    top:29px;
+    width:10px;
+    z-index:1;
+}
+.header ul.nav li.now a{
+    color:white;
+}
+
+.main{
+    width:998px;
+    margin:10px auto;
+}
+
+.main .title{
+    height:25px;
+    
+}
+.main .title h3{
+    float:left;
+    font-size:14px;
+    line-height:25px;
+    padding:0 10px;
+}
+.box1{
+    background:#fff;
+    border:1px solid #B0D5EE;
+}
+.bg1{
+    margin-top:1px;
+    background:#E4F3F6;
+}
+.box_body{
+    padding:4px;
+}

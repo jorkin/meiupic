@@ -10,6 +10,6 @@
 class controller extends frontpage{
     
     function index(){
-        echo 'This is default page';
+        $this->view->display('front/default.php');
     }
 }
