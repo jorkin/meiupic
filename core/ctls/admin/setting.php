@@ -20,6 +20,7 @@ class controller extends adminpage{
     
         if($this->isPost()){
             $new_setting = $this->getPost('setting');
+            
             foreach($new_setting as $k=>$v){
                 $new_setting[$k] = trim($v);
             }
@@ -61,7 +62,7 @@ class controller extends adminpage{
             }else{
                 $new_setting['access_ctl'] = 'false';
             }
-        
+            
             if(empty($new_setting['resize_img_width']) || !is_numeric($new_setting['resize_img_width'])){
                 showInfo('图片宽只能为数字！',false);
             }

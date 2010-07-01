@@ -123,12 +123,18 @@ function do_create_album(){
     var url = 'admin.php?ctl=album&act=ajax_create_album';
     var album_name=$.trim($('#floatContent').find('input[name=album_name]').val());
     
+    if( $('#floatContent').find('input[name=private]:checked').length == 0){
+        var album_private= 0;
+    }else{
+        var album_private= 1;
+    }
+    
     if(album_name==''){
         alert('相册名不能为空！');
         return false;
     }
     $.post(url,
-           {album_name:album_name},
+           {album_name:album_name,album_private:album_private},
            function(data){
                 if(data.ret){
                     var salbum = $('#sel_album').find('select[name=albums]');
@@ -154,12 +160,18 @@ function do_create_album_a(){
     var url = 'admin.php?ctl=album&act=ajax_create_album';
     var album_name=$.trim($('#floatContent').find('input[name=album_name]').val());
     
+    if( $('#floatContent').find('input[name=private]:checked').length == 0){
+        var album_private= 0;
+    }else{
+        var album_private= 1;
+    }
+    
     if(album_name==''){
         alert('相册名不能为空！');
         return false;
     }
     $.post(url,
-           {album_name:album_name},
+           {album_name:album_name,album_private:album_private},
            function(data){
                 if(data.ret){
                     mydiv.Close();
@@ -176,10 +188,10 @@ function create_album(t){
     }else{
         var func = 'do_create_album()';
     }
-    mydiv.Open(240,120,1);
+    mydiv.Open(240,150,1);
     $('#floatwin').find('h2 span').html('创建相册');
     $('#floatFoot').html('<input type="button" value="确定" class="btn" onclick="'+func+'" /> <input type="button" value="取消" class="btn gray" onclick="mydiv.Close()" />');
-	$('#floatContent').html('<div class="album_name_f"><span>相册名</span><input class="ipt_1" name="album_name" value="" /></div>');
+	$('#floatContent').html('<div class="album_name_f"><span>相册名称</span><input class="ipt_1" name="album_name" value="" /><br /><br /> <span>私有相册</span><input name="private" type="checkbox" value="1" /></div>');
 	$('#floatContent').find('input[name=album_name]').unbind('keypress').bind('keypress',
         function(e){
             if(e.keyCode == 13){

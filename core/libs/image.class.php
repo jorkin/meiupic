@@ -194,7 +194,7 @@ class Image {
         $width = $this->getWidth();
         $height = $this->getHeight();
         $left = 0;
-        $right = 0;
+        $top = 0;
         if($width>$height){
             $this->resizeToHeight($v);
             $left = ceil(($v/$height * $width - $v)/2); 

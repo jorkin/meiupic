@@ -10,6 +10,14 @@
 class controller extends frontpage{
     
     function index(){
+        $mdl_picture = & load_model('picture');
+        $piclist = $mdl_picture->get_all_pic(NULL,0,'hot',9,true);
+        $this->output->set('piclist',$piclist);
         $this->view->display('front/default.php');
     }
+    
+    function newphotos(){
+        $this->view->display('front/default.php');
+    }
+    
 }

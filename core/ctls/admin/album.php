@@ -83,8 +83,9 @@ class controller extends adminpage{
     
     function ajax_create_album(){
         $album_name = $this->getPost('album_name','');
+        $album_private = intval($this->getPost('album_private',0));
         @ob_clean();
-        if($this->mdl_album->insert_album(array('name'=>$album_name))){
+        if($this->mdl_album->insert_album(array('name'=>$album_name,'private'=>$album_private,'create_time'=>time() ))){
             $list = $this->mdl_album->get_albums_assoc();
             
             echo json_encode(array('ret'=>true,'list'=>$list));
