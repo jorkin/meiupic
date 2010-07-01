@@ -19,5 +19,7 @@ class adminpage extends pagecore{
         $this->view = new View();
         $this->db =& db();
         $this->auth = new auth();
+        
+        $this->output->set('open_photo_setting',$this->setting['open_photo']);
     }
 }

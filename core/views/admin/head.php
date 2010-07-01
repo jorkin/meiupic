@@ -43,7 +43,7 @@
         <li <?php if ($res->get('current_nav')=='upload'): ?>class="current"<?php endif; ?>><a href="admin.php?ctl=upload">上传图片</a></li>
         
     </ul>
-    <div class="setting"><a href="admin.php?ctl=setting">系统设置</a> <a href="admin.php?ctl=default&act=logout">退出登录</a></div>
+    <div class="setting"><a href="admin.php?ctl=setting">系统设置</a> <?php if($res->get('open_photo_setting')){?>  <a href="index.php">查看前台</a> <?php } ?> <a href="admin.php?ctl=default&act=logout">退出登录</a></div>
     </div>
     <div class="mainbody">
     
