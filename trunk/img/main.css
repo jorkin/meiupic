@@ -472,6 +472,16 @@ margin-bottom:10px;
 	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='img/checked.png', sizingMethod='scale');
 	_background:none;
 }
+
+.album li div.priv{
+    display:block;
+	position:absolute;
+	width:25px;
+	height:25px;
+	z-index:10;
+	background:#fff;
+    background:url(lock.gif) no-repeat center;    
+}
 /**幻灯片设置**/
 #slide_show{
 	position:absolute;

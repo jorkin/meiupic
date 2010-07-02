@@ -257,4 +257,38 @@ class controller extends adminpage{
             exit;
         }
     }
+    
+    function ajax_edit_priv_albums(){
+        @ob_clean();
+        
+        $id = intval($this->getPost('id',0));
+        $album = $this->mdl_album->get_one_album($id);
+        if($album){
+            $html = '<div class="album_name_f"> <span>私有相册</span><input name="private" type="checkbox" value="1"';
+            if($album['private'] == '1'){
+                $html .=' checked="checked"';
+            }
+            $html .= ' /></div>';
+            echo json_encode(array('ret'=>true,'html'=>$html));
+            exit;
+        }else{
+            echo json_encode(array('ret'=>false,'msg'=>'相册不存在！'));
+            exit;
+        }
+    }
+    
+    function ajax_do_edit_priv_albums(){
+        @ob_clean();
+        
+        $id = intval($this->getPost('id',0));
+        $private = intval($this->getPost('private_v',0));
+
+        if($this->mdl_album->priv_album($id,$private)){
+            echo json_encode(array('ret'=>true,'html'=>''));
+            exit;
+        }else{
+            echo json_encode(array('ret'=>false,'msg'=>'修改相册权限失败！'));
+            exit;
+        }
+    }
 }

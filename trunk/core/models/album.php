@@ -70,6 +70,16 @@ class album extends modelfactory{
         return $this->db->query();
     }
     
+    function priv_album($id,$private){
+        $this->db->update('#albums','id='.$id,array('private'=>$private));
+        $ret = $this->db->query();
+        if($this->db->affectedRows()){
+            $this->db->update('#imgs','album='.$id,array('private'=>$private));
+            $this->db->query();
+        }
+        return $ret;
+    }
+    
     function update_album($id,$name){
         $this->db->update('#albums','id='.$id,array('name'=>$name));
         return $this->db->query();

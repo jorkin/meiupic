@@ -47,7 +47,7 @@ class controller extends adminpage{
         $album_id = $this->getGet('album',0);
         if(!is_array($pics)){
             if($referfunc=='default'){
-                header('Location: admin.php?page='.$referpage.'&flag=1');
+                header('Location: admin.php?act=all&page='.$referpage.'&flag=1');
             }elseif($referfunc=='album'){
                 header('Location: admin.php?ctl=album&act=photos&album='.$album.'&page='.$referpage.'&flag=1');
             }
@@ -79,7 +79,7 @@ class controller extends adminpage{
             }
         }
         if($referfunc=='default'){
-            header('Location: admin.php?page='.$referpage.'&flag=3');
+            header('Location: admin.php?act=all&page='.$referpage.'&flag=3');
         }elseif($referfunc=='album'){
             header('Location: admin.php?ctl=album&act=photos&album='.$album_id.'&page='.$referpage.'&flag=3');
         }

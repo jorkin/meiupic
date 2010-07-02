@@ -18,6 +18,7 @@ ul,li, dl, dd, p, h1, h2, h3, h4, h5, h6, form, fieldset{
 
 a{
     text-decoration:none;
+    color:#0F67A1;
 }
 
 .table100{
@@ -30,7 +31,9 @@ a{
 }
 .phototd img{
     padding:10px;
-    border:1px solid #B0D5EE
+    border:1px solid #bbb;
+    -webkit-box-shadow:2px 2px 5px #ccc;
+    -moz-box-shadow:2px 2px 5px #ccc;
 }
 .line35{
     line-height:35px;
@@ -124,4 +127,17 @@ a{
 }
 .box_body{
     padding:4px;
+}
+
+.warning{
+    background:#fee;
+    padding:10px;
+    border:1px solid #fcc;
+    margin-bottom:10px;
+}
+
+.foot{
+    padding:10px 0;
+    color:#666;
+    text-align:center;
 }

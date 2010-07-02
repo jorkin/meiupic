@@ -19,9 +19,14 @@
         </td>
         <?php 
         endforeach;
+        else:
+        ?>
+        <td><div class="warning"> 当前没有任何图片！ </div></td>
+        <?php
         endif;
         ?>
        </tr>
+    </table>
     </div>
 </div>
 <?php include('foot.php');?>

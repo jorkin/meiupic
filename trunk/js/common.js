@@ -676,16 +676,65 @@ function change_order(v){
         window.location.href = v;
     }
 }
-$(function(){
-	$('.dragable').jqDrag('.draghandle');
-	$('ul.album').find('li').each(function(i){
-	    this.onmouseover=function(){
-	        $('ul.album').find('li').removeClass('hover');
-	        $(this).addClass('hover');
-	    }
 
-		if($(this).find('input[type=checkbox]').attr('checked')){
-			$(this).find('div.selected').show();
-		}
-	});
+function edit_priv_album(o,id){
+    var url = 'admin.php?ctl=album&act=ajax_edit_priv_albums';
+    $.post(url,
+       {id:id},
+       function(data){
+            if(data.ret){
+                mydiv.Open(240,110,1);
+                $('#floatwin').find('h2 span').html('修改权限');
+                $('#floatFoot').html('<input type="button" name="submit" value="确定" class="btn" /> <input type="button" value="取消" class="btn gray" onclick="mydiv.Close()" />');
+                $('#floatContent').html(data.html);
+                
+                $('#floatFoot').find('input[name="submit"]').unbind('click').bind('click',function(){
+                    do_edit_priv_album(o,id);
+                });
+            }else{
+                alert(data.msg);
+            }
+        },
+    'json');
+}
+
+function do_edit_priv_album(o,id){
+    var private_val = $('#floatContent').find('input[name="private"]').attr('checked');
+    if(private_val){
+        var private_v = '1';
+    }else{
+        var private_v = '0';
+    };
+    var url = 'admin.php?ctl=album&act=ajax_do_edit_priv_albums';
+    $.post(url,
+       {id:id,private_v:private_v},
+       function(data){
+            if(data.ret){
+                var parent_el = $(o).parent().parent();
+                var priv_div = parent_el.find('div.priv');
+                if(private_v == '1' && priv_div.length == 0){
+                    parent_el.prepend('<div class="priv" title="私有相册"></div>');
+                }else if(private_v == '0' && priv_div.length > 0){
+                    priv_div.remove();
+                }
+                mydiv.Close();
+            }else{
+                alert(data.msg);
+            }
+        },
+    'json');
+}
+
+$(function(){
+    $('.dragable').jqDrag('.draghandle');
+    $('ul.album').find('li').each(function(i){
+        this.onmouseover=function(){
+            $('ul.album').find('li').removeClass('hover');
+            $(this).addClass('hover');
+        }
+
+        if($(this).find('input[type=checkbox]').attr('checked')){
+            $(this).find('div.selected').show();
+        }
+    });
 });
