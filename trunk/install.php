@@ -279,7 +279,7 @@
                   name varchar(50) NOT NULL,
                   cover int(11) NOT NULL DEFAULT '0',
                   create_time int(11) NOT NULL DEFAULT '0',
-                  private tinyint(1) NOT NULL DEFAULT '0',
+                  private tinyint(1) NOT NULL DEFAULT '0'
                 )",$conn);
         sqlite_query("CREATE INDEX cover on $albumstable (cover)",$conn);
 
