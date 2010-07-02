@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id: admin.php 21 2010-06-06 11:26:00Z lingter $
+ * $Id$
  * 
  * @author : Lingter
  * @support : http://www.meiu.cn

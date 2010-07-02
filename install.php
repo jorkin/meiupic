@@ -228,7 +228,8 @@
           `create_time` int(11) NOT NULL DEFAULT '0',
           `private` tinyint(1) NOT NULL DEFAULT '0',
           PRIMARY KEY (`id`),
-          KEY `pickey` (`pickey`)
+          KEY `pickey` (`pickey`),
+          KEY `imgalbum` (`album`)
         ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;",$dbconn);
         
         if(!$rt1 || !$rt2 || !$rt3){
@@ -296,7 +297,8 @@
                   private tinyint(1) NOT NULL DEFAULT '0'
                 )",$conn);
         sqlite_query("CREATE INDEX pickey on $imgstable (pickey)",$conn);
-        
+        sqlite_query("CREATE INDEX imgalbum on $imgstable (album)",$conn);
+
         sqlite_query("INSERT INTO $admintable (id, username, userpass,create_time) VALUES (1, '".$adminuser."', '".md5($adminpass)."','".time()."')",$conn);
         sqlite_query("INSERT INTO $albumstable (id, name, cover ,create_time) VALUES (1, '默认相册', '0','".time()."')",$conn);
         sqlite_close($conn);
