@@ -16,7 +16,12 @@ class controller extends adminpage{
         }
     }
     
+    
     function index(){
+        redirect_c('album','index');
+    }
+    
+    function all(){
         if(!$this->auth->isLogedin()){
             redirect_c('default','login');
         }
@@ -44,7 +49,7 @@ class controller extends adminpage{
         $mdl_picture = & load_model('picture');
         $mdl_album =& load_model('album');
         $pics = $mdl_picture->get_all_pic($page,0,$sort);
-        $pageurl='admin.php?page=[#page#]&sort='.$sort;
+        $pageurl='admin.php?act=all&page=[#page#]&sort='.$sort;
         $this->output->set('albums_list',$mdl_album->get_albums_assoc());
         $this->output->set('pics',$pics['ls']);
         $this->output->set('page',$page);

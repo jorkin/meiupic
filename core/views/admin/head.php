@@ -38,7 +38,7 @@
 <div id="mainbox">
     <div class="headnav">
     <ul>
-        <li <?php if ($res->get('current_nav')=='all'): ?>class="current"<?php endif; ?>><a href="admin.php">所有图片</a></li>
+        <li <?php if ($res->get('current_nav')=='all'): ?>class="current"<?php endif; ?>><a href="admin.php?act=all">所有图片</a></li>
         <li <?php if ($res->get('current_nav')=='album'): ?>class="current"<?php endif; ?>><a href="admin.php?ctl=album">相册</a></li>
         <li <?php if ($res->get('current_nav')=='upload'): ?>class="current"<?php endif; ?>><a href="admin.php?ctl=upload">上传图片</a></li>
         
