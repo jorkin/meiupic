@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id: album.php 13 2010-05-29 16:42:01Z lingter $
+ * $Id$
  * 
  * @author : Lingter
  * @support : http://www.meiu.cn

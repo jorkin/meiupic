@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id: pagefactory.php 18 2010-06-05 17:03:28Z lingter $
+ * $Id$
  * 
  * @author : Lingter
  * @support : http://www.meiu.cn
