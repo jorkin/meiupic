@@ -9,7 +9,7 @@
 
 class picture extends modelfactory{
     
-    function get_all_pic($page = NULL,$album=0,$sort='id_desc',$limit=0,$filter_private=false){
+    function get_all_pic($page = NULL,$album=0,$sort='time_desc',$limit=0,$filter_private=false){
         $where = '';
         if($album > 0){
             $where .= 'album='.intval($album);
@@ -19,18 +19,19 @@ class picture extends modelfactory{
         }
         if($sort == 'hot'){
             $db_sort = 'hits desc,id desc';
-        }elseif($sort == 'id_asc'){
-            $db_sort = 'id asc';
+        }elseif($sort == 'time_asc'){
+            $db_sort = 'create_time asc';
         }else{
-            $db_sort = 'id desc';
+            $db_sort = 'create_time desc';
         }
         $this->db->select('#imgs',"*",$where,$db_sort);
-        if($limit > 0){
-            $this->db->selectLimit(NULL,$limit);
-        }
+        
         if($page){
             $pics = $this->db->toPage($page,PAGE_SET);
         }else{
+            if($limit > 0){
+                $this->db->selectLimit(NULL,$limit);
+            }
             $pics = $this->db->getAll();
         }
         return $pics;

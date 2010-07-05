@@ -14,10 +14,10 @@
         <h1 class="logo"><img src="img/logo.png" width="170" height="57" /></h1>
         
         <ul class="nav">
-            <li class="first now"><a href="index.php"><span>首页</span></a> <sub></sub></li>
-            <li><a href="index.php?ctl=album"><span>相册</span></a></li>
-            <li><a href="index.php?ctl=default&act=newphotos"><span>最新上传</span></a></li>
-            <li class="last"><a href="admin.php"><span>管理相册</span></a></li>
+            <li class="first<?php if ($res->get('current_nav')=='index'): ?> now<?php endif; ?>"><a href="index.php"><span>首页</span></a> <sub></sub></li>
+            <li <?php if ($res->get('current_nav')=='album'): ?>class="now"<?php endif; ?>><a href="index.php?ctl=album"><span>相册</span></a> <sub></sub></li>
+            <li <?php if ($res->get('current_nav')=='newphotos'): ?>class="now"<?php endif; ?>><a href="index.php?ctl=default&act=newphotos"><span>最新上传</span></a> <sub></sub></li>
+            <li class="last"><a href="admin.php"><span>管理相册</span></a> <sub></sub></li>
         </ul>
     </div>
 </div>

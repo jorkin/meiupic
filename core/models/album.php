@@ -9,8 +9,13 @@
 
 class album extends modelfactory{
     
-    function get_all_album($page = NULL){
-        $this->db->select('#albums',"*",'','id desc');
+    function get_all_album($page = NULL,$filter_private=false){
+        if($filter_private){
+            $where = 'private=1';
+        }else{
+            $where = '';
+        }
+        $this->db->select('#albums',"*",$where,'id desc');
         if($page){
             $pics = $this->db->toPage($page,PAGE_SET);
         }else{

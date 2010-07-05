@@ -27,14 +27,21 @@ a{
 .phototd{
      text-align:center;
      vertical-align:middle;
-     height:250px;
+     height:280px;
 }
-.phototd img{
+.phototd img,.albumtd img{
     padding:10px;
     border:1px solid #bbb;
     -webkit-box-shadow:2px 2px 5px #ccc;
     -moz-box-shadow:2px 2px 5px #ccc;
 }
+
+.albumtd{
+     text-align:center;
+     vertical-align:middle;
+     height:160px;
+}
+
 .line35{
     line-height:35px;
 }
@@ -140,4 +147,35 @@ a{
     padding:10px 0;
     color:#666;
     text-align:center;
+}
+
+
+.pageset {
+    text-align:center;
+    font-family: Arial, Helvetica, sans-serif;
+    margin-top:10px;
+    padding:5px;
+    clear:both;
+}
+.pageset .pageset_total {
+font-weight:bold;
+}
+.pageset a {
+border:1px solid #80AFE0;
+font-weight:bold;
+height:17px;
+line-height:17px;
+margin:1px;
+padding:0 4px !important;
+text-align:center;
+text-decoration:none;
+width:auto !important;
+}
+.pageset a:hover {
+border:1px solid #FF785E;
+color:#D12907;
+}
+.pageset a.current {
+border:1px solid #FF785E;
+color:#D12907;
 }
