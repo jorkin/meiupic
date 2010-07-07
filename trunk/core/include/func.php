@@ -40,37 +40,26 @@ function where_is_tmp(){
 }
 
 function imgSrc($img){
-    global $setting;
-    return $setting['imgdir'].'/'.$img;
+    return 'data/'.$img;
 }
 
 function mkImgLink($dir,$key,$ext,$size='big'){
-    global $setting;
     if($size=='orig'){
-        return $setting['imgdir'].'/'.$dir.'/'.$key.'.'.$ext;
+        return 'data/'.$dir.'/'.$key.'.'.$ext;
     }
-    return $setting['imgdir'].'/'.$dir.'/'.$key.'_'.$size.'.'.$ext;
+    return 'data/'.$dir.'/'.$key.'_'.$size.'.'.$ext;
 }
 
 function get_updir_name($t){
     switch($t){
         case '1':
-            $name = date('Y-m-d');
-            break;
-        case '2':
             $name =  date('Ymd');
             break;
-        case '3':
-            $name = date('Y-m');
-            break;
-        case '4':
+        case '2':
             $name = date('Ym');
             break;
-        case '5':
-            $name = date('Y');
-            break;
         default:
-            $name = date('Y-m-d');
+            $name = date('Ymd');
     }
     return $name;
 }

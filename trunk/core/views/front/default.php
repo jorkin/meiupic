@@ -12,9 +12,9 @@
             }
         ?>
         <td class="phototd" id="i_<?php echo $v['id'];?>">
-            <img src="<?php echo SITE_URL.mkImgLink($v['dir'],$v['pickey'],$v['ext'],'small');?>" />
+            <a href="index.php?ctl=photo&act=view&album=<?php echo $v['album']; ?>#photo=<?php echo $v['id'];?>"><img src="<?php echo SITE_URL.mkImgLink($v['dir'],$v['pickey'],$v['ext'],'small');?>" /></a>
             <div class="line35">
-                <?php echo $v['name'];?>
+                <a href="index.php?ctl=photo&act=view&album=<?php echo $v['album']; ?>#photo=<?php echo $v['id'];?>"><?php echo $v['name'];?></a>
             </div>
         </td>
         <?php 

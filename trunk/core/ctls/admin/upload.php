@@ -14,6 +14,7 @@ class controller extends adminpage{
         $this->mdl_album = & load_model('album');
         $this->mdl_upload = & load_model('upload');
         $this->mdl_picture = & load_model('picture');
+        $this->allow_img_type = 'jpg,jpeg,gif,png';
         if(!$this->auth->isLogedin()){
             redirect_c('default','login');
         }
@@ -79,7 +80,7 @@ class controller extends adminpage{
             if (!empty($upfile)) {
                 $filename = $upfile;
                 $fileext = strtolower(end(explode('.',$filename)));
-                if(!in_array($fileext,explode(',',$this->setting['extension_allow']))){
+                if(!in_array($fileext,explode(',',$this->allow_img_type))){
                     showInfo('不支持的图片格式！',false);
                     exit;
                 }

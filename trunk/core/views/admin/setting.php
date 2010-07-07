@@ -39,12 +39,6 @@
 <table>
     <tbody>
     <tr>
-        <td class="tt">图片保存目录：</td><td class="tc"><input name="setting[imgdir]" class="txtinput" type="text" value="<?php echo $setting['imgdir'];?>" style="width:100px" /></td><td class="ti">保存图片的目录，此目录必须存在。有可能会影响正常功能，请谨慎修改</td>
-    </tr>
-    <tr>
-        <td class="tt">高级上传引擎：</td><td class="tc"><input name="setting[upload_runtimes]" class="txtinput" type="text" value="<?php echo $setting['upload_runtimes'];?>" style="width:250px" /></td><td class="ti">目前支持的引擎有 html5,flash,gears,silverlight,browserplus,html4</td>
-    </tr>
-    <tr>
         <td class="tt">是否开启客户端预处理：</td><td class="tc"><input id="setting_open_pre_resize" name="setting[open_pre_resize]" type="checkbox" value="1" <?php if($setting['open_pre_resize']){ echo 'checked="checked"';} ?> onclick="switch_div(this,'imgsetting_div');" /></td><td class="ti">在客户端预处理可以大大减少网络传输，缩短上传时间。开启后无法获取照片EXIF信息</td>
     </tr>
     </tbody>
@@ -70,15 +64,9 @@
     <tr>
         <td class="tt">上传子目录形式：</td><td class="tc">
             <select name="setting[imgdir_type]">
-                <option value="1" <?php if($setting['imgdir_type']=='1') echo 'selected="selected"';?>>YYYY-MM-DD</option>
-                <option value="2" <?php if($setting['imgdir_type']=='2') echo 'selected="selected"';?>>YYYYMMDD</option>
-                <option value="3" <?php if($setting['imgdir_type']=='3') echo 'selected="selected"';?>>YYYY-MM</option>
-                <option value="4" <?php if($setting['imgdir_type']=='4') echo 'selected="selected"';?>>YYYYMM</option>
-                <option value="5" <?php if($setting['imgdir_type']=='5') echo 'selected="selected"';?>>YYYY</option>
-            </select></td><td class="ti">如：data/2010-05-20/xxxx.jpg</td>
-    </tr>
-    <tr>
-        <td class="tt">允许的图片格式：</td><td class="tc"><input name="setting[extension_allow]" class="txtinput" type="text" value="<?php echo $setting['extension_allow'];?>" /></td><td class="ti">允许上传的图片格式目前只支持jpg(jpeg),png,gif</td>
+                <option value="1" <?php if($setting['imgdir_type']=='1') echo 'selected="selected"';?>>YYYYMMDD</option>
+                <option value="4" <?php if($setting['imgdir_type']=='2') echo 'selected="selected"';?>>YYYYMM</option>
+            </select></td><td class="ti">如：data/20100520/xxxx.jpg</td>
     </tr>
     <tr>
         <td class="tt">普通上传允许的图片大小：</td><td class="tc"><input name="setting[size_allow]" class="txtinput" type="text" value="<?php echo $setting['size_allow'];?>" style="width:80px" /></td><td class="ti">单位：字节</td>

@@ -11,7 +11,7 @@ class album extends modelfactory{
     
     function get_all_album($page = NULL,$filter_private=false){
         if($filter_private){
-            $where = 'private=1';
+            $where = 'private=0';
         }else{
             $where = '';
         }

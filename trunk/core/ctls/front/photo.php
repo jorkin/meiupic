@@ -68,4 +68,11 @@ class controller extends frontpage{
         $imgobj->output();
     }
     
+    function view(){
+        $album = intval($this->getGet('album'));
+        $picls = $this->mdl_picture->get_all_pic(null,$album,'time_asc','0',true);
+        
+        $this->output->set('piclist',$picls);
+        $this->view->display('front/viewphoto.php');
+    }
 }

@@ -20,7 +20,7 @@ class controller extends frontpage{
             $page = 1;
         }
         
-        $albums = $this->mdl_album->get_all_album($page);
+        $albums = $this->mdl_album->get_all_album($page,true);
         
         $pageurl='index.php?ctl=album&page=[#page#]';
         if($albums['ls']){
