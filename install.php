@@ -582,15 +582,12 @@ if(file_exists(ROOTDIR.'conf/install.lock') && $action!=3){
         $setting_content .= "\$setting['site_keyword'] = '';\n";
         $setting_content .= "\$setting['site_description'] = '';\n";
         $setting_content .= "\$setting['url'] = '".$setting['url']."';\n";
-        $setting_content .= "\$setting['imgdir'] = 'data';\n";
-        $setting_content .= "\$setting['upload_runtimes'] = 'html5,flash,gears,silverlight';\n";
         $setting_content .= "\$setting['open_pre_resize'] = false;\n";
         $setting_content .= "\$setting['resize_img_width'] = '1600';\n";
         $setting_content .= "\$setting['resize_img_height'] = '1200';\n";
         $setting_content .= "\$setting['resize_quality'] = '100';\n";
         $setting_content .= "\$setting['demand_resize'] = false;\n";
-        $setting_content .= "\$setting['imgdir_type'] = '4';\n";
-        $setting_content .= "\$setting['extension_allow'] = 'jpg,jpeg,gif,png';\n";
+        $setting_content .= "\$setting['imgdir_type'] = '2';\n";
         $setting_content .= "\$setting['size_allow'] = '1024000';\n";
         $setting_content .= "\$setting['pageset'] = '24';\n";
         $setting_content .= "\$setting['open_photo'] = false;\n";

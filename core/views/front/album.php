@@ -12,16 +12,16 @@
                 }
             ?>
             <td class="albumtd" id="i_<?php echo $v['id'];?>">
-                <img src="<?php echo $v['cover'];?>" />
+                <a href="index.php?ctl=photo&act=view&album=<?php echo $v['id']; ?>"><img src="<?php echo $v['cover'];?>" /></a>
                 <div class="line35">
-                    <?php echo $v['name'];?>
+                   <a href="index.php?ctl=photo&act=view&album=<?php echo $v['id']; ?>"><?php echo $v['name'];?></a>
                 </div>
             </td>
             <?php 
             endforeach;
             else:
             ?>
-            <td><div class="warning"> 当前没有任何图片！ </div></td>
+            <td><div class="warning"> 当前没有任何相册！ </div></td>
             <?php
             endif;
             ?>

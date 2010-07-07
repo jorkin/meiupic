@@ -21,7 +21,7 @@ $(function() {
     });
     
 	$("#flash_uploader").pluploadQueue({
-		runtimes : '<?php echo $res->get('upload_runtimes');?>',
+		runtimes : 'html5,flash,gears,silverlight,browserplus,html4',
 		url : 'admin.php?ctl=upload&act=process',
 		max_file_size : '10mb',
 		chunk_size : '1mb',

@@ -10,12 +10,12 @@
 class picture extends modelfactory{
     
     function get_all_pic($page = NULL,$album=0,$sort='time_desc',$limit=0,$filter_private=false){
-        $where = '';
+        $where = '1';
         if($album > 0){
-            $where .= 'album='.intval($album);
+            $where .= ' and album='.intval($album);
         }
         if($filter_private){
-            $where .= ' private=0';
+            $where .= ' and private=0';
         }
         if($sort == 'hot'){
             $db_sort = 'hits desc,id desc';
