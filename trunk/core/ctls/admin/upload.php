@@ -15,6 +15,7 @@ class controller extends adminpage{
         $this->mdl_upload = & load_model('upload');
         $this->mdl_picture = & load_model('picture');
         $this->allow_img_type = 'jpg,jpeg,gif,png';
+        
         if(!$this->auth->isLogedin()){
             redirect_c('default','login');
         }
@@ -30,11 +31,9 @@ class controller extends adminpage{
         $album_id = $this->getGet('album_id');
         if($album_id){
             $this->output->set('album_id',$album_id);
-            $this->output->set('upload_runtimes',$this->setting['upload_runtimes']);
             $this->output->set('open_pre_resize',$this->setting['open_pre_resize']);
             $this->output->set('resize_img_width',$this->setting['resize_img_width']);
             $this->output->set('resize_img_height',$this->setting['resize_img_height']);
-            $this->output->set('extension_allow',$this->setting['extension_allow']);
             $this->output->set('resize_quality',$this->setting['resize_quality']);
             $this->view->display('admin/upload_step2.php');
         }else{
@@ -64,7 +63,6 @@ class controller extends adminpage{
             @chmod(DATADIR.$date,0755);
         }
         
-        $uploadtime = time();
         $album_id = intval($this->getGet('album'));
         $album_arr = $this->mdl_album->get_one_album($album_id);
         if($album_arr){
@@ -89,8 +87,7 @@ class controller extends adminpage{
                     exit;
                 }
                 $key = md5(str_replace('.','',microtime(true)));
-                $imgpath = $date.'/'.$key.'.'.$fileext;
-                $realpath = DATADIR.$imgpath;
+                $realpath = ROOTDIR.mkImgLink($date,$key,$fileext,'orig');
                 
                 if(@move_uploaded_file($tmpfile,$realpath)){
                     if(!$this->setting['demand_resize']){
@@ -102,7 +99,7 @@ class controller extends adminpage{
                                                     'dir'=>$date,
                                                     'pickey'=>$key,
                                                     'ext'=>$fileext,
-                                                    'create_time'=>$uploadtime,
+                                                    'create_time'=>time(),
                                                     'private' => $photo_private
                                                     ));
                 }else{
@@ -134,7 +131,6 @@ class controller extends adminpage{
         $tmp_dir = where_is_tmp();
         $targetDir =  $tmp_dir. DIRECTORY_SEPARATOR . "plupload";
         
-        $uploadtime = time();
         $album_id = intval($this->getGet('album'));
         $album_arr = $this->mdl_album->get_one_album($album_id);
         if($album_arr){
@@ -155,8 +151,7 @@ class controller extends adminpage{
             $status =  $this->getPost("flash_uploader_{$i}_status");
             $fileext = strtolower(end(explode('.',$filename)));
             $key = md5(str_replace('.','',microtime(true)));
-            $imgpath = $date.'/'.$key.'.'.$fileext;
-            $realpath = DATADIR.$imgpath;
+            $realpath = ROOTDIR.mkImgLink($date,$key,$fileext,'orig');
             if($status == 'done' && file_exists($tmpfile)){
                 if(@copy($tmpfile,$realpath)){                    
                     if(!$this->setting['demand_resize']){
@@ -168,7 +163,7 @@ class controller extends adminpage{
                                                     'dir'=>$date,
                                                     'pickey'=>$key,
                                                     'ext'=>$fileext,
-                                                    'create_time'=>$uploadtime,
+                                                    'create_time'=>time(),
                                                     'private' => $photo_private
                                                     ));
                 }

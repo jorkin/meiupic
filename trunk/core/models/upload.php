@@ -24,25 +24,23 @@ class upload extends modelfactory{
         $imgobj->setQuality(95);
         
         $size = 'big';
-        $width = '700';
-        $height = '700';
+        $width = '900';
+        $height = '900';
         $bigpath = ROOTDIR.mkImgLink($dir,$key,$ext,$size);
         $imgobj->resizeScale($width,$height );
         $imgobj->save($bigpath);
         @chmod($bigpath,0755);
         
-        //$imgobj = new Image();
         $imgobj->load($bigpath);
         
         $size = 'medium';
-        $width = '500';
-        $height = '500';
+        $width = '550';
+        $height = '550';
         $newpath = ROOTDIR.mkImgLink($dir,$key,$ext,$size);
         $imgobj->resizeScale($width,$height );
         $imgobj->save($newpath);
         @chmod($newpath,0755);
         
-        //$imgobj = new Image();
         $imgobj->load($bigpath);
         
         $size = 'small';

@@ -65,7 +65,7 @@
         <td class="tt">上传子目录形式：</td><td class="tc">
             <select name="setting[imgdir_type]">
                 <option value="1" <?php if($setting['imgdir_type']=='1') echo 'selected="selected"';?>>YYYYMMDD</option>
-                <option value="4" <?php if($setting['imgdir_type']=='2') echo 'selected="selected"';?>>YYYYMM</option>
+                <option value="2" <?php if($setting['imgdir_type']=='2') echo 'selected="selected"';?>>YYYYMM</option>
             </select></td><td class="ti">如：data/20100520/xxxx.jpg</td>
     </tr>
     <tr>

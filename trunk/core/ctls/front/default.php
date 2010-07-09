@@ -13,7 +13,7 @@ class controller extends frontpage{
         $this->output->set('current_nav','index');
         
         $mdl_picture = & load_model('picture');
-        $piclist = $mdl_picture->get_all_pic(NULL,0,'hot',9,true);
+        $piclist = $mdl_picture->get_all_pic(NULL,0,'hot',10,true);
         $this->output->set('piclist',$piclist);
         $this->view->display('front/default.php');
     }
