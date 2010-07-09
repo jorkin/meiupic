@@ -130,6 +130,11 @@
             SmallController.leftld = 5;
             SmallController.rightld = 5;
             showSmall();
+        }else if(miniphoto_left == 0){
+            SmallController.current = 0;
+            SmallController.leftld = 0;
+            SmallController.rightld = 11;
+            showSmall();
         }
         $('#show_photo_page span.cur').text(parseInt(v)+1);
         window.location.hash = '#photo='+$('#li_'+v).attr('rel');
