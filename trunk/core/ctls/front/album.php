@@ -36,4 +36,24 @@ class controller extends frontpage{
         $this->output->set('total_num',$albums['count']);
         $this->view->display('front/album.php');
     }
+    
+    function photos(){
+        $album = intval($this->getGet('album',0));
+        $page = $this->getGet('page',0);
+        if(!$page){
+            $page = 1;
+        }
+        
+        $pics = load_model('picture')->get_all_pic($page,$album,'time_asc');
+        $pageurl="index.php?ctl=album&act=photos&album={$album}&page=[#page#]";
+        
+        $this->output->set('current_nav','album');
+        $this->output->set('piclist',$pics['ls']);
+        $this->output->set('album_name',$this->mdl_album->get_album_name($album));
+        $this->output->set('album',$album);
+        $this->output->set('pageset',pageshow($pics['total'],$pics['start'],$pageurl));
+        $this->output->set('total_num',$pics['count']);
+        
+        $this->view->display('front/album_photos.php');
+    }
 }

@@ -77,6 +77,7 @@ class controller extends frontpage{
         $this->output->set('piclist',$picls);
         $this->output->set('mini_photo_width',$mini_photo_width);
         $this->output->set('album_name',$this->mdl_album->get_album_name($album));
+        $this->output->set('album',$album);
         $this->view->display('front/viewphoto.php');
     }
 }
