@@ -3,6 +3,13 @@
     <div class="bg1 title"><h3 id="album_ptitle"><a href="index.php?ctl=album">相册列表</a> &gt; <?php echo $res->get('album_name');?></h3></div>
     <div class="box_body">
     <table class="table100">
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
       <tr>
         <?php $ls = $res->get('piclist');
         if($ls):

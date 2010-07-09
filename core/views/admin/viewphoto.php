@@ -86,7 +86,6 @@
         }
         ?>
         var img = new Image();
-        img.src = "<?php echo mkImgLink($ls['dir'],$ls['pickey'],$ls['ext'],'big');?>";
         img.onload = function(){
             var img_width = img.width;
             var max_width = $('body').width()-350;
@@ -96,6 +95,7 @@
             var imgload = '<div class="sh1"><div class="sh2"><div class="sh3"><a class="p-tag" hidefocus="true" href="'+imghref+'" title="'+nexttile+'"><img class="p-tag" width="'+img_width+'" src="'+img.src+'"></a></div></div></div>';
             $('#photo-body div.picnt').html(imgload);
         };
+        img.src = "<?php echo mkImgLink($ls['dir'],$ls['pickey'],$ls['ext'],'big');?>";
         
         var clip = new ZeroClipboard.Client();
         clip.setText('');
