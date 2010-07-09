@@ -30,7 +30,7 @@ class controller extends frontpage{
         $piclist = $mdl_picture->get_all_pic($page,0,'time_desc',0,true);
         $this->output->set('piclist',$piclist['ls']);
         $this->output->set('pageset',pageshow($piclist['total'],$piclist['start'],$pageurl));
-        $this->output->set('total_num',$albums['count']);
+        $this->output->set('total_num',$piclist['count']);
         $this->output->set('current_nav','newphotos');
         $this->view->display('front/newphotos.php');
     }
