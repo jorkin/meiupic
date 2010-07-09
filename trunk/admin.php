@@ -33,7 +33,7 @@ define('CTLDIR',COREDIR.'ctls/');
 define('VIEWDIR',COREDIR.'views/');
 define('MODELDIR',COREDIR.'models/');
 
-define('DATADIR',ROOTDIR.$setting['imgdir'].'/');
+define('DATADIR',ROOTDIR.'data/');
 
 define('SITE_URL',$setting['url']);
 define('PAGE_SET',$setting['pageset']);
