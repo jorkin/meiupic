@@ -123,6 +123,11 @@
             showSmall();
         }
         $('#show_photo_page span.cur').text(parseInt(v)+1);
+        
+        $('#miniphoto_list li').removeClass('current');
+        $('#li_'+v).addClass('current');
+        $('#album_ptitle span').text(img_title);
+        
         var photo_realid = $('#li_'+v).attr('rel');
         window.location.hash = '#photo='+photo_realid;
         
@@ -133,9 +138,6 @@
             }else{
                 img_width = img.width;
             }
-            $('#miniphoto_list li').removeClass('current');
-            $('#li_'+v).addClass('current');
-            $('#album_ptitle span').text(img_title);
             $('#imgarea').html('<img src="'+img_src+'" width="'+img_width+'" />');
         }
         img.src = img_src;
