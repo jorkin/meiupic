@@ -269,8 +269,10 @@ ul.thumblist li div.photo{
 }
 
 span.next_cur{
-    cursor: url("img/next.cur"),url("next.cur"),auto;
+    cursor: url("next.cur"),auto;
+    *cursor: url("img/next.cur"),auto;
 }
 span.pre_cur{
-    cursor: url("img/pre.cur"),url("pre.cur"),auto;
+    cursor: url("pre.cur"),auto;
+    *cursor: url("img/pre.cur"),auto;
 }
