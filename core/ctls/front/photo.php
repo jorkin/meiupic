@@ -41,11 +41,11 @@ class controller extends frontpage{
             $height = '75';
             $square = true;
         }elseif($size=='medium'){
-            $width = '500';
-            $height = '500';
+            $width = '550';
+            $height = '550';
         }elseif($size=='big'){
-            $width = '700';
-            $height = '700';
+            $width = '900';
+            $height = '900';
         }
         $orig = mkImgLink($pic['dir'],$key,$pic['ext'],'orig'); 
         $resized = mkImgLink($pic['dir'],$key,$pic['ext'],$size); 
@@ -72,7 +72,11 @@ class controller extends frontpage{
         $album = intval($this->getGet('album'));
         $picls = $this->mdl_picture->get_all_pic(null,$album,'time_asc','0',true);
         
+        $mini_photo_width = (count($picls)+5)*65;
+        $this->output->set('total_imgs',count($picls));
         $this->output->set('piclist',$picls);
+        $this->output->set('mini_photo_width',$mini_photo_width);
+        $this->output->set('album_name',$this->mdl_album->get_album_name($album));
         $this->view->display('front/viewphoto.php');
     }
 }

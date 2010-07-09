@@ -10,7 +10,7 @@
     </div>
     <div id="photo-body">
          <div class="picnt">
-              <img class="p-tag" src="img/pic_loading.gif"></a>   
+              <img class="p-tag" src="img/pic_loading.gif">
          </div>
     </div>
     <div class="photo-right">
@@ -55,8 +55,8 @@
             <input type="radio" name="size" value="<?php echo SITE_URL.mkImgLink($ls['dir'],$ls['pickey'],$ls['ext'],'square');?>" onclick="select_copypics(this.value)" /> 方块图(75*75) <a href="<?php echo SITE_URL.mkImgLink($ls['dir'],$ls['pickey'],$ls['ext'],'square');?>" target="_blank">预览</a><br />
             <input type="radio" name="size" value="<?php echo SITE_URL.mkImgLink($ls['dir'],$ls['pickey'],$ls['ext'],'thumb');?>" onclick="select_copypics(this.value)" /> 缩略图(110*150) <a href="<?php echo SITE_URL.mkImgLink($ls['dir'],$ls['pickey'],$ls['ext'],'thumb');?>" target="_blank">预览</a><br />
             <input type="radio" name="size" value="<?php echo SITE_URL.mkImgLink($ls['dir'],$ls['pickey'],$ls['ext'],'small');?>" onclick="select_copypics(this.value)" /> 小图(240*240) <a href="<?php echo SITE_URL.mkImgLink($ls['dir'],$ls['pickey'],$ls['ext'],'small');?>" target="_blank">预览</a><br />
-            <input type="radio" name="size" value="<?php echo SITE_URL.mkImgLink($ls['dir'],$ls['pickey'],$ls['ext'],'medium');?>" onclick="select_copypics(this.value)" checked="checked" /> 中图(500*500) <a href="<?php echo SITE_URL.mkImgLink($ls['dir'],$ls['pickey'],$ls['ext'],'medium');?>" target="_blank">预览</a><br />
-            <input type="radio" name="size" value="<?php echo SITE_URL.mkImgLink($ls['dir'],$ls['pickey'],$ls['ext'],'big');?>" onclick="select_copypics(this.value)" /> 大图(700*700) <a href="<?php echo SITE_URL.mkImgLink($ls['dir'],$ls['pickey'],$ls['ext'],'big');?>" target="_blank">预览</a><br />
+            <input type="radio" name="size" value="<?php echo SITE_URL.mkImgLink($ls['dir'],$ls['pickey'],$ls['ext'],'medium');?>" onclick="select_copypics(this.value)" checked="checked" /> 中图(550*550) <a href="<?php echo SITE_URL.mkImgLink($ls['dir'],$ls['pickey'],$ls['ext'],'medium');?>" target="_blank">预览</a><br />
+            <input type="radio" name="size" value="<?php echo SITE_URL.mkImgLink($ls['dir'],$ls['pickey'],$ls['ext'],'big');?>" onclick="select_copypics(this.value)" /> 大图(900*900) <a href="<?php echo SITE_URL.mkImgLink($ls['dir'],$ls['pickey'],$ls['ext'],'big');?>" target="_blank">预览</a><br />
             <input type="radio" name="size" value="<?php echo SITE_URL.mkImgLink($ls['dir'],$ls['pickey'],$ls['ext'],'orig');?>" onclick="select_copypics(this.value)" /> 原图 <a href="<?php echo SITE_URL.mkImgLink($ls['dir'],$ls['pickey'],$ls['ext'],'orig');?>" target="_blank">预览</a><br /><br />
             <input type="button" value="复制到剪切板" class="btn" id="copyspics_click" />
         </div>
@@ -88,10 +88,15 @@
         var img = new Image();
         img.src = "<?php echo mkImgLink($ls['dir'],$ls['pickey'],$ls['ext'],'big');?>";
         img.onload = function(){
-            var imgload = '<div class="sh1"><div class="sh2"><div class="sh3"><a class="p-tag" hidefocus="true" href="'+imghref+'" title="'+nexttile+'"><img class="p-tag" src="'+img.src+'"></a></div></div></div>';
+            var img_width = img.width;
+            var max_width = $('body').width()-350;
+            if (img.width > max_width) {
+                img_width = max_width;
+            };
+            var imgload = '<div class="sh1"><div class="sh2"><div class="sh3"><a class="p-tag" hidefocus="true" href="'+imghref+'" title="'+nexttile+'"><img class="p-tag" width="'+img_width+'" src="'+img.src+'"></a></div></div></div>';
             $('#photo-body div.picnt').html(imgload);
         };
-
+        
         var clip = new ZeroClipboard.Client();
         clip.setText('');
         clip.setHandCursor( true );
@@ -106,7 +111,15 @@
             $('#copyedok').show().animate({opacity: 1.0}, 1000).fadeOut();
         });
         
-        
+        window.onresize = function(){
+            var img_width = img.width;
+            var max_width = $('body').width()-350;
+            if (img.width > max_width) {
+                img_width = max_width;
+            };
+            $('#photo-body img').attr('width',img_width);
+            clip.reposition('copyspics_click');
+        }
 
         document.onkeydown = keydown;
         function keydown(event){

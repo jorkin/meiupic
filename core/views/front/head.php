@@ -6,6 +6,7 @@
 <meta name="description" content="<?php echo $res->get('site_description');?>" />
 <meta name="keywords" content="<?php echo $res->get('site_keyword');?>" />
 <link rel="stylesheet" href="img/home.css" type="text/css" />
+<script type="text/javascript" src="js/jquery.js"></script>
 </head>
 
 <body>
