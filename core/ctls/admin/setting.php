@@ -27,21 +27,6 @@ class controller extends adminpage{
             if(empty($new_setting['url'])){
                 showInfo('网站url不能为空！',false);
             }
-            if(empty($new_setting['imgdir'])){
-                showInfo('图片保存目录不能为空！',false);
-            }
-            if(!is_dir(ROOTDIR.$new_setting['imgdir']) || !is_writable(ROOTDIR.$new_setting['imgdir'])){
-                showInfo('图片保存目录不存在或不可写！',false);
-            }
-            if(empty($new_setting['upload_runtimes'])){
-                showInfo('高级上传引擎不能为空！',false);
-            }
-            $runtimes = explode(',',$new_setting['upload_runtimes']);
-            foreach($runtimes as $r){
-                if(!in_array($r,array('html5','flash','gears','silverlight','browserplus','html4'))){
-                    showInfo('不支持的上传引擎：'.$r.'！',false);
-                }
-            }
             if(isset($new_setting['open_pre_resize'])){
                 $new_setting['open_pre_resize'] = 'true';
             }else{
@@ -71,15 +56,6 @@ class controller extends adminpage{
             }
             if($new_setting['resize_quality']<0 || $new_setting['resize_quality']>100){
                 showInfo('图片质量只能在0-100之间！',false);
-            }
-            if(empty($new_setting['extension_allow'])){
-                showInfo('允许的图片格式不能为空！',false);
-            }
-            $pic_exts = explode(',',$new_setting['extension_allow']);
-            foreach($pic_exts as $r){
-                if(!in_array($r,array('jpg','jpeg','png','gif'))){
-                    showInfo('程序暂时不支持此种格式：'.$r.'！',false);
-                }
             }
             if(empty($new_setting['size_allow']) || !is_numeric($new_setting['size_allow'])){
                 showInfo('普通上传允许的图片大小只能为数字！',false);
