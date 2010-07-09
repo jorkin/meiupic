@@ -124,7 +124,7 @@ a{
 }
 .main .title h3{
     float:left;
-    font-size:14px;
+    font-size:12px;
     line-height:25px;
     padding:0 10px;
 }
@@ -188,6 +188,7 @@ color:#D12907;
 
 #album_ptitle{
     font-size:12px;
+    font-weight:normal;
 }
 
 div.photo_control{
@@ -257,7 +258,9 @@ ul.thumblist li div.photo{
     height:auto !important;
     height:500px;
     min-height:500px;
+    background:url(bg_line_loading.gif) no-repeat center;
 }
+
 span.next_cur{
     cursor: url("img/next.cur"),url("next.cur"),auto;
 }

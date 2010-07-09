@@ -1,6 +1,6 @@
 <?php include('head.php');?>
 <div class="main box1">
-    <div class="bg1 title"><h3 id="album_ptitle"><?php echo $res->get('album_name'); ?> &gt; <span></span></h3></div>
+    <div class="bg1 title"><h3 id="album_ptitle"><a href="index.php?ctl=album">相册列表</a> &gt;  <a href="index.php?ctl=album&act=photos&album=<?php echo $res->get('album'); ?>"><?php echo $res->get('album_name'); ?></a> &gt; <span></span></h3></div>
     <div class="box_body">
         <div class="photo_control">
             <button class="nav_pre"  onfocus="this.blur()" onclick="showPre()">
@@ -91,20 +91,8 @@
         }
         var img_title = $('#i_'+v).attr('title');
         var img_src = $('#i_'+v).attr('rel');
-        $('#imgarea').html('<img class="p-tag" src="img/pic_loading.gif">');
-        var img = new Image();
-        img.src = img_src;
-        img.onload = function(){
-            if(img.width > 750){
-                img_width = 750;
-            }else{
-                img_width = img.width;
-            }
-            $('#miniphoto_list li').removeClass('current');
-            $('#li_'+v).addClass('current');
-            $('#album_ptitle span').text(img_title);
-            $('#imgarea').html('<img src="'+img_src+'" width="'+img_width+'" />');
-        }
+        $('#imgarea').html('');
+        
         var miniphoto_left = $('#miniphoto_list').get(0).scrollLeft;
         var total_width = $('#miniphoto_list ul.thumblist').width();
         
@@ -120,12 +108,7 @@
             SmallController.leftld = 10;
             SmallController.rightld = 0;
             showSmall();
-        }else if(parseInt(v)*65 > miniphoto_left+65*9){
-            $('#miniphoto_list').animate({ scrollLeft : parseInt(v-5)*65 }, 'fast');
-            SmallController.leftld = 5;
-            SmallController.rightld = 5;
-            showSmall();
-        }else if(parseInt(v)*65 < miniphoto_left+65){
+        }else if(parseInt(v)*65 > miniphoto_left+65*9 || parseInt(v)*65 < miniphoto_left+65){
             $('#miniphoto_list').animate({ scrollLeft : parseInt(v-5)*65 }, 'fast');
             SmallController.leftld = 5;
             SmallController.rightld = 5;
@@ -138,6 +121,20 @@
         }
         $('#show_photo_page span.cur').text(parseInt(v)+1);
         window.location.hash = '#photo='+$('#li_'+v).attr('rel');
+        
+        var img = new Image();
+        img.src = img_src;
+        img.onload = function(){
+            if(img.width > 750){
+                img_width = 750;
+            }else{
+                img_width = img.width;
+            }
+            $('#miniphoto_list li').removeClass('current');
+            $('#li_'+v).addClass('current');
+            $('#album_ptitle span').text(img_title);
+            $('#imgarea').html('<img src="'+img_src+'" width="'+img_width+'" />');
+        }
     }
     $(function(){
         var photo_id = getHash('photo');

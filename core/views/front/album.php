@@ -12,9 +12,9 @@
                 }
             ?>
             <td class="albumtd" id="i_<?php echo $v['id'];?>">
-                <a href="index.php?ctl=photo&act=view&album=<?php echo $v['id']; ?>"><img src="<?php echo $v['cover'];?>" /></a>
+                <a href="index.php?ctl=album&act=photos&album=<?php echo $v['id']; ?>"><img src="<?php echo $v['cover'];?>" /></a>
                 <div class="line35">
-                   <a href="index.php?ctl=photo&act=view&album=<?php echo $v['id']; ?>"><?php echo $v['name'];?></a>
+                   <a href="index.php?ctl=album&act=photos&album=<?php echo $v['id']; ?>"><?php echo $v['name'];?></a>
                 </div>
             </td>
             <?php 
