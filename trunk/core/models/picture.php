@@ -94,4 +94,9 @@ class picture extends modelfactory{
         $this->db->delete('#imgs','id='.intval($id));
         return $this->db->query();
     }
+    
+    function addHit($id){
+        $this->db->update('#imgs','id='.intval($id),array('hits'=>new DB_Expr('hits+1')));
+        return $this->db->query();
+    }
 }

@@ -123,7 +123,8 @@
             showSmall();
         }
         $('#show_photo_page span.cur').text(parseInt(v)+1);
-        window.location.hash = '#photo='+$('#li_'+v).attr('rel');
+        var photo_realid = $('#li_'+v).attr('rel');
+        window.location.hash = '#photo='+photo_realid;
         
         var img = new Image();
         img.onload = function(){
@@ -138,6 +139,8 @@
             $('#imgarea').html('<img src="'+img_src+'" width="'+img_width+'" />');
         }
         img.src = img_src;
+        
+        $.get('index.php?ctl=photo&act=ajax_addhit&id='+photo_realid,null,function(data){;});
     }
     $(function(){
         var photo_id = getHash('photo');

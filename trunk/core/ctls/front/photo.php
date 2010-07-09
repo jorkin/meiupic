@@ -80,4 +80,9 @@ class controller extends frontpage{
         $this->output->set('album',$album);
         $this->view->display('front/viewphoto.php');
     }
+    
+    function ajax_addhit(){
+        $id = intval($this->getGet('id'));
+        $this->mdl_picture->addHit($id);
+    }
 }
