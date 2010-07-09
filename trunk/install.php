@@ -212,6 +212,7 @@
           `cover` int(11) NOT NULL DEFAULT '0',
           `create_time` int(11) NOT NULL DEFAULT '0',
           `private` tinyint(1) NOT NULL DEFAULT '0',
+          `desc` text NOT NULL DEFAULT '',
           PRIMARY KEY (`id`),
           KEY `cover` (`cover`)
         ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;",$dbconn);
@@ -227,6 +228,9 @@
           `hits` int(11) NOT NULL DEFAULT '0',
           `create_time` int(11) NOT NULL DEFAULT '0',
           `private` tinyint(1) NOT NULL DEFAULT '0',
+          `private_pass` varchar(50) NOT NULL DEFAULT '',
+          `author` int(11) NOT NULL DEFAULT '0',
+          `desc` text NOT NULL DEFAULT '',
           PRIMARY KEY (`id`),
           KEY `pickey` (`pickey`),
           KEY `imgalbum` (`album`)
@@ -280,7 +284,8 @@
                   name varchar(50) NOT NULL,
                   cover int(11) NOT NULL DEFAULT '0',
                   create_time int(11) NOT NULL DEFAULT '0',
-                  private tinyint(1) NOT NULL DEFAULT '0'
+                  private tinyint(1) NOT NULL DEFAULT '0',
+                  desc text NOT NULL DEFAULT ''
                 )",$conn);
         sqlite_query("CREATE INDEX cover on $albumstable (cover)",$conn);
 
@@ -294,7 +299,10 @@
                   status tinyint(1) NOT NULL DEFAULT '0',
                   hits int(11) NOT NULL DEFAULT '0',
                   create_time int(11) NOT NULL DEFAULT '0',
-                  private tinyint(1) NOT NULL DEFAULT '0'
+                  private tinyint(1) NOT NULL DEFAULT '0',
+                  private_pass varchar(50) NOT NULL DEFAULT '',
+                  author int(11) NOT NULL DEFAULT '0',
+                  desc text NOT NULL DEFAULT ''
                 )",$conn);
         sqlite_query("CREATE INDEX pickey on $imgstable (pickey)",$conn);
         sqlite_query("CREATE INDEX imgalbum on $imgstable (album)",$conn);

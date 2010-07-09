@@ -99,6 +99,7 @@ class controller extends adminpage{
                                                     'dir'=>$date,
                                                     'pickey'=>$key,
                                                     'ext'=>$fileext,
+                                                    'author'=>$this->auth->getInfo('id'),
                                                     'create_time'=>time(),
                                                     'private' => $photo_private
                                                     ));
@@ -163,6 +164,7 @@ class controller extends adminpage{
                                                     'dir'=>$date,
                                                     'pickey'=>$key,
                                                     'ext'=>$fileext,
+                                                    'author'=>$this->auth->getInfo('id'),
                                                     'create_time'=>time(),
                                                     'private' => $photo_private
                                                     ));
