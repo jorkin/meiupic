@@ -3,6 +3,13 @@
     <div class="bg1 title"><h3>热门照片</h3></div>
     <div class="box_body">
     <table class="table100">
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
       <tr>
         <?php $ls = $res->get('piclist');
         if($ls):

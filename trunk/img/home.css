@@ -34,6 +34,12 @@ a{
      text-align:center;
      vertical-align:middle;
      height:200px;
+     width:197px;
+}
+.phototd .line35{
+    width:197px;
+    height:35px;
+    overflow:hidden;
 }
 .phototd img,.albumtd img{
     padding:8px;

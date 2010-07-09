@@ -4,6 +4,13 @@
     <div class="box_body">
         <table class="table100">
           <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
             <?php $ls = $res->get('albums');
             if($ls):
             foreach($ls as $k=>$v):

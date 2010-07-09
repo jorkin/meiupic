@@ -123,7 +123,6 @@
         window.location.hash = '#photo='+$('#li_'+v).attr('rel');
         
         var img = new Image();
-        img.src = img_src;
         img.onload = function(){
             if(img.width > 750){
                 img_width = 750;
@@ -135,6 +134,7 @@
             $('#album_ptitle span').text(img_title);
             $('#imgarea').html('<img src="'+img_src+'" width="'+img_width+'" />');
         }
+        img.src = img_src;
     }
     $(function(){
         var photo_id = getHash('photo');

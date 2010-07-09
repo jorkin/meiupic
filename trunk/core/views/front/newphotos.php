@@ -3,6 +3,13 @@
     <div class="bg1 title"><h3>最新上传的图片</h3></div>
     <div class="box_body">
     <table class="table100">
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
       <tr>
         <?php $ls = $res->get('piclist');
         if($ls):
