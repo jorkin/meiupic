@@ -64,8 +64,9 @@
        }
     }
     function showPre(){
-        if($('#miniphoto_list li.current').length > 0){
-            var no_id = $('#miniphoto_list li.current').attr('id').split('_');
+        var curentPic = $('#miniphoto_list li.current');
+        if(curentPic.length > 0){
+            var no_id = curentPic.attr('id').split('_');
             if(parseInt(no_id[1])>0){
                 showPhoto(parseInt(no_id[1])-1);
             }else{
@@ -74,8 +75,10 @@
         }
     }
     function showNext(){
-        if($('#miniphoto_list li.current').length > 0){
-            var no_id = $('#miniphoto_list li.current').attr('id').split('_');
+        var curentPic = $('#miniphoto_list li.current');
+        
+        if(curentPic.length > 0){
+            var no_id = curentPic.attr('id').split('_');
             var total = $('#miniphoto_list li').length;
             if(parseInt(no_id[1])+1<total){
                 showPhoto(parseInt(no_id[1])+1);
