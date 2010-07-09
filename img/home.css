@@ -259,8 +259,8 @@ ul.thumblist li div.photo{
     min-height:500px;
 }
 span.next_cur{
-    cursor: url(next.cur);
+    cursor: url("next.cur"),auto;
 }
 span.pre_cur{
-    cursor: url(pre.cur);
+    cursor: url("pre.cur"),auto;
 }
