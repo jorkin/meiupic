@@ -445,13 +445,11 @@ function selected_adapter(val){
         document.getElementById('mysql_div').style.display = 'none';
         document.getElementById('dbauth_div').style.display = 'none';
         document.getElementById('pre_div').style.display = '';
-        document.getElementById('dbpath_div').style.display = 'none';
     }else{
         document.getElementById('sqlite_div').style.display = 'none';
         document.getElementById('mysql_div').style.display = '';
         document.getElementById('dbauth_div').style.display = '';
         document.getElementById('pre_div').style.display = '';
-        document.getElementById('dbpath_div').style.display = 'none';
     }
 }
 </script>
@@ -597,7 +595,7 @@ if(file_exists(ROOTDIR.'conf/install.lock') && $action!=3){
         $setting_content .= "\$setting['demand_resize'] = false;\n";
         $setting_content .= "\$setting['imgdir_type'] = '2';\n";
         $setting_content .= "\$setting['size_allow'] = '1024000';\n";
-        $setting_content .= "\$setting['pageset'] = '24';\n";
+        $setting_content .= "\$setting['pageset'] = '15';\n";
         $setting_content .= "\$setting['open_photo'] = false;\n";
         $setting_content .= "\$setting['gallery_limit'] = '60';\n";
         $setting_content .= "\$setting['access_ctl'] = false;\n";
