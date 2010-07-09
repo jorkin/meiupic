@@ -143,13 +143,13 @@
         var photo_id = getHash('photo');
         
         if(photo_id){
-            if($('#miniphoto_list li[rel="'+photo_id+'"]').length > 0){
-                var no_id = $('#miniphoto_list li[rel="'+photo_id+'"]').attr('id').split('_');
+            var defaultPic = $('#miniphoto_list li[rel="'+photo_id+'"]');
+            if(defaultPic.length > 0){
+                var no_id = defaultPic.attr('id').split('_');
                 showPhoto(no_id[1]);
             }else{
                 showPhoto(0);
             }
-            
         }else{
             showPhoto(0);
         }
@@ -165,18 +165,20 @@
             }
         }
         
-        $('#imgarea').mousemove(function(e){
-            var ps = $('#imgarea').offset();
-            var ps_width = $('#imgarea').width();
+        var imgareaObj = $('#imgarea');
+        
+        imgareaObj.mousemove(function(e){
+            var ps = imgareaObj.offset();
+            var ps_width = imgareaObj.width();
             var nxt = e.clientX > (ps.left+ps_width/2);
             var curClass = nxt ? 'next_cur' : 'pre_cur';
-            $('#imgarea').attr('class',curClass);
+            imgareaObj.attr('class',curClass);
             $('#imgarea img').attr('title','点击跳到' + (nxt ? '下一张' : '上一张'));
         });
         
-        $('#imgarea').click(function(e){
-            var ps = $('#imgarea').offset();
-            var ps_width = $('#imgarea').width();
+        imgareaObj.click(function(e){
+            var ps = imgareaObj.offset();
+            var ps_width = imgareaObj.width();
             var nxt = e.clientX > (ps.left+ps_width/2);
             if(nxt){
                 showNext();
