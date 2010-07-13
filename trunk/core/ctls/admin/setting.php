@@ -97,8 +97,7 @@ class controller extends adminpage{
             $id = $this->auth->getInfo('id');
             $loginname = $this->auth->getInfo('username');
             $newpass = md5($new_pass);
-            $mdl_setting =& load_model('setting');
-            if($mdl_setting->change_admin_pass(intval($id),$newpass)){
+            if(load_model('operator')->change_pass(intval($id),$newpass)){
                 $this->auth->setLogin($loginname,$newpass);
                 showInfo('密码修改成功！',true,'admin.php?ctl=setting&act=password');
             }else{
@@ -118,7 +117,7 @@ class controller extends adminpage{
         }
         $pageurl = 'admin.php?ctl=setting&act=operator&page=[#page#]';
         
-        $list = load_model('operator')->getList($page);
+        $list = load_model('operator')->get_list($page);
         $this->output->set('mlist',$list['ls']);
         $this->output->set('pageset',pageshow($list['total'],$list['start'],$pageurl));
         $this->output->set('setting_nav','operator');
@@ -127,7 +126,25 @@ class controller extends adminpage{
     
     function operator_add(){
         if($this->isPost()){
-            ;
+            $username = trim($this->getPost('username'));
+            $userpass = $this->getPost('userpass');
+            $new_pass_again = $this->getPost('passagain');
+
+            if(empty($username)){
+                showInfo('管理员名不能为空！',false);
+            }
+            if(empty($userpass)){
+                showInfo('密码不能为空！',false);
+            }
+            if($userpass != $new_pass_again){
+                showInfo('两次密码输入不一致！',false);
+            }
+
+            if(load_model('operator')->add_operator($username,md5($userpass))){
+                showInfo('管理员添加成功！',true,'admin.php?ctl=setting&act=operator');
+            }else{
+                showInfo('管理员添加失败！',false);
+            }
         } else {
             $this->output->set('setting_nav','operator');
             $this->view->display('admin/setting_operator_add.php');
@@ -136,14 +153,44 @@ class controller extends adminpage{
     
     function operator_edit(){
         if($this->isPost()){
-            ;
+            $id = $this->getPost('id');
+            if($id == $this->auth->getInfo('id')){
+                showInfo('修改自己的密码请到修改密码选项卡中修改！',false);
+            }
+
+            $userpass = $this->getPost('userpass');
+            $new_pass_again = $this->getPost('passagain');
+            if(empty($userpass)){
+                showInfo('新密码不能为空！',false);
+            }
+            if($userpass != $new_pass_again){
+                showInfo('两次密码输入不一致！',false);
+            }
+
+            if(load_model('operator')->change_pass(intval($id),md5($userpass))){
+                showInfo('管理员密码修改成功！',true,'admin.php?ctl=setting&act=operator');
+            }else{
+                showInfo('管理员密码修改失败！',false);
+            }
         } else {
+            $id = $this->getGet('id',0);
+            $operator = load_model('operator')->get_one_operator($id);
+            $this->output->set('operator',$operator);
             $this->output->set('setting_nav','operator');
             $this->view->display('admin/setting_operator_edit.php');
         }
     }
     
     function operator_del(){
-        ;
+        $id = $this->getGet('id',0);
+        if($id == $this->auth->getInfo('id')){
+            showInfo('对不起，您不能删除你自己！',false);
+        }
+
+        if(load_model('operator')->del_one(intval($id))){
+            showInfo('密码管理员删除成功！',true,'admin.php?ctl=setting&act=operator');
+        }else{
+            showInfo('密码管理员删除失败！',false);
+        }
     }
 }
