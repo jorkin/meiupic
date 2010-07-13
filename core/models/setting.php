@@ -34,7 +34,7 @@ RewriteRule database\.db / [F]'."\n";
             if(function_exists('apache_get_modules') && in_array('mod_rewrite',apache_get_modules())){
                 $htaccess_content .= '#auto resize'."\n";
                 $htaccess_content .= 'RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule .*/(.*)_(.*)\.(jpg|gif|png)$ ../index.php?ctl=photo&act=resize&size=$2&key=$1 [NC,L]'."\n";
+RewriteRule .*/(.*)_(.*)\.(jpg|jpeg|gif|png)$ ../index.php?ctl=photo&act=resize&size=$2&key=$1 [NC,L]'."\n";
             }else{
                 $new_setting['demand_resize'] = 'false';
             }
