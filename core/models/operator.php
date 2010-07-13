@@ -8,7 +8,7 @@
  */
 
 class operator extends modelfactory{
-    function getList($page = NULL){
+    function get_list($page = NULL){
         $this->db->select('#admin',"*",'','id desc');
         if($page){
             $list = $this->db->toPage($page,10);
@@ -16,5 +16,25 @@ class operator extends modelfactory{
             $list = $this->db->getAll();
         }
         return $list;
+    }
+
+    function get_one_operator($id){
+        $this->db->select('#admin',"*",'id='.intval($id));
+        return $this->db->getRow();
+    }
+
+    function change_pass($id,$pass){
+        $this->db->update('#admin','id='.intval($id),array('userpass'=>$pass));
+        return $this->db->query();
+    }
+
+    function add_operator($username,$pass){
+        $this->db->insert('#admin',array('username'=>$username,'userpass'=>$pass,'create_time'=>time()));
+        return $this->db->query();
+    }
+
+    function del_one($id){
+        $this->db->delete('#admin','id='.intval($id));
+        return $this->db->query();
     }
 }

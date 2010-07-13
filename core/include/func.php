@@ -124,11 +124,12 @@ function showInfo($message,$flag = true,$link = '',$target = '_self'){
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>操作提示</title>
 <link href="img/main.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 <div id="append_parent"></div>
-<div class="container" id="cpcontainer"><h3>操作提示</h3><div class="infobox"><h4 class="$titlecolor">$message</h4><h5><a href="$otherlink" target="$target">返回</a></h5></div>
+<div class="container" id="cpcontainer"><h3>操作提示</h3><div class="infobox"><h4 class="$titlecolor">$message</h4><h5><a class="return_btn" href="$otherlink" target="$target">返回</a></h5></div>
 </div>
 </body>
 </html>

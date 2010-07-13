@@ -75,9 +75,4 @@ RewriteRule .*/(.*)_(.*)\.(jpg|gif|png)$ ../index.php?ctl=photo&act=resize&size=
         global $setting;
         return $setting;
     }
-    
-    function change_admin_pass($id,$newpass){
-        $this->db->update('#admin','id='.intval($id),array('userpass'=>$newpass));
-        return $this->db->query();
-    }
 }
