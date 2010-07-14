@@ -2,27 +2,18 @@
 <div id="upload_help"> 
     <span>第一步：选择相册并上传图片</span>  >> 
     <span>第二步：上传图片</span> >>
-    <span class="current">第三步：查看结果修改图片名称</span> >>
+    <span class="current">第三步：查看结果</span> >>
     <span>完成</span>
 </div>
 
 <div id="save_album">
-    <form method="post" action="admin.php?ctl=upload&act=saveimgname&album=<?php echo $res->get('album'); ?>">
-    <ul class="album">
-        <?php 
-        $ls = $res->get('uploaded_pics');
-        if($ls):
-        foreach($ls as $v):
-        ?>
-        <li rel="<?php echo SITE_URL.mkImgLink($v['dir'],$v['pickey'],$v['ext'],'orig');?>"><span class="img"><img src="<?php echo mkImgLink($v['dir'],$v['pickey'],$v['ext'],'thumb');?>" /></span><span class="info"><input class="ipt_2" name="imgname[<?php echo $v['id'];?>]" value="<?php echo $v['name'];?>"></span><span class="control"><a href="javascript:void(0)" onclick="copyUrl(this)"><img src="img/copyu.gif" alt="复制网址" title="复制网址" /></a> <a href="javascript:void(0)" onclick="copyCode(this)"><img src="img/copyc.gif" alt="复制代码" title="复制代码" /></a></span></li>
-        <?php
-        endforeach;
-        endif;
-        ?>
-    </ul>
-    
-    <div class="buttons"><input class="btn" type="submit" value="保存" /></div>
-    </form>
+    <div class="line" style="font-size:36px;line-height:80px;">程序正在处理照片!</div>
+
+    <div class="line">您共上传了<?php echo $res->get('piccount');?>张图片。</div>
+
+    <div class="line">已完成：<span id="process_pic">0</span>/<?php echo $res->get('piccount');?></div>
+
+    <div class="line">您也可以<a href="admin.php?ctl=album&act=photos&album=<?php echo $res->get('album');?>">离开此页面</a>让后端自动处理！</div>
 </div>
 
 <?php include('foot.php');?>

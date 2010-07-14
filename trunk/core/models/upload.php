@@ -17,6 +17,7 @@ class upload extends modelfactory{
     }
     
     function generatepic($dir,$key,$ext){
+        ignore_user_abort(true);
         $realpath = ROOTDIR.mkImgLink($dir,$key,$ext,'orig');
         include_once(LIBDIR.'image.class.php');
         $imgobj = new Image();

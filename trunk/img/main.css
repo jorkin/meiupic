@@ -132,6 +132,9 @@ input.btn:hover{
 #upload_help span.current{
     color:green;
 }
+.line{
+	line-height:40px;
+}
 #sel_album{
     margin-top:20px;
     padding:30px;
