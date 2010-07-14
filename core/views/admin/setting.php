@@ -103,7 +103,7 @@
                     <td class="tt">开启防盗链：</td><td class="tc"><input id="setting_access_ctl" name="setting[access_ctl]" type="checkbox" value="1" <?php if($setting['access_ctl']){ echo 'checked="checked"';} ?>   /></td><td class="ti"></td>
                 </tr>
                 <tr>
-                    <td class="tt">允许的域名列表：</td><td class="tc"><textarea name="setting[access_domain]" style="margin-left: 4px; width:300px; height: 100px;"><?php echo $setting['access_domain'];?></textarea></td><td class="ti">一行一条记录</td>
+                    <td class="tt">允许的域名列表：</td><td class="tc"><textarea name="setting[access_domain]" style="margin-left: 4px; width:300px; height: 100px;"><?php echo $setting['access_domain'];?></textarea></td><td class="ti">一行一条域名，请勿带上前面的http://</td>
                 </tr>
                 <tr>
                     <td></td><td><input type="submit" class="btn" value="保存设置" /></td><td></td>

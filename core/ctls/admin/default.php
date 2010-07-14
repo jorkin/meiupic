@@ -45,7 +45,7 @@ class controller extends adminpage{
         if(!$page){
             $page = 1;
         }
-        $sort = $this->getGet('sort','id_desc');
+        $sort = $this->getGet('sort','time_desc');
         $mdl_picture = & load_model('picture');
         $mdl_album =& load_model('album');
         $pics = $mdl_picture->get_all_pic($page,0,$sort);

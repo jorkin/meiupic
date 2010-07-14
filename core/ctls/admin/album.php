@@ -66,7 +66,7 @@ class controller extends adminpage{
             default:
             $msginfo = '';
         }
-        $sort = $this->getGet('sort','id_desc');
+        $sort = $this->getGet('sort','time_desc');
         
         $pics = $this->mdl_picture->get_all_pic($page,$album,$sort);
         
