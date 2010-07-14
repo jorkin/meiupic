@@ -24,8 +24,8 @@
          <input name="do_pic_act" type="submit" value="执行" class="btn" disabled /> 
          <select name="do_sort" onchange="change_order(this.value);">
              <option value="-1">选择排序</option>
-             <option value="admin.php?act=all&sort=time_desc&page=<?php echo $res->get('page');?>" <?php if($res->get('sort')=='id_desc'){ echo 'selected="selected"';} ?>>按照时间从近到远排序</option>
-             <option value="admin.php?act=all&sort=time_asc&page=<?php echo $res->get('page');?>" <?php if($res->get('sort')=='id_asc'){ echo 'selected="selected"';} ?>>按照时间从远到近排序</option>
+             <option value="admin.php?act=all&sort=time_desc&page=<?php echo $res->get('page');?>" <?php if($res->get('sort')=='time_desc'){ echo 'selected="selected"';} ?>>按照时间从近到远排序</option>
+             <option value="admin.php?act=all&sort=time_asc&page=<?php echo $res->get('page');?>" <?php if($res->get('sort')=='time_asc'){ echo 'selected="selected"';} ?>>按照时间从远到近排序</option>
          </select>
          <input type="button" value="幻灯片查看" class="btn" onclick="slideshow(0)" />
     </div>
