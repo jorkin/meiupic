@@ -128,6 +128,7 @@ class controller extends adminpage{
         $this->output->set('album',$this->getGet('album'));
         $this->view->display('admin/upload_step3.php');
         @ob_end_flush();
+        @ob_flush();
         flush();
         $this->_save_and_resize();
     }
@@ -174,6 +175,7 @@ class controller extends adminpage{
                                                     'status' => 1
                                                     ));
                     echo "<script> $('#process_pic').text(parseInt($('#process_pic').text())+1);</script>";
+                    @ob_flush();
                     flush();
                 }
             }
