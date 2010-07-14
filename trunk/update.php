@@ -150,7 +150,7 @@ if($db_config['adapter'] == 'sqlite'){
     $query = sqlite_query("select * from $imgstable",$dbconn);
     while($row = sqlite_fetch_array($query)){
         preg_match("/(.*)\/(.*)\.(jpg|jpeg|gif|png)$/",$row['path'],$matches);
-        $rt = sqlite_query("insert into $imgstable(id,album,dir,pickey,ext,name,status,create_time) values (".$row['id'].",".$row['album'].",'".$matches[1]."','".$matches[2]."','".$matches[3]."','".$row['name']."','".$row['status']."',".time().")",$conn);
+        $rt = sqlite_query("insert into $imgstable(id,album,dir,pickey,ext,name,status,create_time,author) values (".$row['id'].",".$row['album'].",'".$matches[1]."','".$matches[2]."','".$matches[3]."','".$row['name']."','".$row['status']."',".time().",1)",$conn);
         if($rt){
             $dir = $matches[1];
             $key = $matches[2];
@@ -261,7 +261,7 @@ if($db_config['adapter'] == 'sqlite'){
      $query = mysql_query("select * from `$imgstable`",$dbconn);
      while($row = mysql_fetch_array($query)){
         preg_match("/(.*)\/(.*)\.(jpg|jpeg|gif|png)$/",$row['path'],$matches);
-        $rt = mysql_query("update `$imgstable` set `dir`='".$matches[1]."',`pickey`='".$matches[2]."',`ext`='".$matches[3]."',create_time=".time()." where id='".$row['id']."'",$dbconn);
+        $rt = mysql_query("update `$imgstable` set `dir`='".$matches[1]."',`pickey`='".$matches[2]."',`ext`='".$matches[3]."',`create_time`=".time().",`author`=1 where id='".$row['id']."'",$dbconn);
         if($rt){
             $dir = $matches[1];
             $key = $matches[2];

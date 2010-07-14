@@ -6,7 +6,9 @@
 <div id="allpic">
     <div id="album_nav" class="album_detail">
         <h1 class="album_title"><?php echo $ls['name'];?></h1>
-        <div class="photoinfo"><input type="button" class="btn" onclick="window.location.href='admin.php?ctl=album&act=photos&album=<?php echo $ls['album'];?>'" value="返回 <?php echo $res->get('album_name'); ?>" /></div>
+        <div class="photoinfo">
+        上传时间: <?php echo date('Y-m-d H:i:s',$ls['create_time']); ?>
+        <input type="button" class="btn" onclick="window.location.href='admin.php?ctl=album&act=photos&album=<?php echo $ls['album'];?>'" value="返回 <?php echo $res->get('album_name'); ?>" /></div>
     </div>
     <div id="photo-body">
          <div class="picnt">

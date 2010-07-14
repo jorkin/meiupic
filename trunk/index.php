@@ -20,7 +20,7 @@ if(!file_exists('conf/config.php') || !file_exists('conf/setting.php')){
 
 header("Content-type: text/html; charset=utf-8");
 
-define('Version','1.0b3');
+define('Version','1.0');
 
 define('FCPATH',__FILE__);
 define('ROOTDIR',dirname(FCPATH).'/');
