@@ -42,7 +42,7 @@
 2. 将新版本的程序上传至服务器，覆盖原有程序。
 3. 下载 update.php升级脚本 http://meiupic.googlecode.com/files/updateb2-formal.zip
 4. 上传至相册程序目录内
-5. 浏览器内输入http://url地址/update.php
+5. 浏览器内输入http://url地址/update.php，执行时间较久，请耐心等待。
 6. 等待执行完毕后，删除update.php (!!!!!极其重要)
 
 申明:

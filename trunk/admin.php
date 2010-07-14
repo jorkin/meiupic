@@ -34,6 +34,8 @@ define('VIEWDIR',COREDIR.'views/');
 define('MODELDIR',COREDIR.'models/');
 
 define('DATADIR',ROOTDIR.'data/');
+//如果防盗链或者按需生成图片失效的话，请打开此项并填写合适的路径
+//define('REWRITE_BASE','/');
 
 define('SITE_URL',$setting['url']);
 define('PAGE_SET',$setting['pageset']);
