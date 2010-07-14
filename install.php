@@ -596,7 +596,7 @@ if(file_exists(ROOTDIR.'conf/install.lock') && $action!=3){
         $setting_content .= "\$setting['imgdir_type'] = '2';\n";
         $setting_content .= "\$setting['size_allow'] = '1024000';\n";
         $setting_content .= "\$setting['pageset'] = '15';\n";
-        $setting_content .= "\$setting['open_photo'] = false;\n";
+        $setting_content .= "\$setting['open_photo'] = true;\n";
         $setting_content .= "\$setting['gallery_limit'] = '60';\n";
         $setting_content .= "\$setting['access_ctl'] = false;\n";
         $setting_content .= "\$setting['access_domain'] = '".$_SERVER['SERVER_NAME']."';\n";

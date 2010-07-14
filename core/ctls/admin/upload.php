@@ -101,7 +101,8 @@ class controller extends adminpage{
                                                     'ext'=>$fileext,
                                                     'author'=>$this->auth->getInfo('id'),
                                                     'create_time'=>time(),
-                                                    'private' => $photo_private
+                                                    'private' => $photo_private,
+                                                    'status' => 1
                                                     ));
                 }else{
                     showInfo('文件上传失败！',false);
@@ -116,16 +117,19 @@ class controller extends adminpage{
             echo '<script> alert("您没有选择图片上传，请重新上传!");history.back();</script>';
             exit;
         }
-        header('Location: admin.php?ctl=upload&act=doupload&album='.$album_id);
+        @ob_clean();
+        header('Location: admin.php?ctl=album&act=photos&album='.$album_id);
     }
     function doupload(){
         set_time_limit(0);
-        $this->_save_and_resize();
-        
-        $pics = $this->mdl_picture->get_tmp_pic();
-        $this->output->set('uploaded_pics',$pics);
+        ignore_user_abort(true);
+        $files_count = intval($this->getPost('flash_uploader_count'));
+        $this->output->set('piccount',$files_count);
         $this->output->set('album',$this->getGet('album'));
         $this->view->display('admin/upload_step3.php');
+        @ob_end_flush();
+        flush();
+        $this->_save_and_resize();
     }
     
     function _save_and_resize(){
@@ -166,14 +170,18 @@ class controller extends adminpage{
                                                     'ext'=>$fileext,
                                                     'author'=>$this->auth->getInfo('id'),
                                                     'create_time'=>time(),
-                                                    'private' => $photo_private
+                                                    'private' => $photo_private,
+                                                    'status' => 1
                                                     ));
+                    echo "<script> $('#process_pic').text(parseInt($('#process_pic').text())+1);</script>";
+                    flush();
                 }
             }
         }
+        echo "<script> if(confirm('处理完成，查看相册？')){ window.location.href='admin.php?ctl=album&act=photos&album=$album_id';}</script>";
     }
     
-    function saveimgname(){
+    /*function saveimgname(){
         $imgname = $this->getPost('imgname');
         $album = $this->getGet('album');
         if($imgname){
@@ -183,7 +191,7 @@ class controller extends adminpage{
         }
         
         redirect('admin.php?ctl=album&act=photos&album='.$album);
-    }
+    }*/
     
     function reupload(){
         $id = intval($this->getGet('id'));

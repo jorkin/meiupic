@@ -47,6 +47,9 @@ class controller extends adminpage{
         if(!$page){
             $page = 1;
         }
+        if(!$album){
+            showInfo('相册参数错误！',false);
+        }
         
         $flag = $this->getGet('flag',0);
         

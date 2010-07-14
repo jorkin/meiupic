@@ -3,7 +3,7 @@
 <div id="upload_help"> 
     <span>第一步：选择相册并上传图片</span>  >> 
     <span class="current">第二步：上传图片</span> >>
-    <span>第三步：查看结果修改图片名称</span> >>
+    <span>第三步：查看结果</span> >>
     <span>完成</span>
 </div>
 
