@@ -35,6 +35,15 @@
 2. 执行http://url地址/install.php
 3. 删除install.php
 
+升级说明：
+---------------------------------
+注：升级程序兼容1.0b1和1.0b2。
+1. 备份原有数据（数据库和data目录内的图片）
+2. 将新版本的程序上传至服务器，覆盖原有程序。
+3. 下载 update.php升级脚本 http://meiupic.googlecode.com/files/updateb2-formal.zip
+4. 上传至相册程序目录内
+5. 浏览器内输入http://url地址/update.php
+6. 等待执行完毕后，删除update.php (!!!!!极其重要)
 
 申明:
 ---------------------------------
