@@ -10,8 +10,10 @@
 class setting extends modelfactory{
     
     function save_setting($new_setting){
+        $basedir = defined('REWRITE_BASE')?REWRITE_BASE:get_basepath();
         $htaccess_content = '<ifmodule mod_rewrite.c>
 RewriteEngine On
+RewriteBase '.$basedir.'data
 Options +FollowSymLinks
 # sqlite database path
 RewriteRule database\.db / [F]'."\n";
@@ -31,20 +33,23 @@ RewriteRule database\.db / [F]'."\n";
         }
         
         if($new_setting['demand_resize'] == 'true'){
-            if(function_exists('apache_get_modules') && in_array('mod_rewrite',apache_get_modules())){
-                $htaccess_content .= '#auto resize'."\n";
-                $htaccess_content .= 'RewriteCond %{REQUEST_FILENAME} !-f
+            
+            $htaccess_content .= '#auto resize'."\n";
+            $htaccess_content .= 'RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule .*/(.*)_(.*)\.(jpg|jpeg|gif|png)$ ../index.php?ctl=photo&act=resize&size=$2&key=$1 [NC,L]'."\n";
-            }else{
-                $new_setting['demand_resize'] = 'false';
-            }
+
         }
         
         $htaccess_content .= '</ifmodule>';
         
         if($new_setting['demand_resize'] == 'true' || $new_setting['access_ctl'] == 'true'){
-            @file_put_contents(DATADIR.'.htaccess',$htaccess_content);
-            @chmod(DATADIR.'.htaccess',0755);
+            if(function_exists('apache_get_modules') && in_array('mod_rewrite',apache_get_modules())){
+                @file_put_contents(DATADIR.'.htaccess',$htaccess_content);
+                @chmod(DATADIR.'.htaccess',0755);
+            }else{
+                $new_setting['access_ctl'] == 'false';
+                $new_setting['demand_resize'] = 'false';
+            }
         }else{
             @unlink(DATADIR.'.htaccess');
         }
@@ -65,7 +70,7 @@ RewriteRule .*/(.*)_(.*)\.(jpg|jpeg|gif|png)$ ../index.php?ctl=photo&act=resize&
         $setting_content .= "\$setting['open_photo'] = ".$new_setting['open_photo'].";\n";
         $setting_content .= "\$setting['gallery_limit'] = '".$new_setting['gallery_limit']."';\n";
         $setting_content .= "\$setting['access_ctl'] = ".$new_setting['access_ctl'].";\n";
-        $setting_content .= "\$setting['access_domain'] = '".$new_setting['access_domain']."';\n";
+        $setting_content .= "\$setting['access_domain'] = '".html_replace($new_setting['access_domain'])."';\n";
         $setting_content .= "?>";
         
         return @file_put_contents(ROOTDIR.'conf/setting.php',$setting_content);
