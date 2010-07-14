@@ -47,7 +47,7 @@ RewriteRule .*/(.*)_(.*)\.(jpg|jpeg|gif|png)$ ../index.php?ctl=photo&act=resize&
                 @file_put_contents(DATADIR.'.htaccess',$htaccess_content);
                 @chmod(DATADIR.'.htaccess',0755);
             }else{
-                $new_setting['access_ctl'] == 'false';
+                $new_setting['access_ctl'] = 'false';
                 $new_setting['demand_resize'] = 'false';
             }
         }else{

@@ -77,9 +77,9 @@ class Image {
         if( $image_type == IMAGETYPE_JPEG ) {
             imagejpeg($this->image,$filename,$this->image_quality);
         } elseif( $image_type == IMAGETYPE_GIF ) {
-            imagegif($this->image,$filename,$this->image_quality);
+            imagegif($this->image,$filename);
         } elseif( $image_type == IMAGETYPE_PNG ) {
-            imagepng($this->image,$filename,$this->image_quality);
+            imagepng($this->image,$filename);
         }
     }
     
@@ -96,10 +96,10 @@ class Image {
             imagejpeg($this->image,NULL,$this->image_quality);
         } elseif( $image_type == IMAGETYPE_GIF ) {
             header('Content-type: image/gif');
-            imagegif($this->image,NULL,$this->image_quality);
+            imagegif($this->image);
         } elseif( $image_type == IMAGETYPE_PNG ) {
             header('Content-type: image/png');
-            imagepng($this->image,NULL,$this->image_quality);
+            imagepng($this->image);
         }
     }
 

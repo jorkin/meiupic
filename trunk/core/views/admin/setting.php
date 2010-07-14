@@ -100,7 +100,12 @@
                     <td class="tt">开放相册：</td><td class="tc"><input id="setting_open_photo" name="setting[open_photo]" type="checkbox" value="1" <?php if($setting['open_photo']){ echo 'checked="checked"';} ?>   /></td><td class="ti"></td>
                 </tr>
                 <tr>
-                    <td class="tt">开启防盗链：</td><td class="tc"><input id="setting_access_ctl" name="setting[access_ctl]" type="checkbox" value="1" <?php if($setting['access_ctl']){ echo 'checked="checked"';} ?>   /></td><td class="ti"></td>
+                    <td class="tt">开启防盗链：</td><td class="tc"><input id="setting_access_ctl" name="setting[access_ctl]" type="checkbox" value="1" <?php if($setting['access_ctl']){ echo 'checked="checked"';} ?>   /> <?php 
+                    if(function_exists('apache_get_modules') && in_array('mod_rewrite',apache_get_modules())){
+                        echo '<span class="green">您的服务器支持此功能！</span>';
+                    }else{
+                        echo '<span class="red">您的服务器不支持此功能！</span>';
+                    }?></td><td class="ti"></td>
                 </tr>
                 <tr>
                     <td class="tt">允许的域名列表：</td><td class="tc"><textarea name="setting[access_domain]" style="margin-left: 4px; width:300px; height: 100px;"><?php echo $setting['access_domain'];?></textarea></td><td class="ti">一行一条域名，请勿带上前面的http://</td>
