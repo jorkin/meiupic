@@ -152,18 +152,13 @@ if($db_config['adapter'] == 'sqlite'){
         preg_match("/(.*)\/(.*)\.(jpg|jpeg|gif|png)$/",$row['path'],$matches);
         $rt = sqlite_query("insert into $imgstable(id,album,dir,pickey,ext,name,status,create_time,author) values (".$row['id'].",".$row['album'].",'".$matches[1]."','".$matches[2]."','".$matches[3]."','".$row['name']."','".$row['status']."',".time().",1)",$conn);
         if($rt){
-            $dir = $matches[1];
-            $key = $matches[2];
-            $ext = $matches[3];
-            
-            resizeImg($dir,$key,$ext);
-            
             echo "照片 ".$row['name']." 成功 <br />\n";
         }else{
             echo "照片 ".$row['name']." 失败 <br />\n";
         }
         flush();
     }
+    
     echo "修改数据库配置文件 ...... ";
     $config_file_content = "<?php\n";
     $config_file_content .= "\$db_config = array(\n";
@@ -181,6 +176,15 @@ if($db_config['adapter'] == 'sqlite'){
         @chmod(ROOTDIR.'conf/config.php',0755);
     }
     echo "数据库已从".$db_config['dbname']."迁移至data/database.db,如果升级成功请手动删除".$db_config['dbname']."<br />\n";
+
+    echo "重新生成缩略图 ...... <br />\n";
+    flush();
+    $query = sqlite_query("select * from $imgstable",$conn);
+    while($row = sqlite_fetch_array($query)){
+        echo "转换图片 ".$row['name']." <br />\n";
+        flush();
+        resizeImg($row['dir'],$row['pickey'],$row['ext']);
+    }
 }elseif($db_config['adapter'] == 'txtsql'){
     echo "新版中取消了txtSQL支持，无法升级！<br />\n";
 }else{
@@ -214,31 +218,34 @@ if($db_config['adapter'] == 'sqlite'){
         echo "失败 <br />\n";
     }
     flush();
-
-    echo "迁移相册数据......<br />\n";
-    $query = mysql_query("select * from `$albumstable`",$dbconn);
-    while($row = mysql_fetch_array($query)){
-        if($row['cover_bak']){
-            $query1 = mysql_query("select id from `$imgstable` where thumb='".$row['cover_bak']."'",$dbconn);
-            $cover_id = @mysql_result($query1,0);
-        }else{
-            $cover_id = 0;
+    
+    if($rt){
+        echo "迁移相册数据......<br />\n";
+        $query = mysql_query("select * from `$albumstable`",$dbconn);
+        while($row = mysql_fetch_array($query)){
+            if($row['cover_bak']){
+                $query1 = mysql_query("select id from `$imgstable` where thumb='".$row['cover_bak']."'",$dbconn);
+                $cover_id = @mysql_result($query1,0);
+            }else{
+                $cover_id = 0;
+            }
+            $rt = mysql_query("update `$albumstable` set cover='".intval($cover_id)."',create_time=".time()." where id=".intval($row['id']),$dbconn);
+            if($rt){
+                echo "相册 ".$row['name']." 成功 <br />\n";
+            }else{
+                echo "相册 ".$row['name']." 失败 <br />\n";
+            }
+            flush();
         }
-        $rt = mysql_query("update `$albumstable` set cover='".intval($cover_id)."',create_time=".time()." where id=".intval($row['id']),$dbconn);
-        if($rt){
-            echo "相册 ".$row['name']." 成功 <br />\n";
-        }else{
-            echo "相册 ".$row['name']." 失败 <br />\n";
-        }
-        flush();
-    }
-     $rt = mysql_query("ALTER TABLE `$albumstable` DROP `cover_bak`",$dbconn);
-     if($rt){
-         echo "迁移数据成功 <br />\n";
-     }else{
-         echo "迁移数据失败 <br />\n";
+         $rt = mysql_query("ALTER TABLE `$albumstable` DROP `cover_bak`",$dbconn);
+         if($rt){
+             echo "迁移数据成功 <br />\n";
+         }else{
+             echo "迁移数据失败 <br />\n";
+         }
+         flush();
      }
-     flush();
+
      echo "修改`$imgstable`的表结构 ..... ";
      $rt = mysql_query("ALTER TABLE `$imgstable` ADD `dir` VARCHAR( 10 ) NOT NULL AFTER `name` ,
      ADD `pickey` VARCHAR( 32 ) NOT NULL AFTER `dir` ,
@@ -256,33 +263,38 @@ if($db_config['adapter'] == 'sqlite'){
      }
      flush();
      
+     if($rt){
+         echo "迁移图片数据......<br />\n";
+         $query = mysql_query("select * from `$imgstable`",$dbconn);
+         while($row = mysql_fetch_array($query)){
+            if($row['path']){
+                preg_match("/(.*)\/(.*)\.(jpg|jpeg|gif|png)$/",$row['path'],$matches);
+                $rt = mysql_query("update `$imgstable` set `dir`='".$matches[1]."',`pickey`='".$matches[2]."',`ext`='".$matches[3]."',`create_time`=".time().",`author`=1 where id='".$row['id']."'",$dbconn);
+                
+                if($rt){
+                    echo "照片 ".$row['name']." 成功 <br />\n";
+                }else{
+                    echo "照片 ".$row['name']." 失败 <br />\n";
+                }
+                flush();
+            }
+         }
+         $rt = mysql_query("ALTER TABLE `$imgstable` DROP `path`, DROP `thumb`;");
+         if($rt){
+             echo "迁移数据成功 <br />\n";
+         }else{
+             echo "迁移数据失败 <br />\n";
+         }
+         flush();
+     }
      
-     echo "迁移图片数据......<br />\n";
+     echo "重新生成缩略图......<br />\n";
      $query = mysql_query("select * from `$imgstable`",$dbconn);
      while($row = mysql_fetch_array($query)){
-        preg_match("/(.*)\/(.*)\.(jpg|jpeg|gif|png)$/",$row['path'],$matches);
-        $rt = mysql_query("update `$imgstable` set `dir`='".$matches[1]."',`pickey`='".$matches[2]."',`ext`='".$matches[3]."',`create_time`=".time().",`author`=1 where id='".$row['id']."'",$dbconn);
-        if($rt){
-            $dir = $matches[1];
-            $key = $matches[2];
-            $ext = $matches[3];
-            
-            resizeImg($dir,$key,$ext);
-            
-            echo "照片 ".$row['name']." 成功 <br />\n";
-        }else{
-            echo "照片 ".$row['name']." 失败 <br />\n";
-        }
+        echo "转换照片 ".$row['name']." <br />\n";
         flush();
+        resizeImg($row['dir'],$row['pickey'],$row['ext']);
      }
-     $rt = mysql_query("ALTER TABLE `$imgstable` DROP `path`, DROP `thumb`;");
-     if($rt){
-          echo "迁移数据成功 <br />\n";
-      }else{
-          echo "迁移数据失败 <br />\n";
-      }
-      flush();
-      
 }
 
 echo "重新配置基本设置 ...... ";
