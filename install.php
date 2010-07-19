@@ -204,7 +204,7 @@
           `userpass` varchar(50) NOT NULL,
           `create_time` int(11) NOT NULL DEFAULT '0',
           PRIMARY KEY (`id`)
-        ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;",$dbconn);
+        ) TYPE=MyISAM DEFAULT CHARACTER SET utf8;",$dbconn);
 
         $rt2 = @mysql_query("CREATE TABLE IF NOT EXISTS `$albumstable` (
           `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -215,7 +215,7 @@
           `desc` text NOT NULL DEFAULT '',
           PRIMARY KEY (`id`),
           KEY `cover` (`cover`)
-        ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;",$dbconn);
+        ) TYPE=MyISAM DEFAULT CHARACTER SET utf8;",$dbconn);
 
         $rt3 = @mysql_query("CREATE TABLE IF NOT EXISTS `$imgstable` (
           `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -234,7 +234,7 @@
           PRIMARY KEY (`id`),
           KEY `pickey` (`pickey`),
           KEY `imgalbum` (`album`)
-        ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;",$dbconn);
+        ) TYPE=MyISAM DEFAULT CHARACTER SET utf8;",$dbconn);
         
         if(!$rt1 || !$rt2 || !$rt3){
             echo "<script> alert('创建表结构错误！');history.back();</script>";
@@ -529,7 +529,7 @@ if(file_exists(ROOTDIR.'conf/install.lock') && $action!=3){
     </select></td>
 </tbody>
 <tbody id="mysql_div">
-<tr><th>数据库主机</th><td><input name="dbhost" type="text" value="localhost" /></td>
+<tr><th>数据库主机</th><td><input name="dbhost" type="text" value="127.0.0.1" /></td>
 <tr><th>端口号</th><td><input name="dbport" type="text" value="3306" /></td>
 </tbody>
 <tbody id="dbauth_div">
