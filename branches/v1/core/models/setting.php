@@ -43,13 +43,10 @@ RewriteRule .*/(.*)_(.*)\.(jpg|jpeg|gif|png)$ ../index.php?ctl=photo&act=resize&
         $htaccess_content .= '</ifmodule>';
         
         if($new_setting['demand_resize'] == 'true' || $new_setting['access_ctl'] == 'true'){
-            if(function_exists('apache_get_modules') && in_array('mod_rewrite',apache_get_modules())){
-                @file_put_contents(DATADIR.'.htaccess',$htaccess_content);
-                @chmod(DATADIR.'.htaccess',0755);
-            }else{
-                $new_setting['access_ctl'] = 'false';
-                $new_setting['demand_resize'] = 'false';
-            }
+            //if(function_exists('apache_get_modules') && in_array('mod_rewrite',apache_get_modules())){
+            @file_put_contents(DATADIR.'.htaccess',$htaccess_content);
+            @chmod(DATADIR.'.htaccess',0755);
+            //}
         }else{
             @unlink(DATADIR.'.htaccess');
         }
