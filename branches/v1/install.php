@@ -204,7 +204,7 @@
           `userpass` varchar(50) NOT NULL,
           `create_time` int(11) NOT NULL DEFAULT '0',
           PRIMARY KEY (`id`)
-        ) TYPE=MyISAM DEFAULT CHARACTER SET utf8;",$dbconn);
+        ) TYPE=MyISAM DEFAULT CHARACTER SET utf8;",$dbconn) or die(mysql_error());
 
         $rt2 = @mysql_query("CREATE TABLE IF NOT EXISTS `$albumstable` (
           `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -215,7 +215,7 @@
           `desc` text NOT NULL DEFAULT '',
           PRIMARY KEY (`id`),
           KEY `cover` (`cover`)
-        ) TYPE=MyISAM DEFAULT CHARACTER SET utf8;",$dbconn);
+        ) TYPE=MyISAM DEFAULT CHARACTER SET utf8;",$dbconn) or die(mysql_error());
 
         $rt3 = @mysql_query("CREATE TABLE IF NOT EXISTS `$imgstable` (
           `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -234,7 +234,7 @@
           PRIMARY KEY (`id`),
           KEY `pickey` (`pickey`),
           KEY `imgalbum` (`album`)
-        ) TYPE=MyISAM DEFAULT CHARACTER SET utf8;",$dbconn);
+        ) TYPE=MyISAM DEFAULT CHARACTER SET utf8;",$dbconn) or die(mysql_error());
         
         if(!$rt1 || !$rt2 || !$rt3){
             echo "<script> alert('创建表结构错误！');history.back();</script>";
