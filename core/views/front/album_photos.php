@@ -23,6 +23,7 @@
             <div class="line35">
                 <a href="index.php?ctl=photo&act=view&album=<?php echo $v['album']; ?>#photo=<?php echo $v['id'];?>"><?php echo $v['name'];?></a>
             </div>
+            <div>浏览数：<?php echo $v['hits'];?></div>
         </td>
         <?php 
         endforeach;

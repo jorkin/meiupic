@@ -141,8 +141,7 @@
             $('#imgarea').html('<img src="'+img_src+'" width="'+img_width+'" />');
         }
         img.src = img_src;
-        
-        $.get('index.php?ctl=photo&act=ajax_addhit&id='+photo_realid,null,function(data){;});
+        $.get('index.php?ctl=photo&act=ajax_addhit&id='+photo_realid+'&random='+Math.random(),null,function(data){;});
     }
     $(function(){
         var photo_id = getHash('photo');

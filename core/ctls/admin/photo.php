@@ -127,4 +127,21 @@ class controller extends adminpage{
 
         echo '</simpleviewergallery>';
     }
+
+    function resize(){
+        $album = intval($this->getGet('album'));
+        set_time_limit(0);
+        ignore_user_abort(true);
+        if(!$this->setting['demand_resize']){
+            $this->mdl_upload = & load_model('upload');
+            $tmppics = $this->mdl_picture->get_tmp_pic();
+            if($tmppics){
+                foreach($tmppics as $v){
+                    $this->mdl_upload->generatepic($v['dir'],$v['pickey'],$v['ext']);
+                    $this->mdl_picture->update_pic($v['id'],$v['name']);
+                }
+            }
+        }
+        echo 'alert("图片处理完成！");window.location.href="admin.php?ctl=album&act=photos&album='.$album.'";';
+    }
 }

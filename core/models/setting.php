@@ -14,9 +14,7 @@ class setting extends modelfactory{
         $htaccess_content = '<ifmodule mod_rewrite.c>
 RewriteEngine On
 RewriteBase '.$basedir.'data
-Options +FollowSymLinks
-# sqlite database path
-RewriteRule database\.db / [F]'."\n";
+Options +FollowSymLinks'."\n";
         
         if($new_setting['access_ctl'] == 'true'){
             if('' != trim($new_setting['access_domain'])){
@@ -68,6 +66,9 @@ RewriteRule .*/(.*)_(.*)\.(jpg|jpeg|gif|png)$ ../index.php?ctl=photo&act=resize&
         $setting_content .= "\$setting['gallery_limit'] = '".$new_setting['gallery_limit']."';\n";
         $setting_content .= "\$setting['access_ctl'] = ".$new_setting['access_ctl'].";\n";
         $setting_content .= "\$setting['access_domain'] = '".html_replace($new_setting['access_domain'])."';\n";
+        $setting_content .= "\$setting['open_watermark'] = ".$new_setting['open_watermark'].";\n";
+        $setting_content .= "\$setting['watermark_path'] = '".html_replace($new_setting['watermark_path'])."';\n";
+        $setting_content .= "\$setting['watermark_pos'] = '".$new_setting['watermark_pos']."';\n";
         $setting_content .= "?>";
         
         return @file_put_contents(ROOTDIR.'conf/setting.php',$setting_content);

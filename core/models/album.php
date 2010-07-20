@@ -39,11 +39,11 @@ class album extends modelfactory{
     }
     
     function get_cover($album_id,$cover_id = 0){
-        $where = '';
+        $where = 'album='.intval($album_id).' and status=1';
         if($cover_id >0){
             $where = ' and id='.intval($cover_id);
         }
-        $this->db->select('#imgs',"*",'album='.intval($album_id).$where,'id asc limit 1');
+        $this->db->select('#imgs',"*",$where,'id asc limit 1');
        $row = $this->db->getRow();
        if($row){
            return $row;

@@ -271,6 +271,8 @@
         $albumstable = $pre.'albums';
         $imgstable = $pre.'imgs';
         
+        sqlite_query("CREATE TABLE '<?php' (a)",$conn);
+
         sqlite_query("CREATE TABLE $admintable (
                   id INTEGER NOT NULL PRIMARY KEY,
                   username varchar(50) NOT NULL,
@@ -542,7 +544,7 @@ if(file_exists(ROOTDIR.'conf/install.lock') && $action!=3){
 </tbody>
 <tbody id="sqlite_div" style="display:none;">
 
-<tr><th>数据库路径</th><td><input name="sqlitedbname" type="text" value="data/database.db" /></td>
+<tr><th>数据库路径</th><td><input name="sqlitedbname" type="text" value="data/database.php" /></td>
 </tbody>
 </table>
 <h2>管理员帐号</h2>
@@ -600,6 +602,9 @@ if(file_exists(ROOTDIR.'conf/install.lock') && $action!=3){
         $setting_content .= "\$setting['gallery_limit'] = '60';\n";
         $setting_content .= "\$setting['access_ctl'] = false;\n";
         $setting_content .= "\$setting['access_domain'] = '".$_SERVER['SERVER_NAME']."';\n";
+        $setting_content .= "\$setting['open_watermark'] = false;\n";
+        $setting_content .= "\$setting['watermark_path'] = '';\n";
+        $setting_content .= "\$setting['watermark_pos'] = 0;\n";
         $setting_content .= "?>";
         if(!@file_put_contents(ROOTDIR.'conf/setting.php',$setting_content)){
             echo "<script> alert('无法创建基本配置文件！');history.back();</script>";

@@ -241,6 +241,7 @@ class Image {
             $newim = imagecreate($width, $height);
             imagecopyresized($newim, $this->image, 0, 0, 0, 0, $width, $height, $this->getWidth(), $this->getHeight());
         }
+        imagedestroy($this->image);
         $this->image = $newim;
     }
 
@@ -257,6 +258,7 @@ class Image {
             $new_image = imagecreate($width, $height);
         }
         imagecopy($new_image, $this->image, 0, 0, $left, $top, $width, $height);
+        imagedestroy($this->image);
         $this->image = $new_image;
     }
 
@@ -276,6 +278,7 @@ class Image {
             $new_image = imagecreate($width, $height);
         }
         imagecopy($new_image, $this->image, 0, 0, 0, $top, $width, $height);
+        imagedestroy($this->image);
         $this->image = $new_image;
     }
 
@@ -361,5 +364,87 @@ class Image {
             }
         }
         return $new_img_info;
+    }
+
+    /*
+    * 功能：PHP图片水印 (水印支持图片或文字)
+    * 参数：
+    * $waterPos 水印位置，有10种状态，0为随机位置；
+    * 1为顶端居左，2为顶端居中，3为顶端居右；
+    * 4为中部居左，5为中部居中，6为中部居右；
+    * 7为底端居左，8为底端居中，9为底端居右；
+    */
+    function waterMark($waterImage="",$waterPos=0){
+        //读取水印文件
+        if(empty($waterImage) || !file_exists($waterImage)){
+            return false;
+        }
+        $water_info = getimagesize($waterImage);
+        $w = $water_info[0];//取得水印图片的宽
+        $h = $water_info[1];//取得水印图片的高
+        switch($water_info[2])//取得水印图片的格式
+        {
+            case 1:$water_im = imagecreatefromgif($waterImage);break;
+            case 2:$water_im = imagecreatefromjpeg($waterImage);break;
+            case 3:$water_im = imagecreatefrompng($waterImage);break;
+            default:return false;
+        }
+        $ground_w = $this->getWidth();
+        $ground_h = $this->getHeight();
+        
+        if( $ground_w<$w || $ground_h<$h ){
+            return false;
+        }
+        switch($waterPos)
+        {
+            case 0://随机
+            $posX = rand(0,($ground_w - $w));
+            $posY = rand(0,($ground_h - $h));
+            break;
+            case 1://1为顶端居左
+            $posX = 0;
+            $posY = 0;
+            break;
+            case 2://2为顶端居中
+            $posX = ($ground_w - $w) / 2;
+            $posY = 0;
+            break;
+            case 3://3为顶端居右
+            $posX = $ground_w - $w;
+            $posY = 0;
+            break;
+            case 4://4为中部居左
+            $posX = 0;
+            $posY = ($ground_h - $h) / 2;
+            break;
+            case 5://5为中部居中
+            $posX = ($ground_w - $w) / 2;
+            $posY = ($ground_h - $h) / 2;
+            break;
+            case 6://6为中部居右
+            $posX = $ground_w - $w;
+            $posY = ($ground_h - $h) / 2;
+            break;
+            case 7://7为底端居左
+            $posX = 0;
+            $posY = $ground_h - $h;
+            break;
+            case 8://8为底端居中
+            $posX = ($ground_w - $w) / 2;
+            $posY = $ground_h - $h;
+            break;
+            case 9://9为底端居右
+            $posX = $ground_w - $w;
+            $posY = $ground_h - $h;
+            break;
+            default://随机
+            $posX = rand(0,($ground_w - $w));
+            $posY = rand(0,($ground_h - $h));
+            break;
+        }
+        //设定图像的混色模式
+        imagealphablending($this->image, true);
+        imagecopy($this->image, $water_im, $posX, $posY, 0, 0, $w,$h);//拷贝水印到目标文件
+        imagedestroy($water_im);
     }
 }
