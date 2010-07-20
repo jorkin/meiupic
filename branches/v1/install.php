@@ -532,7 +532,7 @@ if(file_exists(ROOTDIR.'conf/install.lock') && $action!=3){
     </select></td>
 </tbody>
 <tbody id="mysql_div">
-<tr><th>数据库主机</th><td><input name="dbhost" type="text" value="127.0.0.1" /></td>
+<tr><th>数据库主机</th><td><input name="dbhost" type="text" value="localhost" /></td>
 <tr><th>端口号</th><td><input name="dbport" type="text" value="3306" /></td>
 </tbody>
 <tbody id="dbauth_div">
