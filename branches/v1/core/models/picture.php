@@ -37,8 +37,11 @@ class picture extends modelfactory{
         return $pics;
     }
     
-    function get_tmp_pic(){
+    function get_tmp_pic($page = NULL){
         $this->db->select('#imgs','*','status=3','id asc');
+        if($page){
+            return $this->db->toPage($page,PAGE_SET);
+        }
         return $this->db->getAll();
     }
     

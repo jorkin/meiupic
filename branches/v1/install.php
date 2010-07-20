@@ -153,21 +153,21 @@
     }
     
     function creat_mysql($setting){
-        $dbconn = @mysql_connect($setting['dbhost'].':'.$setting['dbport'],$setting['dbuser'],$setting['dbpass'],true);
+        $dbconn = @mysql_connect($setting['dbhost'].':'.$setting['dbport'],$setting['dbuser'],$setting['dbpass']);
         if(!$dbconn){
-            echo "<script> alert('无法连接数据库！请确认数据库参数是否正确！');history.back();</script>";
+            echo "无法连接数据库！请确认数据库参数是否正确！Error:".mysql_error();
             exit();
         }
         $select_db = @mysql_select_db($setting['dbname'],$dbconn);
         if(!$select_db){
             if(!isset($_POST['create_db'])){
-                echo "<script> alert('无法选择库！请确认数据库参数是否正确！');history.back();</script>";
+                echo "无法选择库！请确认数据库参数是否正确！Error:".mysql_error();
                 exit();
             }
             $create_db = mysql_query('CREATE DATABASE `'.$setting['dbname'].'` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;',$dbconn);
             
             if(!$create_db){
-                echo "<script> alert('创建数据库失败，可能是权限错误！');history.back();</script>";
+                echo "创建数据库失败，可能是权限错误！Error:".mysql_error();
                 exit();
             }
             
@@ -188,7 +188,7 @@
         $config_file_content .= ");\n";
         $config_file_content .= "?>";
         if(!@file_put_contents(ROOTDIR.'conf/config.php',$config_file_content)){
-            echo "<script> alert('无法创建数据库配置文件！');history.back();</script>";
+            echo "无法创建数据库配置文件！";
             exit();
         }
         @chmod(ROOTDIR.'conf/config.php',0755);
@@ -237,14 +237,15 @@
         ) TYPE=MyISAM DEFAULT CHARACTER SET utf8;",$dbconn) or die(mysql_error());
         
         if(!$rt1 || !$rt2 || !$rt3){
-            echo "<script> alert('创建表结构错误！');history.back();</script>";
+            echo "创建表结构错误！";
             exit();
         }
         
         $rt4 = @mysql_query("REPLACE INTO `$admintable` (`id`, `username`, `userpass`, `create_time`) VALUES (1, '".$setting['username']."', '".md5($setting['userpass'])."','".time()."');",$dbconn);
         if(!$rt4){
-            echo "<script> alert('添加用户数据错误！');history.back();</script>";
+            echo "添加用户数据错误！Error:".mysql_error();
             exit();
+            
         }
         @mysql_query("REPLACE INTO `$albumstable` (`id`, `name`, `cover`,`create_time`) VALUES (1, '默认相册', '0','".time()."');",$dbconn);
         mysql_close($dbconn);

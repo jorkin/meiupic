@@ -71,7 +71,7 @@ class upload extends modelfactory{
         $width = '110';
         $height = '150';
         $newpath = ROOTDIR.mkImgLink($dir,$key,$ext,$size);
-        if($orgwidth >= $width && $orgheight >= $height){
+        if($orgwidth <= $width && $orgheight <= $height){
             copy($realpath,$newpath);
         }else{
             $imgobj->load($bigpath);
