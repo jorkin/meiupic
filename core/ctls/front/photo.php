@@ -57,15 +57,23 @@ class controller extends frontpage{
         }
         
         $imgobj->load(ROOTDIR.$orig);
-        $imgobj->setQuality(95);
-        if($square){
-            $imgobj->square($width);
+        $orgwidth = $imgobj->getWidth();
+        $orgheight = $imgobj->getHeight();
+        if($orgwidth <= $width && $orgheight <= $height){
+            $imgobj->setQuality(95);
+            if($square){
+                $imgobj->square($width);
+            }else{
+                $imgobj->resizeScale($width,$height);
+            }
+            $imgobj->save(ROOTDIR.$resized);
+            @chmod(ROOTDIR.$resized,0755);
+            $imgobj->output();
         }else{
-            $imgobj->resizeScale($width,$height);
+            copy(ROOTDIR.$orig,ROOTDIR.$resized);
+            @chmod(ROOTDIR.$resized,0755);
+            $imgobj->output();
         }
-        $imgobj->save(ROOTDIR.$resized);
-        @chmod(ROOTDIR.$resized,0755);
-        $imgobj->output();
     }
     
     function view(){

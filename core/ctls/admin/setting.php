@@ -205,4 +205,37 @@ class controller extends adminpage{
             showInfo('密码管理员删除失败！',false);
         }
     }
+    
+    function task(){
+        $page = $this->getGet('page',0);
+        if(!$page){
+            $page = 1;
+        }
+        $tasks = load_model('picture')->get_tmp_pic($page);
+        $pageurl='admin.php?ctl=setting&act=task&page=[#page#]';
+        
+        $this->output->set('tasks',$tasks['ls']);
+        $this->output->set('page',$page);
+        
+        $this->output->set('pageset',pageshow($tasks['total'],$tasks['start'],$pageurl));
+        $this->output->set('setting_nav','task');
+        $this->view->display('admin/setting_task.php');
+    }
+    
+    function dotask(){
+        set_time_limit(0);
+        ignore_user_abort(true);
+        if(!$this->setting['demand_resize']){
+            $this->mdl_upload = & load_model('upload');
+            $this->mdl_picture = & load_model('picture');
+            $tmppics = $this->mdl_picture->get_tmp_pic();
+            if($tmppics){
+                foreach($tmppics as $v){
+                    $this->mdl_upload->generatepic($v['dir'],$v['pickey'],$v['ext']);
+                    $this->mdl_picture->update_pic($v['id'],$v['name']);
+                }
+            }
+        }
+        header('Location: admin.php?ctl=setting&act=task');
+    }
 }
