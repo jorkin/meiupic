@@ -10,7 +10,7 @@
 class picture extends modelfactory{
     
     function get_all_pic($page = NULL,$album=0,$sort='time_desc',$limit=0,$filter_private=false){
-        $where = '1';
+        $where = 'status=1';
         if($album > 0){
             $where .= ' and album='.intval($album);
         }
@@ -38,7 +38,7 @@ class picture extends modelfactory{
     }
     
     function get_tmp_pic(){
-        $this->db->select('#imgs','*','status=0','id asc');
+        $this->db->select('#imgs','*','status=3','id asc');
         return $this->db->getAll();
     }
     
@@ -53,19 +53,20 @@ class picture extends modelfactory{
     }
     
     function get_pre_pic($id,$album=0){
-        $where = '';
+        $where = 'status=1 and id>'.intval($id);
         if($album>0){
-            $where = ' and album='.intval($album);
+            $where .= ' and album='.intval($album);
         }
-        $this->db->select('#imgs','*','id>'.intval($id).$where,'id asc limit 1');
+        $this->db->select('#imgs','*',$where,'id asc limit 1');
         return $this->db->getRow();
     }
+
     function get_next_pic($id,$album=0){
-        $where = '';
+        $where = 'status=1 and id<'.intval($id);
         if($album>0){
-            $where = ' and album='.intval($album);
+            $where .= ' and album='.intval($album);
         }
-        $this->db->select('#imgs','*','id<'.intval($id).$where,'id desc limit 1');
+        $this->db->select('#imgs','*',$where,'id desc limit 1');
         return $this->db->getRow();
     }
     

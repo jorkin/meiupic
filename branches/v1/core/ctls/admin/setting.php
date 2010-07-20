@@ -66,6 +66,18 @@ class controller extends adminpage{
             if(empty($new_setting['gallery_limit']) || !is_numeric($new_setting['gallery_limit'])){
                 showInfo('幻灯片图片限制只能为数字！',false);
             }
+
+            if(isset($new_setting['open_watermark']) && empty($new_setting['watermark_path'])){
+                showInfo('请输入水印图片的路径！',false);
+            }
+
+            if(isset($new_setting['open_watermark'])){
+                $new_setting['open_watermark'] = 'true';
+            }else{
+                $new_setting['open_watermark'] = 'false';
+            }
+
+
             if($mdl_setting->save_setting($new_setting)){
                 showInfo('修改配置成功！',true,'admin.php?ctl=setting');
             }else{

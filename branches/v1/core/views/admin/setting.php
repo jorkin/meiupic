@@ -92,6 +92,46 @@
             </tbody>
         </table>
         </div>
+        <div id="display_setting" class="stab">
+        <h1 class="album_title1">图片设置</h1>
+        <table>
+            <tbody>
+            <tr>
+                <td class="tt">使用水印：</td><td class="tc"><input id="setting_open_watermark" name="setting[open_watermark]" type="checkbox" value="1" <?php if($setting['open_watermark']){ echo 'checked="checked"';} ?> onclick="switch_div(this,'watermark_div');" /></td><td class="ti"></td>
+            </tr>
+            </tbody>
+            <tbody id="watermark_div">
+            <tr>
+                <td class="tt">水印图片路径：</td><td class="tc"><input name="setting[watermark_path]" class="txtinput" type="text" value="<?php echo $setting['watermark_path'];?>" style="width:250px" /></td><td class="ti">如data/water.png，水印图片只支持png,gif,jpg</td>
+            </tr>
+            <tr>
+                <td class="tt">水印位置：</td><td class="tc">
+                <table>
+                    <tr>
+                        <td><input type="radio" name="setting[watermark_pos]" value="1" <?php if($setting['watermark_pos']==1){ echo 'checked="checked"';} ?> /> #1</td><td><input type="radio" name="setting[watermark_pos]" value="2" <?php if($setting['watermark_pos']==2){ echo 'checked="checked"';} ?> /> #2</td><td><input type="radio" name="setting[watermark_pos]" value="3" <?php if($setting['watermark_pos']==3){ echo 'checked="checked"';} ?> /> #3</td>
+                    </tr>
+                    <tr>
+                        <td><input type="radio" name="setting[watermark_pos]" value="4" <?php if($setting['watermark_pos']==4){ echo 'checked="checked"';} ?> /> #4</td><td><input type="radio" name="setting[watermark_pos]" value="5" <?php if($setting['watermark_pos']==5){ echo 'checked="checked"';} ?> /> #5</td><td><input type="radio" name="setting[watermark_pos]" value="6" <?php if($setting['watermark_pos']==6){ echo 'checked="checked"';} ?> /> #6</td>
+                    </tr>
+                    <tr>
+                        <td><input type="radio" name="setting[watermark_pos]" value="7" <?php if($setting['watermark_pos']==7){ echo 'checked="checked"';} ?> /> #7</td><td><input type="radio" name="setting[watermark_pos]" value="8" <?php if($setting['watermark_pos']==8){ echo 'checked="checked"';} ?> /> #8</td><td><input type="radio" name="setting[watermark_pos]" value="9" <?php if($setting['watermark_pos']==9){ echo 'checked="checked"';} ?> /> #9</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3"><input type="radio" name="setting[watermark_pos]" value="0" <?php if($setting['watermark_pos']==0){ echo 'checked="checked"';} ?> /> 随机</td>
+                    </tr>
+                </table>
+                </td><td class="ti"></td>
+            </tr>
+            </tbody>
+        </table>
+        </div>
+        <script>
+            if($('#setting_open_watermark').get(0).checked){
+                $("#watermark_div").show();
+            }else{
+                $("#watermark_div").hide();
+            }
+       </script>
         <div id="priv_setting" class="stab">
         <h1 class="album_title1">权限设置</h1>
         <table>

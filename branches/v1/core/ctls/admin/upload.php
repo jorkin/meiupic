@@ -56,6 +56,10 @@ class controller extends adminpage{
     }
     
     function dopicupload(){
+        $open_watermark = true;
+        $watermark_path = ROOTDIR.'img/logo.png';
+        $watermark_pos = 1;
+
         set_time_limit(0);
         $date = get_updir_name($this->setting['imgdir_type']);
         if(!is_dir(DATADIR.$date)){
@@ -65,10 +69,17 @@ class controller extends adminpage{
         
         $album_id = intval($this->getGet('album'));
         $album_arr = $this->mdl_album->get_one_album($album_id);
+        $this->output->set('album',$album_id);
         if($album_arr){
             $photo_private = $album_arr['private'];
         }else{
             $photo_private = 1;
+        }
+
+        if($this->setting['demand_resize']){
+            $pic_status = 1;
+        }else{
+            $pic_status = 3;
         }
         
         $empty_num = 0;
@@ -90,9 +101,7 @@ class controller extends adminpage{
                 $realpath = ROOTDIR.mkImgLink($date,$key,$fileext,'orig');
                 
                 if(@move_uploaded_file($tmpfile,$realpath)){
-                    if(!$this->setting['demand_resize']){
-                        $this->mdl_upload->generatepic($date,$key,$fileext);
-                    }
+                    $this->mdl_upload->addwater($realpath);
                     @chmod($realpath,0755);
                     $this->mdl_picture->insert_pic(array('album'=>$album_id,
                                                     'name'=>$filename,
@@ -102,7 +111,7 @@ class controller extends adminpage{
                                                     'author'=>$this->auth->getInfo('id'),
                                                     'create_time'=>time(),
                                                     'private' => $photo_private,
-                                                    'status' => 1
+                                                    'status' => $pic_status
                                                     ));
                 }else{
                     showInfo('文件上传失败！',false);
@@ -113,24 +122,17 @@ class controller extends adminpage{
             }
         }
         if($empty_num == count($_FILES['imgs']['name'])){
-            echo '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />';
-            echo '<script> alert("您没有选择图片上传，请重新上传!");history.back();</script>';
+            showInfo('您没有选择图片上传，请重新上传！',false);
             exit;
         }
-        @ob_clean();
-        header('Location: admin.php?ctl=album&act=photos&album='.$album_id);
+        $this->view->display('admin/upload_step3.php');
     }
     function doupload(){
         set_time_limit(0);
-        ignore_user_abort(true);
-        $files_count = intval($this->getPost('flash_uploader_count'));
-        $this->output->set('piccount',$files_count);
         $this->output->set('album',$this->getGet('album'));
-        $this->view->display('admin/upload_step3.php');
-        @ob_end_flush();
-        @ob_flush();
-        flush();
         $this->_save_and_resize();
+
+        $this->view->display('admin/upload_step3.php');
     }
     
     function _save_and_resize(){
@@ -150,6 +152,13 @@ class controller extends adminpage{
             @mkdir(DATADIR.$date);
             @chmod(DATADIR.$date,0755);
         }
+
+        if($this->setting['demand_resize']){
+            $pic_status = 1;
+        }else{
+            $pic_status = 3;
+        }
+
         $files_count = intval($this->getPost('flash_uploader_count'));
         for($i=0;$i<$files_count;$i++){
             $tmpfile = $targetDir . DIRECTORY_SEPARATOR . $this->getPost("flash_uploader_{$i}_tmpname");
@@ -159,10 +168,10 @@ class controller extends adminpage{
             $key = md5(str_replace('.','',microtime(true)));
             $realpath = ROOTDIR.mkImgLink($date,$key,$fileext,'orig');
             if($status == 'done' && file_exists($tmpfile)){
-                if(@copy($tmpfile,$realpath)){                    
-                    if(!$this->setting['demand_resize']){
-                        $this->mdl_upload->generatepic($date,$key,$fileext);
-                    }
+                if(@copy($tmpfile,$realpath)){
+
+                    $this->mdl_upload->addwater($realpath);
+
                     @chmod($realpath,0755);
                     $this->mdl_picture->insert_pic(array('album'=>$album_id,
                                                     'name'=>$filename,
@@ -172,28 +181,12 @@ class controller extends adminpage{
                                                     'author'=>$this->auth->getInfo('id'),
                                                     'create_time'=>time(),
                                                     'private' => $photo_private,
-                                                    'status' => 1
+                                                    'status' => $pic_status
                                                     ));
-                    echo "<script> $('#process_pic').text(parseInt($('#process_pic').text())+1);</script>";
-                    @ob_flush();
-                    flush();
                 }
             }
         }
-        echo "<script> if(confirm('处理完成，查看相册？')){ window.location.href='admin.php?ctl=album&act=photos&album=$album_id';}</script>";
     }
-    
-    /*function saveimgname(){
-        $imgname = $this->getPost('imgname');
-        $album = $this->getGet('album');
-        if($imgname){
-            foreach($imgname as $k=>$v){
-                $this->mdl_picture->update_pic(intval($k),$v);
-            }
-        }
-        
-        redirect('admin.php?ctl=album&act=photos&album='.$album);
-    }*/
     
     function reupload(){
         $id = intval($this->getGet('id'));
@@ -224,6 +217,7 @@ class controller extends adminpage{
         
         $this->mdl_upload->delpicfile($row['dir'],$row['pickey'],$row['ext']);
         if(@move_uploaded_file($tmpfile,$realpath)){
+            $this->mdl_upload->addwater($realpath);
             if(!$this->setting['demand_resize']){
                 $this->mdl_upload->generatepic($row['dir'],$row['pickey'],$row['ext']);
             }

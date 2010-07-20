@@ -18,62 +18,70 @@ class upload extends modelfactory{
     
     function generatepic($dir,$key,$ext){
         ignore_user_abort(true);
+
         $realpath = ROOTDIR.mkImgLink($dir,$key,$ext,'orig');
         include_once(LIBDIR.'image.class.php');
         $imgobj = new Image();
-        $imgobj->load($realpath);
-        $imgobj->setQuality(95);
-        
+
         $size = 'big';
         $width = '900';
         $height = '900';
         $bigpath = ROOTDIR.mkImgLink($dir,$key,$ext,$size);
+        $imgobj->load($realpath);
+        $imgobj->setQuality(95);
         $imgobj->resizeScale($width,$height );
         $imgobj->save($bigpath);
         @chmod($bigpath,0755);
-        
-        $imgobj->load($bigpath);
         
         $size = 'medium';
         $width = '550';
         $height = '550';
         $newpath = ROOTDIR.mkImgLink($dir,$key,$ext,$size);
-        $imgobj->resizeScale($width,$height );
+        $imgobj->load($bigpath);
+        $imgobj->resizeScale($width,$height);
         $imgobj->save($newpath);
         @chmod($newpath,0755);
-        
-        $imgobj->load($bigpath);
-        
+
         $size = 'small';
         $width = '240';
         $height = '240';
         $newpath = ROOTDIR.mkImgLink($dir,$key,$ext,$size);
+        $imgobj->load($bigpath);
         $imgobj->resizeScale($width,$height );
         $imgobj->save($newpath);
         @chmod($newpath,0755);
-        
-        //$imgobj = new Image();
-        $imgobj->load($bigpath);
         
         $size = 'thumb';
         $width = '110';
         $height = '150';
         $newpath = ROOTDIR.mkImgLink($dir,$key,$ext,$size);
+        $imgobj->load($bigpath);
         $imgobj->resizeScale($width,$height );
         $imgobj->save($newpath);
         @chmod($newpath,0755);
         
-        //$imgobj = new Image();
-        $imgobj->load($bigpath);
-        
         $size = 'square';
         $width = '75';
         $newpath = ROOTDIR.mkImgLink($dir,$key,$ext,$size);
+        $imgobj->load($bigpath);
         $imgobj->square($width);
         $imgobj->save($newpath);
         @chmod($newpath,0755);
     }
     
+    function addwater($realpath){
+        global $setting;
+
+        if(isset($setting['open_watermark']) && $setting['open_watermark']==true){
+            include_once(LIBDIR.'image.class.php');
+            $imgobj = new Image();
+            $imgobj->load($realpath);
+            $imgobj->setQuality(95);
+            $imgobj->waterMark($setting['watermark_path'],$setting['watermark_pos']);
+            $imgobj->save($realpath);
+        }
+    }
+
     function plupload(){
         header('Content-type: text/plain; charset=UTF-8');
         header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
