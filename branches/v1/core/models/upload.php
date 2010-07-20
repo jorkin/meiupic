@@ -29,43 +29,67 @@ class upload extends modelfactory{
         $bigpath = ROOTDIR.mkImgLink($dir,$key,$ext,$size);
         $imgobj->load($realpath);
         $imgobj->setQuality(95);
-        $imgobj->resizeScale($width,$height );
-        $imgobj->save($bigpath);
+        
+        $orgwidth = $imgobj->getWidth();
+        $orgheight = $imgobj->getHeight();
+
+        if($orgwidth <= $width && $orgheight <= $height){
+            copy($realpath,$bigpath);
+        }else{
+            $imgobj->resizeScale($width,$height );
+            $imgobj->save($bigpath);
+        }
         @chmod($bigpath,0755);
         
         $size = 'medium';
         $width = '550';
         $height = '550';
         $newpath = ROOTDIR.mkImgLink($dir,$key,$ext,$size);
-        $imgobj->load($bigpath);
-        $imgobj->resizeScale($width,$height);
-        $imgobj->save($newpath);
+        if($orgwidth <= $width && $orgheight <= $height){
+            copy($realpath,$newpath);
+        }else{
+            $imgobj->load($bigpath);
+            $imgobj->resizeScale($width,$height);
+            $imgobj->save($newpath);
+        }
         @chmod($newpath,0755);
 
         $size = 'small';
         $width = '240';
         $height = '240';
         $newpath = ROOTDIR.mkImgLink($dir,$key,$ext,$size);
-        $imgobj->load($bigpath);
-        $imgobj->resizeScale($width,$height );
-        $imgobj->save($newpath);
+        if($orgwidth <= $width && $orgheight <= $height){
+            copy($realpath,$newpath);
+        }else{
+            $imgobj->load($bigpath);
+            $imgobj->resizeScale($width,$height );
+            $imgobj->save($newpath);
+        }
         @chmod($newpath,0755);
         
         $size = 'thumb';
         $width = '110';
         $height = '150';
         $newpath = ROOTDIR.mkImgLink($dir,$key,$ext,$size);
-        $imgobj->load($bigpath);
-        $imgobj->resizeScale($width,$height );
-        $imgobj->save($newpath);
+        if($orgwidth >= $width && $orgheight >= $height){
+            copy($realpath,$newpath);
+        }else{
+            $imgobj->load($bigpath);
+            $imgobj->resizeScale($width,$height );
+            $imgobj->save($newpath);
+        }
         @chmod($newpath,0755);
         
         $size = 'square';
         $width = '75';
         $newpath = ROOTDIR.mkImgLink($dir,$key,$ext,$size);
-        $imgobj->load($bigpath);
-        $imgobj->square($width);
-        $imgobj->save($newpath);
+        if($orgwidth <= $width && $orgheight <= $width){
+            copy($realpath,$newpath);
+        }else{
+            $imgobj->load($bigpath);
+            $imgobj->square($width);
+            $imgobj->save($newpath);
+        }
         @chmod($newpath,0755);
     }
     

@@ -265,6 +265,8 @@ ul.thumblist li div.photo{
     height:auto !important;
     height:500px;
     min-height:500px;
+}
+.imgloading{
     background:url(bg_line_loading.gif) no-repeat center;
 }
 

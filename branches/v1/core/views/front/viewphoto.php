@@ -94,6 +94,7 @@
         }
         var img_title = $('#i_'+v).attr('title');
         var img_src = $('#i_'+v).attr('rel');
+        $('#photo_content').addClass('imgloading');
         $('#imgarea').html('');
         
         var miniphoto_left = $('#miniphoto_list').get(0).scrollLeft;
@@ -138,6 +139,7 @@
             }else{
                 img_width = img.width;
             }
+            $('#photo_content').removeClass('imgloading');
             $('#imgarea').html('<img src="'+img_src+'" width="'+img_width+'" />');
         }
         img.src = img_src;
