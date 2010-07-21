@@ -100,9 +100,11 @@ class upload extends modelfactory{
             include_once(LIBDIR.'image.class.php');
             $imgobj = new Image();
             $imgobj->load($realpath);
-            $imgobj->setQuality(95);
-            $imgobj->waterMark($setting['watermark_path'],$setting['watermark_pos']);
-            $imgobj->save($realpath);
+            if($imgobj->image_type != IMAGETYPE_GIF){
+                $imgobj->setQuality(95);
+                $imgobj->waterMark($setting['watermark_path'],$setting['watermark_pos']);
+                $imgobj->save($realpath);
+            }
         }
     }
 
