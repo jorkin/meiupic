@@ -97,7 +97,7 @@ class controller extends adminpage{
                     showInfo('上传图片过大！不得大于'.$this->setting['size_allow'].'字节！',false);
                     exit;
                 }
-                $key = md5(str_replace('.','',microtime(true)));
+                $key = md5(str_replace('.','',microtime(true)).mt_rand(10,99));
                 $realpath = ROOTDIR.mkImgLink($date,$key,$fileext,'orig');
                 
                 if(@move_uploaded_file($tmpfile,$realpath)){
@@ -165,7 +165,7 @@ class controller extends adminpage{
             $filename = $this->getPost("flash_uploader_{$i}_name");
             $status =  $this->getPost("flash_uploader_{$i}_status");
             $fileext = strtolower(end(explode('.',$filename)));
-            $key = md5(str_replace('.','',microtime(true)));
+            $key = md5(str_replace('.','',microtime(true)).mt_rand(10,99));
             $realpath = ROOTDIR.mkImgLink($date,$key,$fileext,'orig');
             if($status == 'done' && file_exists($tmpfile)){
                 if(@copy($tmpfile,$realpath)){
