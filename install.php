@@ -245,9 +245,8 @@
         if(!$rt4){
             echo "添加用户数据错误！Error:".mysql_error();
             exit();
-            
         }
-        @mysql_query("REPLACE INTO `$albumstable` (`id`, `name`, `cover`,`create_time`) VALUES (1, '默认相册', '0','".time()."');",$dbconn);
+        @mysql_query("INSERT INTO `$albumstable` (`id`, `name`, `cover`,`create_time`) VALUES (1, '默认相册', '0','".time()."');",$dbconn);
         mysql_close($dbconn);
     }
     
