@@ -34,6 +34,10 @@ class controller extends frontpage{
         $this->output->set('albums',$albums['ls']);
         $this->output->set('pageset',pageshow($albums['total'],$albums['start'],$pageurl));
         $this->output->set('total_num',$albums['count']);
+        
+        $site_title = $this->output->get('site_title').' - 相册列表';
+        $this->output->set('site_title',$site_title);
+        
         $this->view->display('front/album.php');
     }
     
@@ -47,12 +51,16 @@ class controller extends frontpage{
         $pics = load_model('picture')->get_all_pic($page,$album,'time_asc');
         $pageurl="index.php?ctl=album&act=photos&album={$album}&page=[#page#]";
         
+        $album_name = $this->mdl_album->get_album_name($album);
         $this->output->set('current_nav','album');
         $this->output->set('piclist',$pics['ls']);
-        $this->output->set('album_name',$this->mdl_album->get_album_name($album));
+        $this->output->set('album_name',$album_name);
         $this->output->set('album',$album);
         $this->output->set('pageset',pageshow($pics['total'],$pics['start'],$pageurl));
         $this->output->set('total_num',$pics['count']);
+        
+        $site_title = $this->output->get('site_title').' - '.$album_name;
+        $this->output->set('site_title',$site_title);
         
         $this->view->display('front/album_photos.php');
     }

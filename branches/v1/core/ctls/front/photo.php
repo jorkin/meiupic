@@ -86,6 +86,10 @@ class controller extends frontpage{
         $this->output->set('mini_photo_width',$mini_photo_width);
         $this->output->set('album_name',$this->mdl_album->get_album_name($album));
         $this->output->set('album',$album);
+        
+        $site_title = $this->output->get('site_title').' - 查看图片';
+        $this->output->set('site_title',$site_title);
+        
         $this->view->display('front/viewphoto.php');
     }
     

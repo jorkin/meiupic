@@ -32,6 +32,8 @@ class controller extends frontpage{
         $mdl_picture = & load_model('picture');
         $piclist = $mdl_picture->get_all_pic(NULL,0,'hot',10,true);
         $this->output->set('piclist',$piclist);
+        $site_title = $this->output->get('site_title').' - 热门图片';
+        $this->output->set('site_title',$site_title);
         $this->view->display('front/hotphotos.php');
     }
     
