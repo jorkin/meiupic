@@ -60,6 +60,10 @@ class controller extends frontpage{
         $orgwidth = $imgobj->getWidth();
         $orgheight = $imgobj->getHeight();
         if($orgwidth <= $width && $orgheight <= $height){
+            copy(ROOTDIR.$orig,ROOTDIR.$resized);
+            @chmod(ROOTDIR.$resized,0755);
+            $imgobj->output();
+        }else{
             $imgobj->setQuality(95);
             if($square){
                 $imgobj->square($width);
@@ -67,10 +71,6 @@ class controller extends frontpage{
                 $imgobj->resizeScale($width,$height);
             }
             $imgobj->save(ROOTDIR.$resized);
-            @chmod(ROOTDIR.$resized,0755);
-            $imgobj->output();
-        }else{
-            copy(ROOTDIR.$orig,ROOTDIR.$resized);
             @chmod(ROOTDIR.$resized,0755);
             $imgobj->output();
         }
