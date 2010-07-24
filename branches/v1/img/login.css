@@ -95,3 +95,12 @@ input.login_botton:hover {
     top:90px;
     background:url(logo.gif);*/
 }
+#footlink{
+    margin-top:10px;
+    text-align:right;
+}
+
+#footlink a{
+    color:#0D80BD;
+    text-decoration:none;
+}

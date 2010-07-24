@@ -59,6 +59,7 @@ function fEvent(sType,oInput){
         window.document.login_soft.loginname.focus();
         </script>
     </div>
+    <div id="footlink"><a href="index.php">&lt;&lt; 返回首页</a></div>
 </div>
 
 </body>
