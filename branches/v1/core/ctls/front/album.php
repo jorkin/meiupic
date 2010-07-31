@@ -8,6 +8,7 @@
  */
 
 class controller extends frontpage{
+    
     function controller(){
         parent::frontpage();
         $this->mdl_album = & load_model('album');
@@ -30,7 +31,7 @@ class controller extends frontpage{
             }
         }
         
-        $this->output->set('current_nav','album');
+        $this->output->set('current_nav','index');
         $this->output->set('albums',$albums['ls']);
         $this->output->set('pageset',pageshow($albums['total'],$albums['start'],$pageurl));
         $this->output->set('total_num',$albums['count']);
@@ -52,7 +53,7 @@ class controller extends frontpage{
         $pageurl="index.php?ctl=album&act=photos&album={$album}&page=[#page#]";
         
         $album_name = $this->mdl_album->get_album_name($album);
-        $this->output->set('current_nav','album');
+        $this->output->set('current_nav','index');
         $this->output->set('piclist',$pics['ls']);
         $this->output->set('album_name',$album_name);
         $this->output->set('album',$album);
