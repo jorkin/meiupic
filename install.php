@@ -212,7 +212,7 @@
           `cover` int(11) NOT NULL DEFAULT '0',
           `create_time` int(11) NOT NULL DEFAULT '0',
           `private` tinyint(1) NOT NULL DEFAULT '0',
-          `desc` text NOT NULL DEFAULT '',
+          `desc` text NOT NULL,
           PRIMARY KEY (`id`),
           KEY `cover` (`cover`)
         ) TYPE=MyISAM DEFAULT CHARACTER SET utf8;",$dbconn) or die(mysql_error());
@@ -230,7 +230,7 @@
           `private` tinyint(1) NOT NULL DEFAULT '0',
           `private_pass` varchar(50) NOT NULL DEFAULT '',
           `author` int(11) NOT NULL DEFAULT '0',
-          `desc` text NOT NULL DEFAULT '',
+          `desc` text NOT NULL,
           PRIMARY KEY (`id`),
           KEY `pickey` (`pickey`),
           KEY `imgalbum` (`album`)
