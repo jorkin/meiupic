@@ -44,7 +44,7 @@ class controller extends frontpage{
             $page = 1;
         }
         
-        $pageurl='index.php?page=[#page#]';
+        $pageurl='index.php?act=newphotos&page=[#page#]';
         
         $mdl_picture = & load_model('picture');
         $piclist = $mdl_picture->get_all_pic($page,0,'time_desc',0,true);
