@@ -22,6 +22,8 @@ header("Content-type: text/html; charset=utf-8");
 
 define('Version','1.0');
 
+define('IN_MEIU',true);
+
 define('FCPATH',__FILE__);
 define('ROOTDIR',dirname(FCPATH).'/');
 
@@ -35,6 +37,13 @@ define('VIEWDIR',COREDIR.'views/');
 define('MODELDIR',COREDIR.'models/');
 
 define('DATADIR',ROOTDIR.'data/');
+
+
+define('TPLDIR','templates/default');
+define('TEMPLATEID', '0');
+define('STYLEID', 'default');
+$timestamp = time();
+$tplrefresh = 1;
 
 define('SITE_URL',$setting['url']);
 define('PAGE_SET',$setting['pageset']);

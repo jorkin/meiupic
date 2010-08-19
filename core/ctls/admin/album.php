@@ -38,7 +38,7 @@ class controller extends adminpage{
         $this->output->set('albums',$albums['ls']);
         $this->output->set('pageset',pageshow($albums['total'],$albums['start'],$pageurl));
         $this->output->set('total_num',$albums['count']);
-        $this->view->display('admin/album.php');
+        $this->view->display('admin/album.php',true);
     }
     
     function photos(){
@@ -81,7 +81,7 @@ class controller extends adminpage{
         $this->output->set('msginfo',$msginfo);
         $this->output->set('pageset',pageshow($pics['total'],$pics['start'],$pageurl));
         $this->output->set('total_num',$pics['count']);
-        $this->view->display('admin/album_photos.php');
+        $this->view->display('admin/album_photos.php',true);
     }
     
     function ajax_create_album(){

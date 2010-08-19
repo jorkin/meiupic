@@ -24,7 +24,7 @@ class controller extends adminpage{
     
     function index(){
         $this->output->set('albums_list',$this->mdl_album->get_all_album());
-        $this->view->display('admin/upload_step1.php');
+        $this->view->display('admin/upload_step1.php',true);
     }
     
     function step2(){
@@ -35,7 +35,7 @@ class controller extends adminpage{
             $this->output->set('resize_img_width',$this->setting['resize_img_width']);
             $this->output->set('resize_img_height',$this->setting['resize_img_height']);
             $this->output->set('resize_quality',$this->setting['resize_quality']);
-            $this->view->display('admin/upload_step2.php');
+            $this->view->display('admin/upload_step2.php',true);
         }else{
             showInfo('非法参数:album_id不能为空！',false);
         }
@@ -45,7 +45,7 @@ class controller extends adminpage{
         $album_id = $this->getGet('album_id');
         if($album_id){
             $this->output->set('album_id',$album_id);
-            $this->view->display('admin/upload_step2_1.php');
+            $this->view->display('admin/upload_step2_1.php',true);
         }else{
             showInfo('非法参数:album_id不能为空！',false);
         }
@@ -126,7 +126,7 @@ class controller extends adminpage{
         $files_count = intval($this->getPost('flash_uploader_count'));
         $this->output->set('piccount',$files_count);
         $this->output->set('album',$this->getGet('album'));
-        $this->view->display('admin/upload_step3.php');
+        $this->view->display('admin/upload_step3.php',true);
         @ob_end_flush();
         @ob_flush();
         flush();

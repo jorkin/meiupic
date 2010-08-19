@@ -75,7 +75,7 @@ class controller extends adminpage{
         }else{
             $this->output->set('setting',$mdl_setting->get_setting());
             $this->output->set('setting_nav','index');
-            $this->view->display('admin/setting.php');
+            $this->view->display('admin/setting.php',true);
         }
     }
 
@@ -105,7 +105,7 @@ class controller extends adminpage{
             }
         }else{
             $this->output->set('setting_nav','password');
-            $this->view->display('admin/setting_password.php');
+            $this->view->display('admin/setting_password.php',true);
         }
     
     }
@@ -121,7 +121,7 @@ class controller extends adminpage{
         $this->output->set('mlist',$list['ls']);
         $this->output->set('pageset',pageshow($list['total'],$list['start'],$pageurl));
         $this->output->set('setting_nav','operator');
-        $this->view->display('admin/setting_operator.php');
+        $this->view->display('admin/setting_operator.php',true);
     }
     
     function operator_add(){
@@ -147,7 +147,7 @@ class controller extends adminpage{
             }
         } else {
             $this->output->set('setting_nav','operator');
-            $this->view->display('admin/setting_operator_add.php');
+            $this->view->display('admin/setting_operator_add.php',true);
         }
     }
     
@@ -177,7 +177,7 @@ class controller extends adminpage{
             $operator = load_model('operator')->get_one_operator($id);
             $this->output->set('operator',$operator);
             $this->output->set('setting_nav','operator');
-            $this->view->display('admin/setting_operator_edit.php');
+            $this->view->display('admin/setting_operator_edit.php',true);
         }
     }
     
