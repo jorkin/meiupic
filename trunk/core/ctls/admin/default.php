@@ -58,7 +58,7 @@ class controller extends adminpage{
         $this->output->set('pageset',pageshow($pics['total'],$pics['start'],$pageurl));
         $this->output->set('total_num',$pics['count']);
         $this->output->set('current_nav','all');
-        $this->view->display('admin/default.php');
+        $this->view->display('admin/default.php',true);
     }
     
     function login(){
@@ -79,7 +79,7 @@ class controller extends adminpage{
         }else{
             $flag = $this->getGet('flag');
             $this->output->set('flag',$flag);
-            $this->view->display('admin/login.php');
+            $this->view->display('admin/login.php',true);
         }
     }
     

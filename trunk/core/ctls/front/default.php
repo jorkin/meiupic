@@ -23,7 +23,7 @@ class controller extends frontpage{
         $this->output->set('pageset',pageshow($piclist['total'],$piclist['start'],$pageurl));
         $this->output->set('total_num',$piclist['count']);
         $this->output->set('current_nav','index');
-        $this->view->display('front/newphotos.php');
+        $this->view->display('newphotos');
     }
     
     function hotphotos(){
@@ -32,7 +32,7 @@ class controller extends frontpage{
         $mdl_picture = & load_model('picture');
         $piclist = $mdl_picture->get_all_pic(NULL,0,'hot',10,true);
         $this->output->set('piclist',$piclist);
-        $this->view->display('front/hotphotos.php');
+        $this->view->display('hotphotos');
     }
     
 }

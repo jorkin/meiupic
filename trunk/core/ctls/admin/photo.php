@@ -36,7 +36,7 @@ class controller extends adminpage{
         $this->output->set('next_pic',$this->mdl_picture->get_next_pic($id,$album));
         $this->output->set('imgexif',$imginfo);
         $this->output->set('album_name',$this->mdl_album->get_album_name($row['album']));
-        $this->view->display('admin/viewphoto.php');
+        $this->view->display('admin/viewphoto.php',true);
     }
     
     function bat(){
