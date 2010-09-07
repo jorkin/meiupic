@@ -39,7 +39,7 @@ define('MODELDIR',COREDIR.'models/');
 define('DATADIR',ROOTDIR.'data/');
 
 
-define('TPLDIR','templates/default');
+define('TPLDIR','themes/default');
 define('TEMPLATEID', '0');
 define('STYLEID', 'default');
 $timestamp = time();

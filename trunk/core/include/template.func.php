@@ -13,7 +13,7 @@ function template($file, $templateid = 0, $tpldir = '') {
 	$filebak = $file;
 	$objfile = ROOTDIR.'cache/templates/'.STYLEID.'_'.$templateid.'_'.$file.'.tpl.php';
 	if($templateid != 1 && !file_exists($tplfile)) {
-		$tplfile = ROOTDIR.'templates/default/'.$filebak.'.htm';
+		$tplfile = ROOTDIR.'themes/default/'.$filebak.'.htm';
 	}
 	@checktplrefresh($tplfile, $tplfile, filemtime($objfile), $templateid, $tpldir);
 
@@ -126,7 +126,7 @@ function loadsubtemplate($file, $templateid = 0, $tpldir = '') {
 
 	$tplfile = ROOTDIR.$tpldir.'/'.$file.'.htm';
 	if($templateid != 1 && !file_exists($tplfile)) {
-		$tplfile = ROOTDIR.'templates/default/'.$file.'.htm';
+		$tplfile = ROOTDIR.'themes/default/'.$file.'.htm';
 	}
 	$content = @implode('', file($tplfile));
 	$subtemplates[] = $tplfile;
