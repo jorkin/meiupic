@@ -7,7 +7,7 @@
  * @copyright : (c)2010 meiu.cn lingter@gmail.com
  */
 
-class Image {
+class image_gd {
     /**
      * 图片文件句柄
      *

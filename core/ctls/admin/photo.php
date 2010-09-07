@@ -26,8 +26,8 @@ class controller extends adminpage{
         if(!$row){
             showInfo('您要查看的图片不存在！',false);
         }
-        include_once(LIBDIR.'image.class.php');
-        $imgobj = new Image();
+        include_once(LIBDIR.'img_engine/image_gd.php');
+        $imgobj = new image_gd();
         $imginfo = $imgobj->GetImageInfo(ROOTDIR.mkImgLink($row['dir'],$row['pickey'],$row['ext'],'orig'));
 
         $this->output->set('pic',$row);
@@ -36,6 +36,7 @@ class controller extends adminpage{
         $this->output->set('next_pic',$this->mdl_picture->get_next_pic($id,$album));
         $this->output->set('imgexif',$imginfo);
         $this->output->set('album_name',$this->mdl_album->get_album_name($row['album']));
+        echo 'test';
         $this->view->display('admin/viewphoto.php',true);
     }
     
@@ -49,7 +50,7 @@ class controller extends adminpage{
             if($referfunc=='default'){
                 header('Location: admin.php?act=all&page='.$referpage.'&flag=1');
             }elseif($referfunc=='album'){
-                header('Location: admin.php?ctl=album&act=photos&album='.$album.'&page='.$referpage.'&flag=1');
+                header('Location: admin.php?ctl=album&act=photos&album='.$album_id.'&page='.$referpage.'&flag=1');
             }
             exit;
         }

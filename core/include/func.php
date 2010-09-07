@@ -7,7 +7,7 @@
  * @copyright : (c)2010 meiu.cn lingter@gmail.com
  */
 function get_basepath(){
-    if ($dir = trim(dirname($_SERVER['SCRIPT_NAME']), '\,/')) {
+    if (($dir = trim(dirname($_SERVER['SCRIPT_NAME']), '\,/'))!=false) {
       $base_path = "/$dir";
       $base_path .= '/';
     } else {
@@ -146,6 +146,26 @@ function html_replace($str){
     $str = str_replace('>','&gt;',$str);
     $str = addslashes($str);
     return $str;
+}
+
+function ext_name($file){
+    return substr($file,strrpos($file,'.'));
+}
+
+function mkdir_p($dir,$dirmode=0755){
+    $path = explode('/',str_replace('\\','/',$dir));
+    $depth = count($path);
+    for($i=$depth;$i>0;$i--){
+        if(file_exists(implode('/',array_slice($path,0,$i)))){
+            break;
+        }
+    }
+    for($i;$i<$depth;$i++){
+        if(($d= implode('/',array_slice($path,0,$i+1)))!=false){
+            mkdir($d,$dirmode);
+        }
+    }
+    return is_dir($dir);
 }
 
 if(!function_exists('json_encode')){

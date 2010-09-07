@@ -125,7 +125,7 @@ class upload extends modelfactory{
                     $in = fopen($_FILES['file']['tmp_name'], "rb");
 
                     if ($in) {
-                        while ($buff = fread($in, 4096))
+                        while (($buff = fread($in, 4096))!=false)
                             fwrite($out, $buff);
                     } else
                         die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "Failed to open input stream."}, "id" : "id"}');
@@ -142,7 +142,7 @@ class upload extends modelfactory{
                 $in = fopen("php://input", "rb");
 
                 if ($in) {
-                    while ($buff = fread($in, 4096))
+                    while (($buff = fread($in, 4096))!=false)
                         fwrite($out, $buff);
                 } else
                     die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "Failed to open input stream."}, "id" : "id"}');
