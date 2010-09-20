@@ -56,7 +56,7 @@ function run(){
     $act = isset($_GET['act'])?$_GET['act']:'index';
     
     if(!$setting['open_photo'] && $ctl != 'photo' && $act != 'resize'){
-        header('Location: admin.php');
+        header('Location: admin/index.php');
         exit;
     }
     

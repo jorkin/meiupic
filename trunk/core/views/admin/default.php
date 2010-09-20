@@ -38,7 +38,7 @@
     ?>
     <li id="i_<?php echo $v['id'];?>" rel="<?php echo SITE_URL.mkImgLink($v['dir'],$v['pickey'],$v['ext'],'orig');?>">
         <span class="img">
-            <a href="admin.php?ctl=photo&act=view&id=<?php echo $v['id'];?>"><img src="<?php echo mkImgLink($v['dir'],$v['pickey'],$v['ext'],'thumb');?>" alt="<?php echo $v['name'];?>" /></a>
+            <a href="admin.php?ctl=photo&act=view&id=<?php echo $v['id'];?>"><img src="<?php echo SITE_URL.mkImgLink($v['dir'],$v['pickey'],$v['ext'],'thumb');?>" alt="<?php echo $v['name'];?>" /></a>
         </span>
         <span class="info"><a onclick="rename_pic(this,<?php echo $v['id'];?>)"><?php echo $v['name'];?></a></span>
         <span class="control">

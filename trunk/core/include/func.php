@@ -24,7 +24,7 @@ function redirect($c){
 
 function redirect_c($ctl,$act='index'){
     @ob_clean();
-    header("Location: admin.php?ctl=$ctl&act=$act");
+    header("Location: index.php?ctl=$ctl&act=$act");
     exit();
 }
 

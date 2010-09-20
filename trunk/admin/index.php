@@ -12,7 +12,7 @@ if (PHP_VERSION >= "5.1.0") {
 	date_default_timezone_set ( 'Asia/Shanghai' );
 }
 
-if(!file_exists('conf/config.php') || !file_exists('conf/setting.php')){
+if(!file_exists('../conf/config.php') || !file_exists('../conf/setting.php')){
     header('Location: ./install.php');
     exit;
 }
@@ -22,10 +22,10 @@ header("Content-type: text/html; charset=utf-8");
 define('Version','1.0');
 
 define('FCPATH',__FILE__);
-define('ROOTDIR',dirname(FCPATH).'/');
+define('ROOTDIR',dirname(dirname(FCPATH)).'/');
 
-require_once('conf/setting.php');
-require_once('conf/config.php');
+require_once(ROOTDIR.'conf/setting.php');
+require_once(ROOTDIR.'conf/config.php');
 define('COREDIR',ROOTDIR.'core/');
 define('LIBDIR',COREDIR.'libs/');
 define('INCDIR',COREDIR.'include/');
