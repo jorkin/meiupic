@@ -67,7 +67,7 @@ class controller extends adminpage{
                 showInfo('幻灯片图片限制只能为数字！',false);
             }
             if($mdl_setting->save_setting($new_setting)){
-                showInfo('修改配置成功！',true,'admin.php?ctl=setting');
+                showInfo('修改配置成功！',true,'index.php?ctl=setting');
             }else{
                 showInfo('写入配置失败,请检查conf/setting.php文件是否可写！',false);
             }
@@ -99,7 +99,7 @@ class controller extends adminpage{
             $newpass = md5($new_pass);
             if(load_model('operator')->change_pass(intval($id),$newpass)){
                 $this->auth->setLogin($loginname,$newpass);
-                showInfo('密码修改成功！',true,'admin.php?ctl=setting&act=password');
+                showInfo('密码修改成功！',true,'index.php?ctl=setting&act=password');
             }else{
                 showInfo('密码修改失败！',false);
             }
@@ -115,7 +115,7 @@ class controller extends adminpage{
         if(!$page){
             $page = 1;
         }
-        $pageurl = 'admin.php?ctl=setting&act=operator&page=[#page#]';
+        $pageurl = 'index.php?ctl=setting&act=operator&page=[#page#]';
         
         $list = load_model('operator')->get_list($page);
         $this->output->set('mlist',$list['ls']);
@@ -141,7 +141,7 @@ class controller extends adminpage{
             }
 
             if(load_model('operator')->add_operator($username,md5($userpass))){
-                showInfo('管理员添加成功！',true,'admin.php?ctl=setting&act=operator');
+                showInfo('管理员添加成功！',true,'index.php?ctl=setting&act=operator');
             }else{
                 showInfo('管理员添加失败！',false);
             }
@@ -168,7 +168,7 @@ class controller extends adminpage{
             }
 
             if(load_model('operator')->change_pass(intval($id),md5($userpass))){
-                showInfo('管理员密码修改成功！',true,'admin.php?ctl=setting&act=operator');
+                showInfo('管理员密码修改成功！',true,'index.php?ctl=setting&act=operator');
             }else{
                 showInfo('管理员密码修改失败！',false);
             }
@@ -188,7 +188,7 @@ class controller extends adminpage{
         }
 
         if(load_model('operator')->del_one(intval($id))){
-            showInfo('密码管理员删除成功！',true,'admin.php?ctl=setting&act=operator');
+            showInfo('密码管理员删除成功！',true,'index.php?ctl=setting&act=operator');
         }else{
             showInfo('密码管理员删除失败！',false);
         }

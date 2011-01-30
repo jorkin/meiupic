@@ -25,7 +25,7 @@ class image_gd {
     var $image_quality=90;
 
     var $true_color = false;
-
+    
     /**
      * 装载图像
      *
@@ -33,7 +33,6 @@ class image_gd {
      * @return void
      */
     function load($filename) {
-        @ini_set('memory_limit', '128M');
         $image_info = getimagesize($filename);
         $this->image_type = $image_info[2];
         if( $this->image_type == IMAGETYPE_JPEG ) {
@@ -48,6 +47,11 @@ class image_gd {
         if(function_exists("imagecopyresampled") && function_exists("imagecreatetruecolor") && $this->image_type != IMAGETYPE_GIF){
             $this->true_color = true;
         }
+        return true;
+    }
+    
+    function supportType(){
+        return array('jpg','jpeg','gif','png');
     }
     
     function setQuality($q){
@@ -278,88 +282,203 @@ class image_gd {
         imagecopy($new_image, $this->image, 0, 0, 0, $top, $width, $height);
         $this->image = $new_image;
     }
-
-    /**
-     * 获取图片EXIF信息
-     */
-    function GetImageInfo($img) {
-        if(!function_exists('exif_read_data')){
+    
+    /*
+    旋转图片
+    */
+    function rotate($dgree){
+        $tran = imagecolortransparent($this->image,NULL);
+        $new_image = imagerotate($this->image, $dgree , $tran);
+        $this->image = $new_image;
+    }
+    
+    function waterMarkSetting($param){
+        $this->param = $param;
+    }
+    
+    function waterMarkImg(){
+        if(empty($this->param['water_mark_image']) || !file_exists($this->param['water_mark_image'])){
             return false;
         }
-        $Flash_arr = array(
-            0x00 => "关闭",
-            0x01 => "开启",
-            0x05 => "打开(不探测返回光线)",
-            0x07 => "打开(探测返回光线)",
-            0x09 => "打开(强制)",
-            0x0D => "打开(强制/不探测返回光线)",
-            0x0F => "打开(强制/探测返回光线)",
-            0x10 => "关闭(强制)",
-            0x18 => "关闭(自动)",
-            0x19 => "打开(自动)",
-            0x1D => "打开(自动/不探测返回光线)",
-            0x1F => "打开(自动/探测返回光线)",
-            0x20 => "没有闪光功能",
-            0x41 => "打开(防红眼)",
-            0x45 => "打开(防红眼/不探测返回光线)",
-            0x47 => "打开(防红眼/探测返回光线)",
-            0x49 => "打开(强制/防红眼)",
-            0x4D => "打开(强制/防红眼/不探测返回光线)",
-            0x4F => "打开(强制/防红眼/探测返回光线)",
-            0x59 => "打开(自动/防红眼)",
-            0x5D => "打开(自动/防红眼/不探测返回光线)",
-            0x5F => "打开(自动/防红眼/探测返回光线)"
-        );
-
-        $exif = @exif_read_data($img,"IFD0");
-        if ($exif===false) {
-            return false;
-        }
-        else
+    
+        $water_info = getimagesize($this->param['water_mark_image']);
+        $w = $water_info[0];//取得水印图片的宽
+        $h = $water_info[1];//取得水印图片的高
+        switch($water_info[2])//取得水印图片的格式
         {
-            $exif = exif_read_data ($img,0,true);
-            if(isset($exif['IFD0'])){
-                if(isset($exif['IFD0']['Make'])){
-                    $new_img_info["相机品牌"] = $exif['IFD0']['Make'];
-                }
-                if(isset($exif['IFD0']['Model'])){
-                    $new_img_info["相机型号"] = $exif['IFD0']['Model'];
-                }
-            }
-            if(isset($exif['COMPUTED'])){
-                if(isset($exif['COMPUTED']['ApertureFNumber'])){
-                    $new_img_info["光圈"] = $exif['COMPUTED']['ApertureFNumber'];
-                }
-            }
-            if(isset($exif['EXIF'])){
-                if(isset($exif['EXIF']['ExposureTime'])){
-                    $new_img_info["快门速度"] = $exif['EXIF']['ExposureTime'];
-                }
-                if(isset($exif['EXIF']['ExposureMode'])){
-                    $new_img_info["曝光模式"] = "手动";
-                }else{
-                    $new_img_info["曝光模式"] = "自动";
-                }
-                if(isset($exif['EXIF']['Flash'])){
-                    $new_img_info["闪光灯"] = isset($Flash_arr[$exif['EXIF']['Flash']])?$Flash_arr[$exif['EXIF']['Flash']]:'未知';
-                }else{
-                    $new_img_info["闪光灯"] = '未知';
-                }
-                if(isset($exif['EXIF']['FocalLength'])){
-                    $new_img_info["焦距"] = $exif['EXIF']['FocalLength']."mm";
-                }
-                if(isset($exif['EXIF']['ISOSpeedRatings'])){
-                    $new_img_info["ISO感光度"] = $exif['EXIF']['ISOSpeedRatings'];
-                }
-                $new_img_info["白平衡"] = (isset($exif['EXIF']['WhiteBalance'])?"手动":"自动");
-                if(isset($exif['EXIF']['ExposureBiasValue'])){
-                    $new_img_info["曝光补偿"] = $exif['EXIF']['ExposureBiasValue']."EV";
-                }
-                if(isset($exif['EXIF']['DateTimeOriginal'])){
-                    $new_img_info["拍摄时间"] = $exif['EXIF']['DateTimeOriginal'];
-                }
-            }
+            case 1:$water_im = imagecreatefromgif($waterImage);break;
+            case 2:$water_im = imagecreatefromjpeg($waterImage);break;
+            case 3:$water_im = imagecreatefrompng($waterImage);break;
+            default:return false;
         }
-        return $new_img_info;
+        $ground_w = $this->getWidth();
+        $ground_h = $this->getHeight();
+    
+        if( $ground_w<$w || $ground_h<$h ){
+            return false;
+        }
+        switch($this->param['water_mark_pos'])
+        {
+            case 0://随机
+            $posX = rand(5,($ground_w - $w - 5));
+            $posY = rand(5,($ground_h - $h - 5));
+            break;
+            case 1://1为顶端居左
+            $posX = 5;
+            $posY = 5;
+            break;
+            case 2://2为顶端居中
+            $posX = ($ground_w - $w) / 2;
+            $posY = 5;
+            break;
+            case 3://3为顶端居右
+            $posX = $ground_w - $w -5;
+            $posY = 5;
+            break;
+            case 4://4为中部居左
+            $posX = 5;
+            $posY = ($ground_h - $h) / 2;
+            break;
+            case 5://5为中部居中
+            $posX = ($ground_w - $w) / 2;
+            $posY = ($ground_h - $h) / 2;
+            break;
+            case 6://6为中部居右
+            $posX = $ground_w - $w - 5;
+            $posY = ($ground_h - $h) / 2;
+            break;
+            case 7://7为底端居左
+            $posX = 5;
+            $posY = $ground_h - $h - 5;
+            break;
+            case 8://8为底端居中
+            $posX = ($ground_w - $w) / 2;
+            $posY = $ground_h - $h - 5;
+            break;
+            case 9://9为底端居右
+            $posX = $ground_w - $w - 5;
+            $posY = $ground_h - $h - 5;
+            break;
+            default://随机
+            $posX = rand(5,($ground_w - $w - 5));
+            $posY = rand(5,($ground_h - $h - 5));
+            break;
+        }
+        //设定图像的混色模式
+        imagealphablending($this->image, true);
+        imagecopy($this->image, $water_im, $posX, $posY, 0, 0, $w,$h);//拷贝水印到目标文件
+        imagedestroy($water_im);
+    }
+    
+    function waterMarkFont(){
+        if($this->param['water_mark_color']){
+            $color = $this->param['water_mark_color'];
+        }else{
+            $color = '#000000';
+        }
+        $r = hexdec( substr( $color, 1, 2 ) );
+        $g = hexdec( substr( $color, 3, 2 ) );
+        $b = hexdec( substr( $color, 5, 2 ) );
+        
+        $fontcolor = imagecolorallocate( $this->image, $r, $g, $b );
+        
+        $box = ImageTTFBBox(
+            $this->param['water_mark_fontsize'],
+            $this->param['water_mark_angle'],
+            $this->param['water_mark_font'],
+            $this->param['water_mark_string']);
+        $ground_w = $this->getWidth();
+        $ground_h = $this->getHeight();
+        $h = max($box[1], $box[3]) - min($box[5], $box[7]);
+        $w = max($box[2], $box[4]) - min($box[0], $box[6]);
+        $ax = min($box[0], $box[6]) * -1;
+        $ay = min($box[5], $box[7]) * -1;
+        switch($this->param['water_mark_pos'])
+        {
+            case 0://随机
+            $posX = rand(5,($ground_w - $w - 5));
+            $posY = rand(5,($ground_h - $h - 5));
+            break;
+            case 1://1为顶端居左
+            $posX = 5;
+            $posY = 5;
+            break;
+            case 2://2为顶端居中
+            $posX = ($ground_w - $w) / 2;
+            $posY = 5;
+            break;
+            case 3://3为顶端居右
+            $posX = $ground_w - $w -5;
+            $posY = 5;
+            break;
+            case 4://4为中部居左
+            $posX = 5;
+            $posY = ($ground_h - $h) / 2;
+            break;
+            case 5://5为中部居中
+            $posX = ($ground_w - $w) / 2;
+            $posY = ($ground_h - $h) / 2;
+            break;
+            case 6://6为中部居右
+            $posX = $ground_w - $w - 5;
+            $posY = ($ground_h - $h) / 2;
+            break;
+            case 7://7为底端居左
+            $posX = 5;
+            $posY = $ground_h - $h - 5;
+            break;
+            case 8://8为底端居中
+            $posX = ($ground_w - $w) / 2;
+            $posY = $ground_h - $h - 5;
+            break;
+            case 9://9为底端居右
+            $posX = $ground_w - $w - 5;
+            $posY = $ground_h - $h - 5;
+            break;
+            default://随机
+            $posX = rand(5,($ground_w - $w - 5));
+            $posY = rand(5,($ground_h - $h - 5));
+            break;
+        }
+        if($this->param['water_mark_shadow'] == 'gray'){
+            $shadowcolor = imagecolorallocate( $this->image, 160, 160, 160 );
+            imagettftext($this->image,
+                 $this->param['water_mark_fontsize'],
+                 $this->param['water_mark_angle'],
+                 $posX + $ax+1,
+                 $posY + $ay+1,
+                 $shadowcolor,
+                 $this->param['water_mark_font'],
+                 $this->param['water_mark_string']);
+        }elseif($this->param['water_mark_shadow'] == 'white'){
+            $shadowcolor = imagecolorallocate( $this->image, 255, 255, 255 );
+            imagettftext($this->image,
+                 $this->param['water_mark_fontsize'],
+                 $this->param['water_mark_angle'],
+                 $posX + $ax + 1,
+                 $posY + $ay + 1,
+                 $shadowcolor,
+                 $this->param['water_mark_font'],
+                 $this->param['water_mark_string']);
+        }
+        
+        imagettftext($this->image,
+             $this->param['water_mark_fontsize'],
+             $this->param['water_mark_angle'],
+             $posX + $ax,
+             $posY + $ay,
+             $fontcolor,
+             $this->param['water_mark_font'],
+             $this->param['water_mark_string']);
+    }
+    
+    function waterMark(){
+        //读取水印文件
+        if($this->param['water_mark_type'] == 'image'){
+            $this->waterMarkImg();
+        }elseif($this->param['water_mark_type'] == 'font'){
+            $this->watermarkFont();
+        }
+        return false;
     }
 }

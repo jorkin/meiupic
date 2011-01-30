@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id$
+ * $Id:index.php 96 2010-09-20 16:20:09Z lingter $
  * 
  * @author : Lingter
  * @support : http://www.meiu.cn
@@ -617,7 +617,7 @@ if(file_exists(ROOTDIR.'conf/install.lock') && $action!=3){
     <h1 class="green">恭喜您！ 美优相册管理系统 已成功安装！</h1>
     <ul class="info">
     <li class="red">请记得删除install.php文件！</li>
-    <li><a href="admin.php">开始登录相册上传图片吧！</a></li>
+    <li><a href="index.php">开始登录相册上传图片吧！</a></li>
     </ul>
 <?php
     }

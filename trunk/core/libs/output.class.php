@@ -7,7 +7,7 @@
  * @copyright : (c)2010 meiu.cn lingter@gmail.com
  */
 
-class output{
+class output_cla{
     var $data = array();
     
     function set($key,$value){

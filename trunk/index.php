@@ -1,53 +1,31 @@
 <?php
 /**
- * $Id$
+ * $Id:index.php 93 2010-09-07 15:35:32Z lingter $
  * 
  * @author : Lingter
- * @support : http://www.meiu.cn
- * @copyright : (c)2010 meiu.cn lingter@gmail.com
+ * @support : http://meiupic.meiu.cn
+ * @copyright : (c)2011 meiu.cn lingter@gmail.com
  */
+error_reporting(E_ALL);
+define('LANGSET','zh_cn');
 
-error_reporting(E_ERROR);
-
-if (PHP_VERSION >= "5.1.0") {
-	date_default_timezone_set ( 'Asia/Shanghai' );
-}
-
-if(!file_exists('conf/config.php') || !file_exists('conf/setting.php')){
-    header('Location: ./install.php');
-    exit;
-}
-
-header("Content-type: text/html; charset=utf-8");
-
-define('Version','1.0');
-
-define('IN_MEIU',true);
 
 define('FCPATH',__FILE__);
 define('ROOTDIR',dirname(FCPATH).'/');
-
-require_once('conf/setting.php');
-require_once('conf/config.php');
 define('COREDIR',ROOTDIR.'core/');
 define('LIBDIR',COREDIR.'libs/');
 define('INCDIR',COREDIR.'include/');
 define('CTLDIR',COREDIR.'ctls/');
 define('VIEWDIR',COREDIR.'views/');
 define('MODELDIR',COREDIR.'models/');
-
 define('DATADIR',ROOTDIR.'data/');
+define('PLUGINDIR',ROOTDIR.'plugins/');
 
 
-define('TPLDIR','themes/default');
-define('TEMPLATEID', '0');
-define('STYLEID', 'default');
-$timestamp = time();
-$tplrefresh = 1;
+if(!file_exists(ROOTDIR.'conf/config.php')){
+    header('Location: ./install/');
+    exit;
+}
 
-define('SITE_URL',$setting['url']);
-define('PAGE_SET',$setting['pageset']);
-
-require_once(INCDIR.'base.php');
-require_once(INCDIR.'func.php');
-run();
+require_once(INCDIR.'bootstrap.inc.php');
+meiu_bootstrap();

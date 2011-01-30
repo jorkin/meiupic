@@ -49,7 +49,7 @@ class controller extends adminpage{
         $mdl_picture = & load_model('picture');
         $mdl_album =& load_model('album');
         $pics = $mdl_picture->get_all_pic($page,0,$sort);
-        $pageurl='admin.php?act=all&page=[#page#]&sort='.$sort;
+        $pageurl='index.php?act=all&page=[#page#]&sort='.$sort;
         $this->output->set('albums_list',$mdl_album->get_albums_assoc());
         $this->output->set('pics',$pics['ls']);
         $this->output->set('page',$page);
@@ -74,7 +74,7 @@ class controller extends adminpage{
             if($this->auth->setLogin($username,md5($userpass),$expire_time)){
                 redirect_c('album','index');
             }else{
-                redirect('admin.php?ctl=default&act=login&flag=1');
+                redirect('index.php?ctl=default&act=login&flag=1');
             }
         }else{
             $flag = $this->getGet('flag');
@@ -85,7 +85,7 @@ class controller extends adminpage{
     
     function logout(){
         $this->auth->clearLogin();
-        redirect('admin.php?ctl=default&act=login&flag=2');
+        redirect('index.php?ctl=default&act=login&flag=2');
     }
 }
 ?>
