@@ -187,7 +187,7 @@
   //   extract() : Extract the content of the archive
   //   properties() : List the properties of the archive
   // --------------------------------------------------------------------------------
-  class pclzip
+  class pclzip_cla
   {
     // ----- Filename of the zip file
     var $zipname = '';
@@ -212,7 +212,7 @@
   //   Note that no real action is taken, if the archive does not exist it is not
   //   created. Use create() for that.
   // --------------------------------------------------------------------------------
-  function pclzip($p_zipname)
+  function pclzip_cla($p_zipname)
   {
 
     // ----- Tests the zlib
