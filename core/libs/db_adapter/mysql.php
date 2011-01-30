@@ -165,7 +165,6 @@ Class adapter_mysql{
         if(!$this->conn){
             $this->connect();
         }
-        
         $query = @mysql_query($SQL,$this->conn);
         $this->query_num++;
         if (!$query){

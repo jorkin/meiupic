@@ -7,6 +7,18 @@
  * @copyright : (c)2010 meiu.cn lingter@gmail.com
  */
 class pagecore{
+    
+    function pagecore(){
+        /*global $setting;
+        $this->setting = $setting;*/
+        $this->output =& loader::lib('output');
+        $this->db =& loader::database();
+        
+        $this->output->set('site_title','美优相册系统2.0');
+        $this->output->set('site_keyword','相册,php');
+        $this->output->set('site_description','美优相册系统是一个单用户的在线相册管理工具。');
+    }
+    
     function isPost(){
         if(strtolower($_SERVER['REQUEST_METHOD']) == 'post'){
             return true;

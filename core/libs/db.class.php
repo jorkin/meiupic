@@ -7,12 +7,7 @@
  * @copyright : (c)2010 meiu.cn lingter@gmail.com
  */
 
-class db{
-    /**
-     * 若为Mysql的话
-     *
-     * @var DB_Mysql
-     */
+class db_cla{
     var $db;
     
     var $pre='';
@@ -27,7 +22,7 @@ class db{
     
     var $sql=null;
     
-    function db($db_config){
+    function init($db_config){
 
         if(is_array($db_config) && $db_config['adapter'])
             $adapterName='adapter_'.$db_config['adapter'];

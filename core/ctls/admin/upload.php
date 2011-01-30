@@ -118,7 +118,7 @@ class controller extends adminpage{
             exit;
         }
         @ob_clean();
-        header('Location: admin.php?ctl=album&act=photos&album='.$album_id);
+        header('Location: index.php?ctl=album&act=photos&album='.$album_id);
     }
     function doupload(){
         set_time_limit(0);
@@ -180,7 +180,7 @@ class controller extends adminpage{
                 }
             }
         }
-        echo "<script> if(confirm('处理完成，查看相册？')){ window.location.href='admin.php?ctl=album&act=photos&album=$album_id';}</script>";
+        echo "<script> if(confirm('处理完成，查看相册？')){ window.location.href='index.php?ctl=album&act=photos&album=$album_id';}</script>";
     }
     
     /*function saveimgname(){
@@ -192,7 +192,7 @@ class controller extends adminpage{
             }
         }
         
-        redirect('admin.php?ctl=album&act=photos&album='.$album);
+        redirect('index.php?ctl=album&act=photos&album='.$album);
     }*/
     
     function reupload(){

@@ -48,9 +48,9 @@ class controller extends adminpage{
         $album_id = $this->getGet('album',0);
         if(!is_array($pics)){
             if($referfunc=='default'){
-                header('Location: admin.php?act=all&page='.$referpage.'&flag=1');
+                header('Location: index.php?act=all&page='.$referpage.'&flag=1');
             }elseif($referfunc=='album'){
-                header('Location: admin.php?ctl=album&act=photos&album='.$album_id.'&page='.$referpage.'&flag=1');
+                header('Location: index.php?ctl=album&act=photos&album='.$album_id.'&page='.$referpage.'&flag=1');
             }
             exit;
         }
@@ -67,7 +67,7 @@ class controller extends adminpage{
         }elseif($action == 'move'){
             $album = intval($this->getPost('albums'));
             if(!$album || $album == '-1'){
-                 header('Location: admin.php?ctl=album&act=photos&album='.$album_id.'&page='.$referpage.'&flag=2');
+                 header('Location: index.php?ctl=album&act=photos&album='.$album_id.'&page='.$referpage.'&flag=2');
                  exit;
             }
             
@@ -80,9 +80,9 @@ class controller extends adminpage{
             }
         }
         if($referfunc=='default'){
-            header('Location: admin.php?act=all&page='.$referpage.'&flag=3');
+            header('Location: index.php?act=all&page='.$referpage.'&flag=3');
         }elseif($referfunc=='album'){
-            header('Location: admin.php?ctl=album&act=photos&album='.$album_id.'&page='.$referpage.'&flag=3');
+            header('Location: index.php?ctl=album&act=photos&album='.$album_id.'&page='.$referpage.'&flag=3');
         }
         exit;
     }
@@ -120,7 +120,7 @@ class controller extends adminpage{
         $pictures = $this->mdl_picture->get_all_pic(NULL,$album,'id asc',$this->setting['gallery_limit']);
         if(is_array($pictures)){
             foreach($pictures as $v){
-                echo '    <image imageURL="'.mkImgLink($v['dir'],$v['pickey'],$v['ext'],'big').'" thumbURL="'.mkImgLink($v['dir'],$v['pickey'],$v['ext'],'square').'" linkURL="'.mkImgLink($v['dir'],$v['pickey'],$v['ext'],'orig').'" linkTarget="">
+                echo '    <image imageURL="../'.mkImgLink($v['dir'],$v['pickey'],$v['ext'],'big').'" thumbURL="'.mkImgLink($v['dir'],$v['pickey'],$v['ext'],'square').'" linkURL="'.mkImgLink($v['dir'],$v['pickey'],$v['ext'],'orig').'" linkTarget="">
         <caption><![CDATA['.$v['name'].']]></caption>	
     </image>'."\n";
             }

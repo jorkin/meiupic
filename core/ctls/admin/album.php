@@ -28,7 +28,7 @@ class controller extends adminpage{
         
         $albums = $this->mdl_album->get_all_album($page);
         
-        $pageurl='admin.php?ctl=album&page=[#page#]';
+        $pageurl='index.php?ctl=album&page=[#page#]';
         if($albums['ls']){
             foreach($albums['ls'] as $k=>$v){
                 $cover = $this->mdl_album->get_cover($v['id'],$v['cover']);
@@ -70,7 +70,7 @@ class controller extends adminpage{
         
         $pics = $this->mdl_picture->get_all_pic($page,$album,$sort);
         
-        $pageurl="admin.php?ctl=album&act=photos&album={$album}&page=[#page#]&sort=".$sort;
+        $pageurl="index.php?ctl=album&act=photos&album={$album}&page=[#page#]&sort=".$sort;
         
         $this->output->set('pics',$pics['ls']);
         $this->output->set('albums_list',$this->mdl_album->get_albums_assoc($album));
