@@ -137,26 +137,8 @@ function loadsubtemplate($file, $templateid = 0, $tpldir = '') {
 }
 
 function languagevar($var) {
-    global $templatelangs;
     $varr = explode('|',$var);
-    $var = array_shift($varr);
-    if(isset($GLOBALS['language'][$var])) {
-        return vsprintf($GLOBALS['language'][$var],$varr);
-    } else {
-        $vars = explode(':', $var);
-        if(count($vars) != 2) {
-            return "!$var!";
-        }
-        if(!in_array($vars[0], $GLOBALS['templatelangs']) && empty($templatelang[$vars[0]])) {
-            @include_once ROOTDIR.'plugins/'.$vars[0].'/lang/'.LANGSET.'.lang.php';
-        }
-        if(!isset($GLOBALS['templatelangs'][$vars[0]][$vars[1]])) {
-            return "!$var!";
-        } else {
-            return vsprintf($GLOBALS['templatelangs'][$vars[0]][$vars[1]],$varr);
-        }
-    }
-    return $var;
+    return call_user_func_array('lang',$varr);
 }
 
 function transamp($str) {
@@ -205,7 +187,6 @@ function striplink($var){
     $act = isset($url_arr['act'])?$url_arr['act']:'index';
     unset($url_arr['ctl']);
     unset($url_arr['act']);
-    
     return $uri->mk_uri($ctl,$act,$url_arr);
 }
 

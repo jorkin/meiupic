@@ -9,7 +9,6 @@
 error_reporting(E_ALL);
 define('LANGSET','zh_cn');
 
-
 define('FCPATH',__FILE__);
 define('ROOTDIR',dirname(FCPATH).'/');
 define('COREDIR',ROOTDIR.'core/');
@@ -20,7 +19,6 @@ define('VIEWDIR',COREDIR.'views/');
 define('MODELDIR',COREDIR.'models/');
 define('DATADIR',ROOTDIR.'data/');
 define('PLUGINDIR',ROOTDIR.'plugins/');
-
 
 if(!file_exists(ROOTDIR.'conf/config.php')){
     header('Location: ./install/');

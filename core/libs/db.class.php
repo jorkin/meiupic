@@ -54,7 +54,7 @@ class db_cla{
     function setTable($table)
     {
         if(!empty($table)){
-            $this->table=str_replace('#',$this->pre,$table);
+            $this->table=str_replace('#@',$this->pre,$table);
         }
     }
 
@@ -65,7 +65,7 @@ class db_cla{
      */
     function setSql($sql){
         if(!empty($sql)){
-            $this->sql=str_replace('#',$this->pre,$sql);
+            $this->sql=str_replace('#@',$this->pre,$sql);
         }
     }
     

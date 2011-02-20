@@ -12,9 +12,9 @@ class setting_mdl extends modelfactory {
             $value = $this->setting_pool[$k];
         }else{
             $cache =& loader::lib('cache');
-            $value = $cache->get($k);
+            $value = $cache->get('setting_'.$k);
             if(!$value){
-                $this->db->select('#setting','value','name="'.$k.'"');
+                $this->db->select('#@setting','value','name="'.$k.'"');
                 $data = $this->db->getOne();
                 if($data){
                     $value = unserialize($data);
@@ -22,7 +22,7 @@ class setting_mdl extends modelfactory {
                     return false;
                 }
                 $this->setting_pool[$k] = $value;
-                $cache->set($k,$value);
+                $cache->set('setting_'.$k,$value);
             }
         }
         foreach($key_arr as $v){
@@ -64,18 +64,18 @@ class setting_mdl extends modelfactory {
     function _save(){
         $cache =& loader::lib('cache');
         foreach($this->setting_pool as $k=>$values){
-            $this->db->select('#setting','value','name="'.$k.'"');
+            $this->db->select('#@setting','value','name="'.$k.'"');
             $data = $this->db->getOne();
             if($data){
                 $keyvalue = unserialize($data);
                 $keyvalue = array_merge($keyvalue,$values);
-                $this->db->update('#setting','name="'.$k.'"',array('value'=>serialize($keyvalue)));
+                $this->db->update('#@setting','name="'.$k.'"',array('value'=>serialize($keyvalue)));
                 $this->db->query();
             }else{
-                $this->db->insert('#setting',array('name'=>$k,'value'=>serialize($values)));
+                $this->db->insert('#@setting',array('name'=>$k,'value'=>serialize($values)));
                 $this->db->query();
             }
-            $cache->remove($k);
+            $cache->remove('setting_'.$k);
         }
     }
 }
