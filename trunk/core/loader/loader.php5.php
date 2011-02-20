@@ -74,6 +74,7 @@ class Loader{
         /*
         todo: 待完善，检测错误，载入风格设置
         */
+        global $base_path;
         
         $current_theme = loader::model('setting')->get_conf('system.current_theme','1');
         $current_theme_style = loader::model('setting')->get_conf('system.current_theme_style','default');
@@ -86,7 +87,15 @@ class Loader{
         }else{
             define('TPLDIR','themes/default');
         }
-        
+        if(file_exists(ROOTDIR.TPLDIR.'/info.php')){
+            include_once(ROOTDIR.TPLDIR.'/info.php');
+            if(isset($style_configs[$current_theme_style])){
+                extract($style_configs[$current_theme_style]);
+            }elseif(isset($style_configs['default'])){
+                extract($style_configs['default']);
+            }
+        }
+        $style_path = $base_path.TPLDIR.'/';
         require_once INCDIR.'template.func.php';
         $params = loader::lib('output')->getAll();
         extract($params);

@@ -87,6 +87,14 @@ class loader{
         }else{
             define('TPLDIR','themes/default');
         }
+        if(file_exists(TPLDIR.'/info.php')){
+            include_once(TPLDIR.'/info.php');
+            if(isset($style_configs[$current_theme_style])){
+                extract($style_configs[$current_theme_style]);
+            }elseif(isset($style_configs['default'])){
+                extract($style_configs['default']);
+            }
+        }
         
         require_once INCDIR.'template.func.php';
         $params = loader::lib('output')->getAll();

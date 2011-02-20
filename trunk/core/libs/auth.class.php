@@ -16,13 +16,13 @@ class auth {
     var $db;
     
     function auth() {
-        $this->db =& db();
+        $this->db =& loader::database();
         $this->config = array(
                 'cookie_name' => 'PIC_AU',
                 'cookie_path' => '/',
                 'cookie_domain' => '',
                 'auth_key' => 's29(8af)$jsdf23',
-                'db_table' => '#admin',
+                'db_table' => '#@users',
                 'db_uid'   => 'id',
                 'db_upass' => 'userpass',
                 'db_loginname' => 'username'

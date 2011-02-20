@@ -14,44 +14,38 @@ class uri_cla{
     
     function mk_uri($ctl='default',$act='index',$pars=array()){
         global $base_path;
-        
-        $plugin =& loader::lib('plugin');
-        $plugin_uri = $plugin->trigger('make_url',$ctl,$act,$pars);
-        if(false === $plugin_uri){
-            $arr = array();
-            if($ctl!='default'){
-                $arr['ctl'] = $ctl;
-            }
-            if($act!='index'){
-                $arr['act'] = $act;
-            }
-            $url = '';
-            $pars = array_merge($arr,$pars);
-            foreach($pars as $k=>$v){
-                $url .= $k.'='.rawurlencode($v).'&';
-            }
-            if($url){
-                return $base_path.'?'.str_replace('&','&amp;',rtrim($url,'&'));
-            }
-            return $base_path;
-        }else{
-            return $plugin_uri[0];
+        $arr = array();
+        if($ctl!='default'){
+            $arr['ctl'] = $ctl;
         }
+        if($act!='index'){
+            $arr['act'] = $act;
+        }
+        $url = '';
+        $arr = array_merge($arr,$pars);
+        foreach($arr as $k=>$v){
+            $url .= $k.'='.rawurlencode($v).'&';
+        }
+        if($url){
+            $url =  $base_path.'?'.str_replace('&','&amp;',rtrim($url,'&'));
+        }else{
+            $url = $base_path;
+        }
+        $plugin =& loader::lib('plugin');
+        $url = $plugin->filter('make_url',$url,$ctl,$act,$pars);
+        return $url;
     }
     
     function parse_uri(){
+        $arg['ctl'] = isset($_GET['ctl'])?$_GET['ctl']:'default';
+        $arg['act'] = isset($_GET['act'])?$_GET['act']:'index';
+        unset($_GET['ctl']);
+        unset($_GET['act']);
+        $arg['pars'] = $_GET;
+        
         $plugin =& loader::lib('plugin');
-        $plugin_uri = $plugin->trigger('parse_url');
-        if(false === $plugin_uri){
-            $arg['ctl'] = isset($_GET['ctl'])?$_GET['ctl']:'default';
-            $arg['act'] = isset($_GET['act'])?$_GET['act']:'index';
-            unset($_GET['ctl']);
-            unset($_GET['act']);
-            $arg['pars'] = $_GET;
-            return $arg;
-        }else{
-            return $plugin_uri[0];
-        }
+        $plugin_uri = $plugin->filter('parse_url',$arg);
+        return $plugin_uri;
     }
     
 }

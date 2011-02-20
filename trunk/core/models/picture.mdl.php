@@ -24,7 +24,7 @@ class picture_mdl extends modelfactory{
         }else{
             $db_sort = 'create_time desc';
         }
-        $this->db->select('#imgs',"*",$where,$db_sort);
+        $this->db->select('#@imgs',"*",$where,$db_sort);
         
         if($page){
             $pics = $this->db->toPage($page,10);
@@ -38,17 +38,17 @@ class picture_mdl extends modelfactory{
     }
     
     function get_tmp_pic(){
-        $this->db->select('#imgs','*','status=0','id asc');
+        $this->db->select('#@imgs','*','status=0','id asc');
         return $this->db->getAll();
     }
     
     function get_one_pic($id){
-        $this->db->select('#imgs','*','id='.intval($id));
+        $this->db->select('#@imgs','*','id='.intval($id));
         return $this->db->getRow();
     }
     
     function get_one_pic_by_key($key){
-        $this->db->select('#imgs','*','pickey="'.$key.'"');
+        $this->db->select('#@imgs','*','pickey="'.$key.'"');
         return $this->db->getRow();
     }
     
@@ -57,7 +57,7 @@ class picture_mdl extends modelfactory{
         if($album>0){
             $where = ' and album='.intval($album);
         }
-        $this->db->select('#imgs','*','id>'.intval($id).$where,'id asc limit 1');
+        $this->db->select('#@imgs','*','id>'.intval($id).$where,'id asc limit 1');
         return $this->db->getRow();
     }
     function get_next_pic($id,$album=0){
@@ -65,12 +65,12 @@ class picture_mdl extends modelfactory{
         if($album>0){
             $where = ' and album='.intval($album);
         }
-        $this->db->select('#imgs','*','id<'.intval($id).$where,'id desc limit 1');
+        $this->db->select('#@imgs','*','id<'.intval($id).$where,'id desc limit 1');
         return $this->db->getRow();
     }
     
     function insert_pic($arr){
-        $this->db->insert('#imgs',$arr);
+        $this->db->insert('#@imgs',$arr);
         return $this->db->query();
     }
     
@@ -86,17 +86,17 @@ class picture_mdl extends modelfactory{
             }
         }
         
-        $this->db->update('#imgs','id='.intval($id),$arr);
+        $this->db->update('#@imgs','id='.intval($id),$arr);
         return $this->db->query();
     }
     
     function del_pic($id){
-        $this->db->delete('#imgs','id='.intval($id));
+        $this->db->delete('#@imgs','id='.intval($id));
         return $this->db->query();
     }
     
     function addHit($id){
-        $this->db->update('#imgs','id='.intval($id),array('hits'=>new DB_Expr('hits+1')));
+        $this->db->update('#@imgs','id='.intval($id),array('hits'=>new DB_Expr('hits+1')));
         return $this->db->query();
     }
 }

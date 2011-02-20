@@ -1,0 +1,15 @@
+a span.sprite{
+    cursor: hand;
+}
+#header #settings_person span.pipe{
+    filter:alpha(opacity=60);
+}
+#tabs li a.current{
+    filter: progid:DXImageTransform.Microsoft.gradient(enabled='true', startColorstr=#FDFDFD, endColorstr=#E5E5E5);
+}
+.grid .gallary_wrap .gallary_item{
+    float:left;
+}
+.ylbtn1{
+    margin-bottom:2px;
+}
