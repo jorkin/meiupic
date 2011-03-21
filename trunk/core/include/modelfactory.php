@@ -12,6 +12,7 @@ class modelfactory{
     var $default_cols = '*';
     var $default_order = 'id desc';
     var $table_name = null;
+    var $pageset = 10;
     
     function modelfactory(){
         $this->db =& loader::database();
@@ -21,12 +22,35 @@ class modelfactory{
         return null;
     }
     
-    function get_all($page = NULL,$filters = array()){
+    function _sort($sort){
+        return $this->default_order;
+    }
+    
+    function get_sort_list($setting,$url,$sort){
+        $str = '';
+        $token = rawurlencode('[#sort#]');
+        foreach($setting as $k=>$v){
+            if($v.'_asc' == $sort){
+                $str .= '<a href="'.str_replace($token,$v.'_desc',$url).'" class="list_asc_on"><span>'.$k.'</span></a>';
+            }elseif($v.'_desc' == $sort){
+                $str .= '<a href="'.str_replace($token,$v.'_asc',$url).'" class="list_desc_on"><span>'.$k.'</span></a>';
+            }else{
+                $str .= '<a href="'.str_replace($token,$v.'_asc',$url).'" class="list_asc"><span>'.$k.'</span></a>';
+            }
+        }
+        return $str;
+    }
+    
+    function get_all($page = NULL,$filters = array(),$sort = null){
         $where = $this->_filters($filters);
-        
-        $this->db->select($this->table_name,$this->default_cols,$where,$this->default_order);
+        if($sort){
+            $sort = $this->_sort($sort);
+        }else{
+            $sort = $this->default_order;
+        }
+        $this->db->select($this->table_name,$this->default_cols,$where,$sort);
         if($page){
-            $data = $this->db->toPage($page,10);
+            $data = $this->db->toPage($page,$this->pageset);
         }else{
             $data = $this->db->getAll();
         }

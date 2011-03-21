@@ -21,6 +21,38 @@ class photo_mdl extends modelfactory{
         return $str;
     }
     
+    function _sort($sort){
+        switch($sort){
+            case 'tu_asc':
+                $str = 'create_time asc';
+                break;
+            case 'tu_desc':
+                $str = 'create_time desc';
+                break;
+            case 'tt_asc':
+                $str = 'taken_time asc';
+                break;
+            case 'tt_desc':
+                $str = 'taken_time desc';
+                break;
+            case 'h_asc':
+                $str = 'hits asc';
+                break;
+            case 'h_desc':
+                $str = 'hits desc';
+                break;
+            case 'c_asc':
+                $str = 'comments_num asc';
+                break;
+            case 'c_desc':
+                $str = 'comments_num desc';
+                break;
+            default:
+                $str = $this->default_order;
+        }
+        return $str;
+    }
+    
     function trash($id){
         $info = $this->get_info($id);
         if(!$this->update($id,array('deleted'=>1))){
@@ -46,6 +78,7 @@ class photo_mdl extends modelfactory{
         $album_mdl->check_repare_cover($info['album_id']);
         return true;
     }
+    
     
     
     
