@@ -12,16 +12,23 @@ class photos_ctl extends pagecore{
         $album_id = $arg['aid'];
         $album_info = $this->mdl_album->get_info($album_id);
         
+        $sort = isset($arg['sort'])?$arg['sort']:'tu_desc';
+        
         $page = isset($arg['page'])?$arg['page']:1;
         $pageurl = loader::lib('uri')->mk_uri('photos','index',array('aid'=>$album_id,'page'=>'[#page#]'));
         
-        $photos = $this->mdl_photo->get_all($page,array('album_id'=>$album_id));
+        $photos = $this->mdl_photo->get_all($page,array('album_id'=>$album_id),$sort);
         if(is_array($photos['ls'])){
             foreach($photos['ls'] as $k=>$v){
                 $photos['ls'][$k]['photo_control_icons'] = $this->plugin->filter('photo_control_icons','',$v['id']);
                 $photos['ls'][$k]['thumb'] = $this->plugin->filter('photo_path',$GLOBALS['base_path'].$v['thumb'],$v['thumb']);
             }
         }
+        
+        $sort_setting = array('上传时间' => 'tu','拍摄时间' => 'tt','浏览数'=>'h','评论数'=>'c');
+        $sort_url = loader::lib('uri')->mk_uri('photos','index',array('aid'=>$album_id,'sort'=>'[#sort#]'));
+        $sort_list = $this->mdl_album->get_sort_list($sort_setting,$sort_url,$sort);
+        $this->output->set('list_order',$sort_list);
         
         $this->output->set('photos',$photos['ls']);
         $this->output->set('pageset',loader::lib('page')->fetch($photos['total'],$photos['start'],$pageurl));

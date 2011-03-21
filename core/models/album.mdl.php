@@ -18,6 +18,26 @@ class album_mdl extends modelfactory{
         return $str;
     }
     
+    function _sort($sort){
+        switch($sort){
+            case 't_asc':
+                $str = 'create_time asc';
+                break;
+            case 't_desc':
+                $str = 'create_time desc';
+                break;
+            case 'p_asc':
+                $str = 'photos_num asc';
+                break;
+            case 'p_desc':
+                $str = 'photos_num desc';
+                break;
+            default:
+                $str = $this->default_order;
+        }
+        return $str;
+    }
+    
     function get_kv($album_id = 0){
         $where = 'deleted=0';
         if($album_id>0){

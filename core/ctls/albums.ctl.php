@@ -9,11 +9,12 @@ class albums_ctl extends pagecore{
     
     function index($arg){
         $search['name'] = $this->getRequest('search_name');
+        $sort = isset($arg['sort'])?$arg['sort']:'t_desc';
         
         $page = isset($arg['page'])?$arg['page']:1;
-        $pageurl = loader::lib('uri')->mk_uri('albums','index',array('page'=>'[#page#]'));
+        $pageurl = loader::lib('uri')->mk_uri('albums','index',array('sort'=>$sort,'page'=>'[#page#]'));
         
-        $albums = $this->mdl_album->get_all($page,$search);
+        $albums = $this->mdl_album->get_all($page,$search,$sort);
         if(is_array($albums['ls'])){
             foreach($albums['ls'] as $k=>$v){
                 $albums['ls'][$k]['album_control_icons'] = $this->plugin->filter('album_control_icons','',$v['id']);
@@ -22,6 +23,13 @@ class albums_ctl extends pagecore{
                 }
             }
         }
+
+        $sort_setting = array('时间排序' => 't','照片数' => 'p');
+
+        $sort_url = loader::lib('uri')->mk_uri('albums','index',array('sort'=>'[#sort#]'));
+        $sort_list = $this->mdl_album->get_sort_list($sort_setting,$sort_url,$sort);
+        
+        $this->output->set('list_order',$sort_list);
         
         $this->output->set('albums',$albums['ls']);
         $this->output->set('pageset',loader::lib('page')->fetch($albums['total'],$albums['start'],$pageurl));
