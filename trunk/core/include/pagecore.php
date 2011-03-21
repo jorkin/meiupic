@@ -9,10 +9,26 @@
 class pagecore{
     
     function pagecore(){
-        global $base_path;
         $this->output =& loader::lib('output');
         $this->db =& loader::database();
-        
+        $this->auth =& loader::model('auth');
+        $this->setting =& loader::model('setting');
+    }
+    
+    function _init(){
+        ;
+    }
+    function _called(){
+        ;
+    }
+    
+    function render($type = 'normal'){
+        if($type == 'normal'){
+            $tpl = IN_CTL.'/'.IN_ACT;
+        }else{
+            $tpl = IN_CTL.'/'.IN_ACT.'_'.$type;
+        }
+        loader::view($tpl);
     }
     
     function isPost(){

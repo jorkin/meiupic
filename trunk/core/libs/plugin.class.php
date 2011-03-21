@@ -1,4 +1,13 @@
 <?php
+/**
+ * $Id: plugin.class.php 97 2011-01-30 02:54:36Z lingter $
+ *
+ * The plugin API is located in this file
+ *
+ * @author : Lingter
+ * @support : http://www.meiu.cn
+ * @copyright : (c)2010 - 2011 meiu.cn lingter@gmail.com
+ */
 
 
 class plugin_cla{
@@ -11,7 +20,12 @@ class plugin_cla{
     function plugin_cla(){
         $this->db = & loader::database();
     }
-    
+    /**
+     * Load enabled plugins
+     *
+     * @return void
+     * @author Lingter
+     */
     function init_plugins(){
         $cache =& loader::lib('cache');
         
@@ -33,11 +47,25 @@ class plugin_cla{
             }
         }
     }
-    
+    /**
+     * Check whether trigget exists!
+     *
+     * @param string $hook_name 
+     * @param bool $function_to_check 
+     * @return int priority
+     * @author Linter
+     */
     function has_trigger($hook_name,$function_to_check = false){
         return $this->has_filter($hook_name,$function_to_check);
     }
-    
+    /**
+     * Check whether filter exists!
+     *
+     * @param string $hook_name 
+     * @param bool $function_to_check 
+     * @return int priority
+     * @author Linter
+     */
     function has_filter($hook_name,$function_to_check = false){
         $has = !empty($this->plugin_filters[$hook_name]);
         if ( false === $function_to_check || false == $has )
@@ -140,12 +168,16 @@ class plugin_cla{
                 if(is_array($v)){
                     $plugin_name = is_object($v[0])?get_class($v[0]):'plugin_'.$v[0];
                     $func = $v[1];
-                    if(isset($this->plugin_pool[$plugin_name])){
+                    if(isset($this->plugin_pool[$plugin_name]) && method_exists($this->plugin_pool[$plugin_name],$func)){
                         call_user_func_array(array($this->plugin_pool[$plugin_name],$func),$pars);
+                    }else{
+                        exit($plugin_name.'::'.$func.' can not be called!');//todo: add to errors
                     }
                 }elseif(is_string($v)){
                     if(function_exists($v)){
                         call_user_func_array($v,$pars);
+                    }else{
+                        exit($func.' can not be called!');//todo: add to errors
                     }
                 }
             }
@@ -177,12 +209,16 @@ class plugin_cla{
                 if(is_array($v)){
                     $plugin_name = is_object($v[0])?get_class($v[0]):'plugin_'.$v[0];
                     $func = $v[1];
-                    if(isset($this->plugin_pool[$plugin_name])){
+                    if(isset($this->plugin_pool[$plugin_name]) && method_exists($this->plugin_pool[$plugin_name],$func)){
                         $value = call_user_func_array(array($this->plugin_pool[$plugin_name],$func),$pars);
+                    }else{
+                        exit($plugin_name.'::'.$func.' can not be called!');//todo: add to errors
                     }
                 }elseif(is_string($v)){
                     if(function_exists($v)){
                         $value = call_user_func_array($v,$pars);
+                    }else{
+                        exit($func.' can not be called!');//todo: add to errors
                     }
                 }
             }

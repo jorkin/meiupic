@@ -9,18 +9,20 @@
 error_reporting(E_ALL);
 define('LANGSET','zh_cn');
 
-define('FCPATH',__FILE__);
-define('ROOTDIR',dirname(FCPATH).'/');
-define('COREDIR',ROOTDIR.'core/');
-define('LIBDIR',COREDIR.'libs/');
-define('INCDIR',COREDIR.'include/');
-define('CTLDIR',COREDIR.'ctls/');
-define('VIEWDIR',COREDIR.'views/');
-define('MODELDIR',COREDIR.'models/');
-define('DATADIR',ROOTDIR.'data/');
-define('PLUGINDIR',ROOTDIR.'plugins/');
+@ini_set('memory_limit', '128M');
 
-if(!file_exists(ROOTDIR.'conf/config.php')){
+define('FCPATH',__FILE__);
+define('ROOTDIR',dirname(FCPATH).DIRECTORY_SEPARATOR);
+define('COREDIR',ROOTDIR.'core'.DIRECTORY_SEPARATOR);
+define('LIBDIR',COREDIR.'libs'.DIRECTORY_SEPARATOR);
+define('INCDIR',COREDIR.'include'.DIRECTORY_SEPARATOR);
+define('CTLDIR',COREDIR.'ctls'.DIRECTORY_SEPARATOR);
+define('VIEWDIR',COREDIR.'views'.DIRECTORY_SEPARATOR);
+define('MODELDIR',COREDIR.'models'.DIRECTORY_SEPARATOR);
+define('DATADIR',ROOTDIR.'data'.DIRECTORY_SEPARATOR);
+define('PLUGINDIR',ROOTDIR.'plugins'.DIRECTORY_SEPARATOR);
+
+if(!file_exists(ROOTDIR.'conf'.DIRECTORY_SEPARATOR.'config.php')){
     header('Location: ./install/');
     exit;
 }

@@ -1,7 +1,20 @@
 <?php
-
+/**
+ * $Id: uri.class.php 97 2011-01-30 02:54:36Z lingter $
+ *
+ * Parse and make uri
+ *
+ * @author : Lingter
+ * @support : http://www.meiu.cn
+ * @copyright : (c)2010 - 2011 meiu.cn lingter@gmail.com
+ */
 class uri_cla{
-    
+    /**
+     * Get pathinfo
+     *
+     * @return string
+     * @author lingter
+     */
     function pathinfo(){
         if ( ! isset($_SERVER['PATH_INFO']) || $_SERVER['PATH_INFO'] == ''){
             $strlen = strlen($_SERVER['SCRIPT_NAME']);
@@ -11,7 +24,15 @@ class uri_cla{
             return $_SERVER['PATH_INFO'];
         }
     }
-    
+    /**
+     * Make uri
+     *
+     * @param string $ctl 
+     * @param string $act 
+     * @param array $pars 
+     * @return string
+     * @author Lingter
+     */
     function mk_uri($ctl='default',$act='index',$pars=array()){
         global $base_path;
         $arr = array();
@@ -27,7 +48,7 @@ class uri_cla{
             $url .= $k.'='.rawurlencode($v).'&';
         }
         if($url){
-            $url =  $base_path.'?'.str_replace('&','&amp;',rtrim($url,'&'));
+            $url =  $base_path.'?'.rtrim($url,'&');//str_replace('&','&amp;',rtrim($url,'&'));
         }else{
             $url = $base_path;
         }
@@ -35,7 +56,12 @@ class uri_cla{
         $url = $plugin->filter('make_url',$url,$ctl,$act,$pars);
         return $url;
     }
-    
+    /**
+     * Parse uri
+     *
+     * @return array
+     * @author Lingter
+     */
     function parse_uri(){
         $arg['ctl'] = isset($_GET['ctl'])?$_GET['ctl']:'default';
         $arg['act'] = isset($_GET['act'])?$_GET['act']:'index';

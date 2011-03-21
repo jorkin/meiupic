@@ -1,10 +1,12 @@
 <?php
 /**
  * $Id$
- * 
+ *  
+ * Database Class
+ *
  * @author : Lingter
  * @support : http://www.meiu.cn
- * @copyright : (c)2010 meiu.cn lingter@gmail.com
+ * @copyright : (c)2010 - 2011 meiu.cn lingter@gmail.com
  */
 
 class db_cla{
@@ -99,6 +101,18 @@ class db_cla{
     //设置数组
     function setArr($arr){
         $this->arr=$arr; //$arr = array(0=>array('name'=>'ssss')); 这种形式
+    }
+    
+    /**
+     * string filter 
+     *
+     * @param string $str 
+     * @param bool $addquote Example : true:'value',false:value
+     * @return string
+     * @author Lingter
+     */
+    function q_str($str,$addquote=true){
+        return $this->db->q_str($str,$addquote);
     }
     /**
      * 数据库查询语句

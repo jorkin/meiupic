@@ -133,7 +133,7 @@ Class adapter_mysql{
         return '`' . $tableName . '`';
     }
     
-    function q_str($value){
+    function q_str($value,$addquote=true){
         if(!$this->conn){
             $this->connect();
         }
@@ -148,12 +148,11 @@ Class adapter_mysql{
         }
         
         if(phpversion()>= '4.3.0'){
-        return "'".mysql_real_escape_string($value,$this->conn)."'";
+            $value =  mysql_real_escape_string($value,$this->conn);
         }elseif(phpversion()>='4.0.3'){
-        return  "'".mysql_escape_string($value)."'";
-        }else{
-        return $value;
+            $value =  mysql_escape_string($value);
         }
+        return $addquote?"'".$value."'":$value;
     }
     /**
      * 直接查询Sql

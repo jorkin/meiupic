@@ -1,5 +1,6 @@
 <?php
 class template_mdl extends modelfactory {
+    var $table_name = '#@themes';
     
     function info($template_id){
         $cache =& loader::lib('cache');

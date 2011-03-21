@@ -8,6 +8,8 @@
  */
 define('IN_MEIU',true);
 
+define('VERSION','2.0');
+
 if (PHP_VERSION >= "5.1.0") {
 	date_default_timezone_set ( 'Asia/Shanghai' );
 }
@@ -101,7 +103,7 @@ function lang() {
             return "!$var!";
         }
         if(!in_array($vars[0], $GLOBALS['templatelangs']) && empty($templatelang[$vars[0]])) {
-            @include_once ROOTDIR.'plugins/'.$vars[0].'/lang/'.LANGSET.'.lang.php';
+            @include_once ROOTDIR.'plugins'.DIRECTORY_SEPARATOR.$vars[0].DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.LANGSET.'.lang.php';
         }
         if(!isset($GLOBALS['templatelangs'][$vars[0]][$vars[1]])) {
             return "!$var!";
@@ -112,13 +114,6 @@ function lang() {
     return $var;
 }
 
-/*function call_plugin(){
-    $varr = func_get_args();
-    //$plugin_name = array_shift($varr);
-    $plugin =& loader::lib('plugin');
-    //$plugin->trigger($plugin_name,$varr);
-    return call_user_func_array(array($plugin,'trigger'),$varr);
-}*/
 /**
  * 启动初始化
  *
@@ -156,16 +151,41 @@ function boot_init(){
     }
 }
 
+function init_defines(){
+    $Config =& loader::config();
+    if(isset($Config['img_engine']) && in_array($Config['img_engine'],array('imagick','gd'))){
+        define('IMG_ENGINE',$Config['img_engine']);
+    }else{
+        define('IMG_ENGINE','gd');
+    }
+}
+
+function init_template(){
+    $current_theme = loader::model('setting')->get_conf('system.current_theme','1');
+    $current_theme_style = loader::model('setting')->get_conf('system.current_theme_style','default');
+    
+    define('TEMPLATEID', $current_theme);
+    define('STYLEID', $current_theme_style);
+    $themeinfo = loader::model('template')->info($current_theme);
+    if($themeinfo){
+        define('TPLDIR',$themeinfo['directory']);
+    }else{
+        define('TPLDIR','themes/default');
+    }
+}
+
 
 function meiu_bootstrap(){
     global $base_url, $base_path, $base_root, $language,$templatelangs;
     timer_start('page');
-    require_once(COREDIR.'lang/'.LANGSET.'.lang.php');
+    require_once(COREDIR.'lang'.DIRECTORY_SEPARATOR.LANGSET.'.lang.php');
     require_once(COREDIR.'loader.php');
+    require_once(INCDIR.'functions.php');
     require_once(INCDIR.'modelfactory.php');
     unset_globals();
+    init_defines();
     boot_init();
-    
+    init_template();
     $templatelangs=array();
     
     $plugin =& loader::lib('plugin');
@@ -174,27 +194,17 @@ function meiu_bootstrap(){
     $uri =& loader::lib('uri');
     $uriinfo = $uri->parse_uri();
     
-    
-    
     $output =& loader::lib('output');
     $output->set('base_path',$base_path);
-    $output->set('js_path',$base_path.'statics/js/');
+    $output->set('statics_path',$base_path.'statics/');
+    $output->set('site_name',loader::model('setting')->get_conf('system.site_name','我的相册'));
+    $auth =& loader::model('auth');
+    $output->set('loggedin',$auth->loggedin());
     
-    $output->set('site_name','我的相册');
-    
-    $head_str = "<title>美优相册系统2.0</title>\n";
-    $head_str .= "<meta name=\"description\" content=\"美优相册系统是一个单用户的在线相册管理工具。\" />\n";
-    $head_str .= "<meta name=\"keywords\" content=\"相册,php\" />\n";
-    $output->set('meu_head',loader::lib('plugin')->filter('meu_head',$head_str));
-    
-    
-    
-    //loader::model('setting')->set_conf('system.current_theme','1');
-    //loader::model('setting')->set_conf('system.current_theme_style','default');
     define('IN_CTL',$uriinfo['ctl']);
     define('IN_ACT',$uriinfo['act']);
     $custom_page = $plugin->trigger('custom_page.'.IN_CTL.'.'.IN_ACT,$uriinfo['pars']);
-    //var_dump($custom_page);
+
     if($custom_page === false){
         if(file_exists(CTLDIR.$uriinfo['ctl'].'.ctl.php')){
             require_once(INCDIR.'pagecore.php');
@@ -202,11 +212,13 @@ function meiu_bootstrap(){
             
             $controller_name = $uriinfo['ctl'].'_ctl';
             $controller = new $controller_name();
+            $controller->_init();
             if(method_exists($controller,$uriinfo['act'])){
                 call_user_func_array(array($controller,$uriinfo['act']),array($uriinfo['pars']));
             }else{
                 exit('404');
             }
+            $controller->_called();
         }else{
             exit('404');
         }

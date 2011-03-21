@@ -11,7 +11,7 @@ function template($file, $templateid = 0, $tpldir = '') {
     $templateid = $templateid ? $templateid : TEMPLATEID;
     $tplfile = ROOTDIR.$tpldir.'/'.$file.'.htm';
     $filebak = $file;
-    $objfile = ROOTDIR.'cache/templates/'.STYLEID.'_'.$templateid.'_'.$file.'.tpl.php';
+    $objfile = ROOTDIR.'cache/templates/'.STYLEID.'_'.$templateid.'_'.md5($tplfile).'.tpl.php';
     if($templateid != 1 && !file_exists($tplfile)) {
         $tplfile = ROOTDIR.'themes/default/'.$filebak.'.htm';
     }
@@ -37,10 +37,10 @@ function parse_template($tplfile, $templateid, $tpldir) {
 
     $nest = 6;
     $basefile = $file = basename($tplfile, '.htm');
-    $objfile = ROOTDIR.'cache/templates/'.STYLEID.'_'.$templateid.'_'.$file.'.tpl.php';
+    $objfile = ROOTDIR.'cache/templates/'.STYLEID.'_'.$templateid.'_'.md5($tplfile).'.tpl.php';
 
     if(!@$fp = fopen($tplfile, 'r')) {
-        dexit("Current template file '$tpldir/$file.htm' not found or have no access!");
+        dexit("Current template file $tplfile not found or have no access!");
     }
 
     $template = @fread($fp, filesize($tplfile));
@@ -58,7 +58,6 @@ function parse_template($tplfile, $templateid, $tpldir) {
 
     $template = preg_replace("/([\n\r]+)\t+/s", "\\1", $template);
     $template = preg_replace("/\<\!\-\-\{(.+?)\}\-\-\>/s", "{\\1}", $template);
-    $template = preg_replace("/\{lang\s+(.+?)\}/ies", "stripvtags('<?php echo languagevar(\"\\1\");?>')", $template);
     $template = str_replace("{LF}", "<?php echo \"\\n\"; ?>", $template);
 
     $headeradd = '';
@@ -84,7 +83,6 @@ function parse_template($tplfile, $templateid, $tpldir) {
         $template = preg_replace("/[\n\r\t]*\{loop\s+(\S+)\s+(\S+)\s+(\S+)\}[\n\r\t]*(.+?)[\n\r\t]*\{\/loop\}[\n\r\t]*/ies", "stripvtags('<?php if(is_array(\\1)) { foreach(\\1 as \\2 => \\3) { ?>','\\4<?php } } ?>')", $template);
         $template = preg_replace("/([\n\r\t]*)\{if\s+(.+?)\}([\n\r]*)(.+?)([\n\r]*)\{\/if\}([\n\r\t]*)/ies", "stripvtags('\\1<?php if(\\2) { ?>\\3','\\4\\5<?php } ?>\\6')", $template);
     }
-    
     $template = preg_replace("/\{$const_regexp\}/s", "<?php echo \\1; ?>", $template);
     $template = preg_replace("/ \?\>[\n\r]*\<\?php /s", " ", $template);
     
@@ -92,6 +90,7 @@ function parse_template($tplfile, $templateid, $tpldir) {
     $template = preg_replace("/\<\?php echo \<\?php echo $var_regexp; \?\>; \?\>/es", "addquote('<?php echo \\1; ?>')", $template);
     
     $template = preg_replace("/[\n\r\t]*\{link\s+(.+?)\}[\n\r\t]*/ies", "stripvtags('<?php echo striplink(\"\\1\"); ?>','')", $template);
+    $template = preg_replace("/\{lang\s+(.+?)\}/ies", "striplang('\\1')",$template);
     
     if(!@$fp = fopen($objfile, 'w')) {
         dexit("Directory './cache/templates/' not found or have no access!");
@@ -136,9 +135,14 @@ function loadsubtemplate($file, $templateid = 0, $tpldir = '') {
     return $content;
 }
 
-function languagevar($var) {
+function striplang($var) {
     $varr = explode('|',$var);
-    return call_user_func_array('lang',$varr);
+    $str = "<?php echo lang(\"".$varr[0]."\"";
+    for($i=1;$i<count($varr);$i++){
+        $str .=',"'.preg_replace("/`(.+)`/U","{\\1}",$varr[$i]).'"';
+    }
+    $str .= '); ?>';
+    return $str;
 }
 
 function transamp($str) {

@@ -119,7 +119,7 @@ Class adapter_mysqli{
         return '`' . $tableName . '`';
     }
     
-    function q_str($value){
+    function q_str($value,$addquote=true){
         if(!$this->conn){
             $this->connect();
         }
@@ -130,10 +130,10 @@ Class adapter_mysqli{
         //return "'".$value."'";
         
         if (get_magic_quotes_gpc()) {
-        $value = stripslashes($value);
+            $value = stripslashes($value);
         }
         
-        return "'".mysqli_real_escape_string($this->conn,$value)."'";
+        return $addquote?"'".mysqli_real_escape_string($this->conn,$value)."'":mysqli_real_escape_string($this->conn,$value);
     }
     /**
      * 直接查询Sql

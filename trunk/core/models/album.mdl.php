@@ -1,99 +1,65 @@
 <?php
 /**
- * $Id: album.php 43 2010-07-07 01:42:43Z lingter $
+ * $Id: album.mdl.php 43 2010-07-07 01:42:43Z lingter $
  * 
  * @author : Lingter
  * @support : http://www.meiu.cn
- * @copyright : (c)2010 meiu.cn lingter@gmail.com
+ * @copyright : (c)2010 - 2011 meiu.cn lingter@gmail.com
  */
 
 class album_mdl extends modelfactory{
+    var $table_name = '#@albums';
     
-    function get_all_album($page = NULL,$filter_private=false){
-        if($filter_private){
-            $where = 'priv_type=0';
-        }else{
-            $where = '';
+    function _filters($filters){
+        $str = 'deleted=0';
+        if(isset($filters['name']) && $filters['name']!=''){
+            $str .= " and name like '%".$this->db->q_str($filters['name'],false)."%'";
         }
-        
-        $this->db->select('#@albums',"*",$where,'id desc');
-        if($page){
-            $pics = $this->db->toPage($page,10);
-        }else{
-            $pics = $this->db->getAll();
-        }
-        return $pics;
+        return $str;
     }
     
-    
-    function get_albums_assoc($album_id = 0){
-        $where = '';
+    function get_kv($album_id = 0){
+        $where = 'deleted=0';
         if($album_id>0){
-            $where = 'id <> '.intval($album_id);
+            $where = ' and id <> '.intval($album_id);
         }
-        $this->db->select('#albums','id,name',$where);
+        $this->db->select('#@albums','id,name',$where,'id desc');
         return $this->db->getAssoc();
     }
     
-    function get_one_album($id){
-        $this->db->select('#albums','*','id='.intval($id));
-        return $this->db->getRow();
+    function trash($id){
+        return $this->update($id,array('deleted'=>1));
     }
     
-    function get_cover($album_id,$cover_id = 0){
-        $where = '';
-        if($cover_id >0){
-            $where = ' and id='.intval($cover_id);
+    function trash_batch($ids){
+        if(!is_array($ids)){
+            return false;
         }
-        $this->db->select('#imgs',"*",'album='.intval($album_id).$where,'id asc limit 1');
-       $row = $this->db->getRow();
-       if($row){
-           return $row;
-       }else{
-           return false;
-       }
-    }
-    
-    function set_cover($id,$thumb){
-        $this->db->update('#albums','id='.$id,array('cover'=>$thumb));
-        return $this->db->query();
-    }
-    
-    function get_album_name($id){
-        $this->db->select('#albums',"name",'id='.intval($id));
-        return $this->db->getOne();
-    }
-    
-    function del_album($id){
-        $this->db->delete('#imgs','album='.intval($id));
-        $this->db->query();
-        
-        $this->db->delete('#albums','id='.intval($id));
-        return $this->db->query();
-    }
-    
-    function insert_album($arr){
-        $this->db->insert('#albums',$arr);
-        return $this->db->query();
-    }
-    
-    function priv_album($id,$private){
-        $this->db->update('#albums','id='.$id,array('private'=>$private));
-        $ret = $this->db->query();
-        if($this->db->affectedRows()){
-            $this->db->update('#imgs','album='.$id,array('private'=>$private));
-            $this->db->query();
+        $this->db->update('#@albums','id in ('.implode(',',$ids).')',array('deleted'=>1));
+        if(!$this->db->query()){
+            return false;
         }
-        return $ret;
+        return true;
     }
     
-    function update_album($id,$name){
-        $this->db->update('#albums','id='.$id,array('name'=>$name));
-        return $this->db->query();
+    function update_photos_num($id,$up=true){
+        $this->db->select('#@photos','count(id)','album_id='.intval($id).' and deleted=0');
+        $arr['photos_num'] = $this->db->getOne();
+        if($up){
+            $arr['up_time'] = time();
+        }
+        return $this->update($id,$arr);
     }
     
-    function remove_cover($picid){
-        $this->db->update('#albums',"cover='".$picid."'",array('cover'=>'0'));
-        return $this->db->query();
+    function check_repare_cover($id){
+        $info = $this->get_info($id);
+        $photo = loader::model('photo')->get_info($info['cover_id']);
+        if($photo && $photo['deleted']==0 && $photo['album_id']==$id){
+            return true;
+        }
+        $this->db->select('#@photos','id as cover_id,thumb as cover_path','album_id='.intval($id).' and deleted=0');
+        $this->db->selectLimit(null,1);
+        $cover_info = $this->db->getRow();
+        return $this->update($id,$cover_info);
     }
 }

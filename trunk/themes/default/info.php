@@ -1,7 +1,5 @@
 <?php
 $theme_name = '默认风格';
-//$theme_css = array('theme/default/style.css','theme/default/ie.css');
-//$theme_js = array();
 
 $style_list = array(
     'default' => '默认风格',
@@ -25,7 +23,8 @@ $style_configs = array(
         'updateinfobg' => '#1A4F85',
         'alertcolor' => '#ffb2b2',
         'titlebg' => '#edf3fe',
-        'titlelabel' => '#036'
+        'titlelabel' => '#036',
+        'boxborder' => '#036'
     ),
     'pink' => array(
         'link_color' => '#AC205F',
@@ -42,6 +41,7 @@ $style_configs = array(
         'updateinfobg' => '#C32C60',
         'alertcolor' => '#ffb2b2',
         'titlebg' => '#fce6f0',
-        'titlelabel' => '#036'
+        'titlelabel' => '#AC205F',
+        'boxborder' => '#AC205F'
     )
 );

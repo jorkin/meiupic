@@ -1,9 +1,15 @@
 <?php
-/**
- * 定义 APC 类
- *
- */
 
+/**
+ * $Id: apc.php 99 2011-02-20 13:57:57Z lingter $
+ * 
+ * Cache engine: Apc
+ *      
+ * @author : Lingter
+ * @support : http://www.meiu.cn
+ * @copyright : (c)2010 - 2011 meiu.cn lingter@gmail.com
+ */
+ 
 class cache_apc
 {
     /**
