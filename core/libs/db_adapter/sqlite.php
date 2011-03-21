@@ -99,7 +99,7 @@ Class adapter_sqlite{
         return $tableName;
     }
     
-    function q_str($value){
+    function q_str($value,$addquote=true){
         if(!$this->conn){
             $this->connect();
         }
@@ -114,10 +114,9 @@ Class adapter_sqlite{
         }
         
         if(phpversion()>='4.0.3'){
-        return  "'".sqlite_escape_string($value)."'";
-        }else{
-        return $value;
+            $value = sqlite_escape_string($value);
         }
+        return $addquote?"'".$value."'":$value;
     }
     /**
      * 直接查询Sql

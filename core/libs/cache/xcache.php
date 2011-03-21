@@ -1,9 +1,15 @@
 <?php
 
 /**
- * 定义 XCache 类
- *
+ * $Id: xcache.php 99 2011-02-20 13:57:57Z lingter $
+ * 
+ * Cache engine: Xcache
+ *      
+ * @author : Lingter
+ * @support : http://www.meiu.cn
+ * @copyright : (c)2010 - 2011 meiu.cn lingter@gmail.com
  */
+ 
 class cache_xcache
 {
     /**

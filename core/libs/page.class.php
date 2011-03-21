@@ -1,5 +1,13 @@
 <?php
-
+/**
+ * $Id: page.class.php 99 2011-02-20 13:57:57Z lingter $
+ * 
+ * Page Class: Generate paging code
+ *      
+ * @author : Lingter
+ * @support : http://www.meiu.cn
+ * @copyright : (c)2010 - 2011 meiu.cn lingter@gmail.com
+ */
 class page_cla{
     
     var $tpl = 'default';

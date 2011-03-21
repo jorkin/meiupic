@@ -71,26 +71,11 @@ class Loader{
      * 装载视图
      */
     static function view($tplFile,$isDisplay = true){
-        /*
-        todo: 待完善，检测错误，载入风格设置
-        */
         global $base_path;
-        
-        $current_theme = loader::model('setting')->get_conf('system.current_theme','1');
-        $current_theme_style = loader::model('setting')->get_conf('system.current_theme_style','default');
-        
-        define('TEMPLATEID', $current_theme);
-        define('STYLEID', $current_theme_style);
-        $themeinfo = loader::model('template')->info($current_theme);
-        if($themeinfo){
-            define('TPLDIR',$themeinfo['directory']);
-        }else{
-            define('TPLDIR','themes/default');
-        }
         if(file_exists(ROOTDIR.TPLDIR.'/info.php')){
             include_once(ROOTDIR.TPLDIR.'/info.php');
-            if(isset($style_configs[$current_theme_style])){
-                extract($style_configs[$current_theme_style]);
+            if(isset($style_configs[STYLEID])){
+                extract($style_configs[STYLEID]);
             }elseif(isset($style_configs['default'])){
                 extract($style_configs['default']);
             }

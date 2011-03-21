@@ -76,17 +76,8 @@ class loader{
      * 装载视图
      */
     function view($tplFile,$isDisplay = true){
-        $current_theme = loader::model('setting')->get_conf('system.current_theme','1');
-        $current_theme_style = loader::model('setting')->get_conf('system.current_theme_style','default');
+        global $base_path;
         
-        define('TEMPLATEID', $current_theme);
-        define('STYLEID', $current_theme_style);
-        $themeinfo = loader::model('template')->info($current_theme);
-        if($themeinfo){
-            define('TPLDIR',$themeinfo['directory']);
-        }else{
-            define('TPLDIR','themes/default');
-        }
         if(file_exists(TPLDIR.'/info.php')){
             include_once(TPLDIR.'/info.php');
             if(isset($style_configs[$current_theme_style])){
@@ -95,7 +86,7 @@ class loader{
                 extract($style_configs['default']);
             }
         }
-        
+        $style_path = $base_path.TPLDIR.'/';
         require_once INCDIR.'template.func.php';
         $params = loader::lib('output')->getAll();
         extract($params);

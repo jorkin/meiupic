@@ -64,10 +64,10 @@ class image_imagick {
      * return volid
      */
     function save($filename) {
-        if($this->image_type != 'GIF'){
+        if($this->image_type == 'GIF'){
             $this->image->writeImages($filename,true);
         }else{
-            $this->image->writeImages($filename);
+            $this->image->writeImage($filename);
         }
     }
     
@@ -237,65 +237,65 @@ class image_imagick {
     }
     
     function waterMarkImg(){
-       	if(empty($this->param['water_mark_image']) || !file_exists($this->param['water_mark_image'])){
+           if(empty($this->param['water_mark_image']) || !file_exists($this->param['water_mark_image'])){
             return false;
         }
-		
-		$bg_h = $this->getHeight();
-		$bg_w = $this->getWidth();
-		
-		$water_img = new Imagick($this->param['water_mark_image']);
-		$water_h = $water_img->getImageHeight();
-		$water_w = $water_img->getImageWidth();
-		if($bg_h < $water_h || $bg_w < $water_w )
-	    {  
-	       return false;
-	    }
-		if($this->param['water_mark_opacity']){
-			$water_img->setImageOpacity($this->param['water_mark_opacity']);
-		}
-		$draw = new ImagickDraw();
-		switch($this->param['water_mark_pos']) {
+        
+        $bg_h = $this->getHeight();
+        $bg_w = $this->getWidth();
+        
+        $water_img = new Imagick($this->param['water_mark_image']);
+        $water_h = $water_img->getImageHeight();
+        $water_w = $water_img->getImageWidth();
+        if($bg_h < $water_h || $bg_w < $water_w )
+        {  
+           return false;
+        }
+        if($this->param['water_mark_opacity']){
+            $water_img->setImageOpacity($this->param['water_mark_opacity']);
+        }
+        $draw = new ImagickDraw();
+        switch($this->param['water_mark_pos']) {
             case 0:
-			case 1:
-				$gravity = Imagick::GRAVITY_NORTHWEST;//'NorthWest';
-				break;
-			case 2:
-				$gravity = Imagick::GRAVITY_NORTH;//'North';
-				break;
-			case 3:
-				$gravity = Imagick::GRAVITY_NORTHEAST;//'NorthEast';
-				break;
-			case 4:
-				$gravity = Imagick::GRAVITY_WEST;//'West';
-				break;
-			case 5:
-				$gravity = Imagick::GRAVITY_CENTER;//'Center';
-				break;
-			case 6:
-				$gravity = Imagick::GRAVITY_EAST;//'East';
-				break;
-			case 7:
-				$gravity = Imagick::GRAVITY_SOUTHWEST;//'SouthWest';
-				break;
-			case 8:
-				$gravity = Imagick::GRAVITY_SOUTH;//'South';
-				break;
-			case 9:
-				$gravity = Imagick::GRAVITY_SOUTHEAST;
-				break;
-		}
-		$draw->setGravity($gravity);
-		$draw->composite($water_img->getImageCompose(),0,0,50,0,$water_img);
-		if($this->image_type == 'GIF'){
-			$color_transparent = new ImagickPixel("transparent"); //透明色
-			$dest = new Imagick();
+            case 1:
+                $gravity = Imagick::GRAVITY_NORTHWEST;//'NorthWest';
+                break;
+            case 2:
+                $gravity = Imagick::GRAVITY_NORTH;//'North';
+                break;
+            case 3:
+                $gravity = Imagick::GRAVITY_NORTHEAST;//'NorthEast';
+                break;
+            case 4:
+                $gravity = Imagick::GRAVITY_WEST;//'West';
+                break;
+            case 5:
+                $gravity = Imagick::GRAVITY_CENTER;//'Center';
+                break;
+            case 6:
+                $gravity = Imagick::GRAVITY_EAST;//'East';
+                break;
+            case 7:
+                $gravity = Imagick::GRAVITY_SOUTHWEST;//'SouthWest';
+                break;
+            case 8:
+                $gravity = Imagick::GRAVITY_SOUTH;//'South';
+                break;
+            case 9:
+                $gravity = Imagick::GRAVITY_SOUTHEAST;
+                break;
+        }
+        $draw->setGravity($gravity);
+        $draw->composite($water_img->getImageCompose(),0,0,50,0,$water_img);
+        if($this->image_type == 'GIF'){
+            $color_transparent = new ImagickPixel("transparent"); //透明色
+            $dest = new Imagick();
             foreach($this->image as $frame){
                 $page = $frame->getImagePage();
                 $tmp = new Imagick(); 
                 $tmp->newImage($page['width'], $page['height'], $color_transparent, 'gif');
                 $tmp->compositeImage($frame, Imagick::COMPOSITE_OVER, $page['x'], $page['y']);
-				$tmp->drawImage($draw);
+                $tmp->drawImage($draw);
                 $dest->addImage($tmp);
                 $dest->setImagePage($tmp->getImageWidth(), $tmp->getImageHeight(), 0, 0);
                 $dest->setImageDelay($frame->getImageDelay());
@@ -303,10 +303,10 @@ class image_imagick {
             }
             $dest->coalesceImages();
             $this->image = $dest;
-		}else{
-			$this->image->drawImage($draw);
-		}
-		
+        }else{
+            $this->image->drawImage($draw);
+        }
+        
     }
     
     function waterMarkFont(){
@@ -325,38 +325,38 @@ class image_imagick {
 
         switch($this->param['water_mark_pos']) {
             case 0:
-			case 1:
-				$gravity = Imagick::GRAVITY_NORTHWEST;//'NorthWest';
-				break;
-			case 2:
-				$gravity = Imagick::GRAVITY_NORTH;//'North';
-				break;
-			case 3:
-				$gravity = Imagick::GRAVITY_NORTHEAST;//'NorthEast';
-				break;
-			case 4:
-				$gravity = Imagick::GRAVITY_WEST;//'West';
-				break;
-			case 5:
-				$gravity = Imagick::GRAVITY_CENTER;//'Center';
-				break;
-			case 6:
-				$gravity = Imagick::GRAVITY_EAST;//'East';
-				break;
-			case 7:
-				$gravity = Imagick::GRAVITY_SOUTHWEST;//'SouthWest';
-				break;
-			case 8:
-				$gravity = Imagick::GRAVITY_SOUTH;//'South';
-				break;
-			case 9:
-				$gravity = Imagick::GRAVITY_SOUTHEAST;
-				break;
-		}
-		$draw->setGravity($gravity);
-		
-		if($this->image_type == 'GIF'){
-		    $color_transparent = new ImagickPixel("transparent");
+            case 1:
+                $gravity = Imagick::GRAVITY_NORTHWEST;//'NorthWest';
+                break;
+            case 2:
+                $gravity = Imagick::GRAVITY_NORTH;//'North';
+                break;
+            case 3:
+                $gravity = Imagick::GRAVITY_NORTHEAST;//'NorthEast';
+                break;
+            case 4:
+                $gravity = Imagick::GRAVITY_WEST;//'West';
+                break;
+            case 5:
+                $gravity = Imagick::GRAVITY_CENTER;//'Center';
+                break;
+            case 6:
+                $gravity = Imagick::GRAVITY_EAST;//'East';
+                break;
+            case 7:
+                $gravity = Imagick::GRAVITY_SOUTHWEST;//'SouthWest';
+                break;
+            case 8:
+                $gravity = Imagick::GRAVITY_SOUTH;//'South';
+                break;
+            case 9:
+                $gravity = Imagick::GRAVITY_SOUTHEAST;
+                break;
+        }
+        $draw->setGravity($gravity);
+        
+        if($this->image_type == 'GIF'){
+            $color_transparent = new ImagickPixel("transparent");
             $dest = new Imagick();
             foreach($this->image as $frame){
                 $page = $frame->getImagePage();
@@ -372,9 +372,9 @@ class image_imagick {
             $dest->coalesceImages();
             $this->image = $dest;
         }else{
-			if($this->param['water_mark_opacity']){
-            	$draw->setFillOpacity($this->param['water_mark_opacity']);
-			}
+            if($this->param['water_mark_opacity']){
+                $draw->setFillOpacity($this->param['water_mark_opacity']);
+            }
             $this->image->annotateImage($draw,0,0,$this->param['water_mark_angle'],$this->param['water_mark_string']);
         }
         

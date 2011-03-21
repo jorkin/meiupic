@@ -2,9 +2,8 @@
 
 class default_ctl extends pagecore{
     
-    function index($par=array()){
-        $url = loader::lib('uri')->mk_uri('album');
-        echo $url;
+    function index($par){
+        $url = loader::lib('uri')->mk_uri('albums');
         header('Location: '.$url);
         exit;
     }

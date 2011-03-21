@@ -1,5 +1,13 @@
 <?php
-
+/**
+ * $Id: image.class.php 99 2011-02-20 13:57:57Z lingter $
+ * 
+ * Image class: resize, cut, rotate, add water mark 
+ *      
+ * @author : Lingter
+ * @support : http://www.meiu.cn
+ * @copyright : (c)2010 - 2011 meiu.cn lingter@gmail.com
+ */
 class image_cla{
     function image_cla(){
         $this->class_name = 'image_'.(defined('IMG_ENGINE')?constant('IMG_ENGINE'):'gd');
