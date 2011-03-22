@@ -38,6 +38,7 @@ function ajax_box( $content , $title = '', $close_time = 0 , $forward = '' )
     if(!$title){
         $title = lang('system_notice');
     }
+    $_config = $GLOBALS['THEME_CONFIG'];
     ob_start();
     include template('block/ajax_box');
     $page_content = ob_get_clean();
@@ -75,7 +76,7 @@ function template($file) {
         exit ( $tplfile." is not exists!" );
     }
     
-    $compiledtplfile = ROOTDIR.'cache/templates/'.STYLEID.'_'.$templateid.'_'.md5($tplfile).'.tpl.php';
+    $compiledtplfile = ROOTDIR.'cache/templates/'.$templateid.'_'.str_replace(array('/','\\'),'_',$file).'.tpl.php';
     if(!file_exists($compiledtplfile) || @filemtime($tplfile) > @filemtime($compiledtplfile)){
         loader::model('template')->template_compile($tplfile,$compiledtplfile);
     }

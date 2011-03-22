@@ -162,13 +162,12 @@ function init_defines(){
 
 function init_template(){
     $current_theme = loader::model('setting')->get_conf('system.current_theme','1');
-    $current_theme_style = loader::model('setting')->get_conf('system.current_theme_style','default');
     
     define('TEMPLATEID', $current_theme);
-    define('STYLEID', $current_theme_style);
     $themeinfo = loader::model('template')->info($current_theme);
     if($themeinfo){
-        define('TPLDIR',$themeinfo['directory']);
+        $GLOBALS['THEME_CONFIG'] = unserialize($themeinfo['config']);
+        define('TPLDIR','themes/'.$themeinfo['cname']);
     }else{
         define('TPLDIR','themes/default');
     }

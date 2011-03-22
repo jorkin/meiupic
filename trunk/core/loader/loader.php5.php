@@ -72,17 +72,11 @@ class Loader{
      */
     static function view($tplFile,$isDisplay = true){
         global $base_path;
-        if(file_exists(ROOTDIR.TPLDIR.'/info.php')){
-            include_once(ROOTDIR.TPLDIR.'/info.php');
-            if(isset($style_configs[STYLEID])){
-                extract($style_configs[STYLEID]);
-            }elseif(isset($style_configs['default'])){
-                extract($style_configs['default']);
-            }
-        }
         $style_path = $base_path.TPLDIR.'/';
         $params = loader::lib('output')->getAll();
         extract($params);
+        $_config = $GLOBALS['THEME_CONFIG'];
+        
         ob_start();
         include template($tplFile);
         $content = ob_get_clean();
