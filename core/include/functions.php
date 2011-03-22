@@ -1,29 +1,8 @@
 <?php
 
-/*
- run page init
- initialize page head and user status
-*/
-function page_init($title = '',$keywords = '',$description='',$arr=array()){
-    $auth =& loader::model('auth');
-    $output =& loader::lib('output');
-    
-    $head_str = "<title>{$title} - Powered by Meiupic</title>\n";
-    $head_str .= "<meta name=\"keywords\" content=\"{$keywords}\" />\n";
-    $head_str .= "<meta name=\"description\" content=\"{$description}\" />\n";
-    $output->set('meu_head',loader::lib('plugin')->filter('meu_head',$head_str,$arr));
-    
-    if(!$auth->loggedin()){
-        $user_status = '<a href="#">登录</a>';
-    }else{
-        $user_status = '<span class="name">Lingter</span>
-        <span class="pipe">|</span>
-        <a title="查看和修改我的个人资料" href="#">我的资料</a>
-        <span class="pipe">|</span>
-        <a title="登出系统" href="#">登出</a>';
-    }
-    
-    $output->set('user_status',loader::lib('plugin')->filter('user_status',$user_status));
+function site_link($ctl='default',$act='index',$pars=array()){
+    $uri =& loader::lib('uri');
+    return $uri->mk_uri($ctl,$act,$pars);
 }
 
 function no_cache_header(){
@@ -60,7 +39,6 @@ function ajax_box( $content , $title = '', $close_time = 0 , $forward = '' )
         $title = lang('system_notice');
     }
     ob_start();
-    require_once INCDIR.'template.func.php';
     include template('block/ajax_box');
     $page_content = ob_get_clean();
     return $page_content;
@@ -77,4 +55,29 @@ function enum_priv_type($v){
         case 3:
         return lang('album_type_private');
     }
+}
+
+
+function template($file) {
+	if(strpos($file,':')!==false ) {
+        list($templateid, $file) = explode(':', $file);
+        $tpldir = 'plugins/'.$templateid.'/templates';
+    }
+    $tpldir = isset($tpldir)?$tpldir:TPLDIR;
+    $templateid = isset($templateid) ? $templateid : TEMPLATEID;
+    
+    $tplfile = ROOTDIR.$tpldir.'/'.$file.'.htm';
+    
+    if(TEMPLATEID != 1 && !file_exists($tplfile)) {
+        $tplfile = ROOTDIR.'themes/default/'.$file.'.htm';
+    }
+    if (! file_exists ( $tplfile )) {
+        exit ( $tplfile." is not exists!" );
+    }
+    
+    $compiledtplfile = ROOTDIR.'cache/templates/'.STYLEID.'_'.$templateid.'_'.md5($tplfile).'.tpl.php';
+    if(!file_exists($compiledtplfile) || @filemtime($tplfile) > @filemtime($compiledtplfile)){
+        loader::model('template')->template_compile($tplfile,$compiledtplfile);
+    }
+	return $compiledtplfile;
 }

@@ -22,6 +22,28 @@ class pagecore{
         ;
     }
     
+    /*
+     run page init
+     initialize page head and user status
+    */
+    function page_init($title = '',$keywords = '',$description='',$arr=array()){
+        $head_str = "<title>{$title} - Powered by Meiupic</title>\n";
+        $head_str .= "<meta name=\"keywords\" content=\"{$keywords}\" />\n";
+        $head_str .= "<meta name=\"description\" content=\"{$description}\" />\n";
+        $this->output->set('meu_head',loader::lib('plugin')->filter('meu_head',$head_str,$arr));
+
+        if(!$this->auth->loggedin()){
+            $user_status = '<a href="#">登录</a>';
+        }else{
+            $user_status = '<span class="name">Lingter</span>
+            <span class="pipe">|</span>
+            <a title="查看和修改我的个人资料" href="#">我的资料</a>
+            <span class="pipe">|</span>
+            <a title="登出系统" href="#">登出</a>';
+        }
+        $this->output->set('user_status',loader::lib('plugin')->filter('user_status',$user_status));
+    }
+    
     function render($type = 'normal'){
         if($type == 'normal'){
             $tpl = IN_CTL.'/'.IN_ACT;

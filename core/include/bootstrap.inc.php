@@ -203,18 +203,21 @@ function meiu_bootstrap(){
     
     define('IN_CTL',$uriinfo['ctl']);
     define('IN_ACT',$uriinfo['act']);
-    $custom_page = $plugin->trigger('custom_page.'.IN_CTL.'.'.IN_ACT,$uriinfo['pars']);
+    $_GET = array_merge($_GET,$uriinfo['pars']);
+    $_REQUEST = array_merge($_REQUEST,$uriinfo['pars']);
+    
+    require_once(INCDIR.'pagecore.php');
+    $custom_page = $plugin->trigger('custom_page.'.IN_CTL.'.'.IN_ACT) || $plugin->trigger('custom_page.'.IN_CTL,IN_ACT);
 
     if($custom_page === false){
         if(file_exists(CTLDIR.$uriinfo['ctl'].'.ctl.php')){
-            require_once(INCDIR.'pagecore.php');
             require_once(CTLDIR.$uriinfo['ctl'].'.ctl.php');
-            
+
             $controller_name = $uriinfo['ctl'].'_ctl';
             $controller = new $controller_name();
             $controller->_init();
             if(method_exists($controller,$uriinfo['act'])){
-                call_user_func_array(array($controller,$uriinfo['act']),array($uriinfo['pars']));
+                call_user_func(array($controller,$uriinfo['act']));
             }else{
                 exit('404');
             }

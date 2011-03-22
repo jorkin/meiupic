@@ -19,7 +19,7 @@ $(function() {
 
    $("#muilti_uploader").pluploadQueue({
         runtimes : 'html5,flash',
-        url : '{link ctl=upload&act=process&t=save_tmp}',
+        url : '{link ctl=upload act=process t=save_tmp}',
         max_file_size : '10mb',
         chunk_size : '512kb',
         unique_names : true,
@@ -53,7 +53,7 @@ $(function() {
 });
 
 function reload_albums_options(je){
-    $.get('{link ctl=albums&act=ajaxlist&t=all}',{},function(data){
+    $.get('{link ctl=albums act=ajaxlist t=all}',{},function(data){
         setTimeout(function(){
             Mui.box.close();
         },1000);
@@ -80,7 +80,7 @@ function reload_albums_options(je){
                     </div>
                     <div class="innercol grid">                        
                         <div id="upload_field">
-                            <form id="upload_photos_form" method="post" action="{link ctl=upload&act=save&t=multi}" onsubmit="return false;">
+                            <form id="upload_photos_form" method="post" action="{link ctl=upload act=save t=multi}" onsubmit="return false;">
                                 <div class="field">
                                     <div class="label">选择相册:</div>
                                     <div class="ipts">
@@ -88,7 +88,7 @@ function reload_albums_options(je){
                                             <!--{loop $albums_list $k $v}-->
                                                 <option value="{$k}" {if $album_id==$k}selected="selected"{/if}>{$v}</option>
                                             <!--{/loop}-->
-                                        </select> <a  href="javascript:void(0)" onclick="Mui.box.show('{link ctl=albums&act=create}');Mui.box.callback = function(){ reload_albums_options('#album_id'); }" class="ml10">新建相册</a></div>
+                                        </select> <a  href="javascript:void(0)" onclick="Mui.box.show('{link ctl=albums act=create}');Mui.box.callback = function(){ reload_albums_options('#album_id'); }" class="ml10">新建相册</a></div>
                                     <div class="clear"></div>
                                 </div>
                                 <div id="muilti_uploader">

@@ -7,25 +7,25 @@ class upload_ctl extends pagecore{
         $this->mdl_photo =& loader::model('photo');
     }
     
-    function index($arg){
-        $album_id = isset($arg['aid']) ? $arg['aid']:0;
+    function index(){
+        $album_id = $this->getGet('aid');
         $this->output->set('album_id',$album_id);
         
         $this->output->set('album_menu',$this->plugin->filter('album_menu',''));
         $this->output->set('albums_list',$this->mdl_album->get_kv());
         
-        $page_title = $this->setting->get_conf('site.title');
+        $page_title = '上传照片 - '.$this->setting->get_conf('site.title');
         $page_keywords = $this->setting->get_conf('site.keywords');
         $page_description = $this->setting->get_conf('site.description');
         
-        page_init($page_title,$page_keywords,$page_description);
+        $this->page_init($page_title,$page_keywords,$page_description);
         $this->render();
     }
     
-    function process($arg){
+    function process(){
         set_time_limit(0);
-        
-        if($arg['t'] == 'save_tmp'){
+        $type = $this->getGet('t');
+        if($type == 'save_tmp'){
             $chunk = $this->getRequest('chunk',0);
             $chunks = $this->getRequest('chunks',0);
             $filename = $this->getRequest('name','');
@@ -47,16 +47,17 @@ class upload_ctl extends pagecore{
             }
             echo loader::lib('json')->encode($return);
             exit;
-        }elseif($arg['t'] == 'normal'){
+        }elseif($type == 'normal'){
             //todo: normally save file
         }
     }
     
-    function save($arg){
+    function save(){
         set_time_limit(0);
         ignore_user_abort(true);
+        $type = $this->getGet('t');
         
-        if($arg['t'] == 'multi'){
+        if($type == 'multi'){
             $album_id = $this->getPost('album_id');
             if(!$album_id){
                 echo ajax_box('请先选择相册！',null);
@@ -110,7 +111,7 @@ class upload_ctl extends pagecore{
         }else{
             //todo: normally save file
         }
-        $gourl = loader::lib('uri')->mk_uri('photos','index',array('aid'=>$album_id));
+        $gourl = site_link('photos','index',array('aid'=>$album_id));
         echo ajax_box('上传照片成功！',null,1,$gourl);
     }
 }

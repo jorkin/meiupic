@@ -22,7 +22,7 @@
                                         <table>
                                             <tr>
                                                 <td>
-                                                    <a href="{link ctl=photos&act=view&id=`$v['id']`}">
+                                                    <a href="{link ctl=photos act=view id=$v['id']}">
                                                     <img src="{$v['thumb']}" />
                                                     </a>
                                                 </td>
@@ -32,9 +32,9 @@
                                     </div>
                                     <div class="pic_ctl">
                                         <ul class="btns">
-                                            <li><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=photos&act=confirm_delete&id=`$v['id']`}');" title="移动到回收站"><span class="i_littletrash sprite"></span></a></li>
-                                            <li><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=photos&act=modify&id=`$v['id']`}');" title="编辑"><span class="i_edit sprite"></span></a></li>
-                                            <li><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=albums&act=update_cover&pic_id=`$v['id']`}');" title="设为封面"><span class="i_cover sprite"></span></a></li>
+                                            <li><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=photos act=confirm_delete id=$v['id']}');" title="移动到回收站"><span class="i_littletrash sprite"></span></a></li>
+                                            <li><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=photos act=modify id=$v['id']}');" title="编辑"><span class="i_edit sprite"></span></a></li>
+                                            <li><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=albums act=update_cover pic_id=$v['id']}');" title="设为封面"><span class="i_cover sprite"></span></a></li>
                                             <!--{$v['photo_control_icons']}-->
                                         </ul>
                                     </div>
@@ -44,7 +44,7 @@
                                     </div>
                                 </div>
                                 <div class="info">
-                                    <div class="title"><!--{if $loggedin}--><input class="selitem" type="checkbox" name="sel_id[{$v['id']}]" value="1" /><!--{/if}--> <span class="name"><a nid="{$v['id']}" title="点击修改相册名" href="javascript:void(0)" onclick="Madmin.rename(this,'{link ctl=photos&act=rename&id=`$v['id']`}')">{$v['name']}</a></span></div>
+                                    <div class="title"><!--{if $loggedin}--><input class="selitem" type="checkbox" name="sel_id[{$v['id']}]" value="1" /><!--{/if}--> <span class="name"><a nid="{$v['id']}" title="点击修改相册名" href="javascript:void(0)" onclick="Madmin.rename(this,'{link ctl=photos act=rename id=$v['id']}')">{$v['name']}</a></span></div>
                                     <div class="info_col">
                                         <span class="f_left gray">{$v['hits']}浏览 </span>
                                         <span class="f_right gray"><!--{if $v['comments_num']}--><a href="#">{lang comments_num|`$v['comments_num']`}</a><!--{/if}--></span>
@@ -58,7 +58,7 @@
                                 {$pageset}
                             </div>
                             <div class="f_right">
-                                <label><input type="checkbox" value="1" onclick="Madmin.check_all('.selitem',this.checked)" />全选 <span class="i_trash_sp sprite"></span></label> <a href="javascript:void(0)" onclick="Madmin.checked_action('.selitem','{link ctl=photos&act=confirm_delete_batch}');">选中项移入回收站</a>
+                                <label><input type="checkbox" value="1" onclick="Madmin.check_all('.selitem',this.checked)" />全选 <span class="i_trash_sp sprite"></span></label> <a href="javascript:void(0)" onclick="Madmin.checked_action('.selitem','{link ctl=photos act=confirm_delete_batch}');">选中项移入回收站</a>
                             </div>
                             <div class="clear"></div>
                         </div>
@@ -177,7 +177,7 @@
                             <div class="pic no_picture"></div>
                             <div class="data_msg">
                                 <div>{lang no_photo_notice}</div >
-                                <div class="button"><div class="bigbutton"><a href="{link ctl=upload&act=index&aid=`$album_info['id']`}"><span>{lang upload_new_photo}</span></a></div></div>
+                                <div class="button"><div class="bigbutton"><a href="{link ctl=upload act=index aid=$album_info['id']}"><span>{lang upload_new_photo}</span></a></div></div>
                             </div>
                             <div class="clear"></div>
                         </div>
@@ -188,7 +188,7 @@
                 <div class="sidebar">
                     <!--{if $loggedin}-->
                     <div class="mb10">
-                        <div class="bigbutton"><a href="{link ctl=upload&act=index&aid=`$album_info['id']`}"><span>{lang upload_new_photo}</span></a></div>
+                        <div class="bigbutton"><a href="{link ctl=upload act=index aid=$album_info['id']}"><span>{lang upload_new_photo}</span></a></div>
                     </div>
                     <!--{/if}-->
                     <div class="album_info">
@@ -203,7 +203,7 @@
                     </div>
                     <div class="sidesearch mb20">
                         <h2>{lang search_photos}</h2>
-                            <form class="search" action="{link ctl=photos&act=search}" method="post">
+                            <form class="search" action="{link ctl=photos act=search}" method="post">
                                 <p class="mb10"><label><input type="radio" name="searchtype" value="current_album" checked="checked" /> 当前相册 </label> <label><input type="radio" name="searchtype" value="all_album" /> 全部相册</label></p>
                                 <input type="text" class="inputstyle iptw1" name="search_name" value="" />
                                 <input type="submit" name="submit" class="ylbtn1 ml5" value="{lang search}" />

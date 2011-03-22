@@ -3,7 +3,7 @@
     修改相册 - {$info['name']}
 </div>
 <div class="box_container">
-    <form id="albums_modify" action="{link ctl=albums&act=update&id=`$info['id']`}" method="post" onsubmit="return false;">
+    <form id="albums_modify" action="{link ctl=albums act=update id=$info['id']}" method="post" onsubmit="return false;">
         <div class="field">
             <div class="label">相册名</div>
             <div class="ipts"><input type="text" name="album_name" class="inputstyle iptw1" value="{$info['name']}" /></div>
