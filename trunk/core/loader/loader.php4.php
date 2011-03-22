@@ -87,7 +87,7 @@ class loader{
             }
         }
         $style_path = $base_path.TPLDIR.'/';
-        require_once INCDIR.'template.func.php';
+        //require_once INCDIR.'template.func.php';
         $params = loader::lib('output')->getAll();
         extract($params);
         ob_start();

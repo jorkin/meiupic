@@ -7,29 +7,32 @@ class albums_ctl extends pagecore{
         $this->mdl_album = & loader::model('album');
     }
     
-    function index($arg){
+    function index(){
         $search['name'] = $this->getRequest('search_name');
-        $sort = isset($arg['sort'])?$arg['sort']:'t_desc';
+        $sort = $this->getGet('sort','t_desc');
+        $page = $this->getGet('page','1');
         
-        $page = isset($arg['page'])?$arg['page']:1;
-        $pageurl = loader::lib('uri')->mk_uri('albums','index',array('sort'=>$sort,'page'=>'[#page#]'));
+        if($search['name']){
+            $pageurl = site_link('albums','index',array('search_name'=>$search['name'],'sort'=>$sort,'page'=>'[#page#]'));
+            $sort_url = site_link('albums','index',array('search_name'=>$search['name'],'sort'=>'[#sort#]'));
+        }else{
+            $pageurl = site_link('albums','index',array('sort'=>$sort,'page'=>'[#page#]'));
+            $sort_url = site_link('albums','index',array('sort'=>'[#sort#]'));
+        }
+        
+        $sort_setting = array('时间排序' => 't','照片数' => 'p');
+        $sort_list = $this->mdl_album->get_sort_list($sort_setting,$sort_url,$sort);
+        $this->output->set('list_order',$this->plugin->filter('album_sort_list',$sort_list));
         
         $albums = $this->mdl_album->get_all($page,$search,$sort);
         if(is_array($albums['ls'])){
             foreach($albums['ls'] as $k=>$v){
                 $albums['ls'][$k]['album_control_icons'] = $this->plugin->filter('album_control_icons','',$v['id']);
                 if($v['cover_id']){
-                    $albums['ls'][$k]['cover_path'] = $this->plugin->filter('picture_path',$GLOBALS['base_path'].$v['cover_path'],$v['cover_path']);
+                    $albums['ls'][$k]['cover_path'] = $this->plugin->filter('photo_path',$GLOBALS['base_path'].$v['cover_path'],$v['cover_path']);
                 }
             }
         }
-
-        $sort_setting = array('时间排序' => 't','照片数' => 'p');
-
-        $sort_url = loader::lib('uri')->mk_uri('albums','index',array('sort'=>'[#sort#]'));
-        $sort_list = $this->mdl_album->get_sort_list($sort_setting,$sort_url,$sort);
-        
-        $this->output->set('list_order',$sort_list);
         
         $this->output->set('albums',$albums['ls']);
         $this->output->set('pageset',loader::lib('page')->fetch($albums['total'],$albums['start'],$pageurl));
@@ -42,11 +45,11 @@ class albums_ctl extends pagecore{
         $page_keywords = $this->setting->get_conf('site.keywords');
         $page_description = $this->setting->get_conf('site.description');
         
-        page_init($page_title,$page_keywords,$page_description);
+        $this->page_init($page_title,$page_keywords,$page_description);
         $this->render();
     }
     
-    function ajaxlist($arg){
+    function ajaxlist(){
         $albums = $this->mdl_album->get_kv();
         if($albums){
             $ret = array('ret'=>true,'list'=>$albums);
@@ -56,11 +59,11 @@ class albums_ctl extends pagecore{
         echo loader::lib('json')->encode($ret);
     }
     
-    function create($arg){
+    function create(){
         $this->render();
     }
     
-    function save($arg){
+    function save(){
         $album['name'] = trim($this->getPost('album_name'));
         $album['desc'] = trim($this->getPost('desc'));
         $album['priv_type'] = $this->getPost('priv_type','0');
@@ -94,13 +97,14 @@ class albums_ctl extends pagecore{
         }
     }
     
-    function modify($arg){
-        $info = $this->mdl_album->get_info($arg['id']);
+    function modify(){
+        $id = $this->getGet('id');
+        $info = $this->mdl_album->get_info($id);
         $this->output->set('info',$info);
         $this->render();
     }
     
-    function update($arg){
+    function update(){
         $album['name'] = trim($this->getPost('album_name'));
         $album['desc'] = trim($this->getPost('desc'));
         $album['priv_type'] = $this->getPost('priv_type','0');
@@ -127,15 +131,15 @@ class albums_ctl extends pagecore{
             }
         }
         
-        if($this->mdl_album->update($arg['id'],$album)){
+        if($this->mdl_album->update($this->getGet('id'),$album)){
             ajax_box_success('修改相册成功！',null,1,$_SERVER['HTTP_REFERER']);
         }else{
             ajax_box_failed('修改相册失败！');
         }
     }
     //set cover
-    function update_cover($arg){        
-        $pic_id = $arg['pic_id'];
+    function update_cover(){        
+        $pic_id = $this->getGet('pic_id');
         $pic_info = loader::model('photo')->get_info($pic_id);
         $arr['cover_path'] = $pic_info['thumb'];
         $arr['cover_id'] = $pic_id;
@@ -146,15 +150,16 @@ class albums_ctl extends pagecore{
         }
     }
     
-    function confirm_delete($arg){
-        $this->output->set('id',$arg['id']);
-        $album_info = $this->mdl_album->get_info($arg['id']);
+    function confirm_delete(){
+        $id = $this->getGet('id');
+        $this->output->set('id',$id);
+        $album_info = $this->mdl_album->get_info($id);
         $this->output->set('album_name',$album_info['name']);
         $this->render();
     }
     
-    function delete($arg){
-        if($this->mdl_album->trash($arg['id'])){
+    function delete(){
+        if($this->mdl_album->trash($this->getGet('id'))){
             echo ajax_box('成功删除相册!',null,1,$_SERVER['HTTP_REFERER']);
         }else{
             echo ajax_box('删除相册失败!');
@@ -183,8 +188,8 @@ class albums_ctl extends pagecore{
         }
     }
     
-    function rename($arg){
-        $id = $arg['id'];
+    function rename(){
+        $id = $this->getGet('id');
         $arr['name'] = trim($this->getPost('name'));
         if($arr['name'] == ''){
             $return = array(

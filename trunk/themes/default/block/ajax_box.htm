@@ -10,11 +10,11 @@
 <!--{if $forward==''}-->
     setTimeout(function (){
         Mui.box.close()
-    },{eval echo $close_time*1000});
+    },{echo $close_time*1000});
 <!--{else}-->
     setTimeout(function (){
         window.location.href = '{echo addslashes($forward)}'
-    },{eval echo $close_time*1000});
+    },{echo $close_time*1000});
 <!--{/if}-->
 </script>
 <!--{/if}-->
