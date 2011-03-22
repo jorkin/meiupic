@@ -139,22 +139,6 @@ CREATE TABLE IF NOT EXISTS `meu_setting` (
 -- --------------------------------------------------------
 
 --
--- 表的结构 `meu_themes`
---
-
-CREATE TABLE IF NOT EXISTS `meu_themes` (
-  `id` smallint(4) NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) NOT NULL,
-  `directory` varchar(200) NOT NULL,
-  `copyright` text NOT NULL,
-  `styles` text,
-  `config` longtext,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
-
--- --------------------------------------------------------
-
---
 -- 表的结构 `meu_usermeta`
 --
 
@@ -187,5 +171,25 @@ INSERT INTO `meu_setting` (`name`, `value`) VALUES
 ('site', 'a:3:{s:5:"title";s:12:"我的相册";s:8:"keywords";s:26:"相册,我的相册,分享";s:11:"description";s:90:"我的相册是使用美优相册管理系统架设的网络相册！相册开源免费！";}');
 
 
-INSERT INTO `meu_themes` (`id`, `name`, `directory`, `copyright`, `styles`, `config`) VALUES
-(1, '默认模版', 'themes/default', '美优网络', 'a:3:{s:7:"default";s:12:"默认风格";s:4:"pink";s:12:"粉红风格";s:5:"green";s:12:"绿色风格";}', 'a:14:{s:10:"link_color";s:7:"#1d64ad";s:9:"header_bg";s:4:"#036";s:9:"header_h1";s:4:"#fc0";s:10:"settingtxt";s:4:"#fff";s:9:"tablinkbg";s:7:"#1A4F85";s:7:"tablink";s:4:"#fff";s:14:"tablinkcurrent";s:4:"#090";s:12:"tablinkhover";s:4:"#fff";s:14:"tablinkhoverbg";s:7:"#1D64AD";s:10:"updateinfo";s:4:"#fff";s:12:"updateinfobg";s:7:"#1A4F85";s:10:"alertcolor";s:7:"#ffb2b2";s:7:"titlebg";s:7:"#edf3fe";s:10:"titlelabel";s:4:"#036";}');
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `meu_themes`
+--
+
+CREATE TABLE IF NOT EXISTS `meu_themes` (
+  `id` smallint(4) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  `cname` varchar(200) NOT NULL,
+  `copyright` text NOT NULL,
+  `config` longtext,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+
+--
+-- 转存表中的数据 `meu_themes`
+--
+
+INSERT INTO `meu_themes` (`id`, `name`, `cname`, `copyright`, `config`) VALUES
+(1, '默认模版', 'default', '美优网络', 'a:16:{s:10:"link_color";s:7:"#1d64ad";s:16:"link_hover_color";s:4:"#fff";s:9:"header_bg";s:4:"#036";s:9:"header_h1";s:4:"#fc0";s:10:"settingtxt";s:4:"#fff";s:9:"tablinkbg";s:7:"#1A4F85";s:7:"tablink";s:4:"#fff";s:14:"tablinkcurrent";s:4:"#090";s:12:"tablinkhover";s:4:"#fff";s:14:"tablinkhoverbg";s:7:"#1D64AD";s:10:"updateinfo";s:4:"#fff";s:12:"updateinfobg";s:7:"#1A4F85";s:10:"alertcolor";s:7:"#ffb2b2";s:7:"titlebg";s:7:"#edf3fe";s:10:"titlelabel";s:4:"#036";s:9:"boxborder";s:4:"#036";}'),
+(2, '测试模版', 'test', '美优', NULL);
