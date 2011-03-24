@@ -10,8 +10,6 @@ class photos_ctl extends pagecore{
     
     function index(){
         $album_id = $this->getGet('aid');
-        $album_info = $this->mdl_album->get_info($album_id);
-        
         $sort = $this->getGet('sort','tu_desc');
         $page = $this->getGet('page',1);
         
@@ -19,9 +17,14 @@ class photos_ctl extends pagecore{
         $sort_url = site_link('photos','index',array('aid'=>$album_id,'sort'=>'[#sort#]'));
 
         $sort_setting = array('上传时间' => 'tu','拍摄时间' => 'tt','浏览数'=>'h','评论数'=>'c');
-        $sort_list = $this->mdl_album->get_sort_list($sort_setting,$sort_url,$sort);
-        $this->output->set('list_order',$this->plugin->filter('photo_sort_list',$sort_list));
+        $sort_list =  $this->mdl_album->get_sort_list($sort_setting,$sort_url,$sort);
         
+        list($pageset,$page_setting_str) = $this->mdl_album->get_page_setting('photo');
+        $this->mdl_photo->set_pageset($pageset);
+        
+        $view_type = '<div class="f_right view_type"><span>浏览模式:</span><a href="'.site_link('photos','story',array('aid'=>$album_id)).'">故事模式</a></div>';
+        
+        $album_info = $this->mdl_album->get_info($album_id);
         $photos = $this->mdl_photo->get_all($page,array('album_id'=>$album_id),$sort);
         if(is_array($photos['ls'])){
             foreach($photos['ls'] as $k=>$v){
@@ -30,12 +33,16 @@ class photos_ctl extends pagecore{
             }
         }
         
+        $pagestr = loader::lib('page')->fetch($photos['total'],$photos['start'],$pageurl);
+        $album_menu = '<li><a href="'.
+                        site_link('photos','index',array('aid'=>$album_id)).
+                      '" class="current">'.$album_info['name'].'</a></li>';
+        
+        $this->output->set('photo_col_menu',$this->plugin->filter('photo_col_menu',$view_type.$page_setting_str.$sort_list));
         $this->output->set('photos',$photos['ls']);
-        $this->output->set('pageset',loader::lib('page')->fetch($photos['total'],$photos['start'],$pageurl));
+        $this->output->set('pagestr',$pagestr);
         $this->output->set('total_num',$photos['count']);
         $this->output->set('album_info',$album_info);
-        
-        $album_menu = '<li><a href="'.site_link('photos','index',array('aid'=>$album_id)).'" class="current">'.$album_info['name'].'</a></li>';
         $this->output->set('album_menu',$this->plugin->filter('album_menu',$album_menu,$album_id));
         
         $page_title = $album_info['name'].' - '.$this->setting->get_conf('site.title');

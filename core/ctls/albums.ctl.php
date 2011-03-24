@@ -13,31 +13,47 @@ class albums_ctl extends pagecore{
         $page = $this->getGet('page','1');
         
         if($search['name']){
-            $pageurl = site_link('albums','index',array('search_name'=>$search['name'],'sort'=>$sort,'page'=>'[#page#]'));
-            $sort_url = site_link('albums','index',array('search_name'=>$search['name'],'sort'=>'[#sort#]'));
+            $pageurl = site_link('albums','index',
+                                array(
+                                    'search_name'=>$search['name'],
+                                    'sort'=>$sort,
+                                    'page'=>'[#page#]'
+                                ));
+            $sort_url = site_link('albums','index',
+                                array(
+                                    'search_name'=>$search['name'],
+                                    'sort'=>'[#sort#]'
+                                ));
         }else{
             $pageurl = site_link('albums','index',array('sort'=>$sort,'page'=>'[#page#]'));
             $sort_url = site_link('albums','index',array('sort'=>'[#sort#]'));
         }
         
+        list($pageset,$page_setting_str) = $this->mdl_album->get_page_setting('album');
+        $this->mdl_album->set_pageset($pageset);
+        
         $sort_setting = array('时间排序' => 't','照片数' => 'p');
         $sort_list = $this->mdl_album->get_sort_list($sort_setting,$sort_url,$sort);
-        $this->output->set('list_order',$this->plugin->filter('album_sort_list',$sort_list));
         
         $albums = $this->mdl_album->get_all($page,$search,$sort);
         if(is_array($albums['ls'])){
             foreach($albums['ls'] as $k=>$v){
-                $albums['ls'][$k]['album_control_icons'] = $this->plugin->filter('album_control_icons','',$v['id']);
+                $albums['ls'][$k]['album_control_icons'] = $this->plugin->filter(
+                                                        'album_control_icons','',$v['id']);
                 if($v['cover_id']){
-                    $albums['ls'][$k]['cover_path'] = $this->plugin->filter('photo_path',$GLOBALS['base_path'].$v['cover_path'],$v['cover_path']);
+                    $albums['ls'][$k]['cover_path'] = $this->plugin->filter('photo_path',
+                                                    $GLOBALS['base_path'].$v['cover_path'],
+                                                    $v['cover_path']);
                 }
             }
         }
         
-        $this->output->set('albums',$albums['ls']);
-        $this->output->set('pageset',loader::lib('page')->fetch($albums['total'],$albums['start'],$pageurl));
-        $this->output->set('total_num',$albums['count']);
+        $pagestr = loader::lib('page')->fetch($albums['total'],$albums['start'],$pageurl);
         
+        $this->output->set('album_col_menu',$this->plugin->filter('album_col_menu',$page_setting_str.$sort_list));
+        $this->output->set('albums',$albums['ls']);
+        $this->output->set('pagestr',$pagestr);
+        $this->output->set('total_num',$albums['count']);
         $this->output->set('search',$search);
         $this->output->set('album_menu',$this->plugin->filter('album_menu',''));
         
@@ -140,11 +156,9 @@ class albums_ctl extends pagecore{
     //set cover
     function update_cover(){        
         $pic_id = $this->getGet('pic_id');
-        $pic_info = loader::model('photo')->get_info($pic_id);
-        $arr['cover_path'] = $pic_info['thumb'];
-        $arr['cover_id'] = $pic_id;
-        if($this->mdl_album->update($pic_info['album_id'],$arr)){
-            echo ajax_box('成功设为封面',null,1);
+        
+        if($this->mdl_album->set_cover($pic_id)){
+            echo ajax_box('成功设为封面',null,1,$_SERVER['HTTP_REFERER']);
         }else{
             echo ajax_box('未能成功设为封面！');
         }

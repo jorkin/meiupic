@@ -8,9 +8,7 @@
                     <div class="col titbg">
                         <h1 class="f_left">{lang album_list}</h1>
                         <h4 class="f_left">{lang total_ablum|$total_num}</h4>
-                        <div class="listorder f_right">
-                            {$list_order}
-                        </div>
+                        {$album_col_menu}
                     </div>
                     <div class="innercol grid">
                         <div class="gallary_wrap">
@@ -46,7 +44,7 @@
                                     <div class="title"><!--{if $loggedin}--><input class="selitem" type="checkbox" name="sel_id[{$v['id']}]" value="1" /><!--{/if}--> <span class="name"><a nid="{$v['id']}" title="点击修改相册名" href="javascript:void(0)" onclick="Madmin.rename(this,'{link ctl=albums act=rename id=$v['id']}')">{$v['name']}</a></span></div>
                                     <div class="info_col">
                                         <span class="f_left gray">{$v['photos_num']}张照片</span>
-                                        <span class="f_right gray"><span class="i_greenicn sprite"></span>私人相册</span>
+                                        <span class="f_right gray"><span class="i_greenicn sprite"></span>{echo enum_priv_type($v['priv_type'])}</span>
                                     </div>
                                 </div>
                             </div>
@@ -54,7 +52,7 @@
                         </div>
                         <div class="bot_toolbar">
                             <div class="f_left paginator">
-                                {$pageset}
+                                {$pagestr}
                             </div>
                             <div class="f_right">
                                 <label><input type="checkbox" value="1" onclick="Madmin.check_all('.selitem',this.checked)" />全选 <span class="i_trash_sp sprite"></span></label> <a href="javascript:void(0)" onclick="Madmin.checked_action('.selitem','{link ctl=albums act=confirm_delete_batch}');">选中项移入回收站</a>

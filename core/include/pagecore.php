@@ -27,7 +27,7 @@ class pagecore{
      initialize page head and user status
     */
     function page_init($title = '',$keywords = '',$description='',$arr=array()){
-        $head_str = "<title>{$title} - Powered by Meiupic</title>\n";
+        $head_str = "<title>{$title} - Powered by MeiuPic</title>\n";
         $head_str .= "<meta name=\"keywords\" content=\"{$keywords}\" />\n";
         $head_str .= "<meta name=\"description\" content=\"{$description}\" />\n";
         $this->output->set('meu_head',loader::lib('plugin')->filter('meu_head',$head_str,$arr));

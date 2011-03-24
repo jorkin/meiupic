@@ -333,9 +333,38 @@ table.layout td.right{
     text-decoration:none;
     background:none;
 }
+
+.mainbody .col .pset,.mainbody .col .view_type{
+    line-height:24px;
+    margin:15px 10px 0 0;
+}
+.mainbody .col .pset a,.mainbody .col .view_type a{
+     float:left;
+        margin-left:-1px;
+        background:url("list_order.gif") repeat-x 0 0 #fff;
+        border:1px solid #D9D9D9;
+        color:#555;
+        cursor:pointer;
+        position:relative;
+        display:block;
+        font-size:1em;
+        height:17px;
+        line-height:17px;
+        text-decoration:none;
+        padding:0 4px;
+}
+.mainbody .col .pset span,.mainbody .col .view_type span{
+    float:left;
+    line-height:17px;
+    padding:0 4px;
+    color:#777;
+}
+.mainbody .col .pset a:hover,.mainbody .col .pset a.on,.mainbody .col .view_type a:hover{
+    background:#E9E9E9;
+}
 .mainbody .col .listorder {
     line-height:24px;
-    margin:15px 10px 0;
+    margin:15px 10px 0 0;
 }
 .mainbody .col .listorder a{
     float:left;
@@ -359,7 +388,7 @@ table.layout td.right{
     padding:0 0 0 14px;
 }
 .mainbody .col .listorder a:hover{
-    background:#E9E9E9 url('#');
+    background:#E9E9E9;
 }
 .mainbody .col .listorder .list_desc span{
     background-position:left -97px;
@@ -522,6 +551,11 @@ form .field .ipts{float:left;}
 }
 .grid .item .f_left,.grid .item .f_right{
     line-height:2;
+}
+.grid .info .info_col span.cover{
+    background:green;
+    color:white;
+    padding:0 4px;
 }
 .bot_toolbar{
     clear:both;
