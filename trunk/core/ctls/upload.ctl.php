@@ -31,16 +31,35 @@ class upload_ctl extends pagecore{
             $filename = $this->getRequest('name','');
             $target_dir = ROOTDIR.'cache'.DIRECTORY_SEPARATOR.'tmp';
         
-            $status = loader::model('storage')->upload_multi($target_dir,$chunk,$chunks,$filename,true);
+            $status = loader::model('storage')->upload_multi($target_dir,
+                                            $chunk,$chunks,$filename,true);
             switch($status){
                 case 100:
-                $return = array('jsonrpc'=>'2.0','error'=>array('code'=>$status,'message'=>lang('Failed to open temp directory.')),'id'=>'id');
+                $return = array(
+                    'jsonrpc'=>'2.0',
+                    'error'=> array( 
+                        'code'=>$status,
+                        'message'=>lang('Failed to open temp directory.')
+                     ),
+                     'id'=>'id');
                 break;
                 case 101:
-                $return = array('jsonrpc'=>'2.0','error'=>array('code'=>$status,'message'=>lang('Failed to open input stream.')),'id'=>'id');
+                $return = array(
+                    'jsonrpc'=>'2.0',
+                    'error'=>array(
+                         'code'=>$status,
+                         'message'=>lang('Failed to open input stream.')
+                     ),
+                     'id'=>'id');
                 break;
                 case 102:
-                $return = array('jsonrpc'=>'2.0','error'=>array('code'=>$status,'message'=>lang('Failed to open output stream.')),'id'=>'id');
+                $return = array(
+                    'jsonrpc'=>'2.0',
+                    'error'=>array(
+                        'code'=>$status,
+                        'message'=>lang('Failed to open output stream.')
+                     ),
+                     'id'=>'id');
                 break;
                 case 0:
                 $return = array('jsonrpc'=>'2.0','result'=>null,'id'=>'id');

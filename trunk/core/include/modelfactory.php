@@ -26,8 +26,26 @@ class modelfactory{
         return $this->default_order;
     }
     
+    function get_page_setting($type){
+        $arr = array(12,30,56);
+        $current = isset($_COOKIE['_pageset_'.$type])?$_COOKIE['_pageset_'.$type]:'12';
+        
+        $str = '<div class="f_right pset">
+            <span>显示数:</span>';
+        foreach($arr as $v){
+            $str .= '<a href="javascript:void(0);" onclick="page_setting(\''.$type.'\','.$v.');" '.($current==$v?'class="on"':'').'>'.$v.'</a>';
+        }
+        $str .= '</div>';
+        return array($current,$str);
+    }
+    
+    function set_pageset($s){
+        $s = intval($s);
+        $this->pageset = $s?$s:$this->pageset;
+    }
+    
     function get_sort_list($setting,$url,$sort){
-        $str = '';
+        $str = '<div class="listorder f_right">';
         $token = rawurlencode('[#sort#]');
         foreach($setting as $k=>$v){
             if($v.'_asc' == $sort){
@@ -38,7 +56,7 @@ class modelfactory{
                 $str .= '<a href="'.str_replace($token,$v.'_asc',$url).'" class="list_asc"><span>'.$k.'</span></a>';
             }
         }
-        return $str;
+        return $str.'</div>';
     }
     
     function get_all($page = NULL,$filters = array(),$sort = null){

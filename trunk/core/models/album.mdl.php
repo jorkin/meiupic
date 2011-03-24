@@ -80,6 +80,25 @@ class album_mdl extends modelfactory{
         $this->db->select('#@photos','id as cover_id,thumb as cover_path','album_id='.intval($id).' and deleted=0');
         $this->db->selectLimit(null,1);
         $cover_info = $this->db->getRow();
+        
+        $this->db->update('#@photos','album_id='.intval($id),array('is_cover'=>0));
+        $this->db->query();
+        $this->db->update('#@photos','id='.intval($cover_info['cover_id']),array('is_cover'=>1));
+        $this->db->query();
+        
         return $this->update($id,$cover_info);
+    }
+    
+    function set_cover($pic_id){
+        $pic_info = loader::model('photo')->get_info($pic_id);
+        $arr['cover_path'] = $pic_info['thumb'];
+        $arr['cover_id'] = $pic_id;
+        
+        $this->db->update('#@photos','album_id='.intval($pic_info['album_id']),array('is_cover'=>0));
+        $this->db->query();
+        $this->db->update('#@photos','id='.intval($pic_id),array('is_cover'=>1));
+        $this->db->query();
+        
+        return $this->update($pic_info['album_id'],$arr);
     }
 }

@@ -31,6 +31,31 @@ f=function(k){return parseInt(E.css(k))||false;};
 /*drag and drop end*/
 jQuery.fn.addOption = function(text,value){jQuery(this).get(0).options.add(new Option(text,value));}
 
+jQuery.cookie = function (key, value, options) {
+    if (arguments.length > 1 && String(value) !== "[object Object]") {
+        options = jQuery.extend({}, options);
+        if (value === null || value === undefined) {
+            options.expires = -1;
+        }
+        if (typeof options.expires === 'number') {
+            var days = options.expires, t = options.expires = new Date();
+            t.setDate(t.getDate() + days);
+        }
+        value = String(value);
+        return (document.cookie = [
+            encodeURIComponent(key), '=',
+            options.raw ? value : encodeURIComponent(value),
+            options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
+            options.path ? '; path=' + options.path : '',
+            options.domain ? '; domain=' + options.domain : '',
+            options.secure ? '; secure' : ''
+        ].join(''));
+    }
+    options = value || {};
+    var result, decode = options.raw ? function (s) { return s; } : decodeURIComponent;
+    return (result = new RegExp('(?:^|; )' + encodeURIComponent(key) + '=([^;]*)').exec(document.cookie)) ? decode(result[1]) : null;
+};
+
 var Mui = {
     centerMe : function(jel){
         var w_w = $(jel).outerWidth();
@@ -165,3 +190,8 @@ function setMask(id,state){
     sibling.before($(newInput));
 }
 
+function page_setting(t,num){
+    var cookie_name = '_pageset_'+t;
+    $.cookie(cookie_name,num,{expires: 7, path: '/'});
+    window.location.reload();
+}
