@@ -43,7 +43,7 @@ a:hover{text-decoration:none;}
 .t_center{text-align:center;}
 .clear{clear:both;}
 .sprite{
-    background:url(meiu.png) no-repeat;
+    background:url(icons.png) no-repeat;
     border:none;
     display:inline-block;
     height:0;
