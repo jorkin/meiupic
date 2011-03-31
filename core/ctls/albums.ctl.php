@@ -9,19 +9,19 @@ class albums_ctl extends pagecore{
     
     function index(){
         $search['name'] = $this->getRequest('search_name');
-        $sort = $this->getGet('sort','t_desc');
+        $sort = $this->getGet('sort','ct_desc');
         $page = $this->getGet('page','1');
         
         if($search['name']){
             $pageurl = site_link('albums','index',
                                 array(
-                                    'search_name'=>$search['name'],
+                                    'search_name'=>stripslashes($search['name']),
                                     'sort'=>$sort,
                                     'page'=>'[#page#]'
                                 ));
             $sort_url = site_link('albums','index',
                                 array(
-                                    'search_name'=>$search['name'],
+                                    'search_name'=>stripslashes($search['name']),
                                     'sort'=>'[#sort#]'
                                 ));
         }else{
@@ -29,11 +29,11 @@ class albums_ctl extends pagecore{
             $sort_url = site_link('albums','index',array('sort'=>'[#sort#]'));
         }
         
-        list($pageset,$page_setting_str) = $this->mdl_album->get_page_setting('album');
+        list($pageset,$page_setting_str) = get_page_setting('album');
         $this->mdl_album->set_pageset($pageset);
         
-        $sort_setting = array('时间排序' => 't','照片数' => 'p');
-        $sort_list = $this->mdl_album->get_sort_list($sort_setting,$sort_url,$sort);
+        $sort_setting = array('创建时间' => 'ct','上传时间' => 'ut','照片数' => 'p');
+        $sort_list =  get_sort_list($sort_setting,$sort_url,$sort);
         
         $albums = $this->mdl_album->get_all($page,$search,$sort);
         if(is_array($albums['ls'])){
@@ -54,7 +54,7 @@ class albums_ctl extends pagecore{
         $this->output->set('albums',$albums['ls']);
         $this->output->set('pagestr',$pagestr);
         $this->output->set('total_num',$albums['count']);
-        $this->output->set('search',$search);
+        $this->output->set('search',arr_stripslashes($search));
         $this->output->set('album_menu',$this->plugin->filter('album_menu',''));
         
         $page_title = $this->setting->get_conf('site.title');
@@ -107,7 +107,7 @@ class albums_ctl extends pagecore{
         }
         
         if($this->mdl_album->save($album)){
-            ajax_box_success('创建相册成功！',null,1,$_SERVER['HTTP_REFERER']);
+            ajax_box_success('创建相册成功！',null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
             ajax_box_failed('创建相册失败！');
         }
@@ -148,7 +148,7 @@ class albums_ctl extends pagecore{
         }
         
         if($this->mdl_album->update($this->getGet('id'),$album)){
-            ajax_box_success('修改相册成功！',null,1,$_SERVER['HTTP_REFERER']);
+            ajax_box_success('修改相册成功！',null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
             ajax_box_failed('修改相册失败！');
         }
@@ -158,7 +158,7 @@ class albums_ctl extends pagecore{
         $pic_id = $this->getGet('pic_id');
         
         if($this->mdl_album->set_cover($pic_id)){
-            echo ajax_box('成功设为封面',null,1,$_SERVER['HTTP_REFERER']);
+            echo ajax_box('成功设为封面',null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
             echo ajax_box('未能成功设为封面！');
         }
@@ -174,7 +174,7 @@ class albums_ctl extends pagecore{
     
     function delete(){
         if($this->mdl_album->trash($this->getGet('id'))){
-            echo ajax_box('成功删除相册!',null,1,$_SERVER['HTTP_REFERER']);
+            echo ajax_box('成功删除相册!',null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
             echo ajax_box('删除相册失败!');
         }
@@ -215,7 +215,7 @@ class albums_ctl extends pagecore{
         if($this->mdl_album->update($id,$arr)){
             $return = array(
                 'ret'=>true,
-                'name'=>$arr['name']
+                'name'=>stripslashes($arr['name'])
             );
             echo loader::lib('json')->encode($return);
         }else{
@@ -225,5 +225,39 @@ class albums_ctl extends pagecore{
             echo loader::lib('json')->encode($return);
         }
         return;
+    }
+    
+    function editdesc(){
+        $id = $this->getGet('id');
+        $album_info = $this->mdl_album->get_info($id);
+        $this->output->set('info',$album_info);
+        loader::view('albums/editdesc_inline');
+    }
+    
+    function savedesc(){
+        $id = $this->getGet('id');
+        $desc = trim($this->getPost('desc'));
+        if($desc == ''){
+            $return = array(
+                'ret'=>false,
+                'msg' => '相册描述不能为空！'
+            );
+            echo loader::lib('json')->encode($return);
+            return;
+        }
+        if($this->mdl_album->update($id,array('desc'=>$desc))){
+            $return = array(
+                'ret'=>true,
+                'html' => stripslashes($desc)
+            );
+        }else{
+            $return = array(
+                'ret'=>false,
+                'msg' => '编辑相册描述失败！'
+            );
+        }
+        echo loader::lib('json')->encode($return);
+        return;
+        
     }
 }

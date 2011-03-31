@@ -20,11 +20,17 @@ class album_mdl extends modelfactory{
     
     function _sort($sort){
         switch($sort){
-            case 't_asc':
+            case 'ct_asc':
                 $str = 'create_time asc';
                 break;
-            case 't_desc':
+            case 'ct_desc':
                 $str = 'create_time desc';
+                break;
+            case 'ut_asc':
+                $str = 'up_time asc';
+                break;
+            case 'ut_desc':
+                $str = 'up_time desc';
                 break;
             case 'p_asc':
                 $str = 'photos_num asc';

@@ -129,9 +129,9 @@ Class adapter_mysqli{
         
         //return "'".$value."'";
         
-        if (get_magic_quotes_gpc()) {
+        //if (get_magic_quotes_gpc()) {
             $value = stripslashes($value);
-        }
+        //}
         
         return $addquote?"'".mysqli_real_escape_string($this->conn,$value)."'":mysqli_real_escape_string($this->conn,$value);
     }

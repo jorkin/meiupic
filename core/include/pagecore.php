@@ -64,11 +64,7 @@ class pagecore{
         if(isset($_GET[$key])){
             if(!get_magic_quotes_gpc())
             {
-                if(is_array($_GET[$key])){
-                    return array_map('addslashes',$_GET[$key]);
-                }else{
-                    return addslashes($_GET[$key]);
-                }
+                return arr_addslashes($_GET[$key]);
             }
             return $_GET[$key];
         }
@@ -79,11 +75,7 @@ class pagecore{
         if(isset($_POST[$key])){
             if(!get_magic_quotes_gpc())
             {
-                if(is_array($_POST[$key])){
-                    return array_map('addslashes',$_POST[$key]);
-                }else{
-                    return addslashes($_POST[$key]);
-                }
+                return arr_addslashes($_POST[$key]);
             }
             return $_POST[$key];
         }
@@ -94,11 +86,7 @@ class pagecore{
         if(isset($_REQUEST[$key])){
             if(!get_magic_quotes_gpc())
             {
-                if(is_array($_REQUEST[$key])){
-                    return array_map('addslashes',$_REQUEST[$key]);
-                }else{
-                    return addslashes($_REQUEST[$key]);
-                }
+                return arr_addslashes($_REQUEST[$key]);
             }
             return $_REQUEST[$key];
         }

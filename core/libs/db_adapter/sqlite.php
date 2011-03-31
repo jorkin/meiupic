@@ -109,9 +109,9 @@ Class adapter_sqlite{
         
         //return "'".$value."'";
         
-        if (get_magic_quotes_gpc()) {
+        //if (get_magic_quotes_gpc()) {
         $value = stripslashes($value);
-        }
+        //}
         
         if(phpversion()>='4.0.3'){
             $value = sqlite_escape_string($value);
