@@ -99,6 +99,7 @@
 .plupload_filelist_header {	
 	border-top: 1px solid #EEE;
 	border-bottom: 1px solid #CDCDCD;
+	font-size:12px;
 }
 
 .plupload_filelist_footer {border-top: 1px solid #FFF; height: 22px; line-height: 20px; vertical-align: middle;}
@@ -178,4 +179,5 @@ li.plupload_droptext {
 	vertical-align: middle;
 	border: 0;
 	line-height: 165px;
+	font-size:12px;
 }

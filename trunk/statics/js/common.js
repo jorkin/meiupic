@@ -29,8 +29,10 @@ i=function(e,h,k){return e.each(function(){h=(h)?$(h,e):e;
 f=function(k){return parseInt(E.css(k))||false;};
 })(jQuery);
 /*drag and drop end*/
+/*jquery plugin addOption*/
 jQuery.fn.addOption = function(text,value){jQuery(this).get(0).options.add(new Option(text,value));}
 
+/*jquery plugin cookie*/
 jQuery.cookie = function (key, value, options) {
     if (arguments.length > 1 && String(value) !== "[object Object]") {
         options = jQuery.extend({}, options);
@@ -165,6 +167,20 @@ Mui.form = {
         }
     }
 };
+
+function drop_select(je){
+    $(je).find('li').each(function(i){
+        if($(this).hasClass('current')){
+            $(je).find('.selected').append($(this).html());
+            $(je).find('.selected').prepend('<div class="arrow sprite"></div>');
+        }
+    });
+    $(je).hover(function(){
+        $(je).find('.optlist').show();
+        },function(){
+        $(je).find('.optlist').hide();
+    });
+}
 
 function setMask(id,state){
     var oldEl = $('#'+id);

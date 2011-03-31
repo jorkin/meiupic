@@ -80,7 +80,7 @@ div.bigbutton{
     padding:1px;
 }
 div.bigbutton a{
-    background:url(meiu.png) no-repeat left -94px;
+    background:url(btn.png) no-repeat left -129px;/*-94*/
     display:block;
     float:left;
     height:31px;
@@ -91,7 +91,7 @@ div.bigbutton a{
     text-decoration:none;
 }
 div.bigbutton a span{
-    background:url(meiu.png) no-repeat right -158px;
+    background:url(btn.png) no-repeat right -193px;
     display:block;
     line-height:30px;
     color:#444;
@@ -99,11 +99,11 @@ div.bigbutton a span{
 }
 div.bigbutton a:hover{
     color:#444;
-    background-position:left -126px;
+    background-position:left -161px;
     background-color:transparent;
 }
 div.bigbutton a:hover span{
-    background-position:right -190px;
+    background-position:right -225px;
 }
 
 .inputstyle{
@@ -334,14 +334,47 @@ table.layout td.right{
     background:none;
 }
 
-.mainbody .col .pset,.mainbody .col .view_type{
+.selectlist{
     line-height:24px;
     margin:15px 10px 0 0;
+    position:relative;
+    z-index:100;
 }
-.mainbody .col .pset a,.mainbody .col .view_type a{
-     float:left;
-        margin-left:-1px;
-        background:url("list_order.gif") repeat-x 0 0 #fff;
+.selectlist span.label{
+    float:left;
+    line-height:17px;
+    padding:0 4px;
+    color:#777;
+}
+.selectlist .selected{
+    float:left;
+    position:relative;
+}
+.selectlist .selected div.arrow{
+    position:absolute;
+    right:2px;
+    top:2px;
+    width:15px;
+    height:15px;
+    background-position:left -28px;
+    cursor:pointer;
+    z-index:50;
+}
+.selectlist .optlist{
+    display:none;
+    position:absolute;
+    top:19px;
+    right:0;
+    z-index:100;
+}
+.mainbody .col .selectlist .optlist a,.mainbody .col .selectlist .selected a{
+    color:#4A4A4A;
+}
+.selectlist .selected a{
+    background:#fff url(list_order.gif) repeat-x;
+}
+.selectlist a{
+        background:#fff;
         border:1px solid #D9D9D9;
         color:#555;
         cursor:pointer;
@@ -353,51 +386,37 @@ table.layout td.right{
         text-decoration:none;
         padding:0 4px;
 }
-.mainbody .col .pset span,.mainbody .col .view_type span{
-    float:left;
-    line-height:17px;
-    padding:0 4px;
-    color:#777;
+.selectlist li{
+    margin-top:-1px;
 }
-.mainbody .col .pset a:hover,.mainbody .col .pset a.on,.mainbody .col .view_type a:hover{
+.selectlist li a:hover,.selectlist li.current a{
     background:#E9E9E9;
 }
-.mainbody .col .listorder {
-    line-height:24px;
-    margin:15px 10px 0 0;
+
+.pset .selected,.pset .optlist{
+    width:50px;
 }
-.mainbody .col .listorder a{
-    float:left;
-    margin-left:-1px;
-    background:url("list_order.gif") repeat-x 0 0 #fff;
-    border:1px solid #D9D9D9;
-    color:#4A4A4A;
-    cursor:pointer;
-    position:relative;
-    display:block;
-    font-size:1em;
-    height:17px;
-    line-height:17px;
-    text-decoration:none;
-    padding:0 4px;
+.viewtype .selected,.viewtype .optlist{
+    width:100px;
 }
-.mainbody .col .listorder a span{
+
+.listorder a span{
     background:url("list_order.gif") no-repeat left -47px transparent;
     display:block;
     margin-right:2px;
     padding:0 0 0 14px;
 }
-.mainbody .col .listorder a:hover{
-    background:#E9E9E9;
-}
-.mainbody .col .listorder .list_desc span{
+.listorder .list_desc span{
     background-position:left -97px;
 }
-.mainbody .col .listorder .list_desc_on span,.mainbody .col .listorder .list_desc:hover span{
+.listorder .list_desc_on span, .listorder .list_desc:hover span{
     background-position:left -197px;
 }
-.mainbody .col .listorder .list_asc_on span,.mainbody .col .listorder .list_asc:hover span{
+.listorder .list_asc_on span, .listorder .list_asc:hover span{
     background-position:left -147px;
+}
+.listorder .selected,.listorder .optlist{
+    width:100px;
 }
 /*表单*/
 form .field{
@@ -523,13 +542,14 @@ form .field .ipts{float:left;}
     line-height:1.8;
 }
 .grid .info .title input.selitem{
-    margin:6px 5px 0 0;
+    margin:6px 5px 0 0 !important;
+    margin:2px 5px 0 0;
     float:left;
 }
 .grid .info .title span.name{
     float:left;
     overflow:hidden;
-    width:180px;
+    width:175px;
 }
 
 .grid .info .title span.name a,.grid .sel_on .title span.name a{
@@ -715,7 +735,10 @@ form .field .ipts{float:left;}
     margin-bottom:15px;
     height:1%;
 }
-
+.form_notice_div{
+    color: red;
+    padding:2px 0 6px 0;
+}
 /*upload*/
 #upload_field{
     padding:20px;

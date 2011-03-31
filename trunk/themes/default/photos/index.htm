@@ -10,6 +10,11 @@
                         <h4 class="f_left">{lang total_photo|$total_num}</h4>
                         {$photo_col_menu}
                     </div>
+                    <script type="text/javascript">
+                    drop_select('.listorder');
+                    drop_select('.pset');
+                    drop_select('.viewtype');
+                    </script>
                     <div class="innercol grid">
                         <div class="gallary_wrap">
                             <!--{loop $photos $k $v}-->
@@ -191,7 +196,10 @@
                     <!--{/if}-->
                     <div class="album_info">
                         <h2 class="title_c">{$album_info['name']} ({$album_info['photos_num']})</h2>
-                        <div class="info_body"><!--{if $album_info['desc']}-->{$album_info['desc']}<!--{else}-->还没有描述，为相册添加描述吧！<!--{/if}--><br /><a href="#">编辑描述</a></div>
+                        <div class="info_body">
+                            <div class="inline_edit"><!--{if $album_info['desc']}-->{$album_info['desc']}<!--{else}-->还没有描述，为相册添加描述吧！<!--{/if}--></div>
+                            <div class="edit"><a href="javascript:void(0)" onclick="Madmin.inline_edit('.album_info .info_body','{link ctl=albums act=editdesc id=$album_info['id']}')">编辑描述</a></div>
+                        </div>
                         <div class="priv"><span class="f_left">访问权限：  <span class="i_greenicn sprite"></span> {echo enum_priv_type($album_info['priv_type'])}</span><span class="f_right"><a href="#">编辑</a></span>
                         </div>
                     </div>

@@ -58,6 +58,36 @@ function enum_priv_type($v){
     }
 }
 
+function get_sort_list($setting,$url,$sort){
+    $str = '<div class="listorder f_right selectlist">
+    <span class="label">排序:</span>';
+    $token = rawurlencode('[#sort#]');
+    $str .= '<div class="selected"></div><ul class="optlist">';
+    foreach($setting as $k=>$v){
+        if($v.'_asc' == $sort){
+            $str .= '<li class="current"><a href="'.str_replace($token,$v.'_desc',$url).'" class="list_asc_on"><span>'.$k.'</span></a>';
+        }elseif($v.'_desc' == $sort){
+            $str .= '<li class="current"><a href="'.str_replace($token,$v.'_asc',$url).'" class="list_desc_on"><span>'.$k.'</span></a>';
+        }else{
+            $str .= '<li><a href="'.str_replace($token,$v.'_asc',$url).'" class="list_asc"><span>'.$k.'</span></a>';
+        }
+    }
+    return $str.'</ul></div>';
+}
+
+function get_page_setting($type){
+    $arr = array(12,30,56);
+    $current = isset($_COOKIE['_pageset_'.$type])?$_COOKIE['_pageset_'.$type]:'12';
+    
+    $str = '<div class="pset f_right selectlist">
+        <span class="label">显示数:</span>';
+    $str .= '<div class="selected"></div><ul class="optlist">';
+    foreach($arr as $v){
+        $str .= '<li '.($current==$v?'class="current"':'').'><a href="javascript:void(0);" onclick="page_setting(\''.$type.'\','.$v.');">'.$v.'</a></li>';
+    }
+    $str .= '</ul></div>';
+    return array($current,$str);
+}
 
 function template($file) {
 	if(strpos($file,':')!==false ) {
@@ -81,4 +111,20 @@ function template($file) {
         loader::model('template')->template_compile($tplfile,$compiledtplfile);
     }
 	return $compiledtplfile;
+}
+
+function arr_addslashes($arr){
+    if(is_array($arr)){
+        return array_map('arr_addslashes',$arr);
+    }else{
+        return addslashes($arr);
+    }
+}
+
+function arr_stripslashes($arr){
+    if(is_array($arr)){
+        return array_map('arr_stripslashes',$arr);
+    }else{
+        return stripslashes($arr);
+    }
 }

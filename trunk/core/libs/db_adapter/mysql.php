@@ -143,9 +143,9 @@ Class adapter_mysql{
         
         //return "'".$value."'";
         
-        if (get_magic_quotes_gpc()) {
+        //if (get_magic_quotes_gpc()) {
         $value = stripslashes($value);
-        }
+        //}
         
         if(phpversion()>= '4.3.0'){
             $value =  mysql_real_escape_string($value,$this->conn);

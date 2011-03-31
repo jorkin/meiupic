@@ -17,12 +17,19 @@ class photos_ctl extends pagecore{
         $sort_url = site_link('photos','index',array('aid'=>$album_id,'sort'=>'[#sort#]'));
 
         $sort_setting = array('上传时间' => 'tu','拍摄时间' => 'tt','浏览数'=>'h','评论数'=>'c');
-        $sort_list =  $this->mdl_album->get_sort_list($sort_setting,$sort_url,$sort);
+        $sort_list =  get_sort_list($sort_setting,$sort_url,$sort);
         
-        list($pageset,$page_setting_str) = $this->mdl_album->get_page_setting('photo');
+        list($pageset,$page_setting_str) = get_page_setting('photo');
         $this->mdl_photo->set_pageset($pageset);
         
-        $view_type = '<div class="f_right view_type"><span>浏览模式:</span><a href="'.site_link('photos','story',array('aid'=>$album_id)).'">故事模式</a></div>';
+        $view_type = '<div class="f_right selectlist viewtype">
+        <span class="label">浏览模式:</span>
+        <div class="selected"></div>
+        <ul class="optlist">
+        <li class="current"><a href="'.site_link('photos','index',array('aid'=>$album_id)).'">平铺模式</a></li>
+        <li><a href="'.site_link('photos','story',array('aid'=>$album_id)).'">故事模式</a></li>
+        </ul>
+        </div>';
         
         $album_info = $this->mdl_album->get_info($album_id);
         $photos = $this->mdl_photo->get_all($page,array('album_id'=>$album_id),$sort);
@@ -71,7 +78,7 @@ class photos_ctl extends pagecore{
         }
         
         if($this->mdl_photo->update($id,$album)){
-            ajax_box_success('修改照片成功！',null,1,$_SERVER['HTTP_REFERER']);
+            ajax_box_success('修改照片成功！',null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
             ajax_box_failed('修改照片失败！');
         }
@@ -87,7 +94,7 @@ class photos_ctl extends pagecore{
     
     function delete(){
         if($this->mdl_photo->trash($this->getGet('id'))){
-            echo ajax_box('成功删除照片!',null,1,$_SERVER['HTTP_REFERER']);
+            echo ajax_box('成功删除照片!',null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
             echo ajax_box('删除照片失败!');
         }
@@ -108,7 +115,7 @@ class photos_ctl extends pagecore{
             echo ajax_box('请先选择要删除的照片!');
         }else{
             if($this->mdl_photo->trash_batch(array_keys($ids))){
-                echo ajax_box('成功批量删除照片!',null,1,$_SERVER['HTTP_REFERER']);
+                echo ajax_box('成功批量删除照片!',null,0.5,$_SERVER['HTTP_REFERER']);
             }else{
                 echo ajax_box('批量删除照片失败!');
             }
@@ -128,7 +135,7 @@ class photos_ctl extends pagecore{
         if($this->mdl_photo->update($id,$arr)){
             $return = array(
                 'ret'=>true,
-                'name'=>$arr['name']
+                'name'=>stripslashes($arr['name'])
             );
             echo loader::lib('json')->encode($return);
         }else{

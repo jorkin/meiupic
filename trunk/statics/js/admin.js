@@ -26,7 +26,7 @@ Madmin.rename = function(obj,url){
     var id = $(obj).attr('nid');
     
     var info_txt = info.text();
-    info.html('<input id="input_id_'+id+'" type="text" value="'+info_txt+'" class="inputstyle" />');
+    info.html('<input id="input_id_'+id+'" type="text" value="'+info_txt.replace(/\"/g, '&#34;')+'" class="inputstyle" />');
     var input = $('#input_id_'+id);
     input.focus();
     input.select();
@@ -45,6 +45,7 @@ Madmin.rename = function(obj,url){
                     },
                 'json');
             }else{
+                $(obj).text(info_txt);
                 info.empty().append(obj);
             }
         }
@@ -58,3 +59,36 @@ Madmin.rename = function(obj,url){
     );
 }
 
+Madmin.inline_edit = function(je,url){
+    var info = $(je).find('.inline_edit');
+    var editbtn = $(je).find('.edit');
+    $.get(url,{ajax:'true','_t':Math.random()}, function(data) {
+        info.hide();
+        editbtn.hide();
+        $(je).append(data);
+        $(je).find('input[name=cancel]').click(function(){
+            $(je).find('form').remove();
+            info.show();
+            editbtn.show();
+        });
+        $(je).find('form').submit(function(){
+            var postform = $(this);
+            $.post(postform.attr('action'),postform.serializeArray(),function(data) {
+                if(data.ret){
+                    info.html(data.html);
+                    $(je).find('form').remove();
+                    info.show();
+                    editbtn.show();
+                }else{
+                    notice_div = postform.find('.form_notice_div');
+                    if( notice_div.length == 0 ){
+                        postform.prepend('<div class="form_notice_div">'+data.msg+'</div>');
+                    }else{
+                        notice_div.html(data.msg);
+                    }
+                    postform.find('.form_notice_div').css({display:'block'});
+                }
+            },'json');
+        });
+    },'html');
+}
