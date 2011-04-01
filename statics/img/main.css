@@ -193,7 +193,7 @@ textarea.inputstyle{
 }
 
 @media screen and (-webkit-min-device-pixel-ratio:0){
-    .ylbtn1,.graybtn,.graysmlbtn{
+    .ylbtn,.ylbtn1,.graybtn,.graysmlbtn{
         line-height:17px;
     }
 }
