@@ -90,7 +90,7 @@ function get_page_setting($type){
 }
 
 function template($file) {
-	if(strpos($file,':')!==false ) {
+    if(strpos($file,':')!==false ) {
         list($templateid, $file) = explode(':', $file);
         $tpldir = 'plugins/'.$templateid.'/templates';
     }
@@ -110,7 +110,7 @@ function template($file) {
     if(!file_exists($compiledtplfile) || @filemtime($tplfile) > @filemtime($compiledtplfile)){
         loader::model('template')->template_compile($tplfile,$compiledtplfile);
     }
-	return $compiledtplfile;
+    return $compiledtplfile;
 }
 
 function arr_addslashes($arr){
@@ -127,4 +127,40 @@ function arr_stripslashes($arr){
     }else{
         return stripslashes($arr);
     }
+}
+
+//Words Filter
+function safe_convert($string, $html=0, $filterslash=0) {
+    $string = stripslashes(trim($string));
+    if ($html==0) {
+        $string=htmlspecialchars($string, ENT_QUOTES);
+        $string=str_replace("<","&lt;",$string);
+        $string=str_replace(">","&gt;",$string);
+        if ($filterslash==1) $string=str_replace("\\", '&#92;', $string);
+    } else {
+        $string=addslashes($string);
+        if ($filterslash==1) $string=str_replace("\\\\", '&#92;', $string);
+    }
+    $string=str_replace("\r","",$string);
+    $string=str_replace("\n","<br />",$string);
+    $string=str_replace("\t","&nbsp;&nbsp;",$string);
+    $string=str_replace("  ","&nbsp;&nbsp;",$string);
+    $string=str_replace('|', '&#124;', $string);
+    $string=str_replace("&amp;#96;","&#96;",$string);
+    $string=str_replace("&amp;#92;","&#92;",$string);
+    $string=str_replace("&amp;#91;","&#91;",$string);
+    $string=str_replace("&amp;#93;","&#93;",$string);
+    $string=preg_replace('/[a-zA-Z](&nbsp;)[a-zA-Z]/i',' ',$string);
+    return $string;
+}
+//Transfer the converted words into editable characters
+function safe_invert($string, $html=0) {
+    $string = str_ireplace(array("<br />",'<br/>','<br>'),"\n",$string);
+    if ($html!=0) {        
+        $string = str_replace("<br/>","\n",$string);
+        $string = str_replace("&nbsp;"," ",$string);
+        //$string = str_replace("&","&amp;",$string);
+    }
+    $string = str_replace("&nbsp;"," ",$string);
+    return $string;
 }

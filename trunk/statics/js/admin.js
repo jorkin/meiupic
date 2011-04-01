@@ -5,6 +5,11 @@ $(function(){
     function(){
         $(this).removeClass('sel_on');
     });
+    $('.inline_edit').hover(function(){
+        $(this).addClass('editbg');
+    },function(){
+        $(this).removeClass('editbg');
+    })
 });
 
 Madmin={};
@@ -37,7 +42,7 @@ Madmin.rename = function(obj,url){
                    {name:this.value},
                    function(data){
                         if(data.ret){
-                            $(obj).text(data.name);
+                            $(obj).html(data.html);
                             info.empty().append(obj);
                         }else{
                             info.empty().append(obj);
@@ -45,7 +50,7 @@ Madmin.rename = function(obj,url){
                     },
                 'json');
             }else{
-                $(obj).text(info_txt);
+                $(obj).html(info_txt);
                 info.empty().append(obj);
             }
         }
@@ -60,25 +65,26 @@ Madmin.rename = function(obj,url){
 }
 
 Madmin.inline_edit = function(je,url){
-    var info = $(je).find('.inline_edit');
-    var editbtn = $(je).find('.edit');
+    var info = $(je);//$(je).find('.inline_edit');
+    var parent = $(je).parent();
+    //var editbtn = $(je).find('.edit');
+    //editbtn.hide();
     $.get(url,{ajax:'true','_t':Math.random()}, function(data) {
         info.hide();
-        editbtn.hide();
-        $(je).append(data);
-        $(je).find('input[name=cancel]').click(function(){
-            $(je).find('form').remove();
+        parent.append(data);
+        $(parent).find('input[name=cancel]').click(function(){
+            $(parent).find('form').remove();
             info.show();
-            editbtn.show();
+            //editbtn.show();
         });
-        $(je).find('form').submit(function(){
+        $(parent).find('form').submit(function(){
             var postform = $(this);
             $.post(postform.attr('action'),postform.serializeArray(),function(data) {
                 if(data.ret){
-                    info.html(data.html);
-                    $(je).find('form').remove();
+                    info.html(data.html+' <span class="i_editinfo sprite"></span>');
+                    $(parent).find('form').remove();
                     info.show();
-                    editbtn.show();
+                    //editbtn.show();
                 }else{
                     notice_div = postform.find('.form_notice_div');
                     if( notice_div.length == 0 ){

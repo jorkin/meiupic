@@ -1,0 +1,10 @@
+<form action="{link ctl=albums act=savetags id=$info['id']}" method="post" onsubmit="return false;">
+    <div class="field">
+            <div class="label">相册标签</div>
+            <div class="ipts"><input type="text" name="album_tags" class="inputstyle iptw1" value="{$info['tags']}" /></div>
+            <div class="clear"></div>
+    </div>
+    <div>
+    <input type="submit" name="submit" class="graybtn" value="保存" /> <input type="button" name="cancel" class="graybtn" value="取消" />
+    </div>
+</form>

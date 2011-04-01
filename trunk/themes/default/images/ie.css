@@ -5,7 +5,7 @@ a span.sprite{
     filter:alpha(opacity=60);
 }
 #tabs li a.current{
-    filter: progid:DXImageTransform.Microsoft.gradient(enabled='true', startColorstr=#FDFDFD, endColorstr=#E5E5E5);
+    filter: progid:DXImageTransform.Microsoft.gradient(enabled='true', startColorstr=#FDFDFD, endColorstr=#ECECEC);
 }
 .grid .gallary_wrap .gallary_item{
     float:left;
