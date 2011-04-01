@@ -80,13 +80,13 @@ class albums_ctl extends pagecore{
     }
     
     function save(){
-        $album['name'] = trim($this->getPost('album_name'));
-        $album['desc'] = trim($this->getPost('desc'));
+        $album['name'] = safe_convert($this->getPost('album_name'));
+        $album['desc'] = safe_convert($this->getPost('desc'));
         $album['priv_type'] = $this->getPost('priv_type','0');
-        $album['tags'] = trim($this->getPost('album_tags'));
+        $album['tags'] = safe_convert($this->getPost('album_tags'));
         $album['priv_pass'] = $this->getPost('priv_pass');
-        $album['priv_question'] = trim($this->getPost('priv_question'));
-        $album['priv_answer'] = trim($this->getPost('priv_answer'));
+        $album['priv_question'] = safe_convert($this->getPost('priv_question'));
+        $album['priv_answer'] = safe_convert($this->getPost('priv_answer'));
         $album['create_time'] = $album['up_time'] = time();
         
         if($album['name'] == ''){
@@ -116,20 +116,19 @@ class albums_ctl extends pagecore{
     function modify(){
         $id = $this->getGet('id');
         $info = $this->mdl_album->get_info($id);
+        $info['desc'] = safe_invert($info['desc']);
         $this->output->set('info',$info);
         $this->render();
     }
     
     function update(){
-        $album['name'] = trim($this->getPost('album_name'));
-        $album['desc'] = trim($this->getPost('desc'));
+        $album['name'] = safe_convert($this->getPost('album_name'));
+        $album['desc'] = safe_convert($this->getPost('desc'));
         $album['priv_type'] = $this->getPost('priv_type','0');
-        $album['tags'] = trim($this->getPost('album_tags'));
+        $album['tags'] = safe_convert($this->getPost('album_tags'));
         $album['priv_pass'] = $this->getPost('priv_pass');
-        $album['priv_question'] = trim($this->getPost('priv_question'));
-        $album['priv_answer'] = trim($this->getPost('priv_answer'));
-        //$album['create_time'] = $album['up_time'] = time();
-        
+        $album['priv_question'] = safe_convert($this->getPost('priv_question'));
+        $album['priv_answer'] = safe_convert($this->getPost('priv_answer'));
         if($album['name'] == ''){
             ajax_box_failed('相册名不能为空！');
         }
@@ -202,12 +201,20 @@ class albums_ctl extends pagecore{
         }
     }
     
+    function modify_name(){
+        $id = $this->getGet('id');
+        $album_info = $this->mdl_album->get_info($id);
+        $this->output->set('info',$album_info);
+        loader::view('albums/modify_name_inline');
+    }
+    
     function rename(){
         $id = $this->getGet('id');
-        $arr['name'] = trim($this->getPost('name'));
+        $arr['name'] = safe_convert($this->getPost('name'));
         if($arr['name'] == ''){
             $return = array(
-                'ret'=>false
+                'ret'=>false,
+                'msg'=>'相册名不能为空！'
             );
             echo loader::lib('json')->encode($return);
             return;
@@ -215,28 +222,54 @@ class albums_ctl extends pagecore{
         if($this->mdl_album->update($id,$arr)){
             $return = array(
                 'ret'=>true,
-                'name'=>stripslashes($arr['name'])
+                'html'=>$arr['name']
             );
             echo loader::lib('json')->encode($return);
         }else{
             $return = array(
-                'ret'=>false
+                'ret'=>false,
+                'msg'=>'保存相册名失败！'
             );
             echo loader::lib('json')->encode($return);
         }
         return;
     }
     
+    function modify_tags(){
+        $id = $this->getGet('id');
+        $album_info = $this->mdl_album->get_info($id);
+        $this->output->set('info',$album_info);
+        loader::view('albums/modify_tags_inline');
+    }
+    function save_tags(){
+        $id = $this->getGet('id');
+        $tags = safe_convert($this->getPost('tags'));
+        
+        if( $this->mdl_album->update($id,array('tags'=>$tags)) ){
+            $return = array(
+                'ret'=>true,
+                'html' => '标签： '.$tags
+            );
+        }else{
+            $return = array(
+                'ret'=>false,
+                'msg' => '编辑相册标签失败！'
+            );
+        }
+        echo loader::lib('json')->encode($return);
+        return;
+    }
     function editdesc(){
         $id = $this->getGet('id');
         $album_info = $this->mdl_album->get_info($id);
+        $album_info['desc'] = safe_invert($album_info['desc']);
         $this->output->set('info',$album_info);
         loader::view('albums/editdesc_inline');
     }
     
     function savedesc(){
         $id = $this->getGet('id');
-        $desc = trim($this->getPost('desc'));
+        $desc = safe_convert($this->getPost('desc'));
         if($desc == ''){
             $return = array(
                 'ret'=>false,
@@ -245,10 +278,10 @@ class albums_ctl extends pagecore{
             echo loader::lib('json')->encode($return);
             return;
         }
-        if($this->mdl_album->update($id,array('desc'=>$desc))){
+        if( $this->mdl_album->update($id,array('desc'=>$desc)) ){
             $return = array(
                 'ret'=>true,
-                'html' => stripslashes($desc)
+                'html' => $desc
             );
         }else{
             $return = array(
@@ -259,5 +292,46 @@ class albums_ctl extends pagecore{
         echo loader::lib('json')->encode($return);
         return;
         
+    }
+    
+    function editpriv(){
+        $id = $this->getGet('id');
+        $album_info = $this->mdl_album->get_info($id);
+        $this->output->set('info',$album_info);
+        loader::view('albums/editpriv');
+    }
+    
+    function savepriv(){
+        $album['priv_type'] = $this->getPost('priv_type','0');
+        $album['priv_pass'] = $this->getPost('priv_pass');
+        $album['priv_question'] = safe_convert($this->getPost('priv_question'));
+        $album['priv_answer'] = safe_convert($this->getPost('priv_answer'));
+        
+        if($album['priv_type'] == '1'){
+            if($album['priv_pass']==''){
+                ajax_box_failed('密码不能为空！');
+            }
+        }
+        if($album['priv_type'] == '2'){
+            if($album['priv_question'] == ''){
+                ajax_box_failed('问题不能为空！');
+            }
+            if($album['priv_answer'] == ''){
+                ajax_box_failed('答案不能为空！');
+            }
+        }
+        
+        if($this->mdl_album->update($this->getGet('id'),$album)){
+            ajax_box_success('修改相册权限成功！',null,0.5,$_SERVER['HTTP_REFERER']);
+        }else{
+            ajax_box_failed('修改相册权限失败！');
+        }
+    }
+    
+    function edittags(){
+        $id = $this->getGet('id');
+        $album_info = $this->mdl_album->get_info($id);
+        $this->output->set('info',$album_info);
+        loader::view('albums/edittags');
     }
 }

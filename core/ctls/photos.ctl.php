@@ -45,6 +45,8 @@ class photos_ctl extends pagecore{
                         site_link('photos','index',array('aid'=>$album_id)).
                       '" class="current">'.$album_info['name'].'</a></li>';
         
+        $album_info['tags_list'] = explode(',',$album_info['tags']);
+        
         $this->output->set('photo_col_menu',$this->plugin->filter('photo_col_menu',$view_type.$page_setting_str.$sort_list));
         $this->output->set('photos',$photos['ls']);
         $this->output->set('pagestr',$pagestr);
@@ -62,6 +64,7 @@ class photos_ctl extends pagecore{
     
     function modify(){
         $info = $this->mdl_photo->get_info($this->getGet('id'));
+        $info['desc'] = safe_invert($info['desc']);
         $this->output->set('info',$info);
         $this->render();
     }
@@ -69,9 +72,9 @@ class photos_ctl extends pagecore{
     function update(){
         $id = $this->getGet('id');
         
-        $album['name'] = trim($this->getPost('photo_name'));
-        $album['desc'] = trim($this->getPost('desc'));
-        $album['tags'] = trim($this->getPost('photo_tags'));
+        $album['name'] = safe_convert($this->getPost('photo_name'));
+        $album['desc'] = safe_convert($this->getPost('desc'));
+        $album['tags'] = safe_convert($this->getPost('photo_tags'));
         
         if($album['name'] == ''){
             ajax_box_failed('照片名不能为空！');
@@ -124,10 +127,11 @@ class photos_ctl extends pagecore{
     
     function rename(){
         $id = $this->getGet('id');
-        $arr['name'] = trim($this->getPost('name'));
+        $arr['name'] = safe_convert($this->getPost('name'));
         if($arr['name'] == ''){
             $return = array(
-                'ret'=>false
+                'ret'=>false,
+                'msg'=>'照片名不能为空！'
             );
             echo loader::lib('json')->encode($return);
             return;
@@ -135,12 +139,13 @@ class photos_ctl extends pagecore{
         if($this->mdl_photo->update($id,$arr)){
             $return = array(
                 'ret'=>true,
-                'name'=>stripslashes($arr['name'])
+                'html'=> $arr['name']
             );
             echo loader::lib('json')->encode($return);
         }else{
             $return = array(
-                'ret'=>false
+                'ret'=>false,
+                'msg'=>'照片名保存失败！'
             );
             echo loader::lib('json')->encode($return);
         }

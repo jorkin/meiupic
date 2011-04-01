@@ -1,19 +1,9 @@
 <div class="box_title titbg">
     <div class="closer sprite i_close" onclick="Mui.box.close()"></div>
-    修改相册 - {$info['name']}
+    修改相册权限 - {$info['name']}
 </div>
 <div class="box_container">
-    <form id="albums_modify" action="{link ctl=albums act=update id=$info['id']}" method="post" onsubmit="return false;">
-        <div class="field">
-            <div class="label">相册名</div>
-            <div class="ipts"><input type="text" name="album_name" class="inputstyle iptw1" value="{$info['name']}" /></div>
-            <div class="clear"></div>
-        </div>
-        <div class="field">
-            <div class="label">相册描述</div>
-            <div class="ipts"><textarea name="desc" class="inputstyle iptw3 ipth1">{$info['desc']}</textarea></div>
-            <div class="clear"></div>
-        </div>
+    <form id="albums_priv" action="{link ctl=albums act=savepriv id=$info['id']}" method="post" onsubmit="return false;">
         <div class="field">
             <div class="label">权限设置</div>
             <div class="ipts"><label><input type="radio" name="priv_type" value="0" onclick="$('#filed_password').hide();$('#filed_question').hide();" {if $info['priv_type']=='0'} checked="checked"{/if} /> 公开</label> <label><input type="radio" name="priv_type" value="1" onclick="$('#filed_password').show();$('#filed_question').hide();" {if $info['priv_type']=='1'} checked="checked"{/if} /> 密码访问</label> <label><input type="radio" name="priv_type" value="2" onclick="$('#filed_password').hide();$('#filed_question').show();" {if $info['priv_type']=='2'} checked="checked"{/if} /> 问题访问</label> <label><input type="radio" name="priv_type" value="3" onclick="$('#filed_password').hide();$('#filed_question').hide();" {if $info['priv_type']=='3'} checked="checked"{/if} /> 私人</label> </div>
@@ -45,13 +35,8 @@
             </div>
         </div>
         <div class="field">
-            <div class="label">相册标签</div>
-            <div class="ipts"><input type="text" name="album_tags" class="inputstyle iptw1" value="{$info['tags']}" /> <span class="gray">用半角逗号分割</span></div>
-            <div class="clear"></div>
-        </div>
-        <div class="field">
             <div class="label"> &nbsp;</div>
-            <div class="ipts"><input type="submit" value="保存" class="graybtn f_left" name="submit" onclick="Mui.form.sendAuto('albums_modify')"> <input type="button" value="取消" class="ml10 graybtn f_left" name="cancel" onclick="Mui.box.close()"></div>
+            <div class="ipts"><input type="submit" value="保存" class="graybtn f_left" name="submit" onclick="Mui.form.sendAuto('albums_priv')"> <input type="button" value="取消" class="ml10 graybtn f_left" name="cancel" onclick="Mui.box.close()"></div>
             <div class="clear"></div>
         </div>
     </form>

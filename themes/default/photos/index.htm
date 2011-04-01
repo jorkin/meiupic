@@ -195,17 +195,27 @@
                     </div>
                     <!--{/if}-->
                     <div class="album_info">
-                        <h2 class="title_c">{$album_info['name']} ({$album_info['photos_num']})</h2>
+                        <h2 class="title_c"><div class="inline_edit" title="点击可编辑" onclick="Madmin.inline_edit(this,'{link ctl=albums act=modify_name id=$album_info['id']}')">{$album_info['name']} <span class="i_editinfo sprite"></span></div></h2>
                         <div class="info_body">
-                            <div class="inline_edit"><!--{if $album_info['desc']}-->{$album_info['desc']}<!--{else}-->还没有描述，为相册添加描述吧！<!--{/if}--></div>
-                            <div class="edit"><a href="javascript:void(0)" onclick="Madmin.inline_edit('.album_info .info_body','{link ctl=albums act=editdesc id=$album_info['id']}')">编辑描述</a></div>
+                            <div class="inline_edit" title="点击可编辑" onclick="Madmin.inline_edit(this,'{link ctl=albums act=editdesc id=$album_info['id']}')"><!--{if $album_info['desc']}-->{$album_info['desc']}<!--{else}-->还没有描述，为相册添加描述吧！<!--{/if}-->
+                                <span class="i_editinfo sprite"></span></div>
                         </div>
-                        <div class="priv"><span class="f_left">访问权限：  <span class="i_greenicn sprite"></span> {echo enum_priv_type($album_info['priv_type'])}</span><span class="f_right"><a href="#">编辑</a></span>
+                        <div class="tags mb10">
+                            <div class="inline_edit" title="点击可编辑" onclick="Madmin.inline_edit(this,'{link ctl=albums act=modify_tags id=$album_info['id']}')">
+                                标签： 
+                                {$album_info['tags']}
+                                <span class="i_editinfo sprite"></span></div>
                         </div>
                     </div>
-                    <div class="mb10 title_c">
-                        <p>相册创建时间：{echo date('Y-m-d H:i:s',$album_info['create_time'])}</p>
-                        <p>最近上传时间：{echo date('Y-m-d H:i:s',$album_info['up_time'])}</p>
+                    <div class="priv">
+                        <span class="f_left">访问权限：  <span class="i_greenicn sprite"></span> {echo enum_priv_type($album_info['priv_type'])}</span>
+                        <span class="f_right"><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=albums act=editpriv id=$album_info['id']}');">编辑</a></span>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="mb10 tinfo">
+                        <p>共{$album_info['photos_num']}张照片</p>
+                        <p>创建日期：{echo date('Y-m-d',$album_info['create_time'])}</p>
+                        <p>最近上传：{echo date('Y-m-d',$album_info['up_time'])}</p>
                     </div>
                     <div class="sidesearch mb20">
                         <h2>{lang search_photos}</h2>
