@@ -201,11 +201,11 @@ class albums_ctl extends pagecore{
         }
     }
     
-    function modify_name(){
+    function modify_name_inline(){
         $id = $this->getGet('id');
         $album_info = $this->mdl_album->get_info($id);
         $this->output->set('info',$album_info);
-        loader::view('albums/modify_name_inline');
+        $this->render();
     }
     
     function rename(){
@@ -235,11 +235,11 @@ class albums_ctl extends pagecore{
         return;
     }
     
-    function modify_tags(){
+    function modify_tags_inline(){
         $id = $this->getGet('id');
         $album_info = $this->mdl_album->get_info($id);
         $this->output->set('info',$album_info);
-        loader::view('albums/modify_tags_inline');
+        $this->render();
     }
     function save_tags(){
         $id = $this->getGet('id');
@@ -259,15 +259,15 @@ class albums_ctl extends pagecore{
         echo loader::lib('json')->encode($return);
         return;
     }
-    function editdesc(){
+    function modify_desc_inline(){
         $id = $this->getGet('id');
         $album_info = $this->mdl_album->get_info($id);
         $album_info['desc'] = safe_invert($album_info['desc']);
         $this->output->set('info',$album_info);
-        loader::view('albums/editdesc_inline');
+        $this->render();
     }
     
-    function savedesc(){
+    function save_desc(){
         $id = $this->getGet('id');
         $desc = safe_convert($this->getPost('desc'));
         if($desc == ''){
@@ -294,14 +294,14 @@ class albums_ctl extends pagecore{
         
     }
     
-    function editpriv(){
+    function modify_priv(){
         $id = $this->getGet('id');
         $album_info = $this->mdl_album->get_info($id);
         $this->output->set('info',$album_info);
-        loader::view('albums/editpriv');
+        $this->render();
     }
     
-    function savepriv(){
+    function save_priv(){
         $album['priv_type'] = $this->getPost('priv_type','0');
         $album['priv_pass'] = $this->getPost('priv_pass');
         $album['priv_question'] = safe_convert($this->getPost('priv_question'));
@@ -326,12 +326,5 @@ class albums_ctl extends pagecore{
         }else{
             ajax_box_failed('修改相册权限失败！');
         }
-    }
-    
-    function edittags(){
-        $id = $this->getGet('id');
-        $album_info = $this->mdl_album->get_info($id);
-        $this->output->set('info',$album_info);
-        loader::view('albums/edittags');
     }
 }

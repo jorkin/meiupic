@@ -1,6 +1,6 @@
-<form action="{link ctl=albums act=rename id=$info['id']}" method="post" onsubmit="return false;">
+<form action="{link ctl=albums act=save_desc id=$info['id']}" method="post" onsubmit="return false;">
     <div class="mb10">
-        <input type="text" class="inputstyle iptw2" name="name" value="{$info['name']}" />
+        <textarea class="inputstyle iptw2 ipth1" name="desc">{$info['desc']}</textarea>
     </div>
     <div class="mb10">
     <input type="submit" name="submit" class="ylbtn1" value="保存" /> <input type="button" name="cancel" class="graysmlbtn" value="取消" />

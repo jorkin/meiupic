@@ -122,6 +122,19 @@ textarea.inputstyle{
     -webkit-box-shadow:0 0 6px rgba(255, 136, 0, 0.5);
     box-shadow:0 0 6px rgba(255, 136, 0, 0.5);
 }
+.ylbtn{
+    cursor:pointer;
+    color:#fff;
+    width:100px;
+    height:21px;
+    line-height:21px;
+    padding-bottom:2px;
+    border:none;
+    background:url("btn.png") -111px -84px;
+}
+.ylbtn:hover{
+    background-position:-111px -105px;
+}
 .ylbtn1{
     cursor:pointer;
     color:#fff;
@@ -145,6 +158,9 @@ textarea.inputstyle{
     padding-bottom:2px;
     border:none;
     background:url("btn.png") -55px -42px;
+}
+.graysmlbtn:hover{
+    background-position:-55px -63px;
 }
 .graybtn{
     cursor:pointer;
@@ -177,7 +193,7 @@ textarea.inputstyle{
 }
 
 @media screen and (-webkit-min-device-pixel-ratio:0){
-    .ylbtn1,.graybtn{
+    .ylbtn1,.graybtn,.graysmlbtn{
         line-height:17px;
     }
 }
