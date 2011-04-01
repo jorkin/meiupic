@@ -117,6 +117,13 @@ Mui.box = {
             $('iframe').remove('.bg_iframe');
         }
         this.callback = null;
+    },
+    alert: function(title,content,btn_name){
+        Mui.box.setData('<div class="box_title titbg">'+
+            '<div class="closer sprite i_close" onclick="Mui.box.close()"></div>'+
+            title+'</div><div class="box_container">'+'<div>'+content+'</div>'+
+            '<div class="b_btns"><input type="button" value="'+btn_name+'" class="ml10 ylbtn f_left" name="cancel" onclick="Mui.box.close()"></div></div>');
+        $('#meiu_float_box').jqDrag('.box_title');
     }
 };
 

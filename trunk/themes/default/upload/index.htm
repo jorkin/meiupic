@@ -47,7 +47,7 @@ $(function() {
             if (uploader.files.length > 0) {
                 uploader.start();
             } else
-                alert('至少选择一个文件上传.');
+                Mui.box.alert('提示','至少选择一个文件上传.','确定');
         }
     });
 });
@@ -94,7 +94,7 @@ function reload_albums_options(je){
                                 <div id="muilti_uploader">
                                     Loading....
                                 </div>
-                                <div align="center"><input type="button" name="uploadbtn" class="graybtn" value="立即上传" /></div>
+                                <div align="center"><input type="button" name="uploadbtn" class="ylbtn" value="立即上传" /></div>
                             </form>
                         </div>
                     </div>
