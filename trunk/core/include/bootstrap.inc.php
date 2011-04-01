@@ -104,6 +104,9 @@ function lang() {
         }
         if(!in_array($vars[0], $GLOBALS['templatelangs']) && empty($templatelang[$vars[0]])) {
             @include_once ROOTDIR.'plugins'.DIRECTORY_SEPARATOR.$vars[0].DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.LANGSET.'.lang.php';
+            if(isset($language)){
+                $GLOBALS['templatelangs'][$vars[0]] = $language;
+            }
         }
         if(!isset($GLOBALS['templatelangs'][$vars[0]][$vars[1]])) {
             return "!$var!";
