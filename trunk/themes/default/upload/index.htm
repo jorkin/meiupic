@@ -75,7 +75,7 @@ function reload_albums_options(je){
                         <h1 class="f_left">上传照片</h1>
                         <h4 class="f_left"></h4>
                         <div class="rmenu f_right">
-                           切换上传方式: <a href="#" class="current">高级上传</a> | <a href="#">普通上传</a>
+                           切换上传方式: <a href="{link ctl=upload act=index}" class="current">高级上传</a> | <a href="{link ctl=upload act=normal}">普通上传</a>
                         </div>
                     </div>
                     <div class="innercol grid">                        
@@ -92,7 +92,9 @@ function reload_albums_options(je){
                                     <div class="clear"></div>
                                 </div>
                                 <div id="muilti_uploader">
-                                    Loading....
+                                    <div class="notice_info">
+                                    载入中... <a href="{link ctl=upload act=normal}">如果长时间没有响应，可以点此处切换至普通上传方式！</a>
+                                    </div>
                                 </div>
                                 <div align="center"><input type="button" name="uploadbtn" class="ylbtn" value="立即上传" /></div>
                             </form>

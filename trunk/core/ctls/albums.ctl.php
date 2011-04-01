@@ -8,20 +8,20 @@ class albums_ctl extends pagecore{
     }
     
     function index(){
-        $search['name'] = $this->getRequest('search_name');
+        $search['name'] = safe_convert($this->getRequest('search_name'));
         $sort = $this->getGet('sort','ct_desc');
         $page = $this->getGet('page','1');
         
         if($search['name']){
             $pageurl = site_link('albums','index',
                                 array(
-                                    'search_name'=>stripslashes($search['name']),
+                                    'search_name'=>$search['name'],
                                     'sort'=>$sort,
                                     'page'=>'[#page#]'
                                 ));
             $sort_url = site_link('albums','index',
                                 array(
-                                    'search_name'=>stripslashes($search['name']),
+                                    'search_name'=>$search['name'],
                                     'sort'=>'[#sort#]'
                                 ));
         }else{

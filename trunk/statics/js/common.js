@@ -218,3 +218,14 @@ function page_setting(t,num){
     $.cookie(cookie_name,num,{expires: 7, path: '/'});
     window.location.reload();
 }
+
+$(function(){
+    //press esc to close float div
+    $(window).bind('keypress',
+        function(e){
+            if(e.keyCode == 27){
+                Mui.box.close();
+            }
+        }
+    );
+});
