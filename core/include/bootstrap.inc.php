@@ -103,7 +103,7 @@ function lang() {
             return "!$var!";
         }
         if(!in_array($vars[0], $GLOBALS['templatelangs']) && empty($templatelang[$vars[0]])) {
-            @include_once ROOTDIR.'plugins'.DIRECTORY_SEPARATOR.$vars[0].DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.LANGSET.'.lang.php';
+            @include ROOTDIR.'plugins'.DIRECTORY_SEPARATOR.$vars[0].DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.LANGSET.'.lang.php';
             if(isset($language)){
                 $GLOBALS['templatelangs'][$vars[0]] = $language;
             }
@@ -200,9 +200,9 @@ function meiu_bootstrap(){
     $output->set('base_path',$base_path);
     $output->set('statics_path',$base_path.'statics/');
     $output->set('site_name',loader::model('setting')->get_conf('system.site_name','我的相册'));
-    $auth =& loader::model('auth');
-    $output->set('loggedin',$auth->loggedin());
     
+    $user =& loader::model('user');
+    $output->set('loggedin',$user->loggedin());
     define('IN_CTL',$uriinfo['ctl']);
     define('IN_ACT',$uriinfo['act']);
     $_GET = array_merge($_GET,$uriinfo['pars']);

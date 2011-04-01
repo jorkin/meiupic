@@ -65,17 +65,16 @@ Madmin.rename = function(obj,url){
 }
 
 Madmin.inline_edit = function(je,url){
-    var info = $(je);//$(je).find('.inline_edit');
+    var info = $(je);
     var parent = $(je).parent();
-    //var editbtn = $(je).find('.edit');
-    //editbtn.hide();
     $.get(url,{ajax:'true','_t':Math.random()}, function(data) {
         info.hide();
-        parent.append(data);
+        if(parent.find('form').length == 0){
+            parent.append(data);
+        }
         $(parent).find('input[name=cancel]').click(function(){
             $(parent).find('form').remove();
             info.show();
-            //editbtn.show();
         });
         $(parent).find('form').submit(function(){
             var postform = $(this);
@@ -84,7 +83,6 @@ Madmin.inline_edit = function(je,url){
                     info.html(data.html+' <span class="i_editinfo sprite"></span>');
                     $(parent).find('form').remove();
                     info.show();
-                    //editbtn.show();
                 }else{
                     notice_div = postform.find('.form_notice_div');
                     if( notice_div.length == 0 ){

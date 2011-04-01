@@ -141,14 +141,13 @@ class photos_ctl extends pagecore{
                 'ret'=>true,
                 'html'=> $arr['name']
             );
-            echo loader::lib('json')->encode($return);
         }else{
             $return = array(
                 'ret'=>false,
                 'msg'=>'照片名保存失败！'
             );
-            echo loader::lib('json')->encode($return);
         }
+        echo loader::lib('json')->encode($return);
         return;
     }
 }

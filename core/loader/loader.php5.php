@@ -43,7 +43,7 @@ class Loader{
             if(file_exists($modelPath)) {
                 require($modelPath);
             }else{ 
-                exit('error model');
+                exit('error model '.$modelName);
             }
             self::$_models[$modelName] = new $modelClass;
         }

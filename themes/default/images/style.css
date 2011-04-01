@@ -324,3 +324,6 @@ table.layout td.right{
 #upload_field .field{
     padding-left:10px;
 }
+#muilti_uploader .notice_info{
+    padding:40px 0 40px 50px;
+}
