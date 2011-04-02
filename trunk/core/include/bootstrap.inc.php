@@ -10,9 +10,6 @@ define('IN_MEIU',true);
 
 define('VERSION','2.0');
 
-if (PHP_VERSION >= "5.1.0") {
-	date_default_timezone_set ( 'Asia/Shanghai' );
-}
 header("Content-type: text/html; charset=utf-8");
 
 if (floor(PHP_VERSION) < 5){
@@ -161,6 +158,10 @@ function init_defines(){
     }else{
         define('IMG_ENGINE','gd');
     }
+    
+    if (PHP_VERSION >= "5.1.0") {
+        date_default_timezone_set ( $Config['timezone'] );
+    }
 }
 
 function init_template(){
@@ -175,7 +176,6 @@ function init_template(){
         define('TPLDIR','themes/default');
     }
 }
-
 
 function meiu_bootstrap(){
     global $base_url, $base_path, $base_root, $language,$templatelangs;

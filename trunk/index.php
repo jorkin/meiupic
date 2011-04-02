@@ -21,6 +21,7 @@ define('VIEWDIR',COREDIR.'views'.DIRECTORY_SEPARATOR);
 define('MODELDIR',COREDIR.'models'.DIRECTORY_SEPARATOR);
 define('DATADIR',ROOTDIR.'data'.DIRECTORY_SEPARATOR);
 define('PLUGINDIR',ROOTDIR.'plugins'.DIRECTORY_SEPARATOR);
+define('MAGIC_GPC',get_magic_quotes_gpc());
 
 if(!file_exists(ROOTDIR.'conf'.DIRECTORY_SEPARATOR.'config.php')){
     header('Location: ./install/');

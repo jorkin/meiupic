@@ -113,7 +113,10 @@ class upload_ctl extends pagecore{
                         $arr['create_time'] = time();
                         $imglib->load($realpath);
                         //resize image to thumb: 180*180 
-                        $imglib->square(180);
+                        $arr['width'] = $imglib->getWidth();
+                        $arr['height'] = $imglib->getHeight();
+                        
+                        $imglib->resizeScale(180,180);
                         
                         $imglib->save(ROOTDIR.$arr['thumb']);
                         if(!$this->mdl_photo->save($arr)){

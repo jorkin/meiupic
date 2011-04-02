@@ -219,6 +219,12 @@ function page_setting(t,num){
     window.location.reload();
 }
 
+function sort_setting(t,sort){
+    var cookie_name = '_sortset_'+t;
+    $.cookie(cookie_name,sort,{expires: 7, path: '/'});
+    window.location.reload();
+}
+
 $(function(){
     //press esc to close float div
     $(window).bind('keypress',

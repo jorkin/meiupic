@@ -9,31 +9,23 @@ class albums_ctl extends pagecore{
     
     function index(){
         $search['name'] = safe_convert($this->getRequest('search_name'));
-        $sort = $this->getGet('sort','ct_desc');
         $page = $this->getGet('page','1');
         
         if($search['name']){
             $pageurl = site_link('albums','index',
                                 array(
                                     'search_name'=>$search['name'],
-                                    'sort'=>$sort,
                                     'page'=>'[#page#]'
                                 ));
-            $sort_url = site_link('albums','index',
-                                array(
-                                    'search_name'=>$search['name'],
-                                    'sort'=>'[#sort#]'
-                                ));
         }else{
-            $pageurl = site_link('albums','index',array('sort'=>$sort,'page'=>'[#page#]'));
-            $sort_url = site_link('albums','index',array('sort'=>'[#sort#]'));
+            $pageurl = site_link('albums','index',array('page'=>'[#page#]'));
         }
         
         list($pageset,$page_setting_str) = get_page_setting('album');
         $this->mdl_album->set_pageset($pageset);
         
         $sort_setting = array('创建时间' => 'ct','上传时间' => 'ut','照片数' => 'p');
-        $sort_list =  get_sort_list($sort_setting,$sort_url,$sort);
+        list($sort,$sort_list) =  get_sort_list($sort_setting,'album','ct_desc');
         
         $albums = $this->mdl_album->get_all($page,$search,$sort);
         if(is_array($albums['ls'])){
