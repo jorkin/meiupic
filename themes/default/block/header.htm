@@ -17,8 +17,10 @@
 <![endif]-->
 <script src="{$statics_path}js/jquery.js" type="text/javascript"></script>
 <script src="{$statics_path}js/common.js" type="text/javascript"></script>
+<!--{if $loggedin}-->
 <script src="{$statics_path}js/admin.js" type="text/javascript"></script>
-<style>
+<!--{/if}-->
+<style type="text/css">
 a:link, a:visited {
     color: {$_config['link_color']};
  }

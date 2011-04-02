@@ -62,7 +62,7 @@ class pagecore{
 
     function getGet($key,$default=''){
         if(isset($_GET[$key])){
-            if(!get_magic_quotes_gpc())
+            if(!MAGIC_GPC)
             {
                 return arr_addslashes($_GET[$key]);
             }
@@ -73,7 +73,7 @@ class pagecore{
 
     function getPost($key,$default=''){
         if(isset($_POST[$key])){
-            if(!get_magic_quotes_gpc())
+            if(!MAGIC_GPC)
             {
                 return arr_addslashes($_POST[$key]);
             }
@@ -84,7 +84,7 @@ class pagecore{
 
     function getRequest($key,$default=''){
         if(isset($_REQUEST[$key])){
-            if(!get_magic_quotes_gpc())
+            if(!MAGIC_GPC)
             {
                 return arr_addslashes($_REQUEST[$key]);
             }

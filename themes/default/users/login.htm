@@ -1,0 +1,23 @@
+<div class="box_title titbg">
+    <div class="closer sprite i_close" onclick="Mui.box.close()"></div>
+    用户登录
+</div>
+<div class="box_container">
+    <form id="login_form" action="{link ctl=users act=check_login}" method="post" onsubmit="return false;">
+        <div class="field">
+            <div class="label">用户名</div>
+            <div class="ipts"><input type="text" name="login_name" class="inputstyle iptw2" value="" /></div>
+            <div class="clear"></div>
+        </div>
+        <div class="field">
+            <div class="label">密码</div>
+            <div class="ipts"><input type="password" name="login_pass" class="inputstyle iptw2" value="" /></div>
+            <div class="clear"></div>
+        </div>
+        <div class="field">
+            <div class="label"> &nbsp;</div>
+            <div class="ipts"><input type="submit" value="登录" class="ylbtn f_left" name="submit" onclick="Mui.form.sendAuto('login_form')"> <input type="button" value="取消" class="ml10 graybtn f_left" name="cancel" onclick="Mui.box.close()"></div>
+            <div class="clear"></div>
+        </div>
+    </form>
+</div>

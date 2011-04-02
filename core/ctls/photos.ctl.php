@@ -9,15 +9,23 @@ class photos_ctl extends pagecore{
     }
     
     function index(){
+        
+        $this->normal();
+        
+    }
+    
+    function story(){
+        
+    }
+    
+    function normal(){
         $album_id = $this->getGet('aid');
-        $sort = $this->getGet('sort','tu_desc');
         $page = $this->getGet('page',1);
         
         $pageurl = site_link('photos','index',array('aid'=>$album_id,'page'=>'[#page#]'));
-        $sort_url = site_link('photos','index',array('aid'=>$album_id,'sort'=>'[#sort#]'));
 
         $sort_setting = array('上传时间' => 'tu','拍摄时间' => 'tt','浏览数'=>'h','评论数'=>'c');
-        $sort_list =  get_sort_list($sort_setting,$sort_url,$sort);
+        list($sort,$sort_list) =  get_sort_list($sort_setting,'photo','tu_desc');
         
         list($pageset,$page_setting_str) = get_page_setting('photo');
         $this->mdl_photo->set_pageset($pageset);
@@ -32,6 +40,9 @@ class photos_ctl extends pagecore{
         </div>';
         
         $album_info = $this->mdl_album->get_info($album_id);
+        if(!$album_info){
+            exit('相册不存在！');
+        }
         $photos = $this->mdl_photo->get_all($page,array('album_id'=>$album_id),$sort);
         if(is_array($photos['ls'])){
             foreach($photos['ls'] as $k=>$v){

@@ -58,21 +58,22 @@ function enum_priv_type($v){
     }
 }
 
-function get_sort_list($setting,$url,$sort){
+function get_sort_list($setting,$type,$default){
     $str = '<div class="listorder f_right selectlist">
     <span class="label">排序:</span>';
-    $token = rawurlencode('[#sort#]');
     $str .= '<div class="selected"></div><ul class="optlist">';
+    $sort = isset($_COOKIE['_sortset_'.$type])?$_COOKIE['_sortset_'.$type]:$default;
     foreach($setting as $k=>$v){
         if($v.'_asc' == $sort){
-            $str .= '<li class="current"><a href="'.str_replace($token,$v.'_desc',$url).'" class="list_asc_on"><span>'.$k.'</span></a>';
+            $str .= '<li class="current"><a href="javascript:void(0);" onclick="sort_setting(\''.$type.'\',\''.$v.'_desc\');" class="list_asc_on"><span>'.$k.'</span></a>';
         }elseif($v.'_desc' == $sort){
-            $str .= '<li class="current"><a href="'.str_replace($token,$v.'_asc',$url).'" class="list_desc_on"><span>'.$k.'</span></a>';
+            $str .= '<li class="current"><a href="javascript:void(0);" onclick="sort_setting(\''.$type.'\',\''.$v.'_asc\');" class="list_desc_on"><span>'.$k.'</span></a>';
         }else{
-            $str .= '<li><a href="'.str_replace($token,$v.'_asc',$url).'" class="list_asc"><span>'.$k.'</span></a>';
+            $str .= '<li><a href="javascript:void(0);" onclick="sort_setting(\''.$type.'\',\''.$v.'_asc\');" class="list_asc"><span>'.$k.'</span></a>';
         }
     }
-    return $str.'</ul></div>';
+    $str = $str.'</ul></div>';
+    return array($sort,$str);
 }
 
 function get_page_setting($type){

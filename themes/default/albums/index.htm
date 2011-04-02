@@ -59,7 +59,7 @@
                                 {$pagestr}
                             </div>
                             <div class="f_right">
-                                <label><input type="checkbox" value="1" onclick="Madmin.check_all('.selitem',this.checked)" />全选 <span class="i_trash_sp sprite"></span></label> <a href="javascript:void(0)" onclick="Madmin.checked_action('.selitem','{link ctl=albums act=confirm_delete_batch}');">选中项移入回收站</a>
+                                <!--{if $loggedin}--><label><input type="checkbox" value="1" onclick="Madmin.check_all('.selitem',this.checked)" />全选 <span class="i_trash_sp sprite"></span></label> <a href="javascript:void(0)" onclick="Madmin.checked_action('.selitem','{link ctl=albums act=confirm_delete_batch}');">选中项移入回收站</a><!--{/if}-->
                             </div>
                             <div class="clear"></div>
                         </div>

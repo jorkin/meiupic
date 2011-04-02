@@ -226,6 +226,7 @@ table.layout td.right{
     text-decoration:none;
     cursor:text;
     display:block;
+    background:none;
 }
 .grid .sel_on .title span.name a:hover{
     background:#ffb;
