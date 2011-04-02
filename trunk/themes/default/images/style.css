@@ -174,7 +174,10 @@ table.layout td.right{
     -webkit-box-shadow:3px 3px 4px #ccc;
     box-shadow:3px 3px 4px #BBB;
 }
-
+.grid .album_bg{
+    padding:6px 12px 6px 6px;
+    background:url(album_bg.png) no-repeat right bottom;
+}
 .grid .sel_on .item{
     border:1px solid #eee;
     background:#f6f6f6;
