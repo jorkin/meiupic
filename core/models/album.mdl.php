@@ -77,6 +77,12 @@ class album_mdl extends modelfactory{
         return $this->update($id,$arr);
     }
     
+    function update_comments_num($id){
+        $this->db->select('#@comments','count(id)','ref_id='.intval($id).' and type=1');
+        $arr['comments_num'] = $this->db->getOne();
+        return $this->update($id,$arr);
+    }
+    
     function check_repare_cover($id){
         $info = $this->get_info($id);
         $photo = loader::model('photo')->get_info($info['cover_id']);

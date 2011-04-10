@@ -130,6 +130,32 @@ function arr_stripslashes($arr){
     }
 }
 
+function get_avatar($str){
+    $avatar_prefix = 'http://www.gravatar.com/avatar.php?rating=G&size=48&gravatar_id=';
+    $url = $avatar_prefix.md5($str);
+    return $url;
+}
+
+function get_real_ip(){
+    if(getenv('HTTP_CLIENT_IP') && strcasecmp(getenv('HTTP_CLIENT_IP'), 'unknown')) {
+        $ip = getenv('HTTP_CLIENT_IP');
+    } elseif(getenv('HTTP_X_FORWARDED_FOR') && strcasecmp(getenv('HTTP_X_FORWARDED_FOR'), 'unknown')) {
+        $ip = getenv('HTTP_X_FORWARDED_FOR');
+    } elseif(getenv('REMOTE_ADDR') && strcasecmp(getenv('REMOTE_ADDR'), 'unknown')) {
+        $ip = getenv('REMOTE_ADDR');
+    } elseif(isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] && strcasecmp($_SERVER['REMOTE_ADDR'], 'unknown')) {
+        $ip = $_SERVER['REMOTE_ADDR'];
+    }
+    return preg_match ( '/[\d\.]{7,15}/', $ip, $matches ) ? $matches [0] : '';
+}
+//check email avalible
+function check_email($str){
+    if(!preg_match('/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i', $str)){
+        return false;
+    }
+    return true;
+}
+
 //Words Filter
 function safe_convert($string, $html=0, $filterslash=0) {
     $string = stripslashes(trim($string));

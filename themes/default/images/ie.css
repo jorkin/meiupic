@@ -10,3 +10,7 @@ a span.sprite{
 .grid .gallary_wrap .gallary_item{
     float:left;
 }
+/*comments*/
+.more_comments{
+    filter: progid:DXImageTransform.Microsoft.gradient(enabled='true', startColorstr=#FDFDFD, endColorstr=#ECECEC);
+}

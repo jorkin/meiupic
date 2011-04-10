@@ -1,4 +1,11 @@
 <?php
+/**
+ * $Id: setting.mdl.php 56 2010-07-09 08:13:40Z lingter $
+ * 
+ * @author : Lingter
+ * @support : http://www.meiu.cn
+ * @copyright : (c)2010-2011 meiu.cn lingter@gmail.com
+ */
 class setting_mdl extends modelfactory {
     
     var $setting_pool=array();

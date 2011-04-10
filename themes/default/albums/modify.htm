@@ -5,7 +5,7 @@
 <div class="box_container">
     <form id="albums_modify" action="{link ctl=albums act=update id=$info['id']}" method="post" onsubmit="return false;">
         <div class="field">
-            <div class="label">相册名</div>
+            <div class="label">相册名 *</div>
             <div class="ipts"><input type="text" name="album_name" class="inputstyle iptw1" value="{$info['name']}" /></div>
             <div class="clear"></div>
         </div>
@@ -21,7 +21,7 @@
         </div>
         <div id="filed_password" {if $info['priv_type']!='1'}style="display:none;"{/if}>
             <div class="field">
-                <div class="label">输入密码：</div>
+                <div class="label">输入密码 *</div>
                 <div class="ipts">
                     <input id="password_ipt" type="password" name="priv_pass" class="inputstyle iptw1" value="{$info['priv_pass']}" /><input class="ml5" type="checkbox" value="1" onclick="setMask('password_ipt',this.checked)" /> 显示密码
                 </div>
@@ -30,14 +30,14 @@
         </div>
         <div id="filed_question" {if $info['priv_type']!='2'}style="display:none;"{/if}>
             <div class="field">
-                <div class="label">输入问题：</div>
+                <div class="label">输入问题 *</div>
                 <div class="ipts">
                     <input type="text" name="priv_question" class="inputstyle iptw1" value="{$info['priv_question']}" /> <span class="gray">举例：我的名字？</span>
                 </div>
                 <div class="clear"></div>
             </div>
             <div class="field">
-                <div class="label">问题答案：</div>
+                <div class="label">问题答案 *</div>
                 <div class="ipts">
                    <input type="text" name="priv_answer" class="inputstyle iptw1" value="{$info['priv_answer']}" /> <span class="gray">举例：张三</span>
                 </div>

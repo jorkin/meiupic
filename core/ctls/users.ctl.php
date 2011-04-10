@@ -13,14 +13,20 @@ class users_ctl extends pagecore{
     function check_login(){
         $login_name = safe_convert($this->getPost('login_name'));
         $login_pass = $this->getPost('login_pass');
+        $remember_pass = $this->getPost('remember_pass');
         if(!$login_name){
             ajax_box_failed('请输入用户名！');
         }
         if(!$login_pass){
             ajax_box_failed('请输入密码！');
         }
+        if($remember_pass){
+            $expire_time = time()+86400*30; //记住密码30天
+        }else{
+            $expire_time = 0;
+        }
         
-        if($this->user->set_login($login_name,md5($login_pass))){
+        if($this->user->set_login($login_name,md5($login_pass),$expire_time)){
             ajax_box_success('登录成功！',null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
             ajax_box_failed('请验证用户名和密码是否正确！');

@@ -225,6 +225,64 @@ function sort_setting(t,sort){
     window.location.reload();
 }
 
+function reply_comment(je,url){
+    var btn = $(je);
+    var parent = $(je).parent();
+    $.get(url,{ajax:'true','_t':Math.random()}, function(data) {
+        if(parent.find('form').length == 0){
+            parent.append(data);
+        }
+        $(parent).find('input[name=cancel]').click(function(){
+            $(parent).find('form').remove();
+        });
+        $(parent).find('form').submit(function(){
+            var postform = $(this);
+            $.post(postform.attr('action'),postform.serializeArray(),function(data) {
+                if(data.ret){
+                    var reply_p = postform.parent().parent().parent();
+                    if(reply_p.hasClass('sub')){
+                        reply_p.after(data.html);
+                    }else{
+                        postform.parent().after(data.html);
+                    }
+                    
+                    postform.remove();
+                }else{
+                    notice_div = postform.find('.form_notice_div');
+                    if( notice_div.length == 0 ){
+                        postform.prepend('<div class="form_notice_div">'+data.html+'</div>');
+                    }else{
+                        notice_div.html(data.html);
+                    }
+                    postform.find('.form_notice_div').css({display:'block'});
+                }
+            },'json');
+        });
+    },'html');
+}
+
+function reload_comments(url){
+    $.get(url,{ajax:'true','_t':Math.random()}, function(data) {
+        if(data){
+            setTimeout(function(){
+                Mui.box.close();
+            },500);
+            $('.comment_list').html(data);
+        }
+    },'html');
+}
+
+function load_comments(url){
+    $('.more_comments').html('Loading...');
+    
+    $.get(url,{ajax:'true','_t':Math.random()}, function(data) {
+        if(data){
+            $('.more_comments').remove();
+            $('.comment_list').append(data);
+        }
+    },'html');
+}
+
 $(function(){
     //press esc to close float div
     $(window).bind('keypress',

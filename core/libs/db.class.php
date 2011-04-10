@@ -189,7 +189,7 @@ class db_cla{
         $arr["ls"]= $aa; //记录内容
 
         $arr["total"]= $totalpage;//总数页数
-        $arr['start']=$no_p; //开始页
+        $arr['current']=$no_p; //当前页
         $arr['count']=$total;
 
         return $arr;

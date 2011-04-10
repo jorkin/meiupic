@@ -338,6 +338,11 @@ form .field .ipts{float:left;}
 .comment_form{
     padding:20px;
 }
+.reply_form{
+    background:#eee;
+    margin:10px 0;
+    padding:10px;
+}
 /*评论列表*/
 .comment_list{
     padding:0 20px 40px;
@@ -372,7 +377,14 @@ form .field .ipts{float:left;}
     margin:8px 0;
 }
 
-
+.more_comments{
+    width:80%;
+    margin:10px auto;
+    border:1px solid #ccc;
+    text-align:center;
+    padding:10px;
+    cursor:pointer;
+}
 /*no photo*/
 .no_data_info{
     padding:50px 50px 150px;
