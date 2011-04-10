@@ -43,7 +43,7 @@
                                     </div>
                                     <div class="clear brief">
                                         <span class="f_left"></span>
-                                        <span class="f_right gray">上传于2010-9-11</span>
+                                        <span class="f_right gray">上传于{echo date('Y-m-d',$v['create_time'])}</span>
                                     </div>
                                 </div>
                                 <div class="info">
@@ -71,108 +71,35 @@
                         </div>
                         <div class="innetcol">
                             <div class="comment_form">
-                                <form>
+                                <form id="album_comment_form" action="{link ctl=comments act=post}" method="post" onsubmit="return false;">
+                                    <input type="hidden" name="ref_id" value="{$album_info['id']}" />
+                                    <input type="hidden" name="type" value="1" />
                                     <div class="field">
-                                        <div class="label">{lang email}:</div>
-                                        <div class="ipts"><input type="text" class="inputstyle iptw1" /></div>
+                                        <div class="label">{lang email}</div>
+                                        <div class="ipts"><input type="text" class="inputstyle iptw2" name="email" /></div>
                                         <div class="clear"></div>
                                     </div>
                                     <div class="field">
-                                        <div class="label">{lang comment_user}:</div>
-                                        <div class="ipts"><input type="text" class="inputstyle iptw1" /></div>
+                                        <div class="label">{lang comment_user} *</div>
+                                        <div class="ipts"><input type="text" class="inputstyle iptw2" name="author" /></div>
                                         <div class="clear"></div>
                                     </div>
                                     <div class="field">
-                                        <div class="label">{lang comment_content}:</div>
-                                        <div class="ipts"><textarea class="inputstyle ipttextarea"></textarea></div>
+                                        <div class="label">{lang comment_content} *</div>
+                                        <div class="ipts"><textarea class="inputstyle ipttextarea" name="content"></textarea></div>
                                         <div class="clear"></div>
                                     </div>
                                     <div class="field">
                                         <div class="label"> &nbsp;</div>
-                                        <div class="ipts"><input type="submit" name="submit" class="graybtn f_left" value="发表评论" /></div>
+                                        <div class="ipts"><input type="submit" name="submit" class="ylbtn f_left" value="发表评论" onclick="Mui.box.callback=function(){ reload_comments('{link ctl=comments act=more ref_id=$ref_id type=$comments_type}');$('#album_comment_form').get(0).reset(); };Mui.form.sendAuto('album_comment_form');" /></div>
                                         <div class="clear"></div>
                                     </div>
                                 </form>
                             </div>
                             <div class="comment_list">
-                                <div class="cmt_item bdwb">
-                                    <div class="f_left cmt_fce">
-                                        <img src="http://www.gravatar.com/avatar.php?rating=G&size=48&default=http://blog.meiu.cn/no-gravatar.gif&gravatar_id=02c9dc4c8275366e437bc8e56bfd9676" />
-                                    </div>
-                                    <div class="thde">
-                                        <span class="f_right">
-                                            2011-03-10 12:33:22
-                                        </span>
-                                        <div class="tt">
-                                            <span class="title_c">保灵</span>
-                                        </div>
-                                        <div class="cnt">
-                                            偏白斑驳的墙
-
-                                            和模特的衣服颜色。
-
-                                            看起来不是很好。
-
-                                            第四张感觉很好
-                                        </div>
-                                        <div class="ctlbtn">
-                                            <a href="#">回复</a> <a href="#">删除</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="cmt_item bdwb">
-                                    <div class="f_left cmt_fce">
-                                        <img src="http://www.gravatar.com/avatar.php?rating=G&size=48&default=http://blog.meiu.cn/no-gravatar.gif&gravatar_id=b6e5f779cd537614b33be6cf0ffb643c" />
-                                    </div>
-                                    <div class="thde">
-                                        <span class="f_right">
-                                            2011-03-10 12:33:22
-                                        </span>
-                                        <div class="tt">
-                                            <span class="title_c">保灵</span>
-                                        </div>
-                                        <div class="cnt">
-                                            偏白斑驳的墙
-
-                                            和模特的衣服颜色。
-
-                                            看起来不是很好。
-
-                                            第四张感觉很好
-                                        </div>
-                                        <div class="ctlbtn">
-                                            <a href="#">回复</a>
-                                        </div>
-                                        <div class="cmt_item bdwt">
-                                            <div class="f_left cmt_fce">
-                                                <img src="http://www.gravatar.com/avatar.php?rating=G&size=48&default=http://blog.meiu.cn/no-gravatar.gif&gravatar_id=b6e5f779cd537614b33be6cf0ffb643c" />
-                                            </div>
-                                            <div class="thde">
-                                                <span class="f_right">
-                                                    2011-03-10 12:33:22
-                                                </span>
-                                                <div class="tt">
-                                                    <span class="title_c">保灵</span> 回复 <span class="title_c">保灵</span>
-                                                </div>
-                                                <div class="cnt">
-                                                    偏白斑驳的墙
-
-                                                    和模特的衣服颜色。
-
-                                                    看起来不是很好。
-
-                                                    第四张感觉很好
-                                                </div>
-                                                <div class="ctlbtn">
-                                                    <a href="#">回复</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="clear"></div>
+                                {template comments/more}
                             </div>
+                            <div class="clear"></div>
                         </div>
                     </div>
                     <!--{else}-->

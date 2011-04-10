@@ -40,7 +40,7 @@ class albums_ctl extends pagecore{
             }
         }
         
-        $pagestr = loader::lib('page')->fetch($albums['total'],$albums['start'],$pageurl);
+        $pagestr = loader::lib('page')->fetch($albums['total'],$albums['current'],$pageurl);
         
         $this->output->set('album_col_menu',$this->plugin->filter('album_col_menu',$page_setting_str.$sort_list));
         $this->output->set('albums',$albums['ls']);

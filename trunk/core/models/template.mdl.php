@@ -1,4 +1,11 @@
 <?php
+/**
+ * $Id: template.mdl.php 56 2010-07-09 08:13:40Z lingter $
+ * 
+ * @author : Lingter
+ * @support : http://www.meiu.cn
+ * @copyright : (c)2010-2011 meiu.cn lingter@gmail.com
+ */
 class template_mdl extends modelfactory {
     var $table_name = '#@themes';
     
@@ -53,9 +60,9 @@ class template_mdl extends modelfactory {
         $str = preg_replace("/\{\-\-(.+?)\}/","<?php ++\\1; ?>",$str);
         $str = preg_replace("/\{(.+?)\+\+\}/","<?php \\1++; ?>",$str);
         $str = preg_replace("/\{(.+?)\-\-\}/","<?php \\1--; ?>",$str);
-        $str = preg_replace ( "/\{loop\s+(\S+)\s+(\S+)\}/", "<?php \$n=1;if(is_array(\\1)) foreach(\\1 AS \\2) { ?>", $str );
-        $str = preg_replace ( "/\{loop\s+(\S+)\s+(\S+)\s+(\S+)\}/", "<?php \$n=1; if(is_array(\\1)) foreach(\\1 AS \\2 => \\3) { ?>", $str );
-        $str = preg_replace ( "/\{\/loop\}/", "<?php \$n++;}unset(\$n); ?>", $str );
+        $str = preg_replace ( "/\{loop\s+(\S+)\s+(\S+)\}/", "<?php if(is_array(\\1)) foreach(\\1 AS \\2) { ?>", $str );
+        $str = preg_replace ( "/\{loop\s+(\S+)\s+(\S+)\s+(\S+)\}/", "<?php if(is_array(\\1)) foreach(\\1 AS \\2 => \\3) { ?>", $str );
+        $str = preg_replace ( "/\{\/loop\}/", "<?php } ?>", $str );
         $str = preg_replace ( "/\{([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff:]*\(([^{}]*)\))\}/", "<?php echo \\1;?>", $str );
         $str = preg_replace ( "/\{\\$([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff:]*\(([^{}]*)\))\}/", "<?php echo \\1;?>", $str );
         $str = preg_replace ( "/\{(\\$[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\}/", "<?php echo \\1;?>", $str );

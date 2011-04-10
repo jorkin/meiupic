@@ -9,9 +9,7 @@ class photos_ctl extends pagecore{
     }
     
     function index(){
-        
         $this->normal();
-        
     }
     
     function story(){
@@ -51,12 +49,25 @@ class photos_ctl extends pagecore{
             }
         }
         
-        $pagestr = loader::lib('page')->fetch($photos['total'],$photos['start'],$pageurl);
+        $pagestr = loader::lib('page')->fetch($photos['total'],$photos['current'],$pageurl);
         $album_menu = '<li><a href="'.
                         site_link('photos','index',array('aid'=>$album_id)).
                       '" class="current">'.$album_info['name'].'</a></li>';
         
         $album_info['tags_list'] = explode(',',$album_info['tags']);
+        
+        $mdl_comment =& loader::model('comment');
+        $album_comments = $mdl_comment->get_all(1,array('ref_id'=>$album_id,'type'=>'1'));
+        if($album_comments['ls']){
+            foreach($album_comments['ls'] as $k=>$v){
+                $album_comments['ls'][$k]['sub_comments'] = $mdl_comment->get_sub($v['id']);
+            }
+        }
+        $this->output->set('comments_list',$album_comments['ls']);
+        $this->output->set('comments_total_page',$album_comments['total']);
+        $this->output->set('comments_current_page',$album_comments['current']);
+        $this->output->set('ref_id',$album_id);
+        $this->output->set('comments_type',1);
         
         $this->output->set('photo_col_menu',$this->plugin->filter('photo_col_menu',$view_type.$page_setting_str.$sort_list));
         $this->output->set('photos',$photos['ls']);

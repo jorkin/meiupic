@@ -31,7 +31,9 @@ class modelfactory{
         $this->pageset = $s?$s:$this->pageset;
     }
     
-    
+    function last_insert_id(){
+        return $this->db->insertId();
+    }
     
     function get_all($page = NULL,$filters = array(),$sort = null){
         $where = $this->_filters($filters);

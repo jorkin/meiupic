@@ -331,3 +331,12 @@ table.layout td.right{
 #muilti_uploader .notice_info{
     padding:40px 0 40px 50px;
 }
+
+/*comments*/
+.more_comments{
+    background:-moz-linear-gradient(center top , #FDFDFD, #ECECEC);
+    background:-webkit-gradient(linear,0% 0%, 0% 100%, from(#FDFDFD), to(#ECECEC));
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    border-radius:5px;
+}

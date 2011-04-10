@@ -1,0 +1,26 @@
+<form class="reply_form" action="{link ctl=comments act=save_reply}" method="post" onsubmit="return false;">
+    <input type="hidden" name="ref_id" value="{$info['ref_id']}" />
+    <input type="hidden" name="pid" value="{$info['pid']}" />
+    <input type="hidden" name="type" value="{$info['type']}" />
+    <input type="hidden" name="reply_author" value="{$info['author']}" />
+    <div class="field">
+        <div class="label">{lang email} </div>
+        <div class="ipts"><input type="text" class="inputstyle iptw2" name="email" /></div>
+        <div class="clear"></div>
+    </div>
+    <div class="field">
+        <div class="label">{lang comment_user} *</div>
+        <div class="ipts"><input type="text" class="inputstyle iptw2" name="author" /></div>
+        <div class="clear"></div>
+    </div>
+    <div class="field">
+        <div class="label">{lang comment_content} *</div>
+        <div class="ipts"><textarea class="inputstyle ipttextarea" name="content"></textarea></div>
+        <div class="clear"></div>
+    </div>
+    <div class="field">
+        <div class="label"> &nbsp;</div>
+        <div class="ipts"><input type="submit" name="submit" class="ylbtn" value="发表评论" /> <input type="button" name="cancel" class="graysmlbtn" value="取消" /></div>
+        <div class="clear"></div>
+    </div>
+</form>

@@ -1,6 +1,7 @@
 <?php
 
 class upload_ctl extends pagecore{
+    
     function _init(){
         $this->plugin =& loader::lib('plugin');
         $this->mdl_album = & loader::model('album');
