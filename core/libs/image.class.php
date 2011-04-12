@@ -36,7 +36,7 @@ class image_cla{
     }
     
     function getExtension(){
-        $this->worker->getExtension();
+        return $this->worker->getExtension();
     }
     
     function save($path){

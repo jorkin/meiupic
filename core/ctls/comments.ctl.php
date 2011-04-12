@@ -30,7 +30,10 @@ class comments_ctl extends pagecore{
         if($this->mdl_comment->save($comment)){
             if($comment['type'] == 1){
                 loader::model('album')->update_comments_num($comment['ref_id']);
+            }elseif($comment['type'] == 2){
+                loader::model('photo')->update_comments_num($comment['ref_id']);
             }
+            
             ajax_box_success('评论成功！',null,0.5);
         }else{
             ajax_box_failed('评论失败！');
@@ -74,7 +77,10 @@ class comments_ctl extends pagecore{
             $comment['id'] = $this->mdl_comment->last_insert_id();
             if($comment['type'] == 1){
                 loader::model('album')->update_comments_num($comment['ref_id']);
+            }elseif($comment['type'] == 2){
+                loader::model('photo')->update_comments_num($comment['ref_id']);
             }
+            
             $this->output->set('info',$comment);
 
             $return = array(

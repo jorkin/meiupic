@@ -50,7 +50,7 @@
                                     <div class="title"><!--{if $loggedin}--><input class="selitem" type="checkbox" name="sel_id[{$v['id']}]" value="1" /><!--{/if}--> <span class="name"><a nid="{$v['id']}" title="点击修改相册名" href="javascript:void(0)" onclick="Madmin.rename(this,'{link ctl=photos act=rename id=$v['id']}')">{$v['name']}</a></span></div>
                                     <div class="info_col">
                                         <span class="f_left gray">{$v['hits']}浏览 </span>
-                                        <span class="f_right gray"><!--{if $v['comments_num']}--><a href="#">{lang comments_num|`$v['comments_num']`}</a><!--{/if}--> <!--{if $v['is_cover']}--><span class="cover">封面</span><!--{/if}--></span>
+                                        <span class="f_right gray"><!--{if $v['comments_num']}--><a href="{link ctl=photos act=view id=$v['id']}#comments">{lang comments_num|`$v['comments_num']`}</a><!--{/if}--> <!--{if $v['is_cover']}--><span class="cover">封面</span><!--{/if}--></span>
                                     </div>
                                 </div>
                             </div>
@@ -67,13 +67,13 @@
                         </div>
                         <div class="col titbg">
                             <h1 class="f_left">{lang all_album_comments}</h1>
-                            <h4 class="f_left">{lang album_comments_num|`$album_info['comments_num']`}</h4>
+                            <h4 class="f_left">{lang comments_num|`$album_info['comments_num']`}</h4>
                         </div>
                         <div class="innetcol">
                             <div class="comment_form">
                                 <form id="album_comment_form" action="{link ctl=comments act=post}" method="post" onsubmit="return false;">
-                                    <input type="hidden" name="ref_id" value="{$album_info['id']}" />
-                                    <input type="hidden" name="type" value="1" />
+                                    <input type="hidden" name="ref_id" value="{$ref_id}" />
+                                    <input type="hidden" name="type" value="{$comments_type}" />
                                     <div class="field">
                                         <div class="label">{lang email}</div>
                                         <div class="ipts"><input type="text" class="inputstyle iptw2" name="email" /></div>

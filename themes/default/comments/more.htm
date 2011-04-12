@@ -1,7 +1,7 @@
     <!--{loop $comments_list $v}-->
     <div class="cmt_item bdwb">
         <div class="f_left cmt_fce">
-            <img src="{echo get_avatar($v['email'])}" />
+            <img src="{echo get_avatar($v)}" />
         </div>
         <div class="thde">
             <span class="f_right">
@@ -19,7 +19,7 @@
             <!--{loop $v['sub_comments'] $vv}-->
             <div class="cmt_item bdwt sub">
                 <div class="f_left cmt_fce">
-                    <img src="{echo get_avatar($vv['email'])}" />
+                    <img src="{echo get_avatar($vv)}" />
                 </div>
                 <div class="thde">
                     <span class="f_right">

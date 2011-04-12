@@ -130,9 +130,17 @@ function arr_stripslashes($arr){
     }
 }
 
-function get_avatar($str){
+function get_album_cover($aid,$ext){
+    global $base_path;
+    return $base_path.'data/cover/'.$aid.'.'.$ext;
+}
+
+function get_avatar($comment){
+    //global $base_path;
+    //return $base_path.'statics/img/no_avatar.jpg';
+    $file = md5(strtolower($comment['email']));
     $avatar_prefix = 'http://www.gravatar.com/avatar.php?rating=G&size=48&gravatar_id=';
-    $url = $avatar_prefix.md5($str);
+    $url = $avatar_prefix.$file;
     return $url;
 }
 

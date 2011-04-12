@@ -142,8 +142,8 @@ function boot_init(){
         $base_url = $base_root .= '://'. $_SERVER['HTTP_HOST'];
         if ($dir = trim(dirname($_SERVER['SCRIPT_NAME']), '\,/')) {
           $base_path = "/$dir";
-          $base_url .= $base_path;
           $base_path .= '/';
+          $base_url .= $base_path;
         }
         else {
           $base_path = '/';
@@ -159,8 +159,8 @@ function init_defines(){
         define('IMG_ENGINE','gd');
     }
     
-    if (PHP_VERSION >= "5.1.0") {
-        date_default_timezone_set ( $Config['timezone'] );
+    if(function_exists('date_default_timezone_set')) { 
+        date_default_timezone_set($Config['timezone']);
     }
 }
 

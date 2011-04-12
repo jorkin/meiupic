@@ -172,4 +172,43 @@ class photos_ctl extends pagecore{
         echo loader::lib('json')->encode($return);
         return;
     }
+    
+    
+    function view(){
+        $iid = $this->getGet('id');
+        $info = $this->mdl_photo->get_info($iid);
+        $album_info = loader::model('album')->get_info($info['album_id']);
+        
+        $album_menu = '<li><a href="'.site_link('photos','index',array('aid'=>$info['album_id'])).'" class="current">'.$album_info['name'].'</a></li>';
+        $photo_col_ctl = '';
+
+        $info['path'] = $this->plugin->filter('photo_path',$GLOBALS['base_path'].$info['path'],$info['path']);
+        $info['thumb'] = $this->plugin->filter('photo_path',$GLOBALS['base_path'].$info['thumb'],$info['thumb']);
+        
+        $this->mdl_photo->add_hit($iid);
+        
+        $mdl_comment =& loader::model('comment');
+        $comments = $mdl_comment->get_all(1,array('ref_id'=>$iid,'type'=>2));
+        if($comments['ls']){
+            foreach($comments['ls'] as $k=>$v){
+                $comments['ls'][$k]['sub_comments'] = $mdl_comment->get_sub($v['id']);
+            }
+        }
+        $this->output->set('comments_list',$comments['ls']);
+        $this->output->set('comments_total_page',$comments['total']);
+        $this->output->set('comments_current_page',$comments['current']);
+        $this->output->set('ref_id',$iid);
+        $this->output->set('comments_type',2);
+        
+        $this->output->set('info',$info);
+        $this->output->set('album_menu',$this->plugin->filter('album_menu',$album_menu,$info['album_id']));
+        $this->output->set('photo_col_ctl',$this->plugin->filter('photo_col_ctl',$photo_col_ctl,$iid));
+        
+        $page_title = $info['name'].' - '.$album_info['name'].' - '.$this->setting->get_conf('site.title');
+        $page_keywords = $this->setting->get_conf('site.keywords');
+        $page_description = $this->setting->get_conf('site.description');
+        $this->page_init($page_title,$page_keywords,$page_description,array('iid'=>$iid));
+        
+        $this->render();
+    }
 }
