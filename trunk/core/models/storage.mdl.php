@@ -20,7 +20,7 @@ class storage_mdl extends modelfactory{
     }
     
     // Make sure the fileName is unique but only if chunking is disabled
-    function _check_file_unique($fileName){
+    function _check_file_unique($targetDir,$fileName){
         if (file_exists($targetDir . DIRECTORY_SEPARATOR . $fileName)) {
             $ext = strrpos($fileName, '.');
             $fileName_a = substr($fileName, 0, $ext);
@@ -62,7 +62,7 @@ class storage_mdl extends modelfactory{
 
         $fileName = preg_replace('/[^\w\._]+/', '', $fileName);
         if($chunk == 0 || $chunks < 2){
-            $fileName = $this->_check_file_unique($fileName);
+            $fileName = $this->_check_file_unique($targetDir,$fileName);
         }
 
         if (!file_exists($targetDir))

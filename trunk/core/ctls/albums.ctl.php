@@ -33,9 +33,7 @@ class albums_ctl extends pagecore{
                 $albums['ls'][$k]['album_control_icons'] = $this->plugin->filter(
                                                         'album_control_icons','',$v['id']);
                 if($v['cover_id']){
-                    $albums['ls'][$k]['cover_path'] = $this->plugin->filter('photo_path',
-                                                    $GLOBALS['base_path'].$v['cover_path'],
-                                                    $v['cover_path']);
+                    $albums['ls'][$k]['cover_path'] = get_album_cover($v['id'],$v['cover_ext']);
                 }
             }
         }

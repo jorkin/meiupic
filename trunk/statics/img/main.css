@@ -57,6 +57,9 @@ a:hover{text-decoration:none;}
 .editbg{
     background:#e1e1e1;
 }
+.mainbody .editbg{
+    background:#ffb;
+}
 /*paginator*/
 .paginator a, .thispage, .break {
     margin:2px;
@@ -361,8 +364,8 @@ form .field .ipts{float:left;}
     border-top:1px dashed #ddd;
 }
 .comment_list .cmt_item .cmt_fce img{
-    padding:3px;
-    border:1px solid #ddd;
+   /* padding:3px;
+    border:1px solid #ddd;*/
 }
 .comment_list .cmt_item .thde{
     margin-left:75px;

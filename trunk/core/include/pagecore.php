@@ -37,7 +37,7 @@ class pagecore{
         }else{
             $user_status = '<span class="name">Lingter</span>
             <span class="pipe">|</span>
-            <a title="查看和修改我的个人资料" href="#">我的资料</a>
+            <a title="查看和修改我的个人资料" href="'.site_link('users','profile').'">我的资料</a>
             <span class="pipe">|</span>
             <a title="登出系统" href="javascript:void(0);" onclick="Mui.box.show(\''.site_link('users','logout').'\');">登出</a>';
         }

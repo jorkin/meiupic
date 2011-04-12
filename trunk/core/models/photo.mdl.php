@@ -82,4 +82,10 @@ class photo_mdl extends modelfactory{
     function add_hit($id){
         return $this->update($id,array('hits'=>new DB_Expr('hits+1')));
     }
+    
+    function update_comments_num($id){
+        $this->db->select('#@comments','count(id)','ref_id='.intval($id).' and type=2');
+        $arr['comments_num'] = $this->db->getOne();
+        return $this->update($id,$arr);
+    }
 }

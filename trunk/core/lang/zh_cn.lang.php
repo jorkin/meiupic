@@ -38,7 +38,8 @@ $language['search']            =    '搜索';
 
 $language['comments_num']      =    '%s评论';
 $language['all_album_comments']=    '对该相册的评论';
-$language['album_comments_num']=    '共%s个评论';
+$language['all_photo_comments']=    '对该照片的评论';
+$language['comments_num']=    '共%s个评论';
 $language['email']             =    'Email';
 $language['comment_user']      =    '评论者';
 $language['comment_content']   =    '评论内容';    

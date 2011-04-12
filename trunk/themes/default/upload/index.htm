@@ -41,8 +41,8 @@ $(function() {
         filters : [
             {title : "Image files", extensions : "jpg,jpeg,gif,png,bmp"}
         ],
-        flash_swf_url : '{$statics_path}swf/plupload.flash.swf'//,
-        //resize : {width : 320, height : 240, quality : 100}
+        flash_swf_url : '{$statics_path}swf/plupload.flash.swf',
+        resize : {width : 1000, height : 1000, quality : 100}
     });
     var uploader = $('#muilti_uploader').pluploadQueue();
     var usubmited = 0;

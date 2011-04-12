@@ -109,9 +109,12 @@ class upload_ctl extends pagecore{
                     if(@copy($tmpfile,$realpath)){
                         $arr['album_id'] = $album_id;
                         $arr['path'] = $media_dirname.'/'.$key.'.'.$fileext;
-                        $arr['thumb'] = $thumb_dirname.'/'.$key.'_square.'.$fileext;
+                        $arr['thumb'] = $thumb_dirname.'/'.$key.'.'.$fileext;
                         $arr['name'] = $filename;
                         $arr['create_time'] = time();
+                        $arr['create_y'] = date('Y');
+                        $arr['create_m'] = date('m');
+                        $arr['create_d'] = date('d');
                         $imglib->load($realpath);
                         //resize image to thumb: 180*180 
                         $arr['width'] = $imglib->getWidth();
