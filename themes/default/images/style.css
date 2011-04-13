@@ -171,7 +171,7 @@ table.layout td.right{
     border:1px solid #eee;
     -moz-box-shadow:3px 3px 4px #ccc;
     -webkit-box-shadow:3px 3px 4px #ccc;
-    box-shadow:3px 3px 4px #BBB;
+    box-shadow:3px 3px 4px #ccc;
 }
 .grid .gallary_wrap .album{
     width:200px;
@@ -202,7 +202,7 @@ table.layout td.right{
     position:relative;
     -webkit-box-shadow:2px 2px 8px rgba(0, 0, 0, 0.45);
     -moz-box-shadow:2px 2px 8px rgba(0, 0, 0, 0.45);
-    box-shadow:3px 3px 4px rgba(0, 0, 0, 0.45);
+    box-shadow:2px 2px 8px rgba(0, 0, 0, 0.45);
 }
 .grid .pic_ctl{
     display:none;
@@ -399,6 +399,9 @@ table.layout td.right{
     -moz-border-radius:0 5px 5px 0;
     -webkit-border-radius:0 5px 5px 0;
     border-radius:0 5px 5px 0;
+    -webkit-box-shadow:4px 2px 3px rgba(0, 0, 0, 0.25);
+    -moz-box-shadow:4px 2px 3px rgba(0, 0, 0, 0.25);
+    box-shadow:4px 2px 3px rgba(0, 0, 0, 0.25);
 }
 #photo_body div.ctl div.next{
     position:absolute;
@@ -420,6 +423,9 @@ table.layout td.right{
     -moz-border-radius:5px 0 0 5px;
     -webkit-border-radius:5px 0 0 5px;
     border-radius:5px 0 0 5px;
+    -webkit-box-shadow:-4px 2px 3px rgba(0, 0, 0, 0.25);
+    -moz-box-shadow:-4px 2px 3px rgba(0, 0, 0, 0.25);
+    box-shadow:-4px 2px 3px rgba(0, 0, 0, 0.25);
 }
 #photo_infos{
     padding:0 20px 20px;
@@ -454,4 +460,49 @@ table.layout td.right{
     margin:0 20px;
     height:18px;
     line-height:18px;
+}
+.pic_nav .title{
+    padding-left:10px;
+    font-size:14px;
+    line-height:50px;
+    border-bottom:1px dashed #ccc;
+    color:#999;
+}
+.pic_nav .body{
+    text-align:center;
+}
+.pic_nav .body li{
+    border:1px solid #ccc;
+    padding:5px;
+    background:#fff;
+    width:120px;
+    margin:10px auto;
+}
+.pic_nav .body li.current{
+    border:1px solid #444;
+    padding:5px;
+}
+.pic_nav .body li a{
+    display:block;
+    width:120px;
+    height:120px;
+    line-height:120px;
+    background-color:#eee;
+    color:#888;
+    text-decoration:none;
+}
+.pic_nav .turn_page_up,.pic_nav .turn_page_down{
+    display:block;
+    background:url('bg_turn_page.png') no-repeat;
+    width:132px;
+    margin:10px auto;
+    height:17px;
+    text-indent:-1000px;
+    overflow:hidden;
+}
+.pic_nav .turn_page_up{
+    background-position:center top;
+}
+.pic_nav .turn_page_down{
+    background-position:center bottom;
 }

@@ -26,7 +26,7 @@
                         </div>
                         
                         <div id="photo_body">
-                            <a href="{$info['path']}" target="_blank" title="查看原图"><img class="photo" alt="{$info['name']}" src="{$info['thumb']}" /></a>
+                            <img class="photo" alt="{$info['name']}" src="{$info['thumb']}" />
                             <div class="ctl"><div class="prev"><span>上一张</span></div><div class="next"><span>下一张</span></div></div>
                         </div>
                         <div id="photo_infos">
@@ -175,6 +175,38 @@
             </td>
             <td class="right">
                 <div class="sidebar">
+                    <div class="pic_nav">
+                        <div class="title"><a href="{link ctl=photos act=index aid=$info['album_id']}">{$album_info['name']}</a> [相册]</div>
+                        <div class="body">
+                            <div>
+                                {if $picture['previous']}
+                                <a href="{link ctl=photos act=view id=$picture['previous']['id']}#pic_block" class="turn_page_up">上一张</a>
+                                {else}
+                                <a href="javascript:void(0);" class="turn_page_up">这是首张</a>
+                                {/if}
+                            </div>
+                            <ul>
+                                {if $picture['previous']}
+                                <li><a href="{link ctl=photos act=view id=$picture['previous']['id']}#pic_block" style="background:url('{$picture['previous']['thumb']}') center;"></a></li>
+                                {else}
+                                <li><a href="javascript:void(0);">这是首张</a></li>
+                                {/if}
+                                <li class="current"><a href="javascript:void(0);" style="background:url('{$info['thumb']}') center"></a></li>
+                                {if $picture['next']}
+                                <li><a href="{link ctl=photos act=view id=$picture['next']['id']}#pic_block" style="background:url('{$picture['next']['thumb']}') center"></a></li>
+                                {else}
+                                <li><a href="javascript:void(0);">这是末张</a></li>
+                                {/if}
+                            </ul>
+                            <div>
+                                {if $picture['next']}
+                                <a href="{link ctl=photos act=view id=$picture['next']['id']}#pic_block" class="turn_page_down">下一张</a>
+                                {else}
+                                <a href="javascript:void(0);" class="turn_page_down">这是末张</a>
+                                {/if}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </td>
         </tr>
