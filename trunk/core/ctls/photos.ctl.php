@@ -322,6 +322,7 @@ class photos_ctl extends pagecore{
         
         $this->output->set('picture',$picture);
         
+        $this->output->set('album_info',$album_info);
         $this->output->set('info',$info);
         $this->output->set('album_menu',$this->plugin->filter('album_menu',$album_menu,$info['album_id']));
         $this->output->set('photo_col_ctl',$this->plugin->filter('photo_col_ctl',$photo_col_ctl,$iid));
