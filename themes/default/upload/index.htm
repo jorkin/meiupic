@@ -9,7 +9,7 @@
                         <h1 class="f_left">上传照片</h1>
                         <h4 class="f_left"></h4>
                         <div class="rmenu f_right">
-                           切换上传方式: <a href="{link ctl=upload act=index}" class="current">高级上传</a> | <a href="{link ctl=upload act=normal}">普通上传</a>
+                           切换上传方式: <a href="{link ctl=upload act=index}" class="current">高级上传</a> | <a href="{if $album_id}{link ctl=upload act=normal aid=$album_id}{else}{link ctl=upload act=normal}{/if}">普通上传</a>
                         </div>
                     </div>
                     <div class="innercol grid">

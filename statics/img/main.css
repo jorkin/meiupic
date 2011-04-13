@@ -252,7 +252,11 @@ textarea.inputstyle{
     width:12px;
     margin-left:2px;
 }
-
+.i_slideshow{
+    background-position:-192px -6px;
+    padding-top:16px;
+    width:16px;
+}
 /*selector*/
 .selectlist{
     line-height:24px;

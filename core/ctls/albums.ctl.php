@@ -238,7 +238,7 @@ class albums_ctl extends pagecore{
         if( $this->mdl_album->update($id,array('tags'=>$tags)) ){
             $return = array(
                 'ret'=>true,
-                'html' => '标签： '.$tags
+                'html' => '标签: '.$tags
             );
         }else{
             $return = array(

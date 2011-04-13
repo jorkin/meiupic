@@ -372,8 +372,54 @@ table.layout td.right{
 }
 
 #photo_body{
-    padding:20px 0;
+    margin:20px 0;
     text-align:center;
+}
+#photo_body div.ctl{
+    position:absolute;
+    z-index:1
+}
+#photo_body div.ctl div.prev{
+    position:absolute;
+    left:0;
+    top:0;
+    z-index:2;
+    cursor:pointer;
+    display:none;
+}
+#photo_body div.ctl div.prev span{
+    display:none;
+    width:80px;
+    height:35px;
+    background:#fff;
+    line-height:35px;
+    position:absolute;
+    left:0;
+    top:30%;
+    -moz-border-radius:0 5px 5px 0;
+    -webkit-border-radius:0 5px 5px 0;
+    border-radius:0 5px 5px 0;
+}
+#photo_body div.ctl div.next{
+    position:absolute;
+    right:0;
+    top:0;
+    z-index:2;
+    cursor:pointer;
+    display:none;
+}
+#photo_body div.ctl div.next span{
+    display:none;
+    width:80px;
+    height:35px;
+    background:#fff;
+    line-height:35px;
+    position:absolute;
+    right:0;
+    top:30%;
+    -moz-border-radius:5px 0 0 5px;
+    -webkit-border-radius:5px 0 0 5px;
+    border-radius:5px 0 0 5px;
 }
 #photo_infos{
     padding:0 20px 20px;
@@ -401,5 +447,11 @@ table.layout td.right{
 .photo_main .desc{
     line-height:1.6;
     color:#444;
- }   
+}
+.tbmu{
+    border-bottom: 1px dashed #CDCDCD;
+    padding: 10px;
+    margin:0 20px;
+    height:18px;
+    line-height:18px;
 }

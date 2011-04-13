@@ -10,18 +10,34 @@
                         {$photo_col_ctl}
                     </div>
                     <div class="innercol grid">
+                        <div id="pic_block" class="tbmu">
+                            <span class="f_left"><a href="{link ctl=photos act=index aid=$info['album_id']}">返回相册列表</a></span>
+                            <div class="f_right">
+                                {if $picture['first']}<a href="{link ctl=photos act=view id=$picture['first']['id']}#pic_block">第一张</a>{else}第一张{/if}
+                                <span class="pipe">|</span>
+                                {if $picture['previous']}<a href="{link ctl=photos act=view id=$picture['previous']['id']}#pic_block" class="btnprev">上一张</a>{else}上一张{/if}
+                                <span class="pipe">|</span>
+                                {if $picture['next']}<a href="{link ctl=photos act=view id=$picture['next']['id']}#pic_block" class="btnnext">下一张</a>{else}下一张{/if}
+                                <span class="pipe">|</span>
+                                {if $picture['last']}<a href="{link ctl=photos act=view id=$picture['last']['id']}#pic_block">最后张</a>{else}最后张{/if}
+                                <span class="pipe">|</span>
+                                <span class="i_slideshow sprite"></span> <a href="{link ctl=photos act=slide aid=$info['album_id']}">幻灯浏览</a>
+                            </div>
+                        </div>
                         
                         <div id="photo_body">
-                            <img class="photo" alt="{$info['name']}" src="{$info['thumb']}" />
+                            <a href="{$info['path']}" target="_blank" title="查看原图"><img class="photo" alt="{$info['name']}" src="{$info['thumb']}" /></a>
+                            <div class="ctl"><div class="prev"><span>上一张</span></div><div class="next"><span>下一张</span></div></div>
                         </div>
                         <div id="photo_infos">
                             <div class="photo_others">
                                 <p>上传于: {echo date('Y-m-d',$info['create_time'])}</p>
-                                {if $info['taken_time']}
+                                <!--{if $info['taken_time']}-->
                                 <p>拍摄于: {echo date('Y-m-d',$info['taken_time'])}</p>
-                                {/if}
+                                <!--{/if}-->
                                 <p><a href="#">更多Exif信息</a></p>
                                 <p>被查看了{$info['hits']}次</p>
+                                <p><a href="{$info['path']}" target="_blank">查看原图</a></p>
                             </div>
                             <div class="photo_main">
                                 <h1>
@@ -29,15 +45,15 @@
                                     </div>
                                 </h1>
                                 <div class="desc">
-                                    <div class="inline_edit" title="点击可编辑" onclick="Madmin.inline_edit(this,'{link ctl=photos act=modify_desc_inline id=$info['id']}')">{if !$info['desc']}
+                                    <div class="inline_edit" title="点击可编辑" onclick="Madmin.inline_edit(this,'{link ctl=photos act=modify_desc_inline id=$info['id']}')"><!--{if !$info['desc']}-->
                                         还没有描述，为照片添加描述吧！
-                                        {else}
+                                        <!--{else}-->
                                         {$info['desc']}
-                                        {/if} <span class="i_editinfo sprite"></span>
+                                        <!--{/if}--> <span class="i_editinfo sprite"></span>
                                     </div>
                                 </div>
                                 <div class="tags">
-                                    <div class="inline_edit" title="点击可编辑" onclick="Madmin.inline_edit(this,'{link ctl=photos act=modify_tag_inline id=$info['id']}')"> 标签: {$info['tags']}<span class="i_editinfo sprite"></span>
+                                    <div class="inline_edit" title="点击可编辑" onclick="Madmin.inline_edit(this,'{link ctl=photos act=modify_tags_inline id=$info['id']}')"> 标签: <!--{if !$info['tags']}-->点击添加标签吧！<!--{else}-->{$info['tags']}<!--{/if}--><span class="i_editinfo sprite"></span>
                                     </div>
                                 </div>
                             </div>
@@ -54,19 +70,66 @@
        }
        $('#photo_body img.photo').attr('width',img_width);
    }
-   $('#photo_body img.photo').load(function(){
-       detect_resize_img();
-   });
+   function show_pic_ctl(){
+       var photo_obj = $('#photo_body img.photo');
+       var pos = photo_obj.offset();
+       var i_height = photo_obj.outerHeight();
+       var i_width = photo_obj.outerWidth();
+       var w = i_width/2;
+       var ctl_obj = $('#photo_body div.ctl');
+       ctl_obj.css({ left:pos.left,top:pos.top, width:i_width, height:i_height });
+       {if $picture['previous']}
+       ctl_obj.find('div.prev').css({ height:i_height,width:w }).show().hover(function(){
+           $(this).find('span').css('display','block');
+       },function(){
+           $(this).find('span').css('display','none');
+       }).click(function(){
+           window.location.href = $('#pic_block a.btnprev').attr('href');
+       });
+       {/if}
+       {if $picture['next']}
+       ctl_obj.find('div.next').css({ height:i_height,width:w }).show().hover(function(){
+          $(this).find('span').css('display','block');
+       },function(){
+          $(this).find('span').css('display','none');
+       }).click(function(){
+           window.location.href = $('#pic_block a.btnnext').attr('href');
+       });
+       {/if}
+   }
    
+   detect_resize_img();
    var img = new Image();
    img.onload = function(){
        $('#photo_body img.photo').attr('src',img.src);
+       show_pic_ctl();
    };
    img.src = "{$info['path']}";
    
    $(window).resize(function() {
        detect_resize_img();
+       show_pic_ctl();
    });
+   
+   $(document).bind('keydown',
+       function(e){
+           if (e.altKey) return true;
+           var target = e.target;
+           if (target && target.type) return true;
+           switch(e.keyCode) {
+               case 63235: case 39: 
+               if ($("#pic_block").find("a.btnnext").length > 0){
+                    window.location=$('#pic_block a.btnnext').attr('href');
+                    return false; 
+               } break;
+               case 63234: case 37:
+               if ($("#pic_block").find("a.btnprev").length > 0){
+                   window.location=$('#pic_block a.btnprev').attr('href');
+                   return false; 
+               } break;
+           }
+       }
+   );
 </script>
                         <div class="col titbg">
                             <h1 class="f_left">{lang all_photo_comments}</h1>

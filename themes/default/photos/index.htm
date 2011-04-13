@@ -129,8 +129,8 @@
                         </div>
                         <div class="tags mb10">
                             <div class="inline_edit" title="点击可编辑" onclick="Madmin.inline_edit(this,'{link ctl=albums act=modify_tags_inline id=$album_info['id']}')">
-                                标签： 
-                                {$album_info['tags']}
+                                标签: 
+                                <!--{if !$album_info['tags']}-->点击添加标签吧！<!--{else}-->{$album_info['tags']}<!--{/if}-->
                                 <span class="i_editinfo sprite"></span></div>
                         </div>
                     </div>

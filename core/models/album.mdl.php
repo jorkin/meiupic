@@ -121,7 +121,6 @@ class album_mdl extends modelfactory{
     
     function set_cover($pic_id){
         $pic_info = loader::model('photo')->get_info($pic_id);
-        //$arr['cover_path'] = $pic_info['thumb'];
         $arr['cover_id'] = $pic_id;
         
         $this->db->update('#@photos','album_id='.intval($pic_info['album_id']),array('is_cover'=>0));
