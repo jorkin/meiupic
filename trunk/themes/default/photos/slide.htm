@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!--{if isset($meu_head)}-->
+<!--{$meu_head}-->
+<!--{/if}-->
+<meta name="generator" content="MeiuPic {VERSION}" />
+<link rel="stylesheet" type="text/css" href="{$statics_path}img/main.css" />
+<link rel="stylesheet" type="text/css" href="{$style_path}images/style.css" />
+<!--[if IE]><link rel="stylesheet" type="text/css" href="{$style_path}images/ie.css" /><![endif]-->
+<!--[if IE 6]>
+<script type="text/javascript" src="{$style_path}DD_belatedPNG.js"></script>
+<script type="text/javascript">
+	DD_belatedPNG.fix('.sprite,img,.png');
+</script>
+<![endif]-->
+<script src="{$statics_path}js/jquery.js" type="text/javascript"></script>
+<script src="{$statics_path}js/common.js" type="text/javascript"></script>
+<style>
+body{
+    background:#222;
+}
+#myslideshow{
+    width:100%;
+    height:100%;
+}
+.topbtn{
+    position:absolute;top:0;left:0;
+    padding:10px;
+}
+.topbtn a{
+    font-size:14px;
+    color:#fff;
+    text-decoration:none;
+}
+.topbtn a:hover{
+    background:none;
+    color:#eee;
+}
+</style>
+</head>
+
+<body>
+<script src="{$statics_path}js/swfobject.js" type="text/javascript"></script>
+<div class="topbtn"><a href="{$refer}">返回</a></div>
+<div id="myslideshow">
+</div>
+<script type="text/javascript">
+var flashvars = {};
+flashvars.galleryURL = escape('{link ctl=photos act=gallery aid=$album_id}');
+var params = {};
+params.allowfullscreen = true;
+params.wmode = 'transparent';
+params.allowscriptaccess = "always";
+params.bgcolor = "222222";
+swfobject.embedSWF("{$statics_path}swf/simpleviewer.swf", "myslideshow", "100%",document.documentElement.clientHeight, "9.0.124", false, flashvars, params);
+</script>
+</body>
+</html>

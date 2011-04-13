@@ -67,7 +67,16 @@ class modelfactory{
     }
     
     function get_info($id,$fileds='*'){
-        $this->db->select($this->table_name,$fileds,$this->id_col.'='.intval($id));
-        return $this->db->getRow();
+        if(is_array($id)){
+            if(count($id) >0){
+                $this->db->select($this->table_name,$fileds,$this->id_col.' in ('.implode(',',$id).')');
+                return $this->db->getAll();
+            }else{
+                return false;
+            }
+        }else{
+            $this->db->select($this->table_name,$fileds,$this->id_col.'='.intval($id));
+            return $this->db->getRow();
+        }
     }
 }

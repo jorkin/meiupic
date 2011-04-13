@@ -8,6 +8,10 @@ class photos_ctl extends pagecore{
         $this->mdl_photo = & loader::model('photo');
     }
     
+    function _sort_setting(){
+        return array('上传时间' => 'tu','拍摄时间' => 'tt','浏览数'=>'h','评论数'=>'c','照片名'=>'n');
+    }
+    
     function index(){
         $this->normal();
     }
@@ -22,7 +26,7 @@ class photos_ctl extends pagecore{
         
         $pageurl = site_link('photos','index',array('aid'=>$album_id,'page'=>'[#page#]'));
 
-        $sort_setting = array('上传时间' => 'tu','拍摄时间' => 'tt','浏览数'=>'h','评论数'=>'c');
+        $sort_setting = $this->_sort_setting();
         list($sort,$sort_list) =  get_sort_list($sort_setting,'photo','tu_desc');
         
         list($pageset,$page_setting_str) = get_page_setting('photo');
@@ -34,6 +38,7 @@ class photos_ctl extends pagecore{
         <ul class="optlist">
         <li class="current"><a href="'.site_link('photos','index',array('aid'=>$album_id)).'">平铺模式</a></li>
         <li><a href="'.site_link('photos','story',array('aid'=>$album_id)).'">故事模式</a></li>
+        <li><a href="'.site_link('photos','slide',array('aid'=>$album_id)).'">幻灯模式</a></li>
         </ul>
         </div>';
         
@@ -82,6 +87,67 @@ class photos_ctl extends pagecore{
         $this->page_init($page_title,$page_keywords,$page_description,array('aid'=>$album_id));
         
         $this->render();
+    }
+    
+    function slide(){
+        $album_id = $this->getGet('aid');
+        $album_info = $this->mdl_album->get_info($album_id);
+        $refer = isset($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:site_link('photos','index',array('aid'=>$album_id));
+        
+        $page_title = $album_info['name'].' - 幻灯片 - '.$this->setting->get_conf('site.title');
+        $page_keywords = $this->setting->get_conf('site.keywords');
+        $page_description = $this->setting->get_conf('site.description');
+        $this->page_init($page_title,$page_keywords,$page_description,array('aid'=>$album_id));
+        
+        $this->output->set('refer',$refer);
+        $this->output->set('album_id',$album_id);
+        $this->render();
+    }
+    
+    function gallery(){
+        $album_id = $this->getGet('aid');
+        if($album_id > 0){
+            $info = $this->mdl_album->get_info($album_id);
+            $title = $info['name'];
+        }else{
+            $title = '所有图片';
+        }
+        
+        echo '<?xml version="1.0" encoding="UTF-8"?>
+<simpleviewergallery 
+ title="'.$title.'"
+ textColor="FFFFFF"
+ frameColor="FFFFFF"
+ thumbPosition="BOTTOM"
+ galleryStyle="MODERN"
+ thumbColumns="10"
+ thumbRows="1"
+ showOpenButton="FALSE"
+ showFullscreenButton="TRUE"
+ frameWidth="6"
+ maxImageWidth="1600"
+ maxImageHeight="1200"
+ imagePath="data/"
+ thumbPath="data/"
+ useFlickr="false"
+ flickrUserName=""
+ flickrTags=""
+ languageCode="AUTO"
+ languageList="">'."\n";
+        
+        $sort_setting = $this->_sort_setting();
+        list($sort,$sort_list) =  get_sort_list($sort_setting,'photo','tu_desc');
+        
+        $pictures = $this->mdl_photo->get_all(NULL,array('album_id'=>$album_id),$sort);
+        if(is_array($pictures)){
+            foreach($pictures as $v){
+                echo '    <image imageURL="'.$v['path'].'" thumbURL="'.$v['thumb'].'" linkURL="'.$v['path'].'" linkTarget="">
+        <caption><![CDATA['.$v['name'].']]></caption>	
+    </image>'."\n";
+            }
+        }
+
+        echo '</simpleviewergallery>';
     }
     
     function modify(){
@@ -177,6 +243,11 @@ class photos_ctl extends pagecore{
     function view(){
         $iid = $this->getGet('id');
         $info = $this->mdl_photo->get_info($iid);
+        
+        if(!$info){
+            exit('照片不存在！');
+        }
+        
         $album_info = loader::model('album')->get_info($info['album_id']);
         
         $album_menu = '<li><a href="'.site_link('photos','index',array('aid'=>$info['album_id'])).'" class="current">'.$album_info['name'].'</a></li>';
@@ -194,11 +265,62 @@ class photos_ctl extends pagecore{
                 $comments['ls'][$k]['sub_comments'] = $mdl_comment->get_sub($v['id']);
             }
         }
+        
+        $sort_setting = $this->_sort_setting();
+        list($sort,$sort_list) =  get_sort_list($sort_setting,'photo','tu_desc');
+        
+        $nav['items'] = $this->mdl_photo->get_items(array('album_id'=>$info['album_id']),$sort);
+        $nav['rank_of'] = array_flip($nav['items']);
+        $nav['first_rank']   = 0;
+        $nav['last_rank']    = count($nav['items']) - 1;
+        $nav['current_item'] = $iid;
+        $nav['current_rank'] = $nav['rank_of'][$iid];
+        if($nav['current_rank'] != $nav['first_rank']){
+          $nav['previous_item'] = $nav['items'][ $nav['current_rank'] - 1 ];
+          $nav['first_item'] = $nav['items'][ $nav['first_rank'] ];
+        }
+        if($nav['current_rank'] != $nav['last_rank']){
+          $nav['next_item'] = $nav['items'][ $nav['current_rank'] + 1 ];
+          $nav['last_item'] = $nav['items'][ $nav['last_rank'] ];
+        }
+        $ids = array();
+        if (isset($nav['previous_item'])) {
+          array_push($ids, $nav['previous_item']);
+          array_push($ids, $nav['first_item']);
+        }
+        if (isset($nav['next_item'])) {
+          array_push($ids, $nav['next_item']);
+          array_push($ids, $nav['last_item']);
+        }
+        $p_result = $this->mdl_photo->get_info($ids);
+        $picture = array(
+            'previous' =>false,
+            'next' => false,
+            'first' => false,
+            'last' => false
+        );
+        if($p_result){
+            foreach($p_result as $v){
+                  if (isset($nav['previous_item']) and $v['id'] == $nav['previous_item']){
+                    $i = 'previous';
+                  }else if (isset($nav['next_item']) and $v['id'] == $nav['next_item']){
+                    $i = 'next';
+                  }else if (isset($nav['first_item']) and $v['id'] == $nav['first_item']){
+                    $i = 'first';
+                  }else if (isset($nav['last_item']) and $v['id'] == $nav['last_item']){
+                    $i = 'last';
+                  }
+                  $picture[$i] = $v;
+            }
+        }
+        
         $this->output->set('comments_list',$comments['ls']);
         $this->output->set('comments_total_page',$comments['total']);
         $this->output->set('comments_current_page',$comments['current']);
         $this->output->set('ref_id',$iid);
         $this->output->set('comments_type',2);
+        
+        $this->output->set('picture',$picture);
         
         $this->output->set('info',$info);
         $this->output->set('album_menu',$this->plugin->filter('album_menu',$album_menu,$info['album_id']));
@@ -210,5 +332,71 @@ class photos_ctl extends pagecore{
         $this->page_init($page_title,$page_keywords,$page_description,array('iid'=>$iid));
         
         $this->render();
+    }
+    
+    function modify_name_inline(){
+        $id = $this->getGet('id');
+        $photo_info = $this->mdl_photo->get_info($id);
+        $this->output->set('info',$photo_info);
+        $this->render();
+    }
+    
+    function modify_tags_inline(){
+        $id = $this->getGet('id');
+        $photo_info = $this->mdl_photo->get_info($id);
+        $this->output->set('info',$photo_info);
+        $this->render();
+    }
+    function save_tags(){
+        $id = $this->getGet('id');
+        $tags = safe_convert($this->getPost('tags'));
+        
+        if( $this->mdl_photo->update($id,array('tags'=>$tags)) ){
+            $return = array(
+                'ret'=>true,
+                'html' => '标签: '.$tags
+            );
+        }else{
+            $return = array(
+                'ret'=>false,
+                'msg' => '编辑相册标签失败！'
+            );
+        }
+        echo loader::lib('json')->encode($return);
+        return;
+    }
+    function modify_desc_inline(){
+        $id = $this->getGet('id');
+        $info = $this->mdl_photo->get_info($id);
+        $info['desc'] = safe_invert($info['desc']);
+        $this->output->set('info',$info);
+        $this->render();
+    }
+    
+    function save_desc(){
+        $id = $this->getGet('id');
+        $desc = safe_convert($this->getPost('desc'));
+        if($desc == ''){
+            $return = array(
+                'ret'=>false,
+                'msg' => '相册描述不能为空！'
+            );
+            echo loader::lib('json')->encode($return);
+            return;
+        }
+        if( $this->mdl_photo->update($id,array('desc'=>$desc)) ){
+            $return = array(
+                'ret'=>true,
+                'html' => $desc
+            );
+        }else{
+            $return = array(
+                'ret'=>false,
+                'msg' => '编辑相册描述失败！'
+            );
+        }
+        echo loader::lib('json')->encode($return);
+        return;
+        
     }
 }
