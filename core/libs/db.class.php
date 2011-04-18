@@ -59,7 +59,10 @@ class db_cla{
             $this->table=str_replace('#@',$this->pre,$table);
         }
     }
-
+    
+    function stripTpre($str){
+        return str_replace('#@',$this->pre,$str);
+    }
     /**
      * 可手工设置sql 语句
      *

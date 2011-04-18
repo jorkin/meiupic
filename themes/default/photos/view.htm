@@ -6,12 +6,12 @@
                 <div class="mainbody">
                     <div class="col titbg">
                         <h1 class="f_left">查看照片</h1>
-                        <h4 class="f_left"></h4>
+                        <h4 class="f_left">当前第{$current_rank}张，共{$album_info['photos_num']}张</h4>
                         {$photo_col_ctl}
                     </div>
                     <div class="innercol grid">
                         <div id="pic_block" class="tbmu">
-                            <span class="f_left"><a href="{link ctl=photos act=index aid=$info['album_id']}">返回相册列表</a></span>
+                            <span class="f_left"><a href="{link ctl=photos act=index aid=$info['album_id']}">返回照片列表</a></span>
                             <div class="f_right">
                                 {if $picture['first']}<a href="{link ctl=photos act=view id=$picture['first']['id']}#pic_block">第一张</a>{else}第一张{/if}
                                 <span class="pipe">|</span>
@@ -26,7 +26,7 @@
                         </div>
                         
                         <div id="photo_body">
-                            <img class="photo" alt="{$info['name']}" src="{$info['thumb']}" />
+                            <img class="photo" alt="{$info['name']}" src="{img $info['thumb']}" />
                             <div class="ctl"><div class="prev"><span>上一张</span></div><div class="next"><span>下一张</span></div></div>
                         </div>
                         <div id="photo_infos">
@@ -35,26 +35,49 @@
                                 <!--{if $info['taken_time']}-->
                                 <p>拍摄于: {echo date('Y-m-d',$info['taken_time'])}</p>
                                 <!--{/if}-->
-                                <p><a href="#">更多Exif信息</a></p>
+                                <p>图片尺寸: {$info['width']}×{$info['height']}</p>
+                                <!--{if $info['exif']}--><p><!--{if isset($info['exif']['Model'])}-->由{$info['exif']['Model']}拍摄 <!--{/if}--><a href="{link ctl=photos act=meta id=$info['id']}">更多Exif</a></p><!--{/if}-->
                                 <p>被查看了{$info['hits']}次</p>
-                                <p><a href="{$info['path']}" target="_blank">查看原图</a></p>
+                                <p><a href="{img $info['path']}" target="_blank">查看原图</a></p>
                             </div>
                             <div class="photo_main">
                                 <h1>
+                                    <!--{if $loggedin}-->
                                     <div class="inline_edit" title="点击可编辑" onclick="Madmin.inline_edit(this,'{link ctl=photos act=modify_name_inline id=$info['id']}')">{$info['name']} <span class="i_editinfo sprite"></span>
                                     </div>
+                                    <!--{else}-->
+                                    <div class="inline">
+                                        {$info['name']}
+                                    </div>
+                                    <!--{/if}-->
                                 </h1>
                                 <div class="desc">
+                                    <!--{if $loggedin}-->
                                     <div class="inline_edit" title="点击可编辑" onclick="Madmin.inline_edit(this,'{link ctl=photos act=modify_desc_inline id=$info['id']}')"><!--{if !$info['desc']}-->
                                         还没有描述，为照片添加描述吧！
                                         <!--{else}-->
                                         {$info['desc']}
                                         <!--{/if}--> <span class="i_editinfo sprite"></span>
                                     </div>
+                                    <!--{else}-->
+                                    <div class="inline">
+                                        {$info['desc']}
+                                    </div>
+                                    <!--{/if}-->
                                 </div>
                                 <div class="tags">
-                                    <div class="inline_edit" title="点击可编辑" onclick="Madmin.inline_edit(this,'{link ctl=photos act=modify_tags_inline id=$info['id']}')"> 标签: <!--{if !$info['tags']}-->点击添加标签吧！<!--{else}-->{$info['tags']}<!--{/if}--><span class="i_editinfo sprite"></span>
+                                    <!--{if $loggedin}-->
+                                    <div class="inline_edit" title="点击可编辑" onclick="Madmin.inline_edit(this,'{link ctl=photos act=modify_tags_inline id=$info['id']}')"> 标签: <!--{if !$info['tags']}-->点击添加标签吧！<!--{else}-->{$info['tags']}<!--{/if}--> <span class="i_editinfo sprite"></span>
                                     </div>
+                                    <!--{else}-->
+                                    <div class="inline">
+                                        <!--{if $info['tags']}-->
+                                            标签: <!--{loop $info['tags_list'] $v}-->
+                                            <a href="{link ctl=photos act=search tag=$v}">{$v}</a>
+                                            <!--{/loop}-->
+                                        <!--{/if}-->
+                                    </div>
+                                    <!--{/if}-->
                                 </div>
                             </div>
                         </div>
@@ -104,7 +127,7 @@
        $('#photo_body img.photo').attr('src',img.src);
        show_pic_ctl();
    };
-   img.src = "{$info['path']}";
+   img.src = "{img $info['path']}";
    
    $(window).resize(function() {
        detect_resize_img();
@@ -176,7 +199,7 @@
             <td class="right">
                 <div class="sidebar">
                     <div class="pic_nav">
-                        <div class="title"><a href="{link ctl=photos act=index aid=$info['album_id']}">{$album_info['name']}</a> [相册]</div>
+                        <div class="title"><a href="{link ctl=photos act=index aid=$info['album_id']}">{$album_info['name']}</a> [共{$album_info['photos_num']}张]</div>
                         <div class="body">
                             <div>
                                 {if $picture['previous']}
@@ -187,13 +210,13 @@
                             </div>
                             <ul>
                                 {if $picture['previous']}
-                                <li><a href="{link ctl=photos act=view id=$picture['previous']['id']}#pic_block" style="background:url('{$picture['previous']['thumb']}') center;"></a></li>
+                                <li><a href="{link ctl=photos act=view id=$picture['previous']['id']}#pic_block" style="background:url('{img $picture['previous']['thumb']}') center no-repeat;"></a></li>
                                 {else}
                                 <li><a href="javascript:void(0);">这是首张</a></li>
                                 {/if}
-                                <li class="current"><a href="javascript:void(0);" style="background:url('{$info['thumb']}') center"></a></li>
+                                <li class="current"><a href="javascript:void(0);" style="background:url('{img $info['thumb']}') center no-repeat;"></a></li>
                                 {if $picture['next']}
-                                <li><a href="{link ctl=photos act=view id=$picture['next']['id']}#pic_block" style="background:url('{$picture['next']['thumb']}') center"></a></li>
+                                <li><a href="{link ctl=photos act=view id=$picture['next']['id']}#pic_block" style="background:url('{img $picture['next']['thumb']}') center no-repeat;"></a></li>
                                 {else}
                                 <li><a href="javascript:void(0);">这是末张</a></li>
                                 {/if}

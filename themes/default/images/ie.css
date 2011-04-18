@@ -21,3 +21,10 @@ a span.sprite{
 .more_comments{
     filter: progid:DXImageTransform.Microsoft.gradient(enabled='true', startColorstr=#FDFDFD, endColorstr=#ECECEC);
 }
+
+.data_tab li{
+    filter: progid:DXImageTransform.Microsoft.gradient(enabled='true', startColorstr=#ffffff, endColorstr=#deeaff);
+}
+.data_tab li.current{
+    filter: none;
+}

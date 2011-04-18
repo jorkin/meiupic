@@ -5,6 +5,11 @@ function site_link($ctl='default',$act='index',$pars=array()){
     return $uri->mk_uri($ctl,$act,$pars);
 }
 
+function redirect($uri){
+    header('location: '.$uri);
+    exit;
+}
+
 function no_cache_header(){
     header("Content-Type:text/xml;charset=utf-8");
     header("Expires: Thu, 01 Jan 1970 00:00:01 GMT");
@@ -62,7 +67,7 @@ function get_sort_list($setting,$type,$default){
     $str = '<div class="listorder f_right selectlist">
     <span class="label">排序:</span>';
     $str .= '<div class="selected"></div><ul class="optlist">';
-    $sort = isset($_COOKIE['_sortset_'.$type])?$_COOKIE['_sortset_'.$type]:$default;
+    $sort = isset($_COOKIE['Mpic_sortset_'.$type])?$_COOKIE['Mpic_sortset_'.$type]:$default;
     foreach($setting as $k=>$v){
         if($v.'_asc' == $sort){
             $str .= '<li class="current"><a href="javascript:void(0);" onclick="sort_setting(\''.$type.'\',\''.$v.'_desc\');" class="list_asc_on"><span>'.$k.'</span></a>';
@@ -78,7 +83,7 @@ function get_sort_list($setting,$type,$default){
 
 function get_page_setting($type){
     $arr = array(12,30,56);
-    $current = isset($_COOKIE['_pageset_'.$type])?$_COOKIE['_pageset_'.$type]:'12';
+    $current = isset($_COOKIE['Mpic_pageset_'.$type])?$_COOKIE['Mpic_pageset_'.$type]:'12';
     
     $str = '<div class="pset f_right selectlist">
         <span class="label">显示数:</span>';
@@ -131,8 +136,7 @@ function arr_stripslashes($arr){
 }
 
 function get_album_cover($aid,$ext){
-    global $base_path;
-    return $base_path.'data/cover/'.$aid.'.'.$ext;
+    return 'data/cover/'.$aid.'.'.$ext;
 }
 
 function get_avatar($comment){
@@ -142,6 +146,11 @@ function get_avatar($comment){
     $avatar_prefix = 'http://www.gravatar.com/avatar.php?rating=G&size=48&gravatar_id=';
     $url = $avatar_prefix.$file;
     return $url;
+}
+
+function img_path($path){
+    $plugin =& loader::lib('plugin');
+    return $plugin->filter('photo_path',$GLOBALS['base_path'].$path,$path);
 }
 
 function get_real_ip(){
@@ -198,4 +207,30 @@ function safe_invert($string, $html=0) {
     }
     $string = str_replace("&nbsp;"," ",$string);
     return $string;
+}
+
+//covert bytes to be readable
+function bytes2u($size){
+    $result = '';
+    if($size < 1024)
+    {
+      $result = round($size, 2).' B';
+    }
+    elseif($size < 1024*1024)
+    {
+      $result = round($size/1024, 2).' KB';
+    }
+    elseif($size < 1024*1024*1024)
+    {
+      $result = round($size/1024/1024, 2).' MB';
+    }
+    elseif($size < 1024*1024*1024*1024)
+    {
+      $result = round($size/1024/1024/1024, 2).' GB';
+    }
+    else
+    {
+      $result = round($size/1024/1024/1024/1024, 2).' TB';
+    }
+    return $result;
 }

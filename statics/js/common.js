@@ -159,17 +159,17 @@ Mui.form = {
         });
     },
     showResult : function(ret,formid){
+        var m_notice = $('#'+formid).parent().find('.meiu_notice_div');
         if( ret != '' ){
-            if( $('#meiu_notice_div').length == 0 && formid != '' ){
-                $('#'+formid).before('<div id="meiu_notice_div"></div>');
-                $('#meiu_notice_div').html(ret);
+            if( m_notice.length == 0 && formid != '' ){
+                $('#'+formid).before('<div class="meiu_notice_div">'+ret+'</div>');
             }else{
-                $('#meiu_notice_div').html(ret);
+                m_notice.html(ret);
             }
-            $('#meiu_notice_div').css({display:'block'});
+            m_notice.css({display:'block'});
         }else{
-            if( $('#meiu_notice_div').length > 0 ){
-                $('#meiu_notice_div').css({display:'none'});
+            if( m_notice.length > 0 ){
+                m_notice.css({display:'none'});
             }
         }
     }
@@ -214,13 +214,13 @@ function setMask(id,state){
 }
 
 function page_setting(t,num){
-    var cookie_name = '_pageset_'+t;
+    var cookie_name = 'Mpic_pageset_'+t;
     $.cookie(cookie_name,num,{expires: 7, path: '/'});
     window.location.reload();
 }
 
 function sort_setting(t,sort){
-    var cookie_name = '_sortset_'+t;
+    var cookie_name = 'Mpic_sortset_'+t;
     $.cookie(cookie_name,sort,{expires: 7, path: '/'});
     window.location.reload();
 }

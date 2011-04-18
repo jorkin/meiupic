@@ -4,7 +4,7 @@
  * 
  * @author : Lingter
  * @support : http://www.meiu.cn
- * @copyright : (c)2010 meiu.cn lingter@gmail.com
+ * @copyright : (c)2010-2011 meiu.cn lingter@gmail.com
  */
 
 class photo_mdl extends modelfactory{
@@ -17,6 +17,14 @@ class photo_mdl extends modelfactory{
         }
         if(isset($filters['name']) && $filters['name']!=''){
             $str .= " and name like '%".$this->db->q_str($filters['name'],false)."%'";
+        }
+        if(isset($filters['tag']) && $filters['tag'] != ''){
+            $tag_info = loader::model('tag')->get_by_type_name($filters['tag'],2);
+            if($tag_info){
+                $str .= " and id in (select rel_id from ".$this->db->stripTpre('#@tag_rel')." where tag_id=".intval($tag_info['id']).")";
+            }else{
+                $str .= " and 1=0";
+            }
         }
         return $str;
     }

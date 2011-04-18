@@ -15,6 +15,17 @@ class album_mdl extends modelfactory{
         if(isset($filters['name']) && $filters['name']!=''){
             $str .= " and name like '%".$this->db->q_str($filters['name'],false)."%'";
         }
+        if(isset($filters['tag']) && $filters['tag'] != ''){
+            $tag_info = loader::model('tag')->get_by_type_name($filters['tag'],1);
+            if($tag_info){
+                $str .= " and id in (select rel_id from ".$this->db->stripTpre('#@tag_rel')." where tag_id=".intval($tag_info['id']).")";
+            }else{
+                $str .= " and 1=0";
+            }
+        }
+        if(! loader::model('user')->loggedin()){
+            $str .= " and priv_type<>3";
+        }
         return $str;
     }
     
@@ -92,16 +103,19 @@ class album_mdl extends modelfactory{
         $this->db->select('#@photos','id,path','album_id='.intval($id).' and deleted=0');
         $this->db->selectLimit(null,1);
         $photo_info = $this->db->getRow();
+        if($photo_info){
+            $cover_info['cover_id'] = $photo_info['id'];
         
-        $cover_info['cover_id'] = $photo_info['id'];
+            $this->db->update('#@photos','album_id='.intval($id),array('is_cover'=>0));
+            $this->db->query();
+            $this->db->update('#@photos','id='.intval($cover_info['cover_id']),array('is_cover'=>1));
+            $this->db->query();
+            $this->make_cover_img($id,$photo_info['path'],$ext);
         
-        $this->db->update('#@photos','album_id='.intval($id),array('is_cover'=>0));
-        $this->db->query();
-        $this->db->update('#@photos','id='.intval($cover_info['cover_id']),array('is_cover'=>1));
-        $this->db->query();
-        $this->make_cover_img($id,$photo_info['path'],$ext);
-        
-        $cover_info['cover_ext'] = $ext;
+            $cover_info['cover_ext'] = $ext;
+        }else{
+            $cover_info['cover_id'] = 0;
+        }
         
         return $this->update($id,$cover_info);
     }
@@ -130,5 +144,37 @@ class album_mdl extends modelfactory{
         $this->make_cover_img($pic_info['album_id'],$pic_info['path'],$ext);
         $arr['cover_ext'] = $ext;
         return $this->update($pic_info['album_id'],$arr);
+    }
+    
+    function check_album_priv($id,$album_info = null){
+        if(is_null($album_info)){
+            $album_info = $this->get_info($id);
+        }
+        $logined = loader::model('user')->loggedin();
+        if($logined){
+            return true;
+        }
+        if($album_info['priv_type']==0){
+            return true;
+        }
+        if($album_info['priv_type']==3){
+            return false;
+        }
+        $key = 'Mpic_album_priv_'.$id;
+        if($album_info['priv_type']==1){
+            if(isset($_COOKIE[$key])){
+               if($_COOKIE[$key] == md5($album_info['priv_pass'])){
+                   return true;
+               }
+            }
+        }
+        if($album_info['priv_type']==2){
+            if(isset($_COOKIE[$key])){
+               if($_COOKIE[$key] == md5($album_info['priv_question'].$album_info['priv_answer'])){
+                   return true;
+               }
+            }
+        }
+        return false;
     }
 }

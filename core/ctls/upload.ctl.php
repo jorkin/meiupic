@@ -85,6 +85,7 @@ class upload_ctl extends pagecore{
             }
             $target_dir = ROOTDIR.'cache'.DIRECTORY_SEPARATOR.'tmp';
             $imglib =& loader::lib('image');
+            $exiflib =& loader::lib('exif');
             $media_dirname = 'data/'.date('Ymd');
             $thumb_dirname = 'data/thumb/'.date('Ymd');
             if(!file_exists(ROOTDIR.$media_dirname)){
@@ -102,9 +103,13 @@ class upload_ctl extends pagecore{
                 $filename = $this->getPost("muilti_uploader_{$i}_name");
                 $status =  $this->getPost("muilti_uploader_{$i}_status");
                 $fileext = strtolower(end(explode('.',$filename)));
-                $key = md5(str_replace('.','',microtime(true)));
+                $key = str_replace('.','',microtime(true));
                 
                 $realpath = ROOTDIR.$media_dirname.'/'.$key.'.'.$fileext;
+                if(file_exists($realpath)){
+                    $key = $key.'_1';
+                    $realpath = ROOTDIR.$media_dirname.'/'.$key.'.'.$fileext;
+                }
                 if($status == 'done' && file_exists($tmpfile)){
                     if(@copy($tmpfile,$realpath)){
                         $arr['album_id'] = $album_id;
@@ -113,13 +118,23 @@ class upload_ctl extends pagecore{
                         $arr['name'] = $filename;
                         $arr['create_time'] = time();
                         $arr['create_y'] = date('Y');
-                        $arr['create_m'] = date('m');
-                        $arr['create_d'] = date('d');
+                        $arr['create_m'] = date('n');
+                        $arr['create_d'] = date('j');
                         $imglib->load($realpath);
                         //resize image to thumb: 180*180 
                         $arr['width'] = $imglib->getWidth();
                         $arr['height'] = $imglib->getHeight();
-                        
+                        if( $imglib->getExtension() == 'jpg'){
+                            $exif = $exiflib->get_exif($realpath);
+                            if($exif){
+                                $arr['exif'] = serialize($exif);
+                                $taken_time = strtotime($exif['DateTimeOriginal']);
+                                $arr['taken_time'] = $taken_time;
+                                $arr['taken_y'] = date('Y',$taken_time);
+                                $arr['taken_m'] = date('n',$taken_time);
+                                $arr['taken_d'] = date('j',$taken_time);
+                            }
+                        }
                         $imglib->resizeScale(180,180);
                         
                         $imglib->save(ROOTDIR.$arr['thumb']);

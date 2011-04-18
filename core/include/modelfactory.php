@@ -53,7 +53,11 @@ class modelfactory{
     
     function save($arr){
         $this->db->insert($this->table_name,$arr);
-        return $this->db->query();
+        if( $this->db->query() ){
+            return $this->db->insertId();
+        }else{
+            return false;
+        }
     }
     
     function update($id,$arr){
