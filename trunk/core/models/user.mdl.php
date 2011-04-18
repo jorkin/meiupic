@@ -57,6 +57,17 @@ class user_mdl extends modelfactory{
         return $this->db->getRow();
     }
     
+    function check_pass($uid,$pass){
+        $info = $this->get_info($uid);
+        if(!$info){
+            return false;
+        }
+        if($info['user_pass'] != $pass){
+            return false;
+        }
+        return true;
+    }
+    
     /**
      * 判断用户是否登陆
      *
@@ -73,8 +84,12 @@ class user_mdl extends modelfactory{
      * @param String $default
      * @return String
      */
-    function get_info($key,$default = '') {
+    function get_field($key,$default = '') {
         return isset ($this->uinfo[$key]) ? $this->uinfo[$key] : $default;
+    }
+    
+    function get_all_field(){
+        return $this->uinfo;
     }
     
     /**

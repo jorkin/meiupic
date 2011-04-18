@@ -25,7 +25,11 @@
                                             <tr>
                                                 <td>
                                                     <a href="{link ctl=photos aid=$v['id']}">
-                                        <!--{if $v['cover_id']}--><img src="{$v['cover_path']}" /><!--{else}--><img src="{$base_path}statics/img/nophoto.gif" /><!--{/if}-->
+                                        <!--{if !$loggedin && $v['priv_type']!=0}-->
+                                        <img src="{$base_path}statics/img/lock.gif" />
+                                        <!--{else}-->
+                                        <!--{if $v['cover_id']}--><img src="{img $v['cover_path']}" /><!--{else}--><img src="{$base_path}statics/img/nophoto.gif" /><!--{/if}-->
+                                        <!--{/if}-->
                                                     </a>
                                                 </td>
                                             </tr>
@@ -34,8 +38,10 @@
                                     </div>
                                     <div class="pic_ctl">
                                         <ul class="btns">
+                                            <!--{if $loggedin}-->
                                             <li><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=albums act=confirm_delete id=$v['id']}');" title="移动到回收站"><span class="i_littletrash sprite"></span></a></li>
                                             <li><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=albums act=modify id=$v['id']}');" title="修改"><span class="i_edit sprite"></span></a></li>
+                                            <!--{/if}-->
                                             <!--{$v['album_control_icons']}-->
                                         </ul>
                                     </div>
@@ -45,7 +51,13 @@
                                     </div>
                                 </div>
                                 <div class="info">
-                                    <div class="title"><!--{if $loggedin}--><input class="selitem" type="checkbox" name="sel_id[{$v['id']}]" value="1" /><!--{/if}--> <span class="name"><a nid="{$v['id']}" title="点击修改相册名" href="javascript:void(0)" onclick="Madmin.rename(this,'{link ctl=albums act=rename id=$v['id']}')">{$v['name']}</a></span></div>
+                                    <div class="title">
+                                    <!--{if $loggedin}-->
+                                    <input class="selitem" type="checkbox" name="sel_id[{$v['id']}]" value="1" /> <span class="name"><a nid="{$v['id']}" title="点击修改相册名" href="javascript:void(0)" onclick="Madmin.rename(this,'{link ctl=albums act=rename id=$v['id']}')">{$v['name']}</a></span>
+                                    <!--{else}-->
+                                    <span class="name">{$v['name']}</span>
+                                    <!--{/if}-->
+                                    </div>
                                     <div class="info_col">
                                         <span class="f_left gray">{$v['photos_num']}张照片</span>
                                         <span class="f_right gray"><span class="i_greenicn sprite"></span>{echo enum_priv_type($v['priv_type'])}</span>
@@ -66,12 +78,26 @@
                     </div>
                     <!--{else}-->
                         <div class="no_data_info">
-                            <div class="pic no_album"></div>
+                            <!--{if $is_search}-->
+                            <div class="pic no_album_search"></div>
                             <div class="data_msg">
-                                <div>{lang no_album_notice}</div >
-                                <div class="button"><div class="bigbutton"><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=albums act=create}');"><span>{lang create_new_album}</span></a></div></div>
+                                <div>{lang no_album_search_notice}</div >
+                                <div class="button"><a href="{link ctl=albums}">查看所有相册</a></div>
                             </div>
                             <div class="clear"></div>
+                            <!--{else}-->
+                            <div class="pic no_album"></div>
+                            <div class="data_msg">
+                                <!--{if $loggedin}-->
+                                <div>{lang no_album_notice}</div >
+                                <div class="button"><div class="bigbutton"><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=albums act=create}');"><span>{lang create_new_album}</span></a></div></div>
+                                <!--{else}-->
+                                <div>{lang no_album_notice_notlogin}</div>
+                                <div class="button"><a href="javascript:void(0);" onclick="Mui.box.show('{link ctl=users act=login}');">登录后创建</a></div>
+                                <!--{/if}-->
+                            </div>
+                            <div class="clear"></div>
+                            <!--{/if}-->
                         </div>
                     <!--{/if}-->
                 </div>
@@ -86,7 +112,7 @@
                     <div class="sidesearch mb20">
                         <h2>{lang search_albums}</h2>
                             <form id="album_search" class="search" action="{link ctl=albums}" method="post">
-                                <input type="text" class="inputstyle iptw1" name="search_name" value="{$search['name']}" />
+                                <input type="text" class="inputstyle iptw1" name="sname" value="{$search['name']}" />
                                 <input type="submit" name="submit" class="ylbtn1 ml5" value="{lang search}" />
                             </form>
                     </div>

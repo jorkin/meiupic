@@ -133,7 +133,7 @@ Class adapter_sqlite{
         $this->query_num++;
         if (!$query){
             $this->lasterr = sqlite_last_error($this->conn);
-            $this->lasterrcode = sqlite_error_string($this->conn);
+            $this->lasterrcode = sqlite_error_string($this->lasterr);
             if($this->_transflag){
                 $this->_transErrors[]['sql'] = $sql;
                 $this->_transErrors[]['errcode'] = $this->lasterrcode;

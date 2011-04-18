@@ -101,6 +101,7 @@ table.layout td.right{
 }
 .mainbody .col{
     height:48px;
+    clear:both;
 }
 .mainbody .col h1{
     font-size:1.3em;
@@ -126,6 +127,9 @@ table.layout td.right{
     color:#4A4A4A;
 }
 
+.mainbody .innerconetent{
+    padding:20px;
+}
 .pset .selected,.pset .optlist{
     width:50px;
 }
@@ -429,6 +433,7 @@ table.layout td.right{
 }
 #photo_infos{
     padding:0 20px 20px;
+    height:1%;
 }
 #photo_infos h1{
     text-align:center;
@@ -446,9 +451,9 @@ table.layout td.right{
     margin-right:210px;
     border-right:1px solid #ccc;
     padding-right:10px;
-    height:80px;
+    height:120px;
     height:auto !important;
-    min-height:80px;
+    min-height:120px;
 }
 .photo_main .desc{
     line-height:1.6;
@@ -505,4 +510,95 @@ table.layout td.right{
 }
 .pic_nav .turn_page_down{
     background-position:center bottom;
+}
+/*tabs*/
+.data_tab{padding-left:20px;height:26px;margin-bottom:10px;background:url(1pxdot.gif) repeat-x bottom;}
+.data_tab li{
+    float:left;
+    padding:0 20px;
+    line-height:24px;
+    margin-right:10px;
+    /*background:#EDF3FE;*/
+    border-color: #aaa;
+    border-style: solid;
+    border-width: 1px;
+    background:-moz-linear-gradient(center top , #ffffff, #deeaff) repeat scroll 0 0 transparent;
+    background:-webkit-gradient(linear,0% 0%, 0% 100%, from(#ffffff), to(#deeaff));
+}
+.data_tab li a,.data_tab li a:link,.data_tab li a:visited{
+    color:#333;
+    background:transparent;
+    text-decoration:none;
+}
+.data_tab li.current a{
+    font-weight:bold;
+}
+.data_tab li.current{
+    background: #fff;
+    border-color: #aaa #aaa #fff;
+}
+
+
+.taglist{
+    padding:0 10px;
+    height:1%;
+}
+.taglist li{
+    line-height:4em;
+    display:inline;
+    padding-right:15px;
+}
+
+
+.meta_thumb{
+    margin:40px;
+    _margin-left:20px;
+    width:180px;
+    float:left;
+}
+.meta_thumb p.datetime{
+    margin:10px 0;
+}
+.meta_data{
+    margin-left:300px;
+    margin-top:20px;
+    margin-right:20px;
+    margin-bottom:20px;
+}
+.meta_data table{
+    border-collapse: collapse;
+    width:70%;
+}
+.meta_data table td{
+    line-height:30px;
+    border-bottom:1px solid #eee;
+}
+.meta_data .lht2{
+    padding:10px 0 20px;
+}
+
+.innerconetent form .field {
+    padding: 0 0 15px;
+}
+
+#center_box{
+    width:500px;
+    padding:20px;
+    margin:0 auto 10px;
+    border:1px solid #ccc;
+    background:#fff;
+    -moz-border-radius:10px;
+    -webkit-border-radius:10px;
+    border-radius:10px;
+    -moz-box-shadow:3px 3px 4px #BBB;
+    -webkit-box-shadow:3px 3px 4px #BBB;
+    box-shadow:3px 3px 4px #BBB;
+}
+
+#center_box div.title{
+    font-size:16px;
+    font-weight:bold;
+    text-align:left;
+    line-height:2;
+    margin-bottom:20px;
 }

@@ -35,7 +35,7 @@ class pagecore{
         if(!$this->user->loggedin()){
             $user_status = '<a href="javascript:void(0);" onclick="Mui.box.show(\''.site_link('users','login').'\');">登录</a>';
         }else{
-            $user_status = '<span class="name">Lingter</span>
+            $user_status = '<span class="name">'.$this->user->get_field('user_nicename').'</span>
             <span class="pipe">|</span>
             <a title="查看和修改我的个人资料" href="'.site_link('users','profile').'">我的资料</a>
             <span class="pipe">|</span>

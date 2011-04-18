@@ -70,36 +70,3 @@ a:hover {
 </style>
 
 </head>
-
-<body>
-<noscript>
-  <div class="js_disabled_noti">
-    <div class="inner">
-      {lang no_script_notice}
-    </div>
-  </div>
-</noscript>
-<div id="header">
-    <h1>{$site_name}</h1>
-    <div id="settings_person">
-        {$user_status}
-    </div>
-    <div id="updateinfo" style="display:none;">您有<span class="alertcolor">10</span>个插件可供<a href="#" class="alertcolor">更新</a>。<span class="alertcolor">2.1</span>版已经发布，<a href="#" class="alertcolor">立刻更新</a>？</div>
-    <div id="tabs">
-        <ul id="album_tabs">
-            <li><a title="相册列表" {if (IN_CTL=='albums' and IN_ACT=='index')||(IN_CTL=='default')}class="current"{/if} href="{$base_path}">{lang myalbum}</a></li>
-            <!--{if isset($album_menu)}-->
-                {$album_menu}
-            <!--{/if}-->
-        </ul>
-        <ul id="main_tabs">
-            <li><a title="查看所有标签列表，快速找到照片" href="{link ctl=tags}" {if IN_CTL=='tags'}class="current"{/if}>标签</a></li>
-            <!--{if $loggedin}-->
-            <li><a title="上传照片" href="{link ctl=upload act=index}" {if IN_CTL=='upload'}class="current"{/if}>上传照片</a></li>
-            <li><a title="系统设置" href="#">系统设置</a></li>
-            <li class="trash"><a href="{link ctl=trash}"><span class="i_trash sprite">回收站</span></a></li>
-            <!--{/if}-->
-        </ul>
-        <div class="clear"></div>
-    </div>
-</div>

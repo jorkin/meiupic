@@ -1,0 +1,42 @@
+{template block/header}
+
+<div id="bodywrap">
+    <table class="layout">
+        <tr>
+            <td class="left">
+                <div class="mainbody">
+                    <div class="col titbg">
+                        <h1 class="f_left">标签列表</h1>
+                        <h4 class="f_left"></h4>
+                        <div class="rmenu f_right">
+                        </div>
+                    </div>
+                    <div class="innercol">
+                       <div class="innerconetent">
+                           <div class="data_tab">
+                               <ul>
+                                   <li {if !$tag_type}class="current"{/if}><a href="{link ctl=tags}">全部</a></li>
+                                   <li {if $tag_type==1}class="current"{/if}><a href="{link ctl=tags type=1}">相册</a></li>
+                                   <li {if $tag_type==2}class="current"{/if}><a href="{link ctl=tags type=2}">照片</a></li>
+                               </ul>
+                           </div>
+                           <ul class="taglist">
+                               {loop $tag_list $v}
+                               <li><a href="{if $v['type']==1}{link ctl=albums act=index tag=$v['name']}{else}{link ctl=photos act=search tag=$v['name']}{/if}" style="font-size:{$v['fontsize']};">{$v['name']}</a></li>
+                               {/loop}
+                           </ul>
+                       </div>
+                       <div class="bot_toolbar clear">
+                              <div class="f_left paginator">
+                                  {$pagestr}
+                              </div>
+                              <div class="clear"></div>
+                          </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+{template block/footer}

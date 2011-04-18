@@ -8,18 +8,25 @@ class albums_ctl extends pagecore{
     }
     
     function index(){
-        $search['name'] = safe_convert($this->getRequest('search_name'));
+        $search['name'] = safe_convert($this->getRequest('sname'));
+        $search['tag'] = safe_convert($this->getRequest('tag'));
         $page = $this->getGet('page','1');
         
+        $par['page'] = '[#page#]';
         if($search['name']){
-            $pageurl = site_link('albums','index',
-                                array(
-                                    'search_name'=>$search['name'],
-                                    'page'=>'[#page#]'
-                                ));
-        }else{
-            $pageurl = site_link('albums','index',array('page'=>'[#page#]'));
+            $par['sname'] = $search['name'];
         }
+        if($search['tag']){
+            $par['tag'] = $search['tag'];
+        }
+        $pageurl = site_link('albums','index',$par);
+        
+        if($search['name'] || $search['tag']){
+            $this->output->set('is_search',true);
+        }else{
+            $this->output->set('is_search',false);
+        }
+        
         
         list($pageset,$page_setting_str) = get_page_setting('album');
         $this->mdl_album->set_pageset($pageset);
@@ -96,7 +103,8 @@ class albums_ctl extends pagecore{
             }
         }
         
-        if($this->mdl_album->save($album)){
+        if($album_id = $this->mdl_album->save($album)){
+            loader::model('tag')->save_tags($album_id,$album['tags'],1);
             ajax_box_success('创建相册成功！',null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
             ajax_box_failed('创建相册失败！');
@@ -112,6 +120,7 @@ class albums_ctl extends pagecore{
     }
     
     function update(){
+        $album_id = $this->getGet('id');
         $album['name'] = safe_convert($this->getPost('album_name'));
         $album['desc'] = safe_convert($this->getPost('desc'));
         $album['priv_type'] = $this->getPost('priv_type','0');
@@ -136,7 +145,9 @@ class albums_ctl extends pagecore{
             }
         }
         
-        if($this->mdl_album->update($this->getGet('id'),$album)){
+        if($this->mdl_album->update($album_id,$album)){
+            loader::model('tag')->save_tags($album_id,$album['tags'],1);
+            
             ajax_box_success('修改相册成功！',null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
             ajax_box_failed('修改相册失败！');
@@ -236,6 +247,7 @@ class albums_ctl extends pagecore{
         $tags = safe_convert($this->getPost('tags'));
         
         if( $this->mdl_album->update($id,array('tags'=>$tags)) ){
+            loader::model('tag')->save_tags($id,$tags,1);
             $return = array(
                 'ret'=>true,
                 'html' => '标签: '.$tags
