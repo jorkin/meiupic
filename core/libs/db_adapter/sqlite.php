@@ -70,14 +70,14 @@ Class adapter_sqlite{
         
         $dbinfo = $dbinfo ? $dbinfo : $this->dbinfo;
         $this->conn=false;
-        if(!file_exists($dbinfo['dbname'])){
-            if(file_exists(ROOTDIR.$dbinfo['dbname'])){
-                $dbinfo['dbname'] = ROOTDIR.$dbinfo['dbname'];
+        if(!file_exists($dbinfo['dbpath'])){
+            if(file_exists(ROOTDIR.$dbinfo['dbpath'])){
+                $dbinfo['dbpath'] = ROOTDIR.$dbinfo['dbpath'];
             }else{
                 exit('Sqlite数据库不存在!');
             }
         }
-        $this->conn=sqlite_open($dbinfo['dbname']);
+        $this->conn=sqlite_open($dbinfo['dbpath']);
         if($this->conn){
             return $this->conn;
         }

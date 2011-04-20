@@ -231,7 +231,7 @@ if($method == 'license'){
             show_install();
             
             $CONFIG['database']['default']['adapter'] = 'sqlite';
-            $CONFIG['database']['default']['dbname'] = $dst_dbfile;
+            $CONFIG['database']['default']['dbpath'] = $dst_dbfile;
             $CONFIG['database']['default']['pre'] = 'meu_';
             $CONFIG['cookie_name'] = 'MPIC_'.random(4);
             $CONFIG['cookie_auth_key'] = random(12);
