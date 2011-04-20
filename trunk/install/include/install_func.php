@@ -523,8 +523,8 @@ function show_env_result(&$env_items, &$dirfile_items, &$func_items) {
 		
 		$env_str .= "<tr>\n";
 		$env_str .= "<td>".lang($key)."</td>\n";
-		$env_str .= "<td class=\"padleft\">".lang($item['r'])."</td>\n";
-		$env_str .= "<td class=\"padleft\">".lang($item['b'])."</td>\n";
+		$env_str .= "<td class=\"padleft\">".lang($item['r'],true)."</td>\n";
+		$env_str .= "<td class=\"padleft\">".lang($item['b'],true)."</td>\n";
 		$env_str .= ($status ? "<td class=\"w pdleft1\">" : "<td class=\"nw pdleft1\">").lang($item['current'],true)."</td>\n";
 		$env_str .= "</tr>\n";
 	}
