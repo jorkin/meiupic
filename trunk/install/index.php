@@ -188,6 +188,8 @@ if($method == 'license'){
             $CONFIG['database']['default']['pre'] = $tablepre;
             $CONFIG['cookie_name'] = 'MPIC_'.random(4);
             $CONFIG['cookie_auth_key'] = random(12);
+            $CONFIG['img_engine'] = class_exists('imagick')?'imagick':'gd';
+            
             save_config_file($confile, $CONFIG, $default_config);
             $db =& loader::database();
         
@@ -233,6 +235,8 @@ if($method == 'license'){
             $CONFIG['database']['default']['pre'] = 'meu_';
             $CONFIG['cookie_name'] = 'MPIC_'.random(4);
             $CONFIG['cookie_auth_key'] = random(12);
+            $CONFIG['img_engine'] = class_exists('imagick')?'imagick':'gd';
+            
             save_config_file($confile, $CONFIG, $default_config);
             if(copy($sqlitefile,ROOTDIR.$dst_dbfile)){
                 showjsmessage(lang('copy_sqlite').$dst_dbfile.lang('succeed'));
