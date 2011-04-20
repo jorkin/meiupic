@@ -151,6 +151,13 @@ function boot_init(){
     }
 }
 
+function timezone_set($timeoffset = 8) {
+	if(function_exists('date_default_timezone_set')) {
+		@date_default_timezone_set('Etc/GMT'.($timeoffset > 0 ? '-' : '+').(abs($timeoffset)));
+	}
+}
+
+
 function init_defines(){
     $Config =& loader::config();
     if(isset($Config['img_engine']) && in_array($Config['img_engine'],array('imagick','gd'))){
@@ -159,14 +166,11 @@ function init_defines(){
         define('IMG_ENGINE','gd');
     }
     
-    if(function_exists('date_default_timezone_set')) { 
-        date_default_timezone_set($Config['timezone']);
-    }
+    timezone_set($Config['timeoffset']);
 }
 
 function init_template(){
     $current_theme = loader::model('setting')->get_conf('system.current_theme','1');
-    
     define('TEMPLATEID', $current_theme);
     $themeinfo = loader::model('template')->info($current_theme);
     if($themeinfo){
@@ -183,7 +187,7 @@ function meiu_bootstrap(){
     require_once(COREDIR.'lang'.DIRECTORY_SEPARATOR.LANGSET.'.lang.php');
     require_once(COREDIR.'loader.php');
     require_once(INCDIR.'functions.php');
-    require_once(INCDIR.'modelfactory.php');
+    
     unset_globals();
     init_defines();
     boot_init();

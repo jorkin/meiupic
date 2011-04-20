@@ -67,6 +67,28 @@ class photo_mdl extends modelfactory{
         return $str;
     }
     
+    function restore($id){
+        if(!$this->update($id,array('deleted'=>0))){
+            return false;
+        }
+        $info = $this->get_info($id);
+        $album_mdl =& loader::model('album');
+        $album_mdl->update_photos_num($info['album_id'],false);
+        $album_mdl->check_repare_cover($info['album_id']);
+        return true;
+    }
+    
+    function real_delete($id,$info=null){
+        if(is_null($info)){
+            $info = $this->get_info($id);
+        }
+        $mdl_comment =& loader::model('comment');
+        $mdl_comment->delete_by_ref(2,$id);
+        
+        @unlink(ROOTDIR.$info['thumb']);
+        @unlink(ROOTDIR.$info['path']);
+        return $this->delete($id);
+    }
     
     function get_items($filters = array(),$sort = null){
         $where = $this->_filters($filters);
@@ -80,11 +102,32 @@ class photo_mdl extends modelfactory{
         return $data;
     }
     
+    function get_all_items($aid){
+        $this->db->select('#@photos','*','album_id='.intval($aid));
+        return $this->db->getAll();
+    }
+    
+    function get_trash_count(){
+        $this->db->select('#@photos','count(*)','deleted=1');
+        return $this->db->getOne();
+    }
+    
+    function get_trash($page=null){
+        $this->db->select('#@photos','*','deleted=1');
+        if($page){
+            $data = $this->db->toPage($page,10);
+        }else{
+            $data = $this->db->getAll();
+        }
+        return $data;
+    }
+    
     function trash($id){
         $info = $this->get_info($id);
         if(!$this->update($id,array('deleted'=>1))){
             return false;
         }
+        trash_status(1);
         $album_mdl =& loader::model('album');
         $album_mdl->update_photos_num($info['album_id'],false);
         $album_mdl->check_repare_cover($info['album_id']);
@@ -100,6 +143,7 @@ class photo_mdl extends modelfactory{
         if(!$this->db->query()){
             return false;
         }
+        trash_status(1);
         $album_mdl =& loader::model('album');
         $album_mdl->update_photos_num($info['album_id'],false);
         $album_mdl->check_repare_cover($info['album_id']);

@@ -25,7 +25,6 @@ class tags_ctl extends pagecore{
             }
         }
         
-        //foreach($tags )
         $pagestr = loader::lib('page')->fetch($tags['total'],$tags['current'],$pageurl);
         $this->output->set('pagestr',$pagestr);
         $this->output->set('tag_list',$tags['ls']);

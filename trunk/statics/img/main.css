@@ -258,6 +258,16 @@ textarea.inputstyle{
     padding-top:16px;
     width:16px;
 }
+.i_restore{
+    background-position:-214px -5px;
+    padding-top:16px;
+    width:16px;
+}
+.i_store_sp{
+    background-position:-237px -8px;
+    width:10px;
+    padding-top:10px;
+}
 /*selector*/
 .selectlist{
     line-height:24px;

@@ -172,11 +172,13 @@
                                 <span class="i_editinfo sprite"></span>
                             </div>
                             <!--{else}-->
+                                <!--{if $album_info['tags']}-->
                                 <div class="inline">标签: 
                                 <!--{loop $album_info['tags_list'] $v}-->
                                     <a href="{link ctl=albums act=index tag=$v}">{$v}</a>
                                 <!--{/loop}-->
                                 </div>
+                                <!--{/if}-->
                             <!--{/if}-->
                         </div>
                     </div>

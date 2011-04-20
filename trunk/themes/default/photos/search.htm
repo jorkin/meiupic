@@ -21,17 +21,19 @@
                             <div class="gallary_item">
                                 <div class="item">
                                     <div class="pic_box">
-                                        
                                         <table>
                                             <tr>
                                                 <td>
                                                     <a href="{link ctl=photos act=view id=$v['id']}">
-                                                    <img src="{img $v['thumb']}" />
+                                                    <!--{if !$v['photo_priv']}-->
+                                                        <img src="{$base_path}statics/img/lock.gif" />
+                                                    <!--{else}-->
+                                                        <img src="{img $v['thumb']}" />
+                                                    <!--{/if}-->
                                                     </a>
                                                 </td>
                                             </tr>
                                         </table>
-                                        
                                     </div>
                                     <div class="pic_ctl">
                                     </div>

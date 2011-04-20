@@ -3,6 +3,9 @@
  * 此文件为超级装载器
  *
  */
+
+require_once(INCDIR.'modelfactory.php');
+
 class Loader{
     
     private static $_objects = array();

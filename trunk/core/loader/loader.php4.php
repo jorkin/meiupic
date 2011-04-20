@@ -14,6 +14,7 @@ $GLOBALS[SP_LOADER] = array(
     'MODELS'              => array(),
     'DATABASES'           => array()
 );
+require_once(INCDIR.'modelfactory.php');
 
 class loader{
     function &instance(){
