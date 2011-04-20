@@ -9,6 +9,8 @@ class upload_ctl extends pagecore{
     }
     
     function index(){
+        need_login('page');
+        
         $album_id = $this->getGet('aid');
         $this->output->set('album_id',$album_id);
         
@@ -24,6 +26,18 @@ class upload_ctl extends pagecore{
     }
     
     function process(){
+        if(!loader::model('user')->loggedin()){
+            $return = array(
+                'jsonrpc'=>'2.0',
+                'error'=> array( 
+                    'code'=>100,
+                    'message'=>'请先登录后上传'
+                 ),
+                 'id'=>'id');
+             echo loader::lib('json')->encode($return);
+             exit;
+        }
+        
         set_time_limit(0);
         $type = $this->getGet('t');
         if($type == 'save_tmp'){
@@ -73,6 +87,8 @@ class upload_ctl extends pagecore{
     }
     
     function save(){
+        need_login('ajax_page');
+        
         set_time_limit(0);
         ignore_user_abort(true);
         $type = $this->getGet('t');

@@ -10,6 +10,40 @@ function redirect($uri){
     exit;
 }
 
+if(!function_exists('file_put_contents')) {
+    function file_put_contents($filename, $s) {
+        $fp = @fopen($filename, 'w');
+        @fwrite($fp, $s);
+        @fclose($fp);
+        return TRUE;
+    }
+}
+/*
+type:
+    page: 页面
+    ajax_page: ajax 页面
+    ajax: 返回ajax
+*/
+function need_login($type = 'page'){
+    if(!loader::model('user')->loggedin()){
+        switch($type){
+            case 'page':
+                echo '您没有权限，需要登录！';
+                break;
+            case 'ajax_page':
+                echo ajax_box('您没有权限，需要登录！');
+                break;
+            case 'ajax_inline':
+                echo '<form><div class="form_notice_div">您没有权限，需要登录！</div><input type="button" name="cancel" class="graysmlbtn" value="取消" /></form>';
+                break;
+            case 'ajax':
+                ajax_box_failed('您没有权限，需要登录！');
+                break;
+        }
+        exit;
+    }
+}
+
 function no_cache_header(){
     header("Content-Type:text/xml;charset=utf-8");
     header("Expires: Thu, 01 Jan 1970 00:00:01 GMT");
@@ -207,6 +241,30 @@ function safe_invert($string, $html=0) {
     }
     $string = str_replace("&nbsp;"," ",$string);
     return $string;
+}
+
+function touch_file($file,$content = ''){
+    $flag = @file_put_contents($file,$content);
+    return $flag;
+}
+
+/*
+flag: 1, new files added
+      2, remove trash
+*/
+function trash_status($flag){
+    if($flag == 1){
+        touch_file(ROOTDIR.'cache/data/trash.tmp');
+    }else{
+        @unlink(ROOTDIR.'cache/data/trash.tmp');
+    }
+}
+
+function has_trash(){
+    if(file_exists(ROOTDIR.'cache/data/trash.tmp')){
+        return true;
+    }
+    return false;
 }
 
 //covert bytes to be readable

@@ -1,3 +1,38 @@
+<!--{if $ajax}-->
+<div class="box_title titbg">
+    <div class="closer sprite i_close" onclick="Mui.box.close()"></div>
+    相册“{$album_info['name']}”需要认证
+</div>
+<div class="box_container">
+    <form id="priv_form" action="{link ctl=photos act=check_priv}" type="post" onsubmit="return false;" style="padding-left:20px;">
+        <input type="hidden" name="album_id" value="{$album_info['id']}" />
+        <input type="hidden" name="enter_album" value="1" />
+    {if $album_info['priv_type'] == 1}
+        <div class="field">
+            <div class="label">请输入访问密码 *</div>
+            <div class="ipts"><input type="password" name="priv_pass" class="inputstyle iptw2" value="" /></div>
+            <div class="clear"></div>
+        </div>
+    {elseif $album_info['priv_type'] == 2}
+    <div class="field">
+        <div class="label">问题 </div>
+        <div class="ipts">{$album_info['priv_question']}</div>
+        <div class="clear"></div>
+    </div>
+    <div class="field">
+        <div class="label">请输入答案 *</div>
+        <div class="ipts"><input type="text" name="priv_answer" class="inputstyle iptw2" value="" /></div>
+        <div class="clear"></div>
+    </div>
+    {/if}
+    <div class="field">
+        <div class="label"> &nbsp;</div>
+        <div class="ipts"><input type="submit" name="submit" class="ylbtn" value="提交" onclick="Mui.form.sendAuto('priv_form')" /> <a href="javascript:void(0)" onclick="Mui.box.close()" class="ml10">取消</a></div>
+        <div class="clear"></div>
+    </div>
+    </form>
+</div>
+<!--{else}-->
 {template block/mini_header}
 <div style="padding-top:60px;">
 <div id="center_box">
@@ -39,3 +74,4 @@
 }
 </style>
 {template block/footer}
+<!--{/if}-->

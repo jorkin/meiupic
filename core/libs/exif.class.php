@@ -123,6 +123,9 @@ class exif_cla{
                 case 'Flash':
                     $new_img_info[$k] = isset($Flash_arr[$info])?$Flash_arr[$info]:lang('unkown');
                     break;
+                case 'FileSize':
+                    $new_img_info[$k] = bytes2u($info);
+                    break;
                 case 'FocalLength':
                     $new_img_info[$k] = $info.'mm';
                     break;

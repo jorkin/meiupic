@@ -97,7 +97,7 @@ a:hover {
             <!--{if $loggedin}-->
             <li><a title="上传照片" href="{link ctl=upload act=index}" {if IN_CTL=='upload'}class="current"{/if}>上传照片</a></li>
             <li><a title="系统设置" href="#">系统设置</a></li>
-            <li class="trash"><a href="{link ctl=trash}"><span class="i_trash sprite">回收站</span></a></li>
+            <li class="trash"><a href="{link ctl=trash}"><span class="{if $trash_status}i_trash_full{else}i_trash{/if} sprite">回收站</span></a></li>
             <!--{/if}-->
         </ul>
         <div class="clear"></div>

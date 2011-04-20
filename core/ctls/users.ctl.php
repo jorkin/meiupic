@@ -59,6 +59,8 @@ class users_ctl extends pagecore{
     }
     
     function save_profile(){
+        need_login('ajax');
+        
         $current_id = $this->user->get_field('id');
         
         $arr['user_nicename'] = safe_convert($this->getPost('user_nicename'));
@@ -75,7 +77,7 @@ class users_ctl extends pagecore{
             $arr['user_pass'] = md5($new_pass);
         }
         if($this->user->update($current_id,$arr)){
-            ajax_box_success('修改成功！'.($new_pass?'您的密码已经修改，请重新登录！':''),null,0.5,site_link('users','login'));
+            ajax_box_success('修改成功！'.($new_pass?'您的密码已经修改，请重新登录！':''),null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
             ajax_box_failed('保存失败！');
         }

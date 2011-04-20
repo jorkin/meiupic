@@ -73,10 +73,14 @@ class albums_ctl extends pagecore{
     }
     
     function create(){
+        need_login('ajax_page');
+        
         $this->render();
     }
     
     function save(){
+        need_login('ajax');
+        
         $album['name'] = safe_convert($this->getPost('album_name'));
         $album['desc'] = safe_convert($this->getPost('desc'));
         $album['priv_type'] = $this->getPost('priv_type','0');
@@ -112,6 +116,8 @@ class albums_ctl extends pagecore{
     }
     
     function modify(){
+        need_login('ajax_page');
+        
         $id = $this->getGet('id');
         $info = $this->mdl_album->get_info($id);
         $info['desc'] = safe_invert($info['desc']);
@@ -120,6 +126,8 @@ class albums_ctl extends pagecore{
     }
     
     function update(){
+        need_login('ajax');
+        
         $album_id = $this->getGet('id');
         $album['name'] = safe_convert($this->getPost('album_name'));
         $album['desc'] = safe_convert($this->getPost('desc'));
@@ -154,7 +162,9 @@ class albums_ctl extends pagecore{
         }
     }
     //set cover
-    function update_cover(){        
+    function update_cover(){
+        need_login('ajax_page');
+        
         $pic_id = $this->getGet('pic_id');
         
         if($this->mdl_album->set_cover($pic_id)){
@@ -165,6 +175,8 @@ class albums_ctl extends pagecore{
     }
     
     function confirm_delete(){
+        need_login('ajax_page');
+        
         $id = $this->getGet('id');
         $this->output->set('id',$id);
         $album_info = $this->mdl_album->get_info($id);
@@ -173,6 +185,8 @@ class albums_ctl extends pagecore{
     }
     
     function delete(){
+        need_login('ajax_page');
+        
         if($this->mdl_album->trash($this->getGet('id'))){
             echo ajax_box('成功删除相册!',null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
@@ -181,6 +195,8 @@ class albums_ctl extends pagecore{
     }
     
     function confirm_delete_batch(){
+        need_login('ajax_page');
+        
         $ids = $this->getPost('sel_id');
         if(!$ids || count($ids) == 0){
             echo ajax_box('请先选择要删除的相册!');
@@ -190,6 +206,8 @@ class albums_ctl extends pagecore{
     }
     
     function delete_batch(){
+        need_login('ajax_page');
+        
         $ids = $this->getPost('sel_id');
         if(!$ids || count($ids) == 0){
             echo ajax_box('请先选择要删除的相册!');
@@ -203,6 +221,8 @@ class albums_ctl extends pagecore{
     }
     
     function modify_name_inline(){
+        need_login('ajax_inline');
+        
         $id = $this->getGet('id');
         $album_info = $this->mdl_album->get_info($id);
         $this->output->set('info',$album_info);
@@ -210,12 +230,14 @@ class albums_ctl extends pagecore{
     }
     
     function rename(){
+        need_login('ajax');
+        
         $id = $this->getGet('id');
         $arr['name'] = safe_convert($this->getPost('name'));
         if($arr['name'] == ''){
             $return = array(
                 'ret'=>false,
-                'msg'=>'相册名不能为空！'
+                'html'=>'相册名不能为空！'
             );
             echo loader::lib('json')->encode($return);
             return;
@@ -229,7 +251,7 @@ class albums_ctl extends pagecore{
         }else{
             $return = array(
                 'ret'=>false,
-                'msg'=>'保存相册名失败！'
+                'html'=>'保存相册名失败！'
             );
             echo loader::lib('json')->encode($return);
         }
@@ -237,12 +259,16 @@ class albums_ctl extends pagecore{
     }
     
     function modify_tags_inline(){
+        need_login('ajax_inline');
+        
         $id = $this->getGet('id');
         $album_info = $this->mdl_album->get_info($id);
         $this->output->set('info',$album_info);
         $this->render();
     }
     function save_tags(){
+        need_login('ajax');
+        
         $id = $this->getGet('id');
         $tags = safe_convert($this->getPost('tags'));
         
@@ -255,13 +281,15 @@ class albums_ctl extends pagecore{
         }else{
             $return = array(
                 'ret'=>false,
-                'msg' => '编辑相册标签失败！'
+                'html' => '编辑相册标签失败！'
             );
         }
         echo loader::lib('json')->encode($return);
         return;
     }
     function modify_desc_inline(){
+        need_login('ajax_inline');
+        
         $id = $this->getGet('id');
         $album_info = $this->mdl_album->get_info($id);
         $album_info['desc'] = safe_invert($album_info['desc']);
@@ -270,12 +298,14 @@ class albums_ctl extends pagecore{
     }
     
     function save_desc(){
+        need_login('ajax');
+        
         $id = $this->getGet('id');
         $desc = safe_convert($this->getPost('desc'));
         if($desc == ''){
             $return = array(
                 'ret'=>false,
-                'msg' => '相册描述不能为空！'
+                'html' => '相册描述不能为空！'
             );
             echo loader::lib('json')->encode($return);
             return;
@@ -288,7 +318,7 @@ class albums_ctl extends pagecore{
         }else{
             $return = array(
                 'ret'=>false,
-                'msg' => '编辑相册描述失败！'
+                'html' => '编辑相册描述失败！'
             );
         }
         echo loader::lib('json')->encode($return);
@@ -297,6 +327,8 @@ class albums_ctl extends pagecore{
     }
     
     function modify_priv(){
+        need_login('ajax_page');
+        
         $id = $this->getGet('id');
         $album_info = $this->mdl_album->get_info($id);
         $this->output->set('info',$album_info);
@@ -304,6 +336,8 @@ class albums_ctl extends pagecore{
     }
     
     function save_priv(){
+        need_login('ajax');
+        
         $album['priv_type'] = $this->getPost('priv_type','0');
         $album['priv_pass'] = $this->getPost('priv_pass');
         $album['priv_question'] = safe_convert($this->getPost('priv_question'));

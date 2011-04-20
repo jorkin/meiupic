@@ -64,7 +64,49 @@ class album_mdl extends modelfactory{
         return $this->db->getAssoc();
     }
     
+    function real_delete($id,$album_info=null){
+        if(is_null($album_info)){
+            $album_info = $this->get_info($id);
+        }
+        if($album_info > 0){
+            $cover = get_album_cover($id,$album_info['cover_ext']);
+            @unlink(ROOTDIR.$cover);
+        }
+        //remove comments
+        $mdl_comment =& loader::model('comment');
+        $mdl_comment->delete_by_ref(1,$id);
+        
+        $mdl_photo = & loader::model('photo');
+        $photos = $mdl_photo->get_all_items($id);
+        if($photos){
+            foreach($photos as $v){
+                $mdl_photo->real_delete($v['id'],$v);
+            }
+        }
+        return $this->delete($id);
+    }
+    
+    function restore($id){
+        return $this->update($id,array('deleted'=>'0'));
+    }
+    
+    function get_trash_count(){
+        $this->db->select('#@albums','count(*)','deleted=1');
+        return $this->db->getOne();
+    }
+    
+    function get_trash($page=null){
+        $this->db->select('#@albums','*','deleted=1');
+        if($page){
+            $data = $this->db->toPage($page,20);
+        }else{
+            $data = $this->db->getAll();
+        }
+        return $data;
+    }
+    
     function trash($id){
+        trash_status(1);
         return $this->update($id,array('deleted'=>1));
     }
     
@@ -76,6 +118,7 @@ class album_mdl extends modelfactory{
         if(!$this->db->query()){
             return false;
         }
+        trash_status(1);
         return true;
     }
     
@@ -147,13 +190,15 @@ class album_mdl extends modelfactory{
     }
     
     function check_album_priv($id,$album_info = null){
-        if(is_null($album_info)){
-            $album_info = $this->get_info($id);
-        }
         $logined = loader::model('user')->loggedin();
         if($logined){
             return true;
         }
+        
+        if(is_null($album_info)){
+            $album_info = $this->get_info($id);
+        }
+        
         if($album_info['priv_type']==0){
             return true;
         }

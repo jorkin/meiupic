@@ -86,9 +86,9 @@ Madmin.inline_edit = function(je,url){
                 }else{
                     notice_div = postform.find('.form_notice_div');
                     if( notice_div.length == 0 ){
-                        postform.prepend('<div class="form_notice_div">'+data.msg+'</div>');
+                        postform.prepend('<div class="form_notice_div">'+data.html+'</div>');
                     }else{
-                        notice_div.html(data.msg);
+                        notice_div.html(data.html);
                     }
                     postform.find('.form_notice_div').css({display:'block'});
                 }

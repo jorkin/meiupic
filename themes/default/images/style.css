@@ -451,8 +451,8 @@ table.layout td.right{
     margin-right:210px;
     border-right:1px solid #ccc;
     padding-right:10px;
-    height:120px;
     height:auto !important;
+    height:120px;
     min-height:120px;
 }
 .photo_main .desc{

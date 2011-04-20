@@ -108,23 +108,31 @@ class photos_ctl extends pagecore{
     function check_priv(){
         $album_id = $this->getPost('album_id');
         $album_info = $this->mdl_album->get_info($album_id);
+        $enter_album = $this->getPost('enter_album');
+        
         $key = 'Mpic_album_priv_'.$album_id;
+        $go_url = $enter_album?site_link('photos','index',array('aid'=>$album_id)):$_SERVER['HTTP_REFERER'];
         if($album_info['priv_type'] == 1){
             $priv_pass = $this->getPost('priv_pass');
             if($album_info['priv_pass'] != $priv_pass){
                 ajax_box_failed('相册密码输入错误！');
             }
             setCookie($key,md5($priv_pass));
-            ajax_box_success('验证成功！',null,0.5,$_SERVER['HTTP_REFERER']);
+            ajax_box_success('验证成功！',null,0.5,$go_url);
         }elseif($album_info['priv_type'] == 2){
             $priv_answer = $this->getPost('priv_answer');
             if($album_info['priv_answer'] != $priv_answer){
                 ajax_box_failed('相册答案输入错误！');
             }
             setCookie($key,md5($album_info['priv_question'].$priv_answer));
-            ajax_box_success('验证成功！',null,0.5,$_SERVER['HTTP_REFERER']);
+            ajax_box_success('验证成功！',null,0.5,$go_url);
         }
         ajax_box_failed('相册类别错误！');
+    }
+    
+    function auth_priv(){
+        $aid = $this->getGet('aid');
+        $this->_priv_page($aid);
     }
     
     function _priv_page($id,$album_info=null){
@@ -132,10 +140,21 @@ class photos_ctl extends pagecore{
             $album_info = $this->mdl_album->get_info($id);
         }
         $this->output->set('album_info',$album_info);
-        $page_title = '访问需要验证 - 系统信息 - '.$this->setting->get_conf('site.title');
-        $page_keywords = $this->setting->get_conf('site.keywords');
-        $page_description = $this->setting->get_conf('site.description');
-        $this->page_init($page_title,$page_keywords,$page_description);
+        
+        $ajax = $this->getGet('ajax');
+        if($ajax == 'true'){
+            $this->output->set('ajax',true);
+            if($this->mdl_album->check_album_priv($id,$album_info)){
+                echo ajax_box('已认证，正在转入...',null,0.5,site_link('photos','index',array('aid'=>$id)));
+                exit;
+            }
+        }else{
+            $this->output->set('ajax',false);
+            $page_title = '访问需要验证 - 系统信息 - '.$this->setting->get_conf('site.title');
+            $page_keywords = $this->setting->get_conf('site.keywords');
+            $page_description = $this->setting->get_conf('site.description');
+            $this->page_init($page_title,$page_keywords,$page_description);
+        }
         
         loader::view('photos/priv_page');
     }
@@ -234,6 +253,7 @@ class photos_ctl extends pagecore{
             if(is_array($photos['ls'])){
                 foreach($photos['ls'] as $k=>$v){
                     $photos['ls'][$k]['photo_control_icons'] = $this->plugin->filter('photo_control_icons','',$v['id']);
+                    $photos['ls'][$k]['photo_priv'] = $this->mdl_album->check_album_priv($v['album_id']);
                 }
             }
 
@@ -258,6 +278,8 @@ class photos_ctl extends pagecore{
     }
     
     function modify(){
+        need_login('ajax_page');
+        
         $info = $this->mdl_photo->get_info($this->getGet('id'));
         $info['desc'] = safe_invert($info['desc']);
         $this->output->set('info',$info);
@@ -265,6 +287,8 @@ class photos_ctl extends pagecore{
     }
     
     function update(){
+        need_login('ajax');
+        
         $id = $this->getGet('id');
         
         $album['name'] = safe_convert($this->getPost('photo_name'));
@@ -285,6 +309,8 @@ class photos_ctl extends pagecore{
     }
     
     function confirm_delete(){
+        need_login('ajax_page');
+        
         $id = $this->getGet('id');
         $this->output->set('id',$id);
         $photo_info = $this->mdl_photo->get_info($id);
@@ -293,6 +319,8 @@ class photos_ctl extends pagecore{
     }
     
     function delete(){
+        need_login('ajax_page');
+        
         if($this->mdl_photo->trash($this->getGet('id'))){
             echo ajax_box('成功删除照片!',null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
@@ -301,6 +329,8 @@ class photos_ctl extends pagecore{
     }
     
     function confirm_delete_batch(){
+        need_login('ajax_page');
+        
         $ids = $this->getPost('sel_id');
         if(!$ids || count($ids) == 0){
             echo ajax_box('请先选择要删除的照片!');
@@ -310,6 +340,8 @@ class photos_ctl extends pagecore{
     }
     
     function delete_batch(){
+        need_login('ajax_page');
+        
         $ids = $this->getPost('sel_id');
         if(!$ids || count($ids) == 0){
             echo ajax_box('请先选择要删除的照片!');
@@ -323,12 +355,14 @@ class photos_ctl extends pagecore{
     }
     
     function rename(){
+        need_login('ajax');
+        
         $id = $this->getGet('id');
         $arr['name'] = safe_convert($this->getPost('name'));
         if($arr['name'] == ''){
             $return = array(
                 'ret'=>false,
-                'msg'=>'照片名不能为空！'
+                'html'=>'照片名不能为空！'
             );
             echo loader::lib('json')->encode($return);
             return;
@@ -341,7 +375,7 @@ class photos_ctl extends pagecore{
         }else{
             $return = array(
                 'ret'=>false,
-                'msg'=>'照片名保存失败！'
+                'html'=>'照片名保存失败！'
             );
         }
         echo loader::lib('json')->encode($return);
@@ -486,6 +520,8 @@ class photos_ctl extends pagecore{
     }
     
     function modify_name_inline(){
+        need_login('ajax_inline');
+        
         $id = $this->getGet('id');
         $photo_info = $this->mdl_photo->get_info($id);
         $this->output->set('info',$photo_info);
@@ -493,12 +529,16 @@ class photos_ctl extends pagecore{
     }
     
     function modify_tags_inline(){
+        need_login('ajax_inline');
+        
         $id = $this->getGet('id');
         $photo_info = $this->mdl_photo->get_info($id);
         $this->output->set('info',$photo_info);
         $this->render();
     }
     function save_tags(){
+        need_login('ajax');
+        
         $id = $this->getGet('id');
         $tags = safe_convert($this->getPost('tags'));
         
@@ -511,13 +551,15 @@ class photos_ctl extends pagecore{
         }else{
             $return = array(
                 'ret'=>false,
-                'msg' => '编辑相册标签失败！'
+                'html' => '编辑相册标签失败！'
             );
         }
         echo loader::lib('json')->encode($return);
         return;
     }
     function modify_desc_inline(){
+        need_login('ajax_inline');
+        
         $id = $this->getGet('id');
         $info = $this->mdl_photo->get_info($id);
         $info['desc'] = safe_invert($info['desc']);
@@ -526,12 +568,14 @@ class photos_ctl extends pagecore{
     }
     
     function save_desc(){
+        need_login('ajax');
+        
         $id = $this->getGet('id');
         $desc = safe_convert($this->getPost('desc'));
         if($desc == ''){
             $return = array(
                 'ret'=>false,
-                'msg' => '相册描述不能为空！'
+                'html' => '相册描述不能为空！'
             );
             echo loader::lib('json')->encode($return);
             return;
@@ -544,11 +588,10 @@ class photos_ctl extends pagecore{
         }else{
             $return = array(
                 'ret'=>false,
-                'msg' => '编辑相册描述失败！'
+                'html' => '编辑相册描述失败！'
             );
         }
         echo loader::lib('json')->encode($return);
         return;
-        
     }
 }
