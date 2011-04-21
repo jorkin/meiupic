@@ -203,7 +203,7 @@ function meiu_bootstrap(){
     $output =& loader::lib('output');
     $output->set('base_path',$base_path);
     $output->set('statics_path',$base_path.'statics/');
-    $output->set('site_name',loader::model('setting')->get_conf('system.site_name','我的相册'));
+    $output->set('site_name',loader::model('setting')->get_conf('site.title',lang('myalbum')));
     
     $user =& loader::model('user');
     $output->set('loggedin',$user->loggedin());

@@ -53,6 +53,7 @@ class albums_ctl extends pagecore{
         $this->output->set('total_num',$albums['count']);
         $this->output->set('search',arr_stripslashes($search));
         $this->output->set('album_menu',$this->plugin->filter('album_menu',''));
+        $this->output->set('show_uptime',($sort=='ut_desc'||$sort=='ut_asc')?true:false);
         
         $page_title = $this->setting->get_conf('site.title');
         $page_keywords = $this->setting->get_conf('site.keywords');

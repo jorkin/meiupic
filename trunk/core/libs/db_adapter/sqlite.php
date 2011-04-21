@@ -56,7 +56,7 @@ Class adapter_sqlite{
         if(is_array($dbinfo)){
             $this->dbinfo=$dbinfo;
         }else{
-            exit('缺少数据库参数,请检查配置文件!');
+            exit(lang('db_config_error'));
         }
     }
 
@@ -74,7 +74,7 @@ Class adapter_sqlite{
             if(file_exists(ROOTDIR.$dbinfo['dbpath'])){
                 $dbinfo['dbpath'] = ROOTDIR.$dbinfo['dbpath'];
             }else{
-                exit('Sqlite数据库不存在!');
+                exit(lang('sqlite_not_exists'));
             }
         }
         $this->conn=sqlite_open($dbinfo['dbpath']);

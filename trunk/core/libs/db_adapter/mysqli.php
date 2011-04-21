@@ -56,7 +56,7 @@ Class adapter_mysqli{
         if(is_array($dbinfo)){
             $this->dbinfo=$dbinfo;
         }else{
-            exit('缺少数据库参数,请检查配置文件!');
+            exit(lang('db_config_error'));
         }
     }
 
@@ -79,13 +79,13 @@ Class adapter_mysqli{
         if (!isset($dbinfo['dbpass'])){ $dbinfo['dbpass'] = ''; }
         
         if(!$dbinfo['dbname']) {
-            exit('请设置数据库名!');
+            exit(lang('miss_dbname'));
         }
         
         $this->conn = @mysqli_connect($dbinfo['host'], $dbinfo['dbuser'],$dbinfo['dbpass'],$dbinfo['dbname'],isset($dbinfo['port']) && !empty($dbinfo['port'])?$dbinfo['port']:0);
         
         if (!$this->conn){
-            exit('连接至Mysql ('.$host.','.$dbinfo['dbuser'].') 失败!');
+            exit( lang('connect_mysql',$host,$dbinfo['dbuser']) );
         }
         
         if (isset($dbinfo['charset']) && $dbinfo['charset'] != '') {

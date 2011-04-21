@@ -16,10 +16,6 @@ class photos_ctl extends pagecore{
         $this->normal();
     }
     
-    function story(){
-        
-    }
-    
     function normal(){
         $page = $this->getGet('page',1);
         $search['name'] = $this->getRequest('sname');
@@ -27,7 +23,7 @@ class photos_ctl extends pagecore{
         
         $album_info = $this->mdl_album->get_info($album_id);
         if(!$album_info){
-            exit('相册不存在！');
+            showError('您要访问的相册不存在！');
         }
         if(!$this->mdl_album->check_album_priv($album_id,$album_info)){
             $this->_priv_page($album_id,$album_info);
@@ -55,7 +51,6 @@ class photos_ctl extends pagecore{
         <div class="selected"></div>
         <ul class="optlist">
         <li class="current"><a href="'.site_link('photos','index',array('aid'=>$album_id)).'">平铺模式</a></li>
-        <li><a href="'.site_link('photos','story',array('aid'=>$album_id)).'">故事模式</a></li>
         <li><a href="'.site_link('photos','slide',array('aid'=>$album_id)).'">幻灯模式</a></li>
         </ul>
         </div>';
@@ -96,6 +91,7 @@ class photos_ctl extends pagecore{
         $this->output->set('total_num',$photos['count']);
         $this->output->set('album_info',$album_info);
         $this->output->set('album_menu',$this->plugin->filter('album_menu',$album_menu,$album_id));
+        $this->output->set('show_takentime',($sort=='tt_desc'||$sort=='tt_asc')?true:false);
         
         $page_title = $album_info['name'].' - '.$this->setting->get_conf('site.title');
         $page_keywords = $this->setting->get_conf('site.keywords');
@@ -388,7 +384,7 @@ class photos_ctl extends pagecore{
         $info = $this->mdl_photo->get_info($id);
         
         if(!$info){
-            exit('照片不存在！');
+            showError('您要访问的照片不存在！');
         }
         
         $info['exif'] = unserialize($info['exif']);
@@ -468,7 +464,8 @@ class photos_ctl extends pagecore{
         $this->output->set('comments_type',2);
         
         $this->output->set('picture',$picture);
-        $this->output->set('current_rank',$nav['current_rank']+1);
+        $this->output->set('current_rank',$nav['current_rank']);
+        $this->output->set('current_photo',$nav['current_rank']+1);
         
         $this->output->set('album_info',$album_info);
         $this->output->set('info',$info);
@@ -489,12 +486,14 @@ class photos_ctl extends pagecore{
         
         if(!$info){
             exit('照片不存在！');
+            showError('您要访问的照片不存在！');
         }
         if(!$info['exif']){
-            exit('无权查看EXIF！');
+            showError('无权查看EXIF！');
         }
         if(!$this->mdl_album->check_album_priv($info['album_id'])){
-            exit('对不起你没有权限！');
+            $this->_priv_page($info['album_id']);
+            exit;
         }
         
         $info['exif'] = unserialize($info['exif']);
@@ -593,5 +592,56 @@ class photos_ctl extends pagecore{
         }
         echo loader::lib('json')->encode($return);
         return;
+    }
+    
+    function nav(){
+        $aid = $this->getGet('aid');
+        $rank_id = $this->getPost('rank_id');
+        $direction = $this->getPost('direction');
+        
+        $sort_setting = $this->_sort_setting();
+        list($sort,$sort_list) =  get_sort_list($sort_setting,'photo','tu_desc');
+        
+        $nav['items'] = $this->mdl_photo->get_items(array('album_id'=>$aid),$sort);
+        $nav['rank_of'] = array_flip($nav['items']);
+        $nav['first_rank']   = 0;
+        $nav['last_rank']    = count($nav['items']) - 1;
+        $nav['current_rank'] = $rank_id;
+        
+        $first_str = '<li id="pic_first" class="navitem"><a href="javascript:void(0);">这是首张</a></li>';
+        $last_str = '<li id="pic_last" class="navitem"><a href="javascript:void(0);">这是末张</a></li>';
+        if($rank_id==0 && $direction == 'up'){
+            echo $first_str;
+            return;
+        }elseif($rank_id == $nav['last_rank'] && $direction == 'down'){
+            echo $last_str;
+            return;
+        }
+        if($direction == 'up'){
+            if($rank_id-3<0){
+                $start = 0;
+                echo $first_str;
+            }else{
+                $start = $rank_id-3;
+            }
+            for($i = $start;$i<$rank_id;$i++){
+                $item_id = $nav['items'][$i];
+                $item = $this->mdl_photo->get_info($item_id);
+                echo '<li class="navitem" id="pic_'.$i.'"><a style="background:url(\''.img_path($item['thumb']).'\') center no-repeat;" href="'.site_link('photos','view',array('id'=>$item['id'])).'#pic_block"></a></li>';
+            }
+            
+        }elseif($direction == 'down'){
+            $nums = 0;
+            $end = $rank_id+3>$nav['last_rank']?$nav['last_rank']:$rank_id+3;
+            for($i = $rank_id+1;$i<=$end;$i++){
+                $item_id = $nav['items'][$i];
+                $item = $this->mdl_photo->get_info($item_id);
+                echo '<li class="navitem" id="pic_'.$i.'"><a style="background:url(\''.img_path($item['thumb']).'\') center no-repeat;" href="'.site_link('photos','view',array('id'=>$item['id'])).'#pic_block"></a></li>';
+                $nums++;
+            }
+            if($nums<3){
+                echo $last_str;
+            }
+        }
     }
 }

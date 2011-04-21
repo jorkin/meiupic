@@ -15,7 +15,7 @@ class image_cla{
             require_once(LIBDIR.'img_engine/'.$this->class_name.'.php');
             $this->worker = new $this->class_name;
         }else{
-            exit('Image Engine Error: Engine '.IMG_ENGINE.' not exists!');
+            exit(lang('img_engine_not_exists',IMG_ENGINE));
         }
     }
     

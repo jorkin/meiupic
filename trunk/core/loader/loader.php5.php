@@ -31,7 +31,7 @@ class Loader{
                 $name = $class.'_cla';
                 self::$_objects[$class] = new $name();
             }else{
-                exit('error lib');
+                exit(lang('load_lib_error',$class));
             }
         }
         return self::$_objects[$class];
@@ -46,7 +46,7 @@ class Loader{
             if(file_exists($modelPath)) {
                 require($modelPath);
             }else{ 
-                exit('error model '.$modelName);
+                exit(lang('load_model_error',$modelName));
             }
             self::$_models[$modelName] = new $modelClass;
         }
@@ -95,12 +95,12 @@ class Loader{
     static function &config($name = 'config'){
         if ( !isset(self::$_configs[$name])){
             if (!file_exists(ROOTDIR."conf/{$name}.php")){
-                exit('配置文件不存在');
+                exit(lang('config_file_not_exists'));
             }
             require(ROOTDIR."conf/{$name}.php");
 
             if ( ! isset($CONFIG) || ! is_array($CONFIG)){
-                exit('配置文件错误');
+                exit(lang('config_file_error'));
             }
 
             self::$_configs[$name] = $CONFIG;

@@ -17,7 +17,7 @@
 <![endif]-->
 <script src="{$statics_path}js/jquery.js" type="text/javascript"></script>
 <script src="{$statics_path}js/common.js" type="text/javascript"></script>
-<!--{if $loggedin}-->
+<!--{if isset($loggedin) && $loggedin}-->
 <script src="{$statics_path}js/admin.js" type="text/javascript"></script>
 <!--{/if}-->
 <style type="text/css">
@@ -84,7 +84,6 @@ a:hover {
     <div id="settings_person">
         {$user_status}
     </div>
-    <div id="updateinfo" style="display:none;">您有<span class="alertcolor">10</span>个插件可供<a href="#" class="alertcolor">更新</a>。<span class="alertcolor">2.1</span>版已经发布，<a href="#" class="alertcolor">立刻更新</a>？</div>
     <div id="tabs">
         <ul id="album_tabs">
             <li><a title="相册列表" {if (IN_CTL=='albums' and IN_ACT=='index')||(IN_CTL=='default')}class="current"{/if} href="{$base_path}">{lang myalbum}</a></li>
