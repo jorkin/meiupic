@@ -28,7 +28,7 @@ function need_login($type = 'page'){
     if(!loader::model('user')->loggedin()){
         switch($type){
             case 'page':
-                echo '您没有权限，需要登录！';
+                showError('您没有权限，需要登录！');
                 break;
             case 'ajax_page':
                 echo ajax_box('您没有权限，需要登录！');
@@ -143,7 +143,7 @@ function template($file) {
         $tplfile = ROOTDIR.'themes/default/'.$file.'.htm';
     }
     if (! file_exists ( $tplfile )) {
-        exit ( $tplfile." is not exists!" );
+        exit(lang('file_not_exists',$tplfile));
     }
     
     $compiledtplfile = ROOTDIR.'cache/templates/'.$templateid.'_'.str_replace(array('/','\\'),'_',$file).'.tpl.php';
@@ -265,6 +265,13 @@ function has_trash(){
         return true;
     }
     return false;
+}
+
+function showError($error_msg){
+    $_config = $GLOBALS['THEME_CONFIG'];
+    loader::lib('output')->set('error_msg',$error_msg);
+    loader::view('block/showerror');
+    exit;
 }
 
 //covert bytes to be readable

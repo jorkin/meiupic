@@ -48,7 +48,13 @@
                                     </div>
                                     <div class="clear brief">
                                         <span class="f_left"></span>
-                                        <span class="f_right gray">创建于{echo date('Y-m-d',$v['create_time'])}</span>
+                                        <span class="f_right gray">
+                                            {if $show_uptime}
+                                            上传于{echo date('Y-m-d',$v['up_time'])}
+                                            {else}
+                                            创建于{echo date('Y-m-d',$v['create_time'])}
+                                            {/if}
+                                        </span>
                                     </div>
                                 </div>
                                 <div class="info">

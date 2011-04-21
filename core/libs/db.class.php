@@ -29,7 +29,7 @@ class db_cla{
         if(is_array($db_config) && $db_config['adapter'])
             $adapterName='adapter_'.$db_config['adapter'];
         else{
-            exit('数据库配置错误,请检查配置文件!');
+            exit(lang('db_config_error'));
         }
         
         if(isset($db_config['pre']))

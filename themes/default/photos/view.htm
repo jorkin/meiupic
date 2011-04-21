@@ -6,7 +6,7 @@
                 <div class="mainbody">
                     <div class="col titbg">
                         <h1 class="f_left">查看照片</h1>
-                        <h4 class="f_left">当前第{$current_rank}张，共{$album_info['photos_num']}张</h4>
+                        <h4 class="f_left">当前第{$current_photo}张，共{$album_info['photos_num']}张</h4>
                         {$photo_col_ctl}
                     </div>
                     <div class="innercol grid">
@@ -202,31 +202,25 @@
                         <div class="title"><a href="{link ctl=photos act=index aid=$info['album_id']}">{$album_info['name']}</a> [共{$album_info['photos_num']}张]</div>
                         <div class="body">
                             <div>
-                                {if $picture['previous']}
-                                <a href="{link ctl=photos act=view id=$picture['previous']['id']}#pic_block" class="turn_page_up">上一张</a>
-                                {else}
-                                <a href="javascript:void(0);" class="turn_page_up">这是首张</a>
-                                {/if}
+                                <a href="javascript:void(0)" onclick="nav_turn(this,'up')" class="turn_page_up">上一张</a>
                             </div>
+                            <div class="navlist">
                             <ul>
                                 {if $picture['previous']}
-                                <li><a href="{link ctl=photos act=view id=$picture['previous']['id']}#pic_block" style="background:url('{img $picture['previous']['thumb']}') center no-repeat;"></a></li>
+                                <li id="pic_{echo $current_rank-1}" class="navitem"><a href="{link ctl=photos act=view id=$picture['previous']['id']}#pic_block" style="background:url('{img $picture['previous']['thumb']}') center no-repeat;"></a></li>
                                 {else}
-                                <li><a href="javascript:void(0);">这是首张</a></li>
+                                <li id="pic_first" class="navitem"><a href="javascript:void(0);">这是首张</a></li>
                                 {/if}
-                                <li class="current"><a href="javascript:void(0);" style="background:url('{img $info['thumb']}') center no-repeat;"></a></li>
+                                <li id="pic_{$current_rank}" class="current navitem"><a href="{link ctl=photos act=view id=$info['id']}#pic_block" style="background:url('{img $info['thumb']}') center no-repeat;"></a></li>
                                 {if $picture['next']}
-                                <li><a href="{link ctl=photos act=view id=$picture['next']['id']}#pic_block" style="background:url('{img $picture['next']['thumb']}') center no-repeat;"></a></li>
+                                <li id="pic_{echo $current_rank+1}" class="navitem"><a href="{link ctl=photos act=view id=$picture['next']['id']}#pic_block" style="background:url('{img $picture['next']['thumb']}') center no-repeat;"></a></li>
                                 {else}
-                                <li><a href="javascript:void(0);">这是末张</a></li>
+                                <li id="pic_last" class="navitem"><a href="javascript:void(0);">这是末张</a></li>
                                 {/if}
                             </ul>
+                            </div>
                             <div>
-                                {if $picture['next']}
-                                <a href="{link ctl=photos act=view id=$picture['next']['id']}#pic_block" class="turn_page_down">下一张</a>
-                                {else}
-                                <a href="javascript:void(0);" class="turn_page_down">这是末张</a>
-                                {/if}
+                                <a href="javascript:void(0)" onclick="nav_turn(this,'down')" class="turn_page_down">下一张</a>
                             </div>
                         </div>
                     </div>
@@ -235,4 +229,49 @@
         </tr>
     </table>
 </div>
+<script>
+
+    function nav_move(moveto){
+        var sctop =  $('.pic_nav div.body .navlist').scrollTop();
+        $('.pic_nav div.body .navlist').animate({ scrollTop : sctop+moveto }, 'fast');
+    }
+    var nav_loading = 0;
+    function nav_turn(obj,action){
+        var action_url = '{link ctl=photos act=nav aid=$info['album_id']}';
+        if(action=='up'){
+            if($('#pic_first').length == 0){
+                var top_id = $('.pic_nav div.body ul li:first').attr('id');
+                var top_id = top_id.split('_')[1];
+                if(nav_loading == 1){
+                    return false;
+                }
+                nav_loading = 1;
+                $.post(action_url,{direction:'up',rank_id:top_id},function(data){
+                    $('.pic_nav div.body ul').prepend(data);
+                    nav_move(-426);
+                    nav_loading = 0;
+                });
+            }else{
+                nav_move(-426);
+            }
+            
+        }else{
+            if($('#pic_last').length == 0){
+                var last_id = $('.pic_nav div.body ul li:last').attr('id');
+                var last_id = last_id.split('_')[1];
+                if(nav_loading == 1){
+                    return false;
+                }
+                nav_loading = 1;
+                $.post(action_url,{direction:'down',rank_id:last_id},function(data){
+                    $('.pic_nav div.body ul').append(data);
+                    nav_move(426);
+                    nav_loading = 0;
+                });
+            }else{
+                nav_move(426);
+            }
+        }
+    }
+</script>
 {template block/footer}

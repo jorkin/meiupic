@@ -171,13 +171,13 @@ class plugin_cla{
                     if(isset($this->plugin_pool[$plugin_name]) && method_exists($this->plugin_pool[$plugin_name],$func)){
                         call_user_func_array(array($this->plugin_pool[$plugin_name],$func),$pars);
                     }else{
-                        exit($plugin_name.'::'.$func.' can not be called!');//todo: add to errors
+                        exit(lang('plugin_can_not_call',$plugin_name.'::'.$func));
                     }
                 }elseif(is_string($v)){
                     if(function_exists($v)){
                         call_user_func_array($v,$pars);
                     }else{
-                        exit($func.' can not be called!');//todo: add to errors
+                        exit(lang('plugin_can_not_call',$plugin_name.','.$func));
                     }
                 }
             }
@@ -212,13 +212,13 @@ class plugin_cla{
                     if(isset($this->plugin_pool[$plugin_name]) && method_exists($this->plugin_pool[$plugin_name],$func)){
                         $value = call_user_func_array(array($this->plugin_pool[$plugin_name],$func),$pars);
                     }else{
-                        exit($plugin_name.'::'.$func.' can not be called!');//todo: add to errors
+                        exit(lang('plugin_can_not_call',$plugin_name.'::'.$func));
                     }
                 }elseif(is_string($v)){
                     if(function_exists($v)){
                         $value = call_user_func_array($v,$pars);
                     }else{
-                        exit($func.' can not be called!');//todo: add to errors
+                        exit(lang('plugin_can_not_call',$plugin_name.','.$func));
                     }
                 }
             }

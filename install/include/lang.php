@@ -188,4 +188,12 @@ $lang = array(
     'step_complete_desc' => '&nbsp;',
     'install_succeed' => '恭喜您安装成功',
     'auto_redirect' => '程序将自动跳转',
+    
+    
+    'file_not_exists'        =>   '%s文件不存在!',
+    'db_config_error'        =>   '数据库配置错误,请检查配置文件!',
+    'sqlite_not_exists'      =>   'Sqlite数据库不存在!',
+    'miss_dbname'            =>   '请设置数据库名!',
+    'connect_mysql'          =>    '连接至Mysql (%s,%s) 失败!',
+    'can_not_use_db'         =>    '不能使用数据库 %s',
 );

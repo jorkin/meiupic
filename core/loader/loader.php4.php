@@ -27,14 +27,13 @@ class loader{
          * 装载库文件
          */
     function &lib($class){
-        //$class = ucfirst($class);
         if (!isset($GLOBALS[SP_LOADER]['OBJECTS'][$class])){
             if(file_exists(LIBDIR.$class.'.class.php')){
                 require(LIBDIR.$class.'.class.php');
                 $name = $class.'_cla';
                 $GLOBALS[SP_LOADER]['OBJECTS'][$class] =& new $name();
             }else{
-                exit('error lib');
+                exit(lang('load_lib_error',$class));
             }
         }
         return $GLOBALS[SP_LOADER]['OBJECTS'][$class];
@@ -49,7 +48,7 @@ class loader{
             if(file_exists($modelPath)) {
                 require($modelPath);
             }else{ 
-                exit('error model');
+                exit(lang('load_model_error',$modelName));
             }
             $GLOBALS[SP_LOADER]['MODELS'][$modelName] =& new $modelClass;
         }
@@ -99,12 +98,12 @@ class loader{
     function &config($name = 'config'){
         if ( !isset($GLOBALS[SP_LOADER]['CONFIGS'][$name])){
             if (!file_exists(ROOTDIR."conf/{$name}.php")){
-                exit('配置文件不存在');
+                exit(lang('config_file_not_exists'));
             }
             require(ROOTDIR."conf/{$name}.php");
 
             if ( ! isset($CONFIG) || ! is_array($CONFIG)){
-                exit('配置文件错误');
+                exit(lang('config_file_error'));
             }
 
             $GLOBALS[SP_LOADER]['CONFIGS'][$name] =& $CONFIG;

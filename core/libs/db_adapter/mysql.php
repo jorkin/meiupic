@@ -56,7 +56,7 @@ Class adapter_mysql{
         if(is_array($dbinfo)){
             $this->dbinfo=$dbinfo;
         }else{
-            exit('缺少数据库参数,请检查配置文件!');
+            exit(lang('db_config_error'));
         }
     }
 
@@ -91,15 +91,15 @@ Class adapter_mysql{
         }
         
         if (!$this->conn){
-            exit('连接至Mysql ('.$host.','.$dbinfo['dbuser'].') 失败!');
+            exit( lang('connect_mysql',$host,$dbinfo['dbuser']) );
         }
         
         if($dbinfo['dbname']) {
             if (!@mysql_select_db($dbinfo['dbname'],$this->conn)){
-                exit('不能使用数据库: '.$dbinfo['dbname']);
+                exit( lang('can_not_use_db',$dbinfo['dbname']) );
             }
         }else{
-                exit('请设置数据库名!');
+                exit(lang('miss_dbname'));
         }
         
         if (isset($dbinfo['charset']) && $dbinfo['charset'] != '') {

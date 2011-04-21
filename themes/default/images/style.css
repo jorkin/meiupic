@@ -476,12 +476,25 @@ table.layout td.right{
 .pic_nav .body{
     text-align:center;
 }
+.pic_nav .body .navlist{
+    height:416px;
+    overflow:hidden;
+}
+.pic_nav .body ul{
+    margin-top:0px;
+}
 .pic_nav .body li{
     border:1px solid #ccc;
     padding:5px;
     background:#fff;
     width:120px;
-    margin:10px auto;
+    margin: 0 auto 10px;
+}
+.pic_nav .body li#pic_last{
+    margin: 0 auto;
+}
+.pic_nav .body li:hover{
+    border:1px solid #444;
 }
 .pic_nav .body li.current{
     border:1px solid #444;
@@ -496,6 +509,7 @@ table.layout td.right{
     color:#888;
     text-decoration:none;
 }
+
 .pic_nav .turn_page_up,.pic_nav .turn_page_down{
     display:block;
     background:url('bg_turn_page.png') no-repeat;
