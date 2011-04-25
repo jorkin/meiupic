@@ -11,9 +11,7 @@ a span.sprite{
 #header #settings_person span.pipe{
     filter:alpha(opacity=60);
 }
-#tabs li a.current{
-    filter: progid:DXImageTransform.Microsoft.gradient(enabled='true', startColorstr=#FDFDFD, endColorstr=#ECECEC);
-}
+
 .grid .gallary_wrap .gallary_item{
     float:left;
 }
@@ -23,7 +21,7 @@ a span.sprite{
 }
 
 .data_tab li{
-    filter: progid:DXImageTransform.Microsoft.gradient(enabled='true', startColorstr=#ffffff, endColorstr=#deeaff);
+    filter: progid:DXImageTransform.Microsoft.gradient(enabled='true', startColorstr=#ffffff, endColorstr=#eeeeee);
 }
 .data_tab li.current{
     filter: none;

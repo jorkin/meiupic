@@ -90,7 +90,7 @@ function reload_albums_options(je){
                                             <!--{loop $albums_list $k $v}-->
                                                 <option value="{$k}" {if $album_id==$k}selected="selected"{/if}>{$v}</option>
                                             <!--{/loop}-->
-                                        </select> <a  href="javascript:void(0)" onclick="Mui.box.show('{link ctl=albums act=create}');Mui.box.callback = function(){ reload_albums_options('#album_id'); }" class="ml10">新建相册</a></div>
+                                        </select> <a  href="javascript:void(0)" onclick="Mui.box.show('{link ctl=albums act=create}',true);Mui.box.callback = function(){ reload_albums_options('#album_id'); }" class="ml10">新建相册</a></div>
                                     <div class="clear"></div>
                                 </div>
                                 <div id="muilti_uploader">
@@ -106,7 +106,7 @@ function reload_albums_options(je){
                             <div class="pic no_album"></div>
                             <div class="data_msg">
                                 <div>{lang no_album_notice}</div >
-                                <div class="button"><div class="bigbutton"><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=albums act=create}');"><span>{lang create_new_album}</span></a></div></div>
+                                <div class="button"><div class="bigbutton"><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=albums act=create}',true);"><span>{lang create_new_album}</span></a></div></div>
                             </div>
                             <div class="clear"></div>
                         </div>

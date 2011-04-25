@@ -201,29 +201,6 @@ if($method == 'license'){
             $datasql = file_get_contents($datasqlfile);
             runquery($datasql);
             showjsmessage(lang('install_data_sql').lang('succeed'));
-        
-            dir_clear(ROOTDIR.'cache/data');
-            dir_clear(ROOTDIR.'cache/templates');
-            dir_clear(ROOTDIR.'cache/tmp');
-        
-            $db->insert('#@users',array('user_name'=>$username,'user_nicename'=>$username,'user_pass'=>md5($password),'create_time'=>time()));
-            if($db->query()){
-                showjsmessage(lang('create_admin_account').lang('succeed'));
-            }else{
-                showjsmessage(lang('create_admin_account').lang('failed'));
-            }
-            $mdl_setting = loader::model('setting');
-            $mdl_setting->set_conf('system.version',MPIC_VERSION);
-            $mdl_setting->set_conf('system.installed_time',time());
-            $mdl_setting->set_conf('site.title',$sitename);
-            $mdl_setting->set_conf('site.url',$siteurl);
-            $mdl_setting->set_conf('site.email',$email);
-        
-            showjsmessage(lang('update_user_setting'));
-        
-            echo '<script type="text/javascript">document.getElementById("laststep").disabled=false;document.getElementById("laststep").value = \''.lang('installed_complete').'\';</script><script type="text/javascript">setTimeout(function(){window.location=\'index.php?method=complete\'}, 3000);</script>'."\r\n";
-            @touch(ROOTDIR.'conf/install.lock');
-            show_footer();
         }elseif($dbadapter == 'sqlite'){
             $step = $step + 1;
                         
@@ -245,25 +222,41 @@ if($method == 'license'){
             }
             
             $db =& loader::database();
-            $db->insert('#@users',array('user_name'=>$username,'user_nicename'=>$username,'user_pass'=>md5($password),'create_time'=>time()));
-            if($db->query()){
-                showjsmessage(lang('create_admin_account').lang('succeed'));
-            }else{
-                showjsmessage(lang('create_admin_account').lang('failed'));
-            }
-            $mdl_setting = loader::model('setting');
-            $mdl_setting->set_conf('system.version',MPIC_VERSION);
-            $mdl_setting->set_conf('system.installed_time',time());
-            $mdl_setting->set_conf('site.title',$sitename);
-            $mdl_setting->set_conf('site.url',$siteurl);
-            $mdl_setting->set_conf('site.email',$email);
-        
-            showjsmessage(lang('update_user_setting'));
-            
-            echo '<script type="text/javascript">document.getElementById("laststep").disabled=false;document.getElementById("laststep").value = \''.lang('installed_complete').'\';</script><script type="text/javascript">setTimeout(function(){window.location=\'index.php?method=complete\'}, 3000);</script>'."\r\n";
-            @touch(ROOTDIR.'conf/install.lock');
-            show_footer();
         }
+        
+        dir_clear(ROOTDIR.'cache/data');
+        dir_clear(ROOTDIR.'cache/templates');
+        dir_clear(ROOTDIR.'cache/tmp');
+    
+        $db->insert('#@users',array('user_name'=>$username,'user_nicename'=>$username,'user_pass'=>md5($password),'create_time'=>time()));
+        if($db->query()){
+            showjsmessage(lang('create_admin_account').lang('succeed'));
+        }else{
+            showjsmessage(lang('create_admin_account').lang('failed'));
+        }
+        $theme_info = ROOTDIR.'themes/default/info.php';
+        if(file_exists($theme_info)){
+            include($theme_info);
+            $insert_arr = array('name'=>$theme_name,'cname'=>'default','copyright'=>$theme_copyright,'config'=>serialize($theme_config));
+            $db->insert('#@themes',$insert_arr);
+            $db->query();
+            showjsmessage(lang('install_default_theme'));
+        }else{
+            show_msg('miss_default_theme');
+        }
+        
+        $mdl_setting = loader::model('setting');
+        $mdl_setting->set_conf('system.version',MPIC_VERSION);
+        $mdl_setting->set_conf('system.installed_time',time());
+        $mdl_setting->set_conf('site.title',$sitename);
+        $mdl_setting->set_conf('site.url',$siteurl);
+        $mdl_setting->set_conf('site.email',$email);
+        
+        showjsmessage(lang('update_user_setting'));
+    
+        echo '<script type="text/javascript">document.getElementById("laststep").disabled=false;document.getElementById("laststep").value = \''.lang('installed_complete').'\';</script><script type="text/javascript">setTimeout(function(){window.location=\'index.php?method=complete\'}, 3000);</script>'."\r\n";
+        @touch(ROOTDIR.'conf/install.lock');
+        show_footer();
     }else{
         show_form($form_db_init_items, $error_msg);
     }

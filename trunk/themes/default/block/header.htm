@@ -21,10 +21,20 @@
 <script src="{$statics_path}js/admin.js" type="text/javascript"></script>
 <!--{/if}-->
 <style type="text/css">
+body{
+    background:{$_config['bodybg']};
+}
+#tabs div.clear{
+    background:{$_config['headerbottom']};
+}
+#tabs li a.current{
+    background:-moz-linear-gradient(center top , {$_config['tablinkfrom']},{$_config['tablinkto']});
+    background:-webkit-gradient(linear,0% 0%, 0% 100%, from({$_config['tablinkfrom']}), to({$_config['tablinkto']}));
+}
 a:link, a:visited {
     color: {$_config['link_color']};
  }
-a:hover {
+a:hover,#settings_person a:hover {
     color: {$_config['link_hover_color']};
     background-color: {$_config['link_color']};
 }
@@ -46,14 +56,6 @@ a:hover {
    color: {$_config['tablinkhover']};
    background-color: {$_config['tablinkhoverbg']};
 }
-#updateinfo{
-    color:{$_config['updateinfo']};
-    background-color:{$_config['updateinfobg']};
-}
-#updateinfo a.alertcolor{
-    color:{$_config['alertcolor']};
-    background-color:transparent;
-}
 .alertcolor{
     color:{$_config['alertcolor']};
 }
@@ -65,10 +67,16 @@ a:hover {
     color:{$_config['titlelabel']};
 }
 #meiu_float_box{
-    border:10px solid {$_config['boxborder']};
+    border:3px solid {$_config['boxborder']};
 }
 </style>
-
+<!--[if IE]>
+<style>
+#tabs li a.current{
+    filter: progid:DXImageTransform.Microsoft.gradient(enabled='true', startColorstr={$_config['tablinkfrom']}, endColorstr={$_config['tablinkto']});
+}
+</style>
+<![endif]-->
 </head>
 
 <body>

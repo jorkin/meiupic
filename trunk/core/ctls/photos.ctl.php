@@ -69,7 +69,7 @@ class photos_ctl extends pagecore{
                         site_link('photos','index',array('aid'=>$album_id)).
                       '" class="current">'.$album_info['name'].'</a></li>';
         
-        $album_info['tags_list'] = explode(',',$album_info['tags']);
+        $album_info['tags_list'] = explode(' ',$album_info['tags']);
         
         $mdl_comment =& loader::model('comment');
         $album_comments = $mdl_comment->get_all(1,array('ref_id'=>$album_id,'type'=>'1'));
@@ -388,7 +388,7 @@ class photos_ctl extends pagecore{
         }
         
         $info['exif'] = unserialize($info['exif']);
-        $info['tags_list'] = explode(',',$info['tags']);
+        $info['tags_list'] = explode(' ',$info['tags']);
         
         $album_info = $this->mdl_album->get_info($info['album_id']);
         if(!$this->mdl_album->check_album_priv($album_info['id'],$album_info)){

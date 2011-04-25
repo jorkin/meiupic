@@ -69,7 +69,7 @@ class tag_mdl extends modelfactory{
     }
     
     function save_tags($id,$tags,$type=1){
-        $tag_arr = explode(',',$tags);
+        $tag_arr = explode(' ',$tags);
         $tag_arr = array_unique($tag_arr);
         $this->db->select('#@tag_rel as tr left join #@tags as t on tr.tag_id=t.id','tag_id,name','t.type='.$type.' and tr.rel_id='.intval($id));
         $exist_tags = $this->db->getAll();
