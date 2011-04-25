@@ -268,6 +268,16 @@ textarea.inputstyle{
     width:10px;
     padding-top:10px;
 }
+.i_delete{
+    background-position:-254px -7px;
+    width:16px;
+    padding-top:16px;
+}
+.i_delete_sp{
+    background-position:-270px -9px;
+    width:10px;
+    padding-top:10px;
+}
 /*selector*/
 .selectlist{
     line-height:24px;
@@ -461,7 +471,19 @@ form .field .ipts{float:left;}
     height:100%;
     width:100%;
 }
-
+div.modaldiv{
+    z-index:100;
+    position:absolute;
+    top: 0;
+    left: 0;
+    background-color:#000;
+    border:none;
+    filter:alpha(opacity=27);
+    -moz-opacity: 0.27;
+    opacity: 0.27;
+    height:100%;
+    width:100%;
+}
 * html .bg_iframe { /* ie6 hack */
      position: absolute;
      height: expression(document.body.scrollHeight > document.body.offsetHeight ? document.body.scrollHeight : document.body.offsetHeight + 'px');

@@ -196,4 +196,7 @@ $lang = array(
     'miss_dbname'            =>   '请设置数据库名!',
     'connect_mysql'          =>    '连接至Mysql (%s,%s) 失败!',
     'can_not_use_db'         =>    '不能使用数据库 %s',
+    
+    'install_default_theme'  =>     '安装默认模版',
+    'miss_default_theme'     =>    '缺失默认模版',
 );

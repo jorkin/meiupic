@@ -13,4 +13,4 @@ $pagination['num'] = ' <a href="{url}">{num}</a> ';
 $pagination['current'] = ' <span class="thispage">{num}</span> ';
 $pagination['ellipsis'] = ' ... ';
 
-$pagination['none'] = lang('no_records');
+$pagination['none'] = '';

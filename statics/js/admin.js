@@ -23,7 +23,7 @@ Madmin.check_all = function(je,check){
 Madmin.checked_action = function(je,action_url){
     var check_vals = $(je+':checked');
     $.post(action_url,check_vals.serializeArray(),function(data) {
-        Mui.box.setData(data);
+        Mui.box.setData(data,true);
     },'html');
 }
 Madmin.rename = function(obj,url){

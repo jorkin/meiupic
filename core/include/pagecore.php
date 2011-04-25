@@ -33,7 +33,7 @@ class pagecore{
         $this->output->set('meu_head',loader::lib('plugin')->filter('meu_head',$head_str,$arr));
 
         if(!$this->user->loggedin()){
-            $user_status = '<a href="'.site_link('users','login').'" onclick="Mui.box.show(this.href);return false;">登录</a>';
+            $user_status = '<a href="'.site_link('users','login').'" onclick="Mui.box.show(this.href,true);return false;">登录</a>';
         }else{
             $user_status = '<span class="name">'.$this->user->get_field('user_nicename').'</span>
             <span class="pipe">|</span>

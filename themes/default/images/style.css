@@ -1,8 +1,6 @@
 body{
-    background-color: #ececec;
     color: #222;
 }
-
 /*header*/
 #header{
     background:#036;
@@ -16,7 +14,7 @@ body{
 }
 #header #settings_person{
     font-size:1em;
-    padding:7px 10px;
+    margin:7px 20px;
     position:absolute;
     right:0;
     top:0;
@@ -26,18 +24,7 @@ body{
     opacity:0.6;
 }
 #header #settings_person a,#header #settings_person span.name{
-    padding:7px 6px;
-}
-
-#updateinfo{
-    position:absolute;
-    top:0;
-    left:30%;
-    line-height:25px;
-    padding:0 20px 0 20px;
-    -moz-border-radius:10px;
-    -webkit-border-radius:10px;
-    border-radius:10px;
+    
 }
 /*header tabs*/
 #tabs{
@@ -65,8 +52,6 @@ body{
 #tabs li.trash a:visited,#tabs li.trash a:link{padding:2px 0 0 10px;background:none;}
 #tabs li.trash a:hover{background:transparent;}
 #tabs li a.current{
-    background:-moz-linear-gradient(center top , #FDFDFD, #ECECEC);
-    background:-webkit-gradient(linear,0% 0%, 0% 100%, from(#FDFDFD), to(#ECECEC));
     color:#222222;
     margin:0 1px;
     text-decoration:none;
@@ -74,7 +59,6 @@ body{
 #tabs div.clear{
     height:1px;
     overflow:hidden;
-    background:#ECECEC;
 }
 /*body*/
 #bodywrap{
@@ -98,6 +82,7 @@ table.layout td.right{
     -moz-box-shadow:3px 3px 4px #BBB;
     -webkit-box-shadow:3px 3px 4px #BBB;
     box-shadow:3px 3px 4px #BBB;
+    border:1px solid #e2e2e2;
 }
 .mainbody .col{
     height:48px;
@@ -173,9 +158,9 @@ table.layout td.right{
     padding:6px 6px 0;
     float:left;
     border:1px solid #eee;
-    -moz-box-shadow:3px 3px 4px #ccc;
+    /*-moz-box-shadow:3px 3px 4px #ccc;
     -webkit-box-shadow:3px 3px 4px #ccc;
-    box-shadow:3px 3px 4px #ccc;
+    box-shadow:3px 3px 4px #ccc;*/
 }
 .grid .gallary_wrap .album{
     width:200px;
@@ -536,8 +521,8 @@ table.layout td.right{
     border-color: #aaa;
     border-style: solid;
     border-width: 1px;
-    background:-moz-linear-gradient(center top , #ffffff, #deeaff) repeat scroll 0 0 transparent;
-    background:-webkit-gradient(linear,0% 0%, 0% 100%, from(#ffffff), to(#deeaff));
+    background:-moz-linear-gradient(center top , #ffffff, #eeeeee) repeat scroll 0 0 transparent;
+    background:-webkit-gradient(linear,0% 0%, 0% 100%, from(#ffffff), to(#eeeeee));
 }
 .data_tab li a,.data_tab li a:link,.data_tab li a:visited{
     color:#333;

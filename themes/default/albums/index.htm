@@ -25,7 +25,7 @@
                                             <tr>
                                                 <td>
                                                     <!--{if !$loggedin && $v['priv_type']!=0}-->
-                                        <a href="{link ctl=photos aid=$v['id']}" onclick="Mui.box.show('{link ctl=photos act=auth_priv aid=$v['id']}');return false;">
+                                        <a href="{link ctl=photos aid=$v['id']}" onclick="Mui.box.show('{link ctl=photos act=auth_priv aid=$v['id']}',true);return false;">
                                         <img src="{$base_path}statics/img/lock.gif" />
                                         </a>
                                         <!--{else}-->
@@ -40,8 +40,8 @@
                                     <div class="pic_ctl">
                                         <ul class="btns">
                                             <!--{if $loggedin}-->
-                                            <li><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=albums act=confirm_delete id=$v['id']}');" title="移动到回收站"><span class="i_littletrash sprite"></span></a></li>
-                                            <li><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=albums act=modify id=$v['id']}');" title="修改"><span class="i_edit sprite"></span></a></li>
+                                            <li><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=albums act=confirm_delete id=$v['id']}',true);" title="移动到回收站"><span class="i_littletrash sprite"></span></a></li>
+                                            <li><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=albums act=modify id=$v['id']}',true);" title="修改"><span class="i_edit sprite"></span></a></li>
                                             <!--{/if}-->
                                             <!--{$v['album_control_icons']}-->
                                         </ul>
@@ -97,10 +97,10 @@
                             <div class="data_msg">
                                 <!--{if $loggedin}-->
                                 <div>{lang no_album_notice}</div >
-                                <div class="button"><div class="bigbutton"><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=albums act=create}');"><span>{lang create_new_album}</span></a></div></div>
+                                <div class="button"><div class="bigbutton"><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=albums act=create}',true);"><span>{lang create_new_album}</span></a></div></div>
                                 <!--{else}-->
                                 <div>{lang no_album_notice_notlogin}</div>
-                                <div class="button"><a href="javascript:void(0);" onclick="Mui.box.show('{link ctl=users act=login}');">登录后创建</a></div>
+                                <div class="button"><a href="javascript:void(0);" onclick="Mui.box.show('{link ctl=users act=login}',true);">登录后创建</a></div>
                                 <!--{/if}-->
                             </div>
                             <div class="clear"></div>
@@ -113,7 +113,7 @@
                 <div class="sidebar">
                     <!--{if $loggedin}-->
                     <div class="mb10">
-                        <div class="bigbutton"><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=albums act=create}');"><span>{lang create_new_album}</span></a></div>
+                        <div class="bigbutton"><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=albums act=create}',true);"><span>{lang create_new_album}</span></a></div>
                     </div>
                     <!--{/if}-->
                     <div class="sidesearch mb20">

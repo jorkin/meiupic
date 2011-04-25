@@ -36,8 +36,8 @@
                                     <div class="pic_ctl">
                                         <ul class="btns">
                                             <!--{if $loggedin}-->
-                                            <li><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=photos act=confirm_delete id=$v['id']}');" title="移动到回收站"><span class="i_littletrash sprite"></span></a></li>
-                                            <li><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=photos act=modify id=$v['id']}');" title="编辑"><span class="i_edit sprite"></span></a></li>
+                                            <li><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=photos act=confirm_delete id=$v['id']}',true);" title="移动到回收站"><span class="i_littletrash sprite"></span></a></li>
+                                            <li><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=photos act=modify id=$v['id']}',true);" title="编辑"><span class="i_edit sprite"></span></a></li>
                                             <li><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=albums act=update_cover pic_id=$v['id']}');" title="设为封面"><span class="i_cover sprite"></span></a></li>
                                             <!--{/if}-->
                                             <!--{$v['photo_control_icons']}-->
@@ -190,7 +190,7 @@
                     </div>
                     <div class="priv">
                         <span class="f_left">访问权限：  <span class="i_greenicn sprite"></span> {echo enum_priv_type($album_info['priv_type'])}</span>
-                        <!--{if $loggedin}--><span class="f_right"><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=albums act=modify_priv id=$album_info['id']}');">编辑</a></span><!--{/if}-->
+                        <!--{if $loggedin}--><span class="f_right"><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=albums act=modify_priv id=$album_info['id']}',true);">编辑</a></span><!--{/if}-->
                         <div class="clear"></div>
                     </div>
                     <div class="mb10 tinfo">

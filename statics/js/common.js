@@ -76,12 +76,18 @@ var Mui = {
 
 Mui.box = {
     callback : null,
-    show : function(url){
+    show : function(url,modal){
         if( $('#meiu_float_box').length == 0 ){
             $('body').prepend('<div id="meiu_float_box"></div>');
         }
         if(jQuery.browser.msie && jQuery.browser.version < 7){
-            $('body').append('<iframe class="bg_iframe" scrolling="no" frameborder="0" style="position: absolute;"></iframe>');
+            if($('iframe.bg_iframe').length == 0){
+                $('body').append('<iframe class="bg_iframe" scrolling="no" frameborder="0" style="position: absolute;"></iframe>');
+            }
+        }
+        if(modal && $('div.modaldiv').length == 0){
+            var h = $(document).height();
+            $('body').append('<div class="modaldiv" style="height:'+h+'px"></div>');
         }
         if(url){
             $.get(url,{ajax:'true','_t':Math.random()}, function(data) {
@@ -97,13 +103,12 @@ Mui.box = {
             Mui.centerMe('#meiu_float_box');
         }
     },
-    setData : function(data){
+    setData : function(data,modal){
         if( $('#meiu_float_box').length == 0 ){
             $('body').prepend('<div id="meiu_float_box"></div>');
         }
         $('#meiu_float_box').html(data);
-        $('#meiu_float_box').show();
-        Mui.centerMe('#meiu_float_box');
+        this.show(false,modal);
     },
     resize: function(w,h){
         $('#meiu_float_box').width(w);
@@ -116,13 +121,14 @@ Mui.box = {
         if(jQuery.browser.msie && jQuery.browser.version < 7){
             $('iframe').remove('.bg_iframe');
         }
+        $('div').remove('.modaldiv');
         this.callback = null;
     },
     alert: function(title,content,btn_name){
         Mui.box.setData('<div class="box_title titbg">'+
             '<div class="closer sprite i_close" onclick="Mui.box.close()"></div>'+
             title+'</div><div class="box_container">'+'<div>'+content+'</div>'+
-            '<div class="b_btns"><input type="button" value="'+btn_name+'" class="ml10 ylbtn f_left" name="cancel" onclick="Mui.box.close()"></div></div>');
+            '<div class="b_btns"><input type="button" value="'+btn_name+'" class="ml10 ylbtn f_left" name="cancel" onclick="Mui.box.close()"></div></div>',true);
         $('#meiu_float_box').jqDrag('.box_title');
     }
 };
