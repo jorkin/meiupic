@@ -101,6 +101,7 @@ Mui.box = {
         }else{
             $('#meiu_float_box').show();
             Mui.centerMe('#meiu_float_box');
+            $('#meiu_float_box').jqDrag('.box_title');
         }
     },
     setData : function(data,modal){
