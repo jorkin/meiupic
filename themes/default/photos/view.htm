@@ -125,10 +125,12 @@
    var img = new Image();
    img.onload = function(){
        $('#photo_body img.photo').attr('src',img.src);
-       show_pic_ctl();
    };
    img.src = "{img $info['path']}";
    
+   $(function(){
+       show_pic_ctl();
+   });
    $(window).resize(function() {
        detect_resize_img();
        show_pic_ctl();
