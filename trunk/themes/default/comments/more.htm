@@ -14,7 +14,7 @@
                 {$v['content']}
             </div>
             <div class="ctlbtn">
-                <a href="javascript:void(0);" onclick="reply_comment(this,'{link ctl=comments act=reply id=$v['id']}');">回复</a> <a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=comments act=confirm_delete id=$v['id']}')">删除</a>
+                <a href="javascript:void(0);" onclick="reply_comment(this,'{link ctl=comments act=reply id=$v['id']}');">回复</a>  <!--{if $loggedin}--><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=comments act=confirm_delete id=$v['id']}',true)">删除</a><!--{/if}-->
             </div>
             <!--{loop $v['sub_comments'] $vv}-->
             <div class="cmt_item bdwt sub">
@@ -32,7 +32,7 @@
                         {$vv['content']}
                     </div>
                     <div class="ctlbtn">
-                        <a href="javascript:void(0);" onclick="reply_comment(this,'{link ctl=comments act=reply id=$vv['id']}');">回复</a> <a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=comments act=confirm_delete id=$vv['id']}')">删除</a>
+                        <a href="javascript:void(0);" onclick="reply_comment(this,'{link ctl=comments act=reply id=$vv['id']}');">回复</a>  <!--{if $loggedin}--><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=comments act=confirm_delete id=$vv['id']}',true)">删除</a><!--{/if}-->
                     </div>
                 </div>
             </div>

@@ -370,6 +370,7 @@ form .field .ipts{float:left;}
     background:#eee;
     margin:10px 0;
     padding:10px;
+	clear:both;
 }
 /*评论列表*/
 .comment_list{
@@ -394,15 +395,16 @@ form .field .ipts{float:left;}
 }
 .comment_list .cmt_item .thde{
     margin-left:75px;
+	height:1%;
 }
 .comment_list .cmt_item .cnt{
     line-height: 20px;
-    margin: 8px 175px 8px 0;
+    padding: 8px 175px 8px 0;
     overflow: hidden;
     line-height:1.6;
 }
 .comment_list .ctlbtn{
-    margin:8px 0;
+    padding:8px 0;
 }
 
 .more_comments{

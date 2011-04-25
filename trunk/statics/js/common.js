@@ -237,11 +237,13 @@ function reply_comment(je,url){
     $.get(url,{ajax:'true','_t':Math.random()}, function(data) {
         if(parent.find('form').length == 0){
             parent.append(data);
-        }
-        $(parent).find('input[name=cancel]').click(function(){
-            $(parent).find('form').remove();
+        }else{
+			parent.find('form').show();
+		}
+        parent.find('input[name=cancel]').click(function(){
+            parent.find('form').hide();
         });
-        $(parent).find('form').submit(function(){
+        parent.find('form').submit(function(){
             var postform = $(this);
             $.post(postform.attr('action'),postform.serializeArray(),function(data) {
                 if(data.ret){
@@ -291,7 +293,7 @@ function load_comments(url){
 
 $(function(){
     //press esc to close float div
-    $(window).bind('keypress',
+    $(document).bind('keypress',
         function(e){
             if(e.keyCode == 27){
                 Mui.box.close();

@@ -31,4 +31,14 @@ class comment_mdl extends modelfactory{
         $this->db->delete('#@comments','type='.intval($type).' and ref_id='.intval($ref_id));
         return $this->db->query();
     }
+
+    function delete($id){
+        $this->db->delete($this->table_name,$this->id_col.'='.intval($id));
+        $ret = $this->db->query();
+        if($ret){
+            $this->db->delete($this->table_name,'pid='.intval($id));
+            $this->db->query();
+        }
+        return $ret;
+    }
 }

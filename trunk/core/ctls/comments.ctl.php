@@ -96,6 +96,8 @@ class comments_ctl extends pagecore{
     }
     
     function confirm_delete(){
+        need_login('ajax_page');
+
         $id = $this->getGet('id');
         $this->output->set('id',$id);
         
@@ -103,11 +105,15 @@ class comments_ctl extends pagecore{
     }
     
     function delete(){
+        need_login('ajax_page');
+
         $id = $this->getGet('id');
         $info = $this->mdl_comment->get_info($id);
         if($this->mdl_comment->delete($id)){
             if($info['type'] == 1){
                 loader::model('album')->update_comments_num($info['ref_id']);
+            }elseif($comment['type'] == 2){
+                loader::model('photo')->update_comments_num($info['ref_id']);
             }
             echo ajax_box('成功删除评论!',null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
