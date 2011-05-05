@@ -138,15 +138,15 @@ Mui.form = {
     send : function(formid){
         $('#'+formid).unbind('submit').submit(function(){
             $.post($('#'+formid).attr('action'),$('#'+formid).serializeArray(),function(data) {
-                Mui.form.showResult(data,formid);
-            },'html');
+                Mui.form.showResult(data.html,formid);
+            },'json');
         });
     },
     sendPop : function(formid){
         $('#'+formid).unbind('submit').submit(function(){
             $.post($('#'+formid).attr('action'),$('#'+formid).serializeArray(),function(data) {
-                Mui.box.setData(data);
-            },'html');
+                Mui.box.setData(data.html);
+            },'json');
         });
     },
     sendAuto : function(formid){
@@ -290,6 +290,14 @@ function load_comments(url){
             $('.comment_list').append(data);
         }
     },'html');
+}
+
+function switch_div(o,d){
+    if(o.checked){
+        $("#"+d).show();
+    }else{
+        $("#"+d).hide();
+    }
 }
 
 $(function(){

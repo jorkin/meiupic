@@ -252,7 +252,7 @@ class image_imagick {
            return false;
         }
         if($this->param['water_mark_opacity']){
-            $water_img->setImageOpacity($this->param['water_mark_opacity']);
+            $water_img->setImageOpacity($this->param['water_mark_opacity']/100);
         }
         $draw = new ImagickDraw();
         switch($this->param['water_mark_pos']) {
@@ -373,7 +373,7 @@ class image_imagick {
             $this->image = $dest;
         }else{
             if($this->param['water_mark_opacity']){
-                $draw->setFillOpacity($this->param['water_mark_opacity']);
+                $draw->setFillOpacity($this->param['water_mark_opacity']/100);
             }
             $this->image->annotateImage($draw,0,0,$this->param['water_mark_angle'],$this->param['water_mark_string']);
         }

@@ -63,9 +63,12 @@ function ajax_box_success($content , $title = '', $close_time = 0 , $forward = '
     exit;
 }
 
-function ajax_box_failed($info){
+function ajax_box_failed($info,$with_box = false){
     no_cache_header();
     
+    if($with_box){
+        $info = ajax_box($info);
+    }
     echo loader::lib('json')->encode(
         array('ret'=>false,'html'=>$info)
     );
@@ -298,4 +301,26 @@ function bytes2u($size){
       $result = round($size/1024/1024/1024/1024, 2).' TB';
     }
     return $result;
+}
+
+function get_fonts(){
+    $fontdir = ROOTDIR.'statics/font';
+    $fonts = array();
+    if($directory = @dir($fontdir)) {
+        while($entry = $directory->read()) {
+            $fileext = end(explode('.',$entry));
+            if(strtolower($fileext) == 'ttf' || strtolower($fileext) == 'ttc'){
+                $fonts[] = $entry;
+            }
+        }
+        $directory->close();
+    }
+    return $fonts;
+}
+
+function check_color($c){
+    if(preg_match('/^\#[0-9A-F]{2}[0-9A-F]{2}[0-9A-F]{2}$/i', $c) || preg_match('/^\#[0-9A-F]{3}$/i', $c)){
+        return true;
+    }
+    return false;
 }

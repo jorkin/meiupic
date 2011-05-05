@@ -366,7 +366,11 @@ class image_gd {
         }
         //设定图像的混色模式
         imagealphablending($this->image, true);
-        imagecopy($this->image, $water_im, $posX, $posY, 0, 0, $w,$h);//拷贝水印到目标文件
+        if(function_exists('imagecopymerge')){
+            @imagecopymerge($this->image, $water_im, $posX, $posY, 0, 0, $w,$h,$this->param['water_mark_opacity']);
+        }else{
+            imagecopy($this->image, $water_im, $posX, $posY, 0, 0, $w,$h);//拷贝水印到目标文件
+        }
         imagedestroy($water_im);
     }
     

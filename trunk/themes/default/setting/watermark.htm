@@ -1,0 +1,171 @@
+{template block/header}
+<script src="{$statics_path}js/ajaxfileupload.js" type="text/javascript"></script>
+<div id="bodywrap">
+    <table class="layout">
+        <tr>
+            <td class="left">
+                <div class="mainbody">
+                    <div class="col titbg">
+                        <h4 class="f_left"><a href="{link ctl=setting}">基本设置</a></h1>
+                        <h4 class="f_left"><a href="{link ctl=setting act=upload}">上传设置</a></h4>
+                        <h1 class="f_left">水印设置</h1>
+                        <h4 class="f_left"><a href="{link ctl=setting act=themes}">风格管理</a></h4>
+                        <h4 class="f_left"><a href="{link ctl=setting act=plugins}">插件管理</a></h4>
+                        <h4 class="f_left"><a href="{link ctl=setting act=info}">系统信息</a></h4>
+                        <div class="rmenu f_right">
+                        </div>
+                    </div>
+                    <div class="innercol">
+                            <div class="innerconetent">
+                                <form id="setting_wm_form" action="{link ctl=setting act=save_watermark}" method="post" onsubmit="return false;">
+                                    <div class="settingfield">
+                                        <div class="label">是否启用水印</div>
+                                        <div class="descinfo">启用此选项，会在每张上传的图片上打上水印，可以防止别人盗用图片。</div>
+                                        <div class="input">
+                                            <label><input type="radio" name="watermark_type" value="0" onclick="$('#img_wm').hide();$('#font_wm').hide();$('#wm_pos').hide();" {if $watermark['type']==0}checked="checked"{/if} /> 关闭</label>
+                                            <label><input type="radio" name="watermark_type" value="1" onclick="$('#img_wm').show();$('#font_wm').hide();$('#wm_pos').show();" {if $watermark['type']==1}checked="checked"{/if} /> 启用图片水印</label>
+                                            <label><input type="radio" name="watermark_type" value="2" onclick="$('#img_wm').hide();$('#font_wm').show();$('#wm_pos').show();" {if $watermark['type']==2}checked="checked"{/if} /> 启用文字水印</label>
+                                        </div>
+                                    </div>
+                                    <div id="img_wm">
+                                    <div class="settingfield">
+                                        <div class="label">图片水印地址</div>
+                                        <div class="descinfo">请上传水印图片，或填入水印图片的相对地址</div>
+                                        <div class="input">
+                                            <input type="text" class="settinginput iptw3" id="water_mark_image" name="watermark[water_mark_image]" value="{$watermark['water_mark_image']}" />
+                                            <a href="javascript:void(0)" onclick="upload_watermark()">上传</a>
+                                             {if $watermark['water_mark_image']}<a href="{img $watermark['water_mark_image']}" target="_blank">查看</a>{/if}
+                                        </div>
+                                    </div>
+                                    <div class="settingfield">
+                                        <div class="label">水印透明度</div>
+                                        <div class="descinfo">透明度请设置为0-100之间的数字，0代表完全透明，100代表不透明</div>
+                                        <div class="input">
+                                            <input type="text" name="watermark[water_mark_opacity]" class="settinginput iptw1" value="{$watermark['water_mark_opacity']}" />
+                                        </div>
+                                    </div>
+                                    </div>
+                                    
+                                    <div id="font_wm">
+                                    <div class="settingfield">
+                                        <div class="label">水印文字</div>
+                                        <div class="descinfo">水印文字内容</div>
+                                        <div class="input">
+                                            <input type="text" name="watermark[water_mark_string]" class="settinginput iptw3" value="{$watermark['water_mark_string']}" />
+                                        </div>
+                                    </div>
+                                    <div class="settingfield">
+                                        <div class="label">水印文字字体</div>
+                                        <div class="descinfo">请把所需的字体文件上传到相册服务器根目录下的/statics/font文件夹中，字体文件位于本机C:\WINDOWS\Fonts下，例如文件SimSun.ttc表示宋体</div>
+                                        <div class="input">
+                                            <select name="watermark[water_mark_font]">
+                                                {loop $fonts $v}
+                                                <option value="{$v}" {if $v==$watermark['water_mark_font']}selected="selected"{/if}>{$v}</option>
+                                                {/loop}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="settingfield">
+                                        <div class="label">水印文字大小</div>
+                                        <div class="descinfo">水印文字大小设置，单位为px</div>
+                                        <div class="input">
+                                            <input type="text" name="watermark[water_mark_fontsize]" class="settinginput iptw1" value="{$watermark['water_mark_fontsize']}" />
+                                        </div>
+                                    </div>
+                                    <div class="settingfield">
+                                        <div class="label">水印文字颜色</div>
+                                        <div class="descinfo">可以取色器取色</div>
+                                        <div class="input">
+                                            <input type="text" name="watermark[water_mark_color]" class="settinginput iptw1" value="{$watermark['water_mark_color']}" />
+                                        </div>
+                                    </div>
+                                    </div>
+                                    
+                                    <div id="wm_pos">
+                                    <div class="settingfield">
+                                        <div class="label">水印位置</div>
+                                        <div class="descinfo">设置水印位置</div>
+                                        <div class="input">
+                                        <table width="300">
+                                            <tr>
+                                                <td height="25"><label><input type="radio" name="watermark[water_mark_pos]" value="1" {if $watermark['water_mark_pos']==1} checked="checked"{/if} /> 顶部居左</label></td>
+                                                <td><label><input type="radio" name="watermark[water_mark_pos]" value="2" {if $watermark['water_mark_pos']==2} checked="checked"{/if} /> 顶部居中</label></td>
+                                                <td><label><input type="radio" name="watermark[water_mark_pos]" value="3" {if $watermark['water_mark_pos']==3} checked="checked"{/if} /> 顶部居右</label></td>
+
+                                            </tr>
+                                            <tr>
+                                                <td height="25"><label><input type="radio" name="watermark[water_mark_pos]" value="4" {if $watermark['water_mark_pos']==4} checked="checked"{/if} /> 左部居中</label></td>
+                                                <td><label><input type="radio" name="watermark[water_mark_pos]" value="5" {if $watermark['water_mark_pos']==5} checked="checked"{/if} /> 图片中心</label></td>
+                                                <td><label><input type="radio" name="watermark[water_mark_pos]" value="6" {if $watermark['water_mark_pos']==6} checked="checked"{/if} /> 左部居右</label></td>
+                                            </tr>
+                                            <tr>
+                                                <td height="25"><label><input type="radio" name="watermark[water_mark_pos]" value="7" {if $watermark['water_mark_pos']==7} checked="checked"{/if} /> 底部居左</label></td>
+                                                <td><label><input type="radio" name="watermark[water_mark_pos]" value="8" {if $watermark['water_mark_pos']==8} checked="checked"{/if} /> 底部居中</label></td>
+                                                <td><label><input type="radio" name="watermark[water_mark_pos]" value="9" {if $watermark['water_mark_pos']==9} checked="checked"{/if} /> 底部居右</label></td>
+
+                                            </tr>
+                                            <tr>
+                                                <td height="25" colspan="3"><label><input type="radio" name="watermark[water_mark_pos]" value="0" {if $watermark['water_mark_pos']==0} checked="checked"{/if} /> 随机</label></td>
+                                            </tr>
+                                        </table>
+                                        </div>
+                                    </div>
+                                    </div>
+                                    
+                                    <script>
+                                    var i_type = $('input[name=watermark_type]:checked').val();
+                                    if(i_type == 0){
+                                        $('#img_wm').hide();$('#font_wm').hide();$('#wm_pos').hide();
+                                    }else if(i_type == 1){
+                                        $('#img_wm').show();$('#font_wm').hide();$('#wm_pos').show();
+                                    }else if(i_type == 2){
+                                        $('#img_wm').hide();$('#font_wm').show();$('#wm_pos').show();
+                                    }
+                                    </script>
+                                    <div class="ctl_button">
+                                        <input type="submit" name="submit" class="ylbtn" value="保存设置" onclick="Mui.form.sendPop('setting_wm_form')" />
+                                    </div>
+                                </form>
+                            </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+<script>
+function upload_watermark(){
+    var newuploadwin = '<div class="box_title titbg"><div onclick="Mui.box.close()" class="closer sprite i_close"></div>上传</div><div class="box_container"><input id="fileToUpload" type="file" size="25" name="fileToUpload"> <button class="button" id="buttonUpload" onclick="return ajaxFileUpload();">上传</button></div>';
+    Mui.box.setData(newuploadwin,true);
+}
+
+function ajaxFileUpload(){
+    $.ajaxFileUpload
+    (
+        {
+            url:'{link ctl=setting act=fileupload}',
+            secureuri:false,
+            fileElementId:'fileToUpload',
+            dataType: 'json',
+            success: function (data, status)
+            {
+                if(typeof(data.error) != 'undefined'){
+                    if(data.error != ''){
+                        alert(data.error);
+                    }else{
+                        $('#water_mark_image').val(data.msg);
+                        Mui.box.close();
+                    }
+                }
+            },
+            error: function (data, status, e){
+                alert(e);
+            }
+        }
+    )
+    
+    return false;
+    
+}
+</script>
+{template block/footer}
