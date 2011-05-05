@@ -138,7 +138,7 @@ class setting_ctl extends pagecore{
             if(!check_color($watermark['water_mark_color'])){
                 ajax_box_failed('水印文字颜色不是有效的颜色！',true);
             }
-            if(!$watermark['water_mark_font']){
+            if(!isset($watermark['water_mark_font']) || !$watermark['water_mark_font']){
                 ajax_box_failed('请选择水印文字字体！',true);
             }
             $this->setting->set_conf('watermark.water_mark_string',$watermark['water_mark_string']);
