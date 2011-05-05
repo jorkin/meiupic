@@ -110,10 +110,10 @@ class upload_ctl extends pagecore{
         $album_id = $this->getPost('album_id');
         
         if($type == 'multi'){
-            need_login('ajax_page');
+            need_login('ajax');
             
             if(!$album_id){
-                echo ajax_box('请先选择相册！',null);
+                ajax_box_failed('请先选择相册！',true);
                 return;
             }
             
@@ -185,7 +185,7 @@ class upload_ctl extends pagecore{
             $this->mdl_album->check_repare_cover($album_id);
             
             $gourl = site_link('photos','index',array('aid'=>$album_id));
-            echo ajax_box('上传照片成功！',null,1,$gourl);
+            ajax_box_success('上传照片成功！',null,1,$gourl);
         }else{
             need_login('page');
             
