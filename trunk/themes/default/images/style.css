@@ -601,3 +601,40 @@ table.layout td.right{
     line-height:2;
     margin-bottom:20px;
 }
+
+
+
+/*admin page*/
+.settingfield{
+    margin-bottom:15px;
+}
+.settingfield .label{
+    font-size:14px;
+    font-weight:bold;
+    color:#111;
+    line-height:25px;
+}
+.settingfield .descinfo{
+    font-size:12px;
+    color:#888;
+    line-height:2;
+}
+.settingfield .input{
+    padding:10px;
+    background:#efefef;
+}
+.ctl_button{
+    padding-left:50px;
+}
+input.settinginput{
+    border:1px solid #999;
+    font-size:13px;
+    font-family: "Lucida Grande",verdana,arial,helvetica,sans-serif;
+    padding: 4px 3px;
+}
+textarea.settinginput{
+    border:1px solid #999;
+    font-size:13px;
+    font-family: "Lucida Grande",verdana,arial,helvetica,sans-serif;
+    padding: 4px 3px;
+}

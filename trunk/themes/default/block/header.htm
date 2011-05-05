@@ -103,7 +103,7 @@ a:hover,#settings_person a:hover {
             <li><a title="查看所有标签列表，快速找到照片" href="{link ctl=tags}" {if IN_CTL=='tags'}class="current"{/if}>标签</a></li>
             <!--{if $loggedin}-->
             <li><a title="上传照片" href="{link ctl=upload act=index}" {if IN_CTL=='upload'}class="current"{/if}>上传照片</a></li>
-            <li><a title="系统设置" href="#">系统设置</a></li>
+            <li><a title="系统设置" href="{link ctl=setting}" {if IN_CTL=='setting'}class="current"{/if}>系统设置</a></li>
             <li class="trash"><a href="{link ctl=trash}"><span class="{if $trash_status}i_trash_full{else}i_trash{/if} sprite">回收站</span></a></li>
             <!--{/if}-->
         </ul>

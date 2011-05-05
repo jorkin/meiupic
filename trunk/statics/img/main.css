@@ -182,6 +182,9 @@ textarea.inputstyle{
 .ipth1{
     height:80px;
 }
+.ipth2{
+    height:180px;
+}
 .iptw1{
     width:150px;
 }
@@ -193,6 +196,12 @@ textarea.inputstyle{
 }
 .iptw4{
     width:300px;
+}
+.iptw5{
+    width:500px;
+}
+.iptw6{
+    width:600px;
 }
 .ipttextarea{
     width:500px;
@@ -542,4 +551,13 @@ div.modaldiv{
 }
 .sidebar .inline{
     padding:5px;
+}
+
+
+#normal_uploader ol{
+    list-style:decimal;
+}
+#normal_uploader ol li{
+    list-style:decimal;
+    height:30px;
 }

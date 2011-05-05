@@ -225,11 +225,13 @@ function meiu_bootstrap(){
             if(method_exists($controller,$uriinfo['act'])){
                 call_user_func(array($controller,$uriinfo['act']));
             }else{
-                exit('404');
+                header("HTTP/1.1 404 Not Found");
+                showError('404 页面不存在!');
             }
             $controller->_called();
         }else{
-            exit('404');
+            header("HTTP/1.1 404 Not Found");
+            showError('404 页面不存在!');
         }
     }
 }
