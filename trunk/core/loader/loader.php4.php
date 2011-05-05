@@ -81,8 +81,8 @@ class loader{
         $style_path = $base_path.TPLDIR.'/';
         $params = loader::lib('output')->getAll();
         extract($params);
-        $_config = $GLOBALS['THEME_CONFIG'];
-        
+        //$_config = $GLOBALS['THEME_CONFIG'];
+        $_config = loader::model('setting')->get_conf('theme.'.TEMPLATEID,array());
         ob_start();
         include template($tplFile);
         $content = ob_get_clean();

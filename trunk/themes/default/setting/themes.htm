@@ -30,8 +30,11 @@
                                         <div class="name {if $theme['iscurrent']}current{/if}">
                                         {$theme['name']}
                                         </div>
+                                        <div class="copyright">
+                                        {$theme['copyright']}
+                                        </div>
                                         <div class="ctl">
-                                            {if $theme['withconfig']}<a href="#">编辑</a>{/if} {if $theme['installed']}<a href="#">启用</a> <a href="#">卸载</a>{else}<a href="#">安装</a>{/if} {if $theme['iscurrent']}<span class="current">启用中</span>{/if}
+                                            {if $theme['withconfig']}<a href="javascript:Mui.box.show('{link ctl=setting act=theme_edit theme=$theme['dir']}');">编辑</a>{/if} <a href="javascript:Mui.box.show('{link ctl=setting act=theme_set theme=$theme['dir']}');">启用</a> {if $theme['dir']!='default'}<a href="javascript:Mui.box.show('{link ctl=setting act=theme_remove theme=$theme['dir']}');">删除</a>{/if} {if $theme['iscurrent']}<span class="current">启用中</span>{/if}
                                         </div>
                                     </div>
                                 {/loop}

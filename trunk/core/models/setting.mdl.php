@@ -15,12 +15,13 @@ class setting_mdl extends modelfactory {
         $key = preg_replace("/([^a-zA-Z0-9_\-\.]+)/e","", $key);
         $key_arr = explode('.',$key);
         $k = array_shift($key_arr);
+        
         if(isset($this->setting_pool[$k])){
             $value = $this->setting_pool[$k];
         }else{
             $cache =& loader::lib('cache');
             $value = $cache->get('setting_'.$k);
-            if(!$value){
+            if($value === false){
                 $this->db->select('#@setting','value','name="'.$k.'"');
                 $data = $this->db->getOne();
                 if($data){
@@ -28,9 +29,9 @@ class setting_mdl extends modelfactory {
                 }else{
                     return false;
                 }
-                $this->setting_pool[$k] = $value;
                 $cache->set('setting_'.$k,$value);
             }
+            $this->setting_pool[$k] = $value;
         }
         foreach($key_arr as $v){
             if(isset($value[$v])){
