@@ -638,3 +638,29 @@ textarea.settinginput{
     font-family: "Lucida Grande",verdana,arial,helvetica,sans-serif;
     padding: 4px 3px;
 }
+.themelist{
+    height:1%;
+}
+.themelist .item{
+    float:left;
+    padding-left:20px;
+    padding-bottom:20px;
+    width:180px;
+}
+.themelist .item .preview img{
+    border:1px solid #ddd;
+    padding:6px;
+}
+.themelist .item .name{
+    line-height:2;
+}
+.themelist .item div.current{
+    color:red;
+}
+.themelist .item span.current{
+    background:red;
+    color:#fff;
+}
+.themelist .item .ctl a{
+    margin-right:10px;
+}
