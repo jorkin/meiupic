@@ -153,6 +153,7 @@ Mui.form = {
         $('#'+formid).unbind('submit').submit(function(){
             $.post($('#'+formid).attr('action'),$('#'+formid).serializeArray(),function(data) {
                 if(data.ret){
+                    $('#'+formid).parent().find('.meiu_notice_div').remove();
                     if(Mui.box.callback){
                         Mui.box.setData(data.html.replace(/<script(.|\s)*?\/script(\s)*>/gi,"") );
                         Mui.box.callback();
@@ -235,39 +236,39 @@ function sort_setting(t,sort){
 function reply_comment(je,url){
     var btn = $(je);
     var parent = $(je).parent();
-    $.get(url,{ajax:'true','_t':Math.random()}, function(data) {
-        if(parent.find('form').length == 0){
+    if(parent.find('form').length == 0){
+        $.get(url,{ajax:'true','_t':Math.random()}, function(data) {
             parent.append(data);
-        }else{
-			parent.find('form').show();
-		}
-        parent.find('input[name=cancel]').click(function(){
-            parent.find('form').hide();
-        });
-        parent.find('form').submit(function(){
-            var postform = $(this);
-            $.post(postform.attr('action'),postform.serializeArray(),function(data) {
-                if(data.ret){
-                    var reply_p = postform.parent().parent().parent();
-                    if(reply_p.hasClass('sub')){
-                        reply_p.after(data.html);
-                    }else{
-                        postform.parent().after(data.html);
-                    }
+            parent.find('input[name=cancel]').click(function(){
+                parent.find('form').hide();
+            });
+            parent.find('form').submit(function(){
+                var postform = $(this);
+                $.post(postform.attr('action'),postform.serializeArray(),function(data) {
+                    if(data.ret){
+                        var reply_p = postform.parent().parent().parent();
+                        if(reply_p.hasClass('sub')){
+                            reply_p.after(data.html);
+                        }else{
+                            postform.parent().after(data.html);
+                        }
                     
-                    postform.remove();
-                }else{
-                    notice_div = postform.find('.form_notice_div');
-                    if( notice_div.length == 0 ){
-                        postform.prepend('<div class="form_notice_div">'+data.html+'</div>');
+                        postform.remove();
                     }else{
-                        notice_div.html(data.html);
+                        notice_div = postform.find('.form_notice_div');
+                        if( notice_div.length == 0 ){
+                            postform.prepend('<div class="form_notice_div">'+data.html+'</div>');
+                        }else{
+                            notice_div.html(data.html);
+                        }
+                        postform.find('.form_notice_div').css({display:'block'});
                     }
-                    postform.find('.form_notice_div').css({display:'block'});
-                }
-            },'json');
-        });
-    },'html');
+                },'json');
+            });
+        },'html');
+    }else{
+        parent.find('form').show();
+    }
 }
 
 function reload_comments(url){
