@@ -1,0 +1,75 @@
+{template block/header}
+
+<div id="bodywrap">
+    <table class="layout">
+        <tr>
+            <td class="left">
+                <div class="mainbody">
+                    <div class="col titbg">
+                        <h4 class="f_left"><a href="{link ctl=setting}">基本设置</a></h1>
+                        <h1 class="f_left">上传设置</h4>
+                        <h4 class="f_left"><a href="#">水印设置</a></h4>
+                        <h4 class="f_left"><a href="#">风格管理</a></h4>
+                        <h4 class="f_left"><a href="#">插件管理</a></h4>
+                        <h4 class="f_left"><a href="#">系统信息</a></h4>
+                        <div class="rmenu f_right">
+                        </div>
+                    </div>
+                    <div class="innercol">
+                            <div class="innerconetent">
+                                <form id="setting_basic_form" action="{link ctl=setting act=save_upload}" method="post" onsubmit="return false;">
+                                    <div class="settingfield">
+                                        <div class="label">是否开启客户端预处理</div>
+                                        <div class="descinfo">启用此选项，在高级模式下会自动将大图片缩小，然后再上传，有利于大大减少网络传输，缩短上传时间。</div>
+                                        <div class="input">
+                                            <input type="checkbox" name="enable_comment" value="1" /> 开启
+                                        </div>
+                                    </div>
+                                    <div class="settingfield">
+                                        <div class="label">图片的最大宽度</div>
+                                        <div class="descinfo">客户端预处理图片的最大宽度</div>
+                                        <div class="input">
+                                            <input type="text" name="width" class="settinginput iptw1" />
+                                        </div>
+                                    </div>
+                                    <div class="settingfield">
+                                        <div class="label">图片的最大高度</div>
+                                        <div class="descinfo">客户端预处理图片的最大高度</div>
+                                        <div class="input">
+                                            <input type="text" name="width" class="settinginput iptw1" />
+                                        </div>
+                                    </div>
+                                    <div class="settingfield">
+                                        <div class="label">图片质量</div>
+                                        <div class="descinfo">客户端预处理图片的质量 1-100</div>
+                                        <div class="input">
+                                            <input type="text" name="width" class="settinginput iptw1" />
+                                        </div>
+                                    </div>
+                                    <div class="settingfield">
+                                        <div class="label">允许上传的图片大小</div>
+                                        <div class="descinfo">请谨慎选择，如果空间服务商配置有限制，尺寸过大可能会导致系统瘫痪，高级上传不受影响</div>
+                                        <div class="input">
+                                             <select name="uploadsize">
+                                                 <option value="524288">512k</option>
+                                                 <option value="1048576">1M</option>
+                                                 <option value="2097152">2M</option>
+                                                 <option value="5242880">5M</option>
+                                                 <option value="0">无限制</option>
+                                             </select>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="ctl_button">
+                                        <input type="submit" name="submit" class="ylbtn" value="保存设置" onclick="Mui.form.sendAuto('setting_basic_form')" />
+                                    </div>
+                                </form>
+                            </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+{template block/footer}
