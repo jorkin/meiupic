@@ -198,9 +198,6 @@ if($method == 'license'){
             $sql = file_get_contents($sqlfile);
             $sql = str_replace("\r\n", "\n", $sql);
             runquery($sql);
-            $datasql = file_get_contents($datasqlfile);
-            runquery($datasql);
-            showjsmessage(lang('install_data_sql').lang('succeed'));
         }elseif($dbadapter == 'sqlite'){
             $step = $step + 1;
                         
@@ -223,26 +220,19 @@ if($method == 'license'){
             
             $db =& loader::database();
         }
+        $datasql = file_get_contents($datasqlfile);
+        runquery($datasql);
+        showjsmessage(lang('install_data_sql').lang('succeed'));
         
         dir_clear(ROOTDIR.'cache/data');
         dir_clear(ROOTDIR.'cache/templates');
         dir_clear(ROOTDIR.'cache/tmp');
-    
+        
         $db->insert('#@users',array('user_name'=>$username,'user_nicename'=>$username,'user_pass'=>md5($password),'create_time'=>time()));
         if($db->query()){
             showjsmessage(lang('create_admin_account').lang('succeed'));
         }else{
             showjsmessage(lang('create_admin_account').lang('failed'));
-        }
-        $theme_info = ROOTDIR.'themes/default/info.php';
-        if(file_exists($theme_info)){
-            include($theme_info);
-            $insert_arr = array('name'=>$theme_name,'cname'=>'default','copyright'=>$theme_copyright,'config'=>serialize($theme_config));
-            $db->insert('#@themes',$insert_arr);
-            $db->query();
-            showjsmessage(lang('install_default_theme'));
-        }else{
-            show_msg('miss_default_theme');
         }
         
         $mdl_setting = loader::model('setting');

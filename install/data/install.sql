@@ -138,16 +138,6 @@ CREATE TABLE `meu_tag_rel` (
   PRIMARY KEY (`tag_id`,`rel_id`)
 ) TYPE=MyISAM;
 
-DROP TABLE IF EXISTS `meu_themes`;
-CREATE TABLE `meu_themes` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) NOT NULL,
-  `cname` varchar(200) NOT NULL,
-  `copyright` text NOT NULL,
-  `config` longtext,
-  PRIMARY KEY (`id`)
-) TYPE=MyISAM ;
-
 DROP TABLE IF EXISTS `meu_usermeta`;
 CREATE TABLE `meu_usermeta` (
   `umeta_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,

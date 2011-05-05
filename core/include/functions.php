@@ -80,7 +80,7 @@ function ajax_box( $content , $title = '', $close_time = 0 , $forward = '' )
     if(!$title){
         $title = lang('system_notice');
     }
-    $_config = $GLOBALS['THEME_CONFIG'];
+    $_config = loader::model('setting')->get_conf('theme.'.TEMPLATEID,array());
     ob_start();
     include template('block/ajax_box');
     $page_content = ob_get_clean();
@@ -271,7 +271,8 @@ function has_trash(){
 }
 
 function showError($error_msg){
-    $_config = $GLOBALS['THEME_CONFIG'];
+    //$_config = $GLOBALS['THEME_CONFIG'];
+    $_config = loader::model('setting')->get_conf('theme.'.TEMPLATEID,array());
     loader::lib('output')->set('error_msg',$error_msg);
     loader::view('block/showerror');
     exit;

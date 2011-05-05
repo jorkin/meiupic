@@ -8,46 +8,42 @@
  */
 class template_mdl extends modelfactory {
     var $table_name = '#@themes';
-    
-    function info($template_id){
-        $cache =& loader::lib('cache');
-        $info = $cache->get('theme_info_'.$template_id);
-        if($info === false){
-            $this->db->select('#@themes','*','id='.intval($template_id));
-            $info = $this->db->getRow();
-            $cache->set('theme_info_'.$template_id,$info);
-        }
-        return $info;
-    }
-    
+
     function all_themes(){
         $themedir = ROOTDIR.'themes';
         $themes = array();
-        $current_theme = loader::model('setting')->get_conf('system.current_theme','1');
+        $mdl_setting =& loader::model('setting');
+        $current_theme = $mdl_setting->get_conf('system.current_theme','default');
         
         if($directory = @dir($themedir)) {
             while($entry = $directory->read()) {
+                $theme_config = false;
+                $theme_name = '';
+                $theme_copyright = '';
+                
                 $theme_path = $themedir.'/'.$entry;
                 $info_path = $theme_path.'/info.php';
                 $config_path = $theme_path.'/_config.htm';
                 $preview_path = $theme_path.'/preview.jpg';
-                
+                if(!preg_match('/^[a-zA-Z0-9\-\_]+$/',$entry)){
+                    continue;
+                }
                 if(is_dir($theme_path) && file_exists($info_path)){
                     include($info_path);
-                    $this->db->select('#@themes','*',"cname=".$this->db->q_str($entry));
-                    $theme_info = $this->db->getRow();
-                    if($theme_info && $theme_info['id']==$current_theme){
+                    if($entry == $current_theme){
                         $iscurrent = true;
                     }else{
                         $iscurrent = false;
                     }
-                    
+                    $db_theme_config = $mdl_setting->get_conf('theme.'.$entry);
+                    if($theme_config && !$db_theme_config){
+                        $mdl_setting->set_conf('theme.'.$entry,$theme_config);
+                    }
                     $themes[] = array(
                         'name' => $theme_name,
-                        'cname' => $entry,
+                        'dir' => $entry,
                         'copyright' => $theme_copyright,
                         'withconfig' => file_exists($config_path),
-                        'installed' => $theme_info?true:false,
                         'preview' => file_exists($preview_path)?$GLOBALS['base_path'].'themes/'.$entry.'/preview.jpg':'',
                         'iscurrent' =>$iscurrent
                     );

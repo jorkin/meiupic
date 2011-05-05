@@ -179,21 +179,23 @@ class setting_ctl extends pagecore{
     
     function themes(){
         need_login('page');
-        
-        /*$site = $this->setting->get_conf('site');
-        $site['description'] = safe_invert($site['description']);
-        $this->output->set('site',$site);
-        $this->output->set('enable_comment',$this->setting->get_conf('system.enable_comment'));*/
+
         $mdl_template =& loader::model('template');
         $themes = $mdl_template->all_themes();
-        
         $this->output->set('themes',$themes);
-        
+
         $page_title = '基本设置 - 系统设置 - '.$this->setting->get_conf('site.title');
         $page_keywords = $this->setting->get_conf('site.keywords');
         $page_description = $this->setting->get_conf('site.description');
-        
+
         $this->page_init($page_title,$page_keywords,$page_description);
         $this->render();
+    }
+    
+    function theme_set(){
+        $theme = $this->getGet('theme');
+        $this->setting->set_conf('system.current_theme',$theme);
+        
+        echo ajax_box('设置成功！',null,0.5,$_SERVER['HTTP_REFERER']);
     }
 }

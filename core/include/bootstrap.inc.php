@@ -152,9 +152,9 @@ function boot_init(){
 }
 
 function timezone_set($timeoffset = 8) {
-	if(function_exists('date_default_timezone_set')) {
-		@date_default_timezone_set('Etc/GMT'.($timeoffset > 0 ? '-' : '+').(abs($timeoffset)));
-	}
+    if(function_exists('date_default_timezone_set')) {
+        @date_default_timezone_set('Etc/GMT'.($timeoffset > 0 ? '-' : '+').(abs($timeoffset)));
+    }
 }
 
 
@@ -170,15 +170,9 @@ function init_defines(){
 }
 
 function init_template(){
-    $current_theme = loader::model('setting')->get_conf('system.current_theme','1');
+    $current_theme = loader::model('setting')->get_conf('system.current_theme','default');
     define('TEMPLATEID', $current_theme);
-    $themeinfo = loader::model('template')->info($current_theme);
-    if($themeinfo){
-        $GLOBALS['THEME_CONFIG'] = unserialize($themeinfo['config']);
-        define('TPLDIR','themes/'.$themeinfo['cname']);
-    }else{
-        define('TPLDIR','themes/default');
-    }
+    define('TPLDIR','themes/'.TEMPLATEID);
 }
 
 function meiu_bootstrap(){
