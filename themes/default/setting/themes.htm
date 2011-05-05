@@ -1,0 +1,48 @@
+{template block/header}
+
+<div id="bodywrap">
+    <table class="layout">
+        <tr>
+            <td class="left">
+                <div class="mainbody">
+                    <div class="col titbg">
+                        <h4 class="f_left"><a href="{link ctl=setting}">基本设置</a></h4>
+                        <h4 class="f_left"><a href="{link ctl=setting act=upload}">上传设置</a></h4>
+                        <h4 class="f_left"><a href="{link ctl=setting act=watermark}">水印设置</a></h4>
+                        <h1 class="f_left">风格管理</h1>
+                        <h4 class="f_left"><a href="{link ctl=setting act=plugins}">插件管理</a></h4>
+                        <h4 class="f_left"><a href="{link ctl=setting act=info}">系统信息</a></h4>
+                        <div class="rmenu f_right">
+                        </div>
+                    </div>
+                    <div class="innercol">
+                            <div class="innerconetent">
+                                <div class="themelist">
+                                {loop $themes $theme}
+                                    <div class="item">
+                                        <div class="preview">
+                                            {if $theme['preview']}
+                                            <img src="{$theme['preview']}" height="150" />
+                                            {else}
+                                            <img src="{$base_path}statics/img/nopreview.gif" />
+                                            {/if}
+                                        </div>
+                                        <div class="name {if $theme['iscurrent']}current{/if}">
+                                        {$theme['name']}
+                                        </div>
+                                        <div class="ctl">
+                                            {if $theme['withconfig']}<a href="#">编辑</a>{/if} {if $theme['installed']}<a href="#">启用</a> <a href="#">卸载</a>{else}<a href="#">安装</a>{/if} {if $theme['iscurrent']}<span class="current">启用中</span>{/if}
+                                        </div>
+                                    </div>
+                                {/loop}
+                                <div class="clear"></div>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+{template block/footer}

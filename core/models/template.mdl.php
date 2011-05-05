@@ -19,7 +19,44 @@ class template_mdl extends modelfactory {
         }
         return $info;
     }
-
+    
+    function all_themes(){
+        $themedir = ROOTDIR.'themes';
+        $themes = array();
+        $current_theme = loader::model('setting')->get_conf('system.current_theme','1');
+        
+        if($directory = @dir($themedir)) {
+            while($entry = $directory->read()) {
+                $theme_path = $themedir.'/'.$entry;
+                $info_path = $theme_path.'/info.php';
+                $config_path = $theme_path.'/_config.htm';
+                $preview_path = $theme_path.'/preview.jpg';
+                
+                if(is_dir($theme_path) && file_exists($info_path)){
+                    include($info_path);
+                    $this->db->select('#@themes','*',"cname=".$this->db->q_str($entry));
+                    $theme_info = $this->db->getRow();
+                    if($theme_info && $theme_info['id']==$current_theme){
+                        $iscurrent = true;
+                    }else{
+                        $iscurrent = false;
+                    }
+                    
+                    $themes[] = array(
+                        'name' => $theme_name,
+                        'cname' => $entry,
+                        'copyright' => $theme_copyright,
+                        'withconfig' => file_exists($config_path),
+                        'installed' => $theme_info?true:false,
+                        'preview' => file_exists($preview_path)?$GLOBALS['base_path'].'themes/'.$entry.'/preview.jpg':'',
+                        'iscurrent' =>$iscurrent
+                    );
+                }
+            }
+            $directory->close();
+        }
+        return $themes;
+    }
     /**
      * 编译模板/刷新模版
      *
