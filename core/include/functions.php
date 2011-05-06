@@ -330,3 +330,27 @@ function check_color($c){
     }
     return false;
 }
+
+
+function deldir($dir) {
+    if($directory = @dir($dir)) {
+        while ($file = $directory->read()) {
+            if($file!="." && $file!="..") {
+              $fullpath=$dir."/".$file;
+              if(!is_dir($fullpath)) {
+                  @unlink($fullpath);
+              } else {
+                  deldir($fullpath);
+              }
+            }
+        }
+        $directory->close();
+    }else{
+        return false;
+    }
+    if(rmdir($dir)) {
+        return true;
+    } else {
+        return false;
+    }
+}

@@ -34,7 +34,7 @@
                                         {$theme['copyright']}
                                         </div>
                                         <div class="ctl">
-                                            {if $theme['withconfig']}<a href="javascript:Mui.box.show('{link ctl=setting act=theme_edit theme=$theme['dir']}');">编辑</a>{/if} <a href="javascript:Mui.box.show('{link ctl=setting act=theme_set theme=$theme['dir']}');">启用</a> {if $theme['dir']!='default'}<a href="javascript:Mui.box.show('{link ctl=setting act=theme_remove theme=$theme['dir']}');">删除</a>{/if} {if $theme['iscurrent']}<span class="current">启用中</span>{/if}
+                                            {if $theme['withconfig']}<a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=setting act=theme_edit theme=$theme['dir']}',true);">编辑</a>{/if} <a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=setting act=theme_set theme=$theme['dir']}',true);">启用</a> {if $theme['dir']!='default'}<a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=setting act=theme_confirm_remove theme=$theme['dir']}',true);">删除</a>{/if} {if $theme['iscurrent']}<span class="current">启用中</span>{/if}
                                         </div>
                                     </div>
                                 {/loop}

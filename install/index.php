@@ -203,10 +203,11 @@ if($method == 'license'){
                         
             show_header();
             show_install();
+            $tablepre = 'meu_';
             
             $CONFIG['database']['default']['adapter'] = 'sqlite';
             $CONFIG['database']['default']['dbpath'] = $dst_dbfile;
-            $CONFIG['database']['default']['pre'] = 'meu_';
+            $CONFIG['database']['default']['pre'] = $tablepre;
             $CONFIG['cookie_name'] = 'MPIC_'.random(4);
             $CONFIG['cookie_auth_key'] = random(12);
             $CONFIG['img_engine'] = class_exists('imagick')?'imagick':'gd';
@@ -217,7 +218,6 @@ if($method == 'license'){
             }else{
                 showjsmessage(lang('copy_sqlite').$dst_dbfile.lang('failed'));
             }
-            
             $db =& loader::database();
         }
         $datasql = file_get_contents($datasqlfile);
