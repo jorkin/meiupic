@@ -367,10 +367,13 @@ textarea.inputstyle{
 form .field{
     clear:both;
     padding:0 0 10px;
-    height:1%;
 }
-form .field .label{width:100px;float:left;text-align:left;}
+form .field .label{width:110px;float:left;text-align:left;}
 form .field .ipts{float:left;}
+form .field .clear{
+    height:1px;
+    overflow:hidden;
+}
 /*评论表单*/
 .comment_form{
     padding:20px;
@@ -571,4 +574,11 @@ div.modaldiv{
 #normal_uploader ol li{
     list-style:decimal;
     height:30px;
+}
+
+
+.container_scroll{
+    height:300px;
+    overflow-y:auto;
+    margin-bottom:10px;
 }

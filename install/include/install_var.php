@@ -2,8 +2,7 @@
 
 define('SOFT_NAME', 'MeiuPic');
 define('INSTALL_LANG', 'zh_cn');
-define('MPIC_VERSION','2.0 alpha1');
-
+define('MPIC_VERSION','2.0');
 
 $sqlfile = INSDIR.'data/install.sql';
 $datasqlfile = INSDIR.'data/install_data.sql';
