@@ -92,27 +92,27 @@ class albums_ctl extends pagecore{
         $album['create_time'] = $album['up_time'] = time();
         
         if($album['name'] == ''){
-            ajax_box_failed('相册名不能为空！');
+            form_ajax_failed('text','相册名不能为空！');
         }
         if($album['priv_type'] == '1'){
             if($album['priv_pass']==''){
-                ajax_box_failed('密码不能为空！');
+                form_ajax_failed('text','密码不能为空！');
             }
         }
         if($album['priv_type'] == '2'){
             if($album['priv_question'] == ''){
-                ajax_box_failed('问题不能为空！');
+                form_ajax_failed('text','问题不能为空！');
             }
             if($album['priv_answer'] == ''){
-                ajax_box_failed('答案不能为空！');
+                form_ajax_failed('text','答案不能为空！');
             }
         }
         
         if($album_id = $this->mdl_album->save($album)){
             loader::model('tag')->save_tags($album_id,$album['tags'],1);
-            ajax_box_success('创建相册成功！',null,0.5,$_SERVER['HTTP_REFERER']);
+            form_ajax_success('box','创建相册成功！',null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
-            ajax_box_failed('创建相册失败！');
+            form_ajax_failed('text','创建相册失败！');
         }
     }
     
@@ -138,28 +138,28 @@ class albums_ctl extends pagecore{
         $album['priv_question'] = safe_convert($this->getPost('priv_question'));
         $album['priv_answer'] = safe_convert($this->getPost('priv_answer'));
         if($album['name'] == ''){
-            ajax_box_failed('相册名不能为空！');
+            form_ajax_failed('text','相册名不能为空！');
         }
         if($album['priv_type'] == '1'){
             if($album['priv_pass']==''){
-                ajax_box_failed('密码不能为空！');
+                form_ajax_failed('text','密码不能为空！');
             }
         }
         if($album['priv_type'] == '2'){
             if($album['priv_question'] == ''){
-                ajax_box_failed('问题不能为空！');
+                form_ajax_failed('text','问题不能为空！');
             }
             if($album['priv_answer'] == ''){
-                ajax_box_failed('答案不能为空！');
+                form_ajax_failed('text','答案不能为空！');
             }
         }
         
         if($this->mdl_album->update($album_id,$album)){
             loader::model('tag')->save_tags($album_id,$album['tags'],1);
             
-            ajax_box_success('修改相册成功！',null,0.5,$_SERVER['HTTP_REFERER']);
+            form_ajax_success('box','修改相册成功！',null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
-            ajax_box_failed('修改相册失败！');
+            form_ajax_failed('text','修改相册失败！');
         }
     }
     //set cover
@@ -169,9 +169,9 @@ class albums_ctl extends pagecore{
         $pic_id = $this->getGet('pic_id');
         
         if($this->mdl_album->set_cover($pic_id)){
-            echo ajax_box('成功设为封面',null,0.5,$_SERVER['HTTP_REFERER']);
+            ajax_box('成功设为封面',null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
-            echo ajax_box('未能成功设为封面！');
+            ajax_box('未能成功设为封面！');
         }
     }
     
@@ -189,9 +189,9 @@ class albums_ctl extends pagecore{
         need_login('ajax_page');
         
         if($this->mdl_album->trash($this->getGet('id'))){
-            echo ajax_box('成功删除相册!',null,0.5,$_SERVER['HTTP_REFERER']);
+            ajax_box('成功删除相册!',null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
-            echo ajax_box('删除相册失败!');
+            ajax_box('删除相册失败!');
         }
     }
     
@@ -200,8 +200,7 @@ class albums_ctl extends pagecore{
         
         $ids = $this->getPost('sel_id');
         if(!$ids || count($ids) == 0){
-            echo ajax_box('请先选择要删除的相册!');
-            return ;
+            ajax_box('请先选择要删除的相册!');
         }
         $this->render();
     }
@@ -211,12 +210,12 @@ class albums_ctl extends pagecore{
         
         $ids = $this->getPost('sel_id');
         if(!$ids || count($ids) == 0){
-            echo ajax_box('请先选择要删除的相册!');
+            ajax_box('请先选择要删除的相册!');
         }else{
             if($this->mdl_album->trash_batch(array_keys($ids))){
-                echo ajax_box('成功批量删除相册!',null,1,$_SERVER['HTTP_REFERER']);
+                ajax_box('成功批量删除相册!',null,1,$_SERVER['HTTP_REFERER']);
             }else{
-                echo ajax_box('批量删除相册失败!');
+                ajax_box('批量删除相册失败!');
             }
         }
     }
@@ -236,25 +235,12 @@ class albums_ctl extends pagecore{
         $id = $this->getGet('id');
         $arr['name'] = safe_convert($this->getPost('name'));
         if($arr['name'] == ''){
-            $return = array(
-                'ret'=>false,
-                'html'=>'相册名不能为空！'
-            );
-            echo loader::lib('json')->encode($return);
-            return;
+            form_ajax_failed('text','相册名不能为空！');
         }
         if($this->mdl_album->update($id,$arr)){
-            $return = array(
-                'ret'=>true,
-                'html'=>$arr['name']
-            );
-            echo loader::lib('json')->encode($return);
+            form_ajax_success('text',$arr['name']);
         }else{
-            $return = array(
-                'ret'=>false,
-                'html'=>'保存相册名失败！'
-            );
-            echo loader::lib('json')->encode($return);
+            form_ajax_failed('text','保存相册名失败！');
         }
         return;
     }
@@ -275,17 +261,10 @@ class albums_ctl extends pagecore{
         
         if( $this->mdl_album->update($id,array('tags'=>$tags)) ){
             loader::model('tag')->save_tags($id,$tags,1);
-            $return = array(
-                'ret'=>true,
-                'html' => '标签: '.$tags
-            );
+            form_ajax_success('text','标签: '.$tags);
         }else{
-            $return = array(
-                'ret'=>false,
-                'html' => '编辑相册标签失败！'
-            );
+            form_ajax_failed('text','编辑相册标签失败！');
         }
-        echo loader::lib('json')->encode($return);
         return;
     }
     function modify_desc_inline(){
@@ -304,25 +283,13 @@ class albums_ctl extends pagecore{
         $id = $this->getGet('id');
         $desc = safe_convert($this->getPost('desc'));
         if($desc == ''){
-            $return = array(
-                'ret'=>false,
-                'html' => '相册描述不能为空！'
-            );
-            echo loader::lib('json')->encode($return);
-            return;
+            form_ajax_failed('text','相册描述不能为空！');
         }
         if( $this->mdl_album->update($id,array('desc'=>$desc)) ){
-            $return = array(
-                'ret'=>true,
-                'html' => $desc
-            );
+            form_ajax_success('text',$desc);
         }else{
-            $return = array(
-                'ret'=>false,
-                'html' => '编辑相册描述失败！'
-            );
+            form_ajax_failed('text','编辑相册描述失败！');
         }
-        echo loader::lib('json')->encode($return);
         return;
         
     }
@@ -346,22 +313,22 @@ class albums_ctl extends pagecore{
         
         if($album['priv_type'] == '1'){
             if($album['priv_pass']==''){
-                ajax_box_failed('密码不能为空！');
+                form_ajax_failed('text','密码不能为空！');
             }
         }
         if($album['priv_type'] == '2'){
             if($album['priv_question'] == ''){
-                ajax_box_failed('问题不能为空！');
+                form_ajax_failed('text','问题不能为空！');
             }
             if($album['priv_answer'] == ''){
-                ajax_box_failed('答案不能为空！');
+                form_ajax_failed('text','答案不能为空！');
             }
         }
         
         if($this->mdl_album->update($this->getGet('id'),$album)){
-            ajax_box_success('修改相册权限成功！',null,0.5,$_SERVER['HTTP_REFERER']);
+            form_ajax_success('box','修改相册权限成功！',null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
-            ajax_box_failed('修改相册权限失败！');
+            form_ajax_failed('text','修改相册权限失败！');
         }
     }
 }

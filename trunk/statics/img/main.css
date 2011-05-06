@@ -532,14 +532,25 @@ div.modaldiv{
     background:url(line_loading.gif) no-repeat center;
     text-indent:-10000px;
 }
+#meiu_float_box .box_container.failed{
+    color:red;
+}
+#meiu_float_box .box_container.success{
+    color:green;
+}
 .meiu_notice_div{
     background:  #FFFDD7;
     border: 2px solid #FFD324;
-    color: red;
     padding:8px;
     margin-bottom:15px;
     height:1%;
     text-align:left;
+}
+.meiu_notice_div .success{
+    color:green;
+}
+.meiu_notice_div .failed{
+    color:red;
 }
 .form_notice_div{
     color: red;

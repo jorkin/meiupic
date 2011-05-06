@@ -111,19 +111,19 @@ class photos_ctl extends pagecore{
         if($album_info['priv_type'] == 1){
             $priv_pass = $this->getPost('priv_pass');
             if($album_info['priv_pass'] != $priv_pass){
-                ajax_box_failed('相册密码输入错误！');
+                form_ajax_failed('text','相册密码输入错误！');
             }
             setCookie($key,md5($priv_pass));
-            ajax_box_success('验证成功！',null,0.5,$go_url);
+            form_ajax_success('box','验证成功！',null,0.5,$go_url);
         }elseif($album_info['priv_type'] == 2){
             $priv_answer = $this->getPost('priv_answer');
             if($album_info['priv_answer'] != $priv_answer){
-                ajax_box_failed('相册答案输入错误！');
+                form_ajax_failed('text','相册答案输入错误！');
             }
             setCookie($key,md5($album_info['priv_question'].$priv_answer));
-            ajax_box_success('验证成功！',null,0.5,$go_url);
+            form_ajax_success('box','验证成功！',null,0.5,$go_url);
         }
-        ajax_box_failed('相册类别错误！');
+        form_ajax_failed('text','相册类别错误！');
     }
     
     function auth_priv(){
@@ -141,8 +141,7 @@ class photos_ctl extends pagecore{
         if($ajax == 'true'){
             $this->output->set('ajax',true);
             if($this->mdl_album->check_album_priv($id,$album_info)){
-                echo ajax_box('已认证，正在转入...',null,0.5,site_link('photos','index',array('aid'=>$id)));
-                exit;
+                ajax_box('已认证，正在转入...',null,0.5,site_link('photos','index',array('aid'=>$id)));
             }
         }else{
             $this->output->set('ajax',false);
@@ -292,15 +291,15 @@ class photos_ctl extends pagecore{
         $album['tags'] = safe_convert($this->getPost('photo_tags'));
         
         if($album['name'] == ''){
-            ajax_box_failed('照片名不能为空！');
+            form_ajax_failed('text','照片名不能为空！');
         }
         
         if($this->mdl_photo->update($id,$album)){
             loader::model('tag')->save_tags($id,$album['tags'],2);
             
-            ajax_box_success('修改照片成功！',null,0.5,$_SERVER['HTTP_REFERER']);
+            form_ajax_success('box','修改照片成功！',null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
-            ajax_box_failed('修改照片失败！');
+            form_ajax_failed('text','修改照片失败！');
         }
     }
     
@@ -318,9 +317,9 @@ class photos_ctl extends pagecore{
         need_login('ajax_page');
         
         if($this->mdl_photo->trash($this->getGet('id'))){
-            echo ajax_box('成功删除照片!',null,0.5,$_SERVER['HTTP_REFERER']);
+            ajax_box('成功删除照片!',null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
-            echo ajax_box('删除照片失败!');
+            ajax_box('删除照片失败!');
         }
     }
     
@@ -329,8 +328,7 @@ class photos_ctl extends pagecore{
         
         $ids = $this->getPost('sel_id');
         if(!$ids || count($ids) == 0){
-            echo ajax_box('请先选择要删除的照片!');
-            return ;
+            ajax_box('请先选择要删除的照片!');
         }
         $this->render();
     }
@@ -340,12 +338,12 @@ class photos_ctl extends pagecore{
         
         $ids = $this->getPost('sel_id');
         if(!$ids || count($ids) == 0){
-            echo ajax_box('请先选择要删除的照片!');
+            ajax_box('请先选择要删除的照片!');
         }else{
             if($this->mdl_photo->trash_batch(array_keys($ids))){
-                echo ajax_box('成功批量删除照片!',null,0.5,$_SERVER['HTTP_REFERER']);
+                ajax_box('成功批量删除照片!',null,0.5,$_SERVER['HTTP_REFERER']);
             }else{
-                echo ajax_box('批量删除照片失败!');
+                ajax_box('批量删除照片失败!');
             }
         }
     }
@@ -356,25 +354,13 @@ class photos_ctl extends pagecore{
         $id = $this->getGet('id');
         $arr['name'] = safe_convert($this->getPost('name'));
         if($arr['name'] == ''){
-            $return = array(
-                'ret'=>false,
-                'html'=>'照片名不能为空！'
-            );
-            echo loader::lib('json')->encode($return);
-            return;
+            form_ajax_failed('text','照片名不能为空！');
         }
         if($this->mdl_photo->update($id,$arr)){
-            $return = array(
-                'ret'=>true,
-                'html'=> $arr['name']
-            );
+            form_ajax_success('text',$arr['name']);
         }else{
-            $return = array(
-                'ret'=>false,
-                'html'=>'照片名保存失败！'
-            );
+            form_ajax_failed('text','照片名保存失败！');
         }
-        echo loader::lib('json')->encode($return);
         return;
     }
     
@@ -485,7 +471,6 @@ class photos_ctl extends pagecore{
         $info = $this->mdl_photo->get_info($id);
         
         if(!$info){
-            exit('照片不存在！');
             showError('您要访问的照片不存在！');
         }
         if(!$info['exif']){
@@ -543,17 +528,10 @@ class photos_ctl extends pagecore{
         
         if( $this->mdl_photo->update($id,array('tags'=>$tags)) ){
             loader::model('tag')->save_tags($id,$tags,2);
-            $return = array(
-                'ret'=>true,
-                'html' => '标签: '.$tags
-            );
+            form_ajax_success('text','标签: '.$tags);
         }else{
-            $return = array(
-                'ret'=>false,
-                'html' => '编辑相册标签失败！'
-            );
+            form_ajax_failed('text','编辑相册标签失败！');
         }
-        echo loader::lib('json')->encode($return);
         return;
     }
     function modify_desc_inline(){
@@ -572,25 +550,13 @@ class photos_ctl extends pagecore{
         $id = $this->getGet('id');
         $desc = safe_convert($this->getPost('desc'));
         if($desc == ''){
-            $return = array(
-                'ret'=>false,
-                'html' => '相册描述不能为空！'
-            );
-            echo loader::lib('json')->encode($return);
-            return;
+            form_ajax_failed('text','相册描述不能为空！');
         }
         if( $this->mdl_photo->update($id,array('desc'=>$desc)) ){
-            $return = array(
-                'ret'=>true,
-                'html' => $desc
-            );
+            form_ajax_success('text',$desc);
         }else{
-            $return = array(
-                'ret'=>false,
-                'html' => '编辑相册描述失败！'
-            );
+            form_ajax_failed('text','编辑相册描述失败！');
         }
-        echo loader::lib('json')->encode($return);
         return;
     }
     

@@ -24,7 +24,7 @@ class setting_ctl extends pagecore{
     }
     
     function save_basic(){
-        need_login('ajax');
+        need_login('ajax_box');
         
         $site = $this->getPost('site');
         $site['title'] = safe_convert($site['title']);
@@ -33,10 +33,10 @@ class setting_ctl extends pagecore{
         $site['description'] = safe_convert($site['description']);
         
         if($site['title'] == ''){
-            ajax_box_failed('站点名称不能为空！',true);
+            form_ajax_failed('box','站点名称不能为空！');
         }
         if($site['url'] == ''){
-            ajax_box_failed('相册URL不能为空！',true);
+            form_ajax_failed('box','相册URL不能为空！');
         }
         $this->setting->set_conf('site.title',$site['title']);
         $this->setting->set_conf('site.url',$site['url']);
@@ -47,7 +47,7 @@ class setting_ctl extends pagecore{
         }else{
             $this->setting->set_conf('system.enable_comment',false);
         }
-        ajax_box_success('保存设置成功！',null,0.5,$_SERVER['HTTP_REFERER']);
+        form_ajax_success('box','保存设置成功！',null,0.5,$_SERVER['HTTP_REFERER']);
     }
     
     function upload(){
@@ -65,19 +65,19 @@ class setting_ctl extends pagecore{
     }
     
     function save_upload(){
-        need_login('ajax');
+        need_login('ajax_box');
         
         $upload = $this->getPost('upload');
         $enable_pre_resize = $this->getPost('enable_pre_resize');
         if($enable_pre_resize){
             if($upload['resize_width'] == '' || !is_numeric($upload['resize_width'])){
-                ajax_box_failed('图片的最大宽度不能为空，并且必须为数字！',true);
+                form_ajax_failed('box','图片的最大宽度不能为空，并且必须为数字！');
             }
             if($upload['resize_height'] == '' || !is_numeric($upload['resize_height'])){
-                ajax_box_failed('图片的最大高度不能为空，并且必须为数字！',true);
+                form_ajax_failed('box','图片的最大高度不能为空，并且必须为数字！');
             }
             if($upload['resize_quality'] < 1 || $upload['resize_quality'] > 100){
-                ajax_box_failed('图片质量必须介于1-100！',true);
+                form_ajax_failed('box','图片质量必须介于1-100！');
             }
             $this->setting->set_conf('upload.resize_width',$upload['resize_width']);
             $this->setting->set_conf('upload.resize_height',$upload['resize_height']);
@@ -88,7 +88,7 @@ class setting_ctl extends pagecore{
         }
         
         $this->setting->set_conf('upload.allow_size',$upload['allow_size']);
-        ajax_box_success('保存设置成功！',null,0.5,$_SERVER['HTTP_REFERER']);
+        form_ajax_success('box','保存设置成功！',null,0.5,$_SERVER['HTTP_REFERER']);
     }
     
     function watermark(){
@@ -109,7 +109,7 @@ class setting_ctl extends pagecore{
     }
     
     function save_watermark(){
-        need_login('ajax');
+        need_login('ajax_box');
         
         $watermark_type = $this->getPost('watermark_type','0');
         $watermark = $this->getPost('watermark');
@@ -120,26 +120,26 @@ class setting_ctl extends pagecore{
         
         if($watermark_type == 1){
             if($watermark['water_mark_image'] == ''){
-                ajax_box_failed('图片水印地址不能为空！',true);
+                form_ajax_failed('box','图片水印地址不能为空！');
             }
             if($watermark['water_mark_opacity'] < 1 || $watermark['water_mark_opacity'] > 100){
-                ajax_box_failed('水印透明度必须介于1-100！',true);
+                form_ajax_failed('box','水印透明度必须介于1-100！');
             }
             $this->setting->set_conf('watermark.water_mark_image',$watermark['water_mark_image']);
             $this->setting->set_conf('watermark.water_mark_opacity',$watermark['water_mark_opacity']);
             $this->setting->set_conf('watermark.water_mark_pos',$watermark['water_mark_pos']);
         }elseif($watermark_type == 2){
             if($watermark['water_mark_string'] == ''){
-                ajax_box_failed('水印文字内容不能为空！',true);
+                form_ajax_failed('box','水印文字内容不能为空！');
             }
             if($watermark['water_mark_fontsize'] < 1){
-                ajax_box_failed('水印文字大小必须大于1！',true);
+                form_ajax_failed('box','水印文字大小必须大于1！');
             }
             if(!check_color($watermark['water_mark_color'])){
-                ajax_box_failed('水印文字颜色不是有效的颜色！',true);
+                form_ajax_failed('box','水印文字颜色不是有效的颜色！');
             }
             if(!isset($watermark['water_mark_font']) || !$watermark['water_mark_font']){
-                ajax_box_failed('请选择水印文字字体！',true);
+                form_ajax_failed('box','请选择水印文字字体！');
             }
             $this->setting->set_conf('watermark.water_mark_string',$watermark['water_mark_string']);
             $this->setting->set_conf('watermark.water_mark_fontsize',$watermark['water_mark_fontsize']);
@@ -147,7 +147,7 @@ class setting_ctl extends pagecore{
             $this->setting->set_conf('watermark.water_mark_font',$watermark['water_mark_font']);
             $this->setting->set_conf('watermark.water_mark_pos',$watermark['water_mark_pos']);
         }
-        ajax_box_success('保存设置成功！',null,0.5,$_SERVER['HTTP_REFERER']);
+        form_ajax_success('box','保存设置成功！',null,0.5,$_SERVER['HTTP_REFERER']);
     }
     
     function fileupload(){
@@ -196,6 +196,6 @@ class setting_ctl extends pagecore{
         $theme = $this->getGet('theme');
         $this->setting->set_conf('system.current_theme',$theme);
         
-        echo ajax_box('设置成功！',null,0.5,$_SERVER['HTTP_REFERER']);
+        ajax_box('设置成功！',null,0.5,$_SERVER['HTTP_REFERER']);
     }
 }
