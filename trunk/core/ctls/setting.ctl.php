@@ -180,8 +180,8 @@ class setting_ctl extends pagecore{
     function themes(){
         need_login('page');
 
-        $mdl_template =& loader::model('template');
-        $themes = $mdl_template->all_themes();
+        $mdl_theme =& loader::model('theme');
+        $themes = $mdl_theme->all_themes();
         $this->output->set('themes',$themes);
 
         $page_title = '基本设置 - 系统设置 - '.$this->setting->get_conf('site.title');
@@ -193,9 +193,42 @@ class setting_ctl extends pagecore{
     }
     
     function theme_set(){
+        need_login('ajax_page');
+        
         $theme = $this->getGet('theme');
         $this->setting->set_conf('system.current_theme',$theme);
         
         ajax_box('设置成功！',null,0.5,$_SERVER['HTTP_REFERER']);
+    }
+    
+    function theme_confirm_remove(){
+        need_login('ajax_page');
+        $theme = $this->getGet('theme');
+        $this->output->set('theme',$theme);
+        
+        $this->render();
+    }
+    
+    function theme_remove(){
+        need_login('ajax_page');
+        
+        $theme = $this->getGet('theme');
+        if($theme == ''){
+            ajax_box('请确认要删除的风格是否存在！');
+        }
+        if($theme == 'default'){
+            ajax_box('默认风格不能删除！');
+        }
+        $current_theme = $this->setting->get_conf('system.current_theme');
+        if($current_theme == $theme){
+            ajax_box('当前风格正在使用中，无法删除！');
+        }
+        
+        if(loader::model('theme')->remove($theme)){
+            ajax_box('删除主题成功！',null,0.5,$_SERVER['HTTP_REFERER']);
+        }else{
+            ajax_box('删除主题失败！');
+        }
+        
     }
 }
