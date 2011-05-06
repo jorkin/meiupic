@@ -26,10 +26,10 @@ class users_ctl extends pagecore{
         $remember_pass = $this->getPost('remember_pass');
         $normal = $this->getPost('normal');
         if(!$login_name){
-            ajax_box_failed('请输入用户名！');
+            form_ajax_failed('text','请输入用户名！');
         }
         if(!$login_pass){
-            ajax_box_failed('请输入密码！');
+            form_ajax_failed('text','请输入密码！');
         }
         if($remember_pass){
             $expire_time = time()+86400*30; //记住密码30天
@@ -38,9 +38,9 @@ class users_ctl extends pagecore{
         }
         $go_url = $normal?site_link('default'):$_SERVER['HTTP_REFERER'];
         if($this->user->set_login($login_name,md5($login_pass),$expire_time)){
-            ajax_box_success('登录成功！',null,0.5,$go_url);
+            form_ajax_success('box','登录成功！',null,0.5,$go_url);
         }else{
-            ajax_box_failed('请验证用户名和密码是否正确！');
+            form_ajax_failed('text','请验证用户名和密码是否正确！');
         }
     }
     
@@ -69,22 +69,22 @@ class users_ctl extends pagecore{
         $new_pass_again = $this->getPost('new_pass_again');
         if($new_pass){
             if(!$this->user->check_pass($current_id,md5($old_pass))){
-                ajax_box_failed('旧密码输入错误！');
+                form_ajax_failed('text','旧密码输入错误！');
             }
             if($new_pass != $new_pass_again){
-                ajax_box_failed('两次密码输入不一致！');
+                form_ajax_failed('text','两次密码输入不一致！');
             }
             $arr['user_pass'] = md5($new_pass);
         }
         if($this->user->update($current_id,$arr)){
-            ajax_box_success('修改成功！'.($new_pass?'您的密码已经修改，请重新登录！':''),null,0.5,$_SERVER['HTTP_REFERER']);
+            form_ajax_success('box','修改成功！'.($new_pass?'您的密码已经修改，请重新登录！':''),null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
-            ajax_box_failed('保存失败！');
+            form_ajax_failed('text','保存失败！');
         }
     }
     
     function logout(){
         $this->user->clear_login();
-        echo ajax_box('退出登录成功！',null,0.5,$_SERVER['HTTP_REFERER']);
+        ajax_box('退出登录成功！',null,0.5,$_SERVER['HTTP_REFERER']);
     }
 }

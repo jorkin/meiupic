@@ -31,13 +31,16 @@ function need_login($type = 'page'){
                 showError('您没有权限，需要登录！');
                 break;
             case 'ajax_page':
-                echo ajax_box('您没有权限，需要登录！');
+                ajax_box('您没有权限，需要登录！');
                 break;
             case 'ajax_inline':
                 echo '<form><div class="form_notice_div">您没有权限，需要登录！</div><input type="button" name="cancel" class="graysmlbtn" value="取消" /></form>';
                 break;
             case 'ajax':
-                ajax_box_failed('您没有权限，需要登录！');
+                form_ajax_failed('text','您没有权限，需要登录！');
+                break;
+            case 'ajax_box':
+                form_ajax_failed('box','您没有权限，需要登录！');
                 break;
         }
         exit;
@@ -51,31 +54,27 @@ function no_cache_header(){
     header("Pragma: no-cache");
 }
 
-function ajax_box_success($content , $title = '', $close_time = 0 , $forward = ''){
+function form_ajax_success($type = 'box|text', $content , $title = null, $close_time = 0 , $forward = ''){
+    form_ajax($type,true,$content,$title,$close_time,$forward);
+}
+
+function form_ajax_failed($type = 'box|text', $content , $title = null, $close_time = 0 , $forward = ''){
+    form_ajax($type,false,$content,$title,$close_time,$forward);
+}
+
+function form_ajax($type = 'box|text', $flag , $content , $title = null, $close_time = 0 , $forward = ''){
     no_cache_header();
     
-    if(!$title){
-        $title = lang('system_notice');
+    if($type == 'box'){
+        $content = ajax_box($content,$title,$close_time,$forward,false);
     }
     echo loader::lib('json')->encode(
-        array('ret'=>true,'html'=>ajax_box($content,$title,$close_time,$forward))
+        array('ret'=>$flag,'html'=>$content)
     );
     exit;
 }
 
-function ajax_box_failed($info,$with_box = false){
-    no_cache_header();
-    
-    if($with_box){
-        $info = ajax_box($info);
-    }
-    echo loader::lib('json')->encode(
-        array('ret'=>false,'html'=>$info)
-    );
-    exit;
-}
-
-function ajax_box( $content , $title = '', $close_time = 0 , $forward = '' )
+function ajax_box( $content , $title = '', $close_time = 0 , $forward = '' , $display = true )
 {   
     if(!$title){
         $title = lang('system_notice');
@@ -84,7 +83,13 @@ function ajax_box( $content , $title = '', $close_time = 0 , $forward = '' )
     ob_start();
     include template('block/ajax_box');
     $page_content = ob_get_clean();
-    return $page_content;
+    if($display){
+        //no_cache_header();
+        echo $page_content;
+        exit;
+    }else{
+        return $page_content;
+    }
 }
 
 function enum_priv_type($v){

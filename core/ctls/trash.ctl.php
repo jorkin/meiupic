@@ -76,9 +76,9 @@ class trash_ctl extends pagecore{
             $ret = $this->mdl_photo->real_delete($id);
         }
         if($ret){
-            echo ajax_box('成功删除!',null,0.5,$_SERVER['HTTP_REFERER']);
+            ajax_box('成功删除!',null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
-            echo ajax_box('删除失败!');
+            ajax_box('删除失败!');
         }
     }
     
@@ -89,8 +89,7 @@ class trash_ctl extends pagecore{
         $type = $this->getGet('type');
         $this->output->set('type',$type);
         if(!$ids || count($ids) == 0){
-            echo ajax_box('请先选择要删除的照片/相册!');
-            return ;
+            ajax_box('请先选择要删除的照片/相册!');
         }
         $this->render();
     }
@@ -110,7 +109,7 @@ class trash_ctl extends pagecore{
                 }
             }
         }
-        echo ajax_box('成功批量删除!',null,0.5,$_SERVER['HTTP_REFERER']);
+        ajax_box('成功批量删除!',null,0.5,$_SERVER['HTTP_REFERER']);
     }
     
     function restore(){
@@ -124,9 +123,9 @@ class trash_ctl extends pagecore{
             $ret = $this->mdl_photo->restore($id);
         }
         if($ret){
-            echo ajax_box('成功还原!',null,0.5,$_SERVER['HTTP_REFERER']);
+            ajax_box('成功还原!',null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
-            echo ajax_box('还原失败!');
+            ajax_box('还原失败!');
         }
     }
     
@@ -137,8 +136,7 @@ class trash_ctl extends pagecore{
         $type = $this->getGet('type');
         $this->output->set('type',$type);
         if(!$ids || count($ids) == 0){
-            echo ajax_box('请先选择要还原的照片/相册!');
-            return ;
+            ajax_box('请先选择要还原的照片/相册!');
         }
         $this->render();
     }
@@ -157,7 +155,7 @@ class trash_ctl extends pagecore{
                 }
             }
         }
-        echo ajax_box('成功批量还原!',null,0.5,$_SERVER['HTTP_REFERER']);
+        ajax_box('成功批量还原!',null,0.5,$_SERVER['HTTP_REFERER']);
     }
     
     function confirm_emptying(){
@@ -181,6 +179,6 @@ class trash_ctl extends pagecore{
                 $ret = $this->mdl_photo->real_delete($v['id'],$v);
             }
         }
-        echo ajax_box('成功清空回收站!',null,0.5,$_SERVER['HTTP_REFERER']);
+        ajax_box('成功清空回收站!',null,0.5,$_SERVER['HTTP_REFERER']);
     }
 }

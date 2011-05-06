@@ -138,7 +138,12 @@ Mui.form = {
     send : function(formid){
         $('#'+formid).unbind('submit').submit(function(){
             $.post($('#'+formid).attr('action'),$('#'+formid).serializeArray(),function(data) {
-                Mui.form.showResult(data.html,formid);
+                if(data.ret){
+                    resulthtml = '<div class="success">'+data.html+'</div>';
+                }else{
+                    resulthtml = '<div class="failed">'+data.html+'</div>';
+                }
+                Mui.form.showResult(resulthtml,formid);
             },'json');
         });
     },
@@ -146,6 +151,11 @@ Mui.form = {
         $('#'+formid).unbind('submit').submit(function(){
             $.post($('#'+formid).attr('action'),$('#'+formid).serializeArray(),function(data) {
                 Mui.box.setData(data.html);
+                if(data.ret){
+                    $('#meiu_float_box .box_container').addClass('success');
+                }else{
+                    $('#meiu_float_box .box_container').addClass('failed');
+                }
             },'json');
         });
     },
@@ -160,8 +170,9 @@ Mui.form = {
                     }else{
                         Mui.box.setData(data.html);
                     }
+                    $('#meiu_float_box .box_container').addClass('success');
                 }else{
-                    Mui.form.showResult(data.html,formid);
+                    Mui.form.showResult('<div class="failed">'+data.html+'</div>',formid);
                 }
             },'json');
         });

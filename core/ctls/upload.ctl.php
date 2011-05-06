@@ -113,8 +113,7 @@ class upload_ctl extends pagecore{
             need_login('ajax');
             
             if(!$album_id){
-                ajax_box_failed('请先选择相册！',true);
-                return;
+                form_ajax_failed('box','请先选择相册！');
             }
             
             $target_dir = ROOTDIR.'cache'.DIRECTORY_SEPARATOR.'tmp';
@@ -185,7 +184,7 @@ class upload_ctl extends pagecore{
             $this->mdl_album->check_repare_cover($album_id);
             
             $gourl = site_link('photos','index',array('aid'=>$album_id));
-            ajax_box_success('上传照片成功！',null,1,$gourl);
+            form_ajax_success('box','上传照片成功！',null,1,$gourl);
         }else{
             need_login('page');
             
@@ -201,7 +200,6 @@ class upload_ctl extends pagecore{
             $this->page_init($page_title,$page_keywords,$page_description);
             
             if(!$album_id){
-                //echo ajax_box('请先选择相册！',null);
                 $this->output->set('msginfo','请先选择相册！');
                 loader::view('upload/normal');
                 return;
@@ -226,14 +224,7 @@ class upload_ctl extends pagecore{
                 if (!empty($upfile)) {
                     $filename = $upfile;
                     $fileext = strtolower(end(explode('.',$filename)));
-                    /*if(!in_array($fileext,explode(',',$this->allow_img_type))){
-                        showInfo('不支持的图片格式！',false);
-                        exit;
-                    }*/
-                    /*if($_FILES['imgs']['size'][$k] > $this->setting['size_allow']){
-                        showInfo('上传图片过大！不得大于'.$this->setting['size_allow'].'字节！',false);
-                        exit;
-                    }*/
+                    
                     $key = str_replace('.','',microtime(true));
                     $realpath = ROOTDIR.$media_dirname.'/'.$key.'.'.$fileext;
                     if(file_exists($realpath)){
