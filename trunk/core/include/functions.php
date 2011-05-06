@@ -137,13 +137,13 @@ function get_page_setting($type){
     return array($current,$str);
 }
 
-function template($file) {
+function template($file,$templateid=null,$tpldir=null) {
     if(strpos($file,':')!==false ) {
         list($templateid, $file) = explode(':', $file);
         $tpldir = 'plugins/'.$templateid.'/templates';
     }
-    $tpldir = isset($tpldir)?$tpldir:TPLDIR;
-    $templateid = isset($templateid) ? $templateid : TEMPLATEID;
+    $tpldir = $tpldir?$tpldir:TPLDIR;
+    $templateid = $templateid ? $templateid : TEMPLATEID;
     
     $tplfile = ROOTDIR.$tpldir.'/'.$file.'.htm';
     

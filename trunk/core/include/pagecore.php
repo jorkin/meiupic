@@ -71,7 +71,7 @@ class pagecore{
         }
         return $default;
     }
-
+    
     function getPost($key,$default=''){
         if(isset($_POST[$key])){
             if(!MAGIC_GPC)
@@ -92,5 +92,29 @@ class pagecore{
             return $_REQUEST[$key];
         }
         return $default;
+    }
+    
+    function getPosts(){
+        if(!MAGIC_GPC)
+        {
+            return arr_addslashes($_POST);
+        }
+        return $_POST;
+    }
+    
+    function getRequests(){
+        if(!MAGIC_GPC)
+        {
+            return arr_addslashes($_REQUEST);
+        }
+        return $_REQUEST;
+    }
+    
+    function getGets(){
+        if(!MAGIC_GPC)
+        {
+            return arr_addslashes($_GET);
+        }
+        return $_GET;
     }
 }

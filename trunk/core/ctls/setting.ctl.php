@@ -201,6 +201,28 @@ class setting_ctl extends pagecore{
         ajax_box('设置成功！',null,0.5,$_SERVER['HTTP_REFERER']);
     }
     
+    function theme_edit(){
+        $theme = $this->getGet('theme');
+        $this->output->set('theme',$theme);
+        
+        $_config =  $this->setting->get_conf('theme.'.$theme);
+        
+        ob_start();
+        include template('_config',$theme,'themes/'.$theme);
+        $setting_config = ob_get_clean();
+        
+        $this->output->set('setting_config',$setting_config);
+        $this->render();
+    }
+    
+    function theme_save_setting(){
+        $theme = $this->getGet('theme');
+        $config = $this->getPosts();
+        
+        $this->setting->set_conf('theme.'.$theme,$config);
+        form_ajax_success('box','保存设置成功！',null,0.5,$_SERVER['HTTP_REFERER']);
+    }
+    
     function theme_confirm_remove(){
         need_login('ajax_page');
         $theme = $this->getGet('theme');
