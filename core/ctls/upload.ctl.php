@@ -269,15 +269,15 @@ class upload_ctl extends pagecore{
                 }
             }
             if($empty_num == count($_FILES['imgs']['name'])){
-                $this->output->set('msginfo','您没有选择图片上传，请重新上传！');
+                $this->output->set('msginfo','<div class="failed">您没有选择图片上传，请重新上传！</div>');
             }else{
                 $this->mdl_album->update_photos_num($album_id);
                 $this->mdl_album->check_repare_cover($album_id);
                 
                 if($error){
-                    $this->output->set('msginfo',$error);
+                    $this->output->set('msginfo','<div class="failed">'.$error.'</div>');
                 }else{
-                    $this->output->set('msginfo','上传成功！'.'<a href="'.site_link('photos','index',array('aid'=>$album_id)).'">查看相册</a>');
+                    $this->output->set('msginfo','<div class="success">上传成功！'.'<a href="'.site_link('photos','index',array('aid'=>$album_id)).'">查看相册</a></div>');
                 }
             }
             
