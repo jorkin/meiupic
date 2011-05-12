@@ -103,7 +103,8 @@
 function seltheme(t){
     var colors = new Array()
     colors['blue'] = {"bodybg":"#F4F4F4","link_color":"#1d64ad","link_hover_color":"#ffffff","header_bg":"#003366","header_h1":"#ffcc00","headerbottom":"#F4F4F4","settingtxt":"#ffffff","tablinkbg":"#1A4F85","tablink":"#ffffff","tablinkcurrent":"#009900","tablinkhover":"#ffffff","tablinkhoverbg":"#1D64AD","tablinkfrom":"#FEFEFE","tablinkto":"#F4F4F4","alertcolor":"#ffb2b2","titlebg":"#edf3fe","titlelabel":"#003366","boxborder":"#003366"};
-    colors['green'] = {"link_color":"#6B9F1F","link_hover_color":"#fff","header_bg":"#fff","header_h1":"#555","headerbottom":"#ddd","settingtxt":"#666","tablinkbg":"#fff","tablink":"#6B9F1F","tablinkcurrent":"#fff","tablinkhover":"#6B9F1F","tablinkhoverbg":"#f0ffee","bodybg":"#fff","tablinkfrom":"#6B9F1F","tablinkto":"#6B9F1F","alertcolor":"#ffb2b2","titlebg":"#f0ffee","titlelabel":"#6B9F1F","boxborder":"#6B9F1F"};
+    //colors['green'] = {"link_color":"#6B9F1F","link_hover_color":"#fff","header_bg":"#fff","header_h1":"#555","headerbottom":"#ddd","settingtxt":"#666","tablinkbg":"#fff","tablink":"#6B9F1F","tablinkcurrent":"#fff","tablinkhover":"#6B9F1F","tablinkhoverbg":"#f0ffee","bodybg":"#fff","tablinkfrom":"#6B9F1F","tablinkto":"#6B9F1F","alertcolor":"#ffb2b2","titlebg":"#f0ffee","titlelabel":"#6B9F1F","boxborder":"#6B9F1F"};
+    colors['green'] =  {"bodybg":"#F4F4F4","link_color":"#437c56","link_hover_color":"#ffffff","header_bg":"#cbeac7","header_h1":"#000000","headerbottom":"#F4F4F4","settingtxt":"#666666","tablinkbg":"#437c56","tablink":"#ffffff","tablinkcurrent":"#000000","tablinkhover":"#d6ffda","tablinkhoverbg":"#1e5a28","tablinkfrom":"#FEFEFE","tablinkto":"#F4F4F4","alertcolor":"#ffb2b2","titlebg":"#eefef1","titlelabel":"#1e5a28","boxborder":"#1e5a28"};
     
     for(i in colors[t]){
         $('#theme_edit_form').find('input[name="'+i+'"]').val(colors[t][i]);

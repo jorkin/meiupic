@@ -80,6 +80,7 @@
                                     <!--{/if}-->
                                 </div>
                             </div>
+                            <div class="clear"></div>
                         </div>
 <script>
    function detect_resize_img(){
@@ -156,6 +157,7 @@
        }
    );
 </script>
+                    {if $enable_comment}
                         <div class="col titbg">
                             <h1 class="f_left">{lang all_photo_comments}</h1>
                             <h4 class="f_left">{lang comments_num|`$info['comments_num']`}</h4>
@@ -193,8 +195,8 @@
                             </div>
                             <div class="clear"></div>
                         </div>
-                        
-                        
+                    {/if}
+                    
                     </div>
                 </div>
             </td>

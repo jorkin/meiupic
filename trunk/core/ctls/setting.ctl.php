@@ -349,13 +349,22 @@ class setting_ctl extends pagecore{
         need_login('page');
         $info = loader::model('utility')->sys_info();
         $this->output->set('info',$info);
-        
+        $size = dirsize(ROOTDIR.'cache');
+        $this->output->set('cache_size',bytes2u($size));
         $page_title = '系统信息 - 系统设置 - '.$this->setting->get_conf('site.title');
         $page_keywords = $this->setting->get_conf('site.keywords');
         $page_description = $this->setting->get_conf('site.description');
 
         $this->page_init($page_title,$page_keywords,$page_description);
         $this->render();
+    }
+    
+    function clear_cache(){
+        dir_clear(ROOTDIR.'cache/data');
+        dir_clear(ROOTDIR.'cache/templates');
+        dir_clear(ROOTDIR.'cache/tmp');
+        
+        ajax_box('清空缓存成功！',null,0.5,$_SERVER['HTTP_REFERER']);
     }
     
     function phpinfo(){

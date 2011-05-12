@@ -41,8 +41,10 @@ $(function() {
         filters : [
             {title : "Image files", extensions : "jpg,jpeg,gif,png,bmp"}
         ],
-        flash_swf_url : '{$statics_path}swf/plupload.flash.swf',
-        resize : {width : 1000, height : 1000, quality : 100}
+        flash_swf_url : '{$statics_path}swf/plupload.flash.swf'
+        {if $upload_setting['enable_pre_resize']},
+        resize : {width : {$upload_setting['resize_width']}, height : {$upload_setting['resize_height']}, quality : {$upload_setting['resize_quality']}}
+        {/if}
     });
     var uploader = $('#muilti_uploader').pluploadQueue();
     var usubmited = 0;

@@ -359,3 +359,33 @@ function deldir($dir) {
         return false;
     }
 }
+
+function dirsize($dir) {
+    @$dh = opendir($dir);
+    $size = 0;
+    while ($file = @readdir($dh)) {
+        if ($file != "." and $file != "..") {
+            $path = $dir."/".$file;
+            if (is_dir($path)) {
+                $size += dirsize($path);
+            } elseif (is_file($path)) {
+                $size += filesize($path);
+            }
+        }
+    }
+    @closedir($dh);
+    return $size;
+}
+
+function dir_clear($dir) {
+    if($directory = @dir($dir)) {
+        while($entry = $directory->read()) {
+            $filename = $dir.'/'.$entry;
+            if(is_file($filename)) {
+                @unlink($filename);
+            }
+        }
+        $directory->close();
+        @touch($dir.'/index.htm');
+    }
+}
