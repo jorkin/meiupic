@@ -306,9 +306,9 @@ class image_gd {
         $h = $water_info[1];//取得水印图片的高
         switch($water_info[2])//取得水印图片的格式
         {
-            case 1:$water_im = imagecreatefromgif($waterImage);break;
-            case 2:$water_im = imagecreatefromjpeg($waterImage);break;
-            case 3:$water_im = imagecreatefrompng($waterImage);break;
+            case 1:$water_im = imagecreatefromgif($this->param['water_mark_image']);break;
+            case 2:$water_im = imagecreatefromjpeg($this->param['water_mark_image']);break;
+            case 3:$water_im = imagecreatefrompng($this->param['water_mark_image']);break;
             default:return false;
         }
         $ground_w = $this->getWidth();
@@ -366,7 +366,7 @@ class image_gd {
         }
         //设定图像的混色模式
         imagealphablending($this->image, true);
-        if(function_exists('imagecopymerge')){
+        if(function_exists('imagecopymerge') && $this->param['water_mark_opacity'] != 0){
             @imagecopymerge($this->image, $water_im, $posX, $posY, 0, 0, $w,$h,$this->param['water_mark_opacity']);
         }else{
             imagecopy($this->image, $water_im, $posX, $posY, 0, 0, $w,$h);//拷贝水印到目标文件
@@ -384,7 +384,11 @@ class image_gd {
         $g = hexdec( substr( $color, 3, 2 ) );
         $b = hexdec( substr( $color, 5, 2 ) );
         
-        $fontcolor = imagecolorallocate( $this->image, $r, $g, $b );
+        if($this->param['water_mark_opacity']>0 && $this->param['water_mark_opacity']<100){
+            $fontcolor = imagecolorallocatealpha( $this->image, $r, $g, $b ,$this->param['water_mark_opacity']);
+        }else{
+            $fontcolor = imagecolorallocate( $this->image, $r, $g, $b );
+        }
         
         $box = ImageTTFBBox(
             $this->param['water_mark_fontsize'],

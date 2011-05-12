@@ -169,6 +169,19 @@ class upload_ctl extends pagecore{
                                 $arr['taken_d'] = date('j',$taken_time);
                             }
                         }
+                        $water_setting = $this->setting->get_conf('watermark');
+                        if($water_setting['type'] == 1){
+                            $water_setting['water_mark_type'] = 'image';
+                            $imglib->waterMarkSetting($water_setting);
+                            $imglib->waterMark();
+                            $imglib->save($realpath);
+                        }elseif($water_setting['type'] == 2){
+                            $water_setting['water_mark_type'] = 'font';
+                            $water_setting['water_mark_font'] = $water_setting['water_mark_font']?ROOTDIR.'statics/font/'.$water_setting['water_mark_font']:'';
+                            $imglib->waterMarkSetting($water_setting);
+                            $imglib->waterMark();
+                            $imglib->save($realpath);
+                        }
                         $imglib->resizeScale(180,180);
                         
                         $imglib->save(ROOTDIR.$arr['thumb']);
@@ -255,6 +268,20 @@ class upload_ctl extends pagecore{
                                 $arr['taken_m'] = date('n',$taken_time);
                                 $arr['taken_d'] = date('j',$taken_time);
                             }
+                        }
+                        
+                        $water_setting = $this->setting->get_conf('watermark');
+                        if($water_setting['type'] == 1){
+                            $water_setting['water_mark_type'] = 'image';
+                            $imglib->waterMarkSetting($water_setting);
+                            $imglib->waterMark();
+                            $imglib->save($realpath);
+                        }elseif($water_setting['type'] == 2){
+                            $water_setting['water_mark_type'] = 'font';
+                            $water_setting['water_mark_font'] = $water_setting['water_mark_font']?ROOTDIR.'statics/font/'.$water_setting['water_mark_font']:'';
+                            $imglib->waterMarkSetting($water_setting);
+                            $imglib->waterMark();
+                            $imglib->save($realpath);
                         }
                         //resize image to thumb: 180*180 
                         $imglib->resizeScale(180,180);

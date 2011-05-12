@@ -122,8 +122,8 @@ class setting_ctl extends pagecore{
             if($watermark['water_mark_image'] == ''){
                 form_ajax_failed('box','图片水印地址不能为空！');
             }
-            if($watermark['water_mark_opacity'] < 1 || $watermark['water_mark_opacity'] > 100){
-                form_ajax_failed('box','水印透明度必须介于1-100！');
+            if($watermark['water_mark_opacity'] < 0 || $watermark['water_mark_opacity'] > 100){
+                form_ajax_failed('box','水印透明度必须介于0-100！');
             }
             $this->setting->set_conf('watermark.water_mark_image',$watermark['water_mark_image']);
             $this->setting->set_conf('watermark.water_mark_opacity',$watermark['water_mark_opacity']);
@@ -141,10 +141,18 @@ class setting_ctl extends pagecore{
             if(!isset($watermark['water_mark_font']) || !$watermark['water_mark_font']){
                 form_ajax_failed('box','请选择水印文字字体！');
             }
+            if($watermark['water_mark_angle'] < 0 || $watermark['water_mark_angle'] > 100){
+                form_ajax_failed('box','水印文字角度必须在0-360度之间！');
+            }
+            if($watermark['water_mark_opacity'] < 0 || $watermark['water_mark_opacity'] > 100){
+                form_ajax_failed('box','水印透明度必须介于0-100！');
+            }
             $this->setting->set_conf('watermark.water_mark_string',$watermark['water_mark_string']);
             $this->setting->set_conf('watermark.water_mark_fontsize',$watermark['water_mark_fontsize']);
             $this->setting->set_conf('watermark.water_mark_color',$watermark['water_mark_color']);
             $this->setting->set_conf('watermark.water_mark_font',$watermark['water_mark_font']);
+            $this->setting->set_conf('watermark.water_mark_angle',$watermark['water_mark_angle']);
+            $this->setting->set_conf('watermark.water_mark_opacity',$watermark['water_mark_opacity']);
             $this->setting->set_conf('watermark.water_mark_pos',$watermark['water_mark_pos']);
         }
         form_ajax_success('box','保存设置成功！',null,0.5,$_SERVER['HTTP_REFERER']);
