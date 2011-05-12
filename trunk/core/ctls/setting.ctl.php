@@ -141,7 +141,7 @@ class setting_ctl extends pagecore{
             if(!isset($watermark['water_mark_font']) || !$watermark['water_mark_font']){
                 form_ajax_failed('box','请选择水印文字字体！');
             }
-            if($watermark['water_mark_angle'] < 0 || $watermark['water_mark_angle'] > 100){
+            if($watermark['water_mark_angle'] < 0 || $watermark['water_mark_angle'] > 360){
                 form_ajax_failed('box','水印文字角度必须在0-360度之间！');
             }
             if($watermark['water_mark_opacity'] < 0 || $watermark['water_mark_opacity'] > 100){
