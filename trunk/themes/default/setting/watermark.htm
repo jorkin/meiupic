@@ -37,13 +37,6 @@
                                              {if $watermark['water_mark_image']}<a href="{img $watermark['water_mark_image']}" target="_blank">查看</a>{/if}
                                         </div>
                                     </div>
-                                    <div class="settingfield">
-                                        <div class="label">水印透明度</div>
-                                        <div class="descinfo">透明度请设置为0-100之间的数字，0代表完全透明，100代表不透明</div>
-                                        <div class="input">
-                                            <input type="text" name="watermark[water_mark_opacity]" class="settinginput iptw1" value="{$watermark['water_mark_opacity']}" />
-                                        </div>
-                                    </div>
                                     </div>
                                     
                                     <div id="font_wm">
@@ -79,9 +72,24 @@
                                             <input type="text" name="watermark[water_mark_color]" class="settinginput iptw1" value="{$watermark['water_mark_color']}" />
                                         </div>
                                     </div>
+                                    <div class="settingfield">
+                                        <div class="label">水印角度</div>
+                                        <div class="descinfo">角度可取值范围为0-360度，逆时针方向（即如果值为 90 则表示从下向上阅读文本）</div>
+                                        <div class="input">
+                                            <input type="text" name="watermark[water_mark_angle]" class="settinginput iptw1" value="{$watermark['water_mark_angle']}" />
+                                        </div>
+                                    </div>
+                                    
                                     </div>
                                     
                                     <div id="wm_pos">
+                                    <div class="settingfield">
+                                        <div class="label">水印透明度</div>
+                                        <div class="descinfo">透明度请设置为0-100之间的数字，0代表完全透明，100代表不透明。若水印图片本身透明请填0</div>
+                                        <div class="input">
+                                            <input type="text" name="watermark[water_mark_opacity]" class="settinginput iptw1" value="{$watermark['water_mark_opacity']}" />
+                                        </div>
+                                    </div>
                                     <div class="settingfield">
                                         <div class="label">水印位置</div>
                                         <div class="descinfo">设置水印位置</div>
