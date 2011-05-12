@@ -1,9 +1,10 @@
 <div class="field">
-    <div class="label">选择预设风格</div>
+    <div class="label">选择预设样式</div>
     <div class="ipts">
         <label><input type="radio" name="style" value="blue" {if $_config['style'] == 'blue'}checked="checked"{/if} onclick="seltheme('blue')" /> 蓝色</label>
         <label><input type="radio" name="style" value="green" {if $_config['style'] == 'green'}checked="checked"{/if} onclick="seltheme('green')" /> 绿色</label>
-        <label><input type="radio" name="style" value="orange" {if $_config['style'] == 'orange'}checked="checked"{/if} /> 橘黄色</label>
+        <label><input type="radio" name="style" value="pink" {if $_config['style'] == 'pink'}checked="checked"{/if} onclick="seltheme('pink')" /> 紫色</label>
+        <label><input type="radio" name="style" value="black" {if $_config['style'] == 'black'}checked="checked"{/if} onclick="seltheme('black')" /> 黑色</label>
     </div>
     <div class="clear"></div>
 </div>
@@ -103,8 +104,9 @@
 function seltheme(t){
     var colors = new Array()
     colors['blue'] = {"bodybg":"#F4F4F4","link_color":"#1d64ad","link_hover_color":"#ffffff","header_bg":"#003366","header_h1":"#ffcc00","headerbottom":"#F4F4F4","settingtxt":"#ffffff","tablinkbg":"#1A4F85","tablink":"#ffffff","tablinkcurrent":"#009900","tablinkhover":"#ffffff","tablinkhoverbg":"#1D64AD","tablinkfrom":"#FEFEFE","tablinkto":"#F4F4F4","alertcolor":"#ffb2b2","titlebg":"#edf3fe","titlelabel":"#003366","boxborder":"#003366"};
-    //colors['green'] = {"link_color":"#6B9F1F","link_hover_color":"#fff","header_bg":"#fff","header_h1":"#555","headerbottom":"#ddd","settingtxt":"#666","tablinkbg":"#fff","tablink":"#6B9F1F","tablinkcurrent":"#fff","tablinkhover":"#6B9F1F","tablinkhoverbg":"#f0ffee","bodybg":"#fff","tablinkfrom":"#6B9F1F","tablinkto":"#6B9F1F","alertcolor":"#ffb2b2","titlebg":"#f0ffee","titlelabel":"#6B9F1F","boxborder":"#6B9F1F"};
     colors['green'] =  {"bodybg":"#F4F4F4","link_color":"#437c56","link_hover_color":"#ffffff","header_bg":"#cbeac7","header_h1":"#000000","headerbottom":"#F4F4F4","settingtxt":"#666666","tablinkbg":"#437c56","tablink":"#ffffff","tablinkcurrent":"#000000","tablinkhover":"#d6ffda","tablinkhoverbg":"#1e5a28","tablinkfrom":"#FEFEFE","tablinkto":"#F4F4F4","alertcolor":"#ffb2b2","titlebg":"#eefef1","titlelabel":"#1e5a28","boxborder":"#1e5a28"};
+    colors['pink'] = {"bodybg":"#F4F4F4","link_color":"#ac205f","link_hover_color":"#ffffff","header_bg":"#ac205f","header_h1":"#98cbe9","headerbottom":"#F4F4F4","settingtxt":"#ffffff","tablinkbg":"#e44c90","tablink":"#ffffff","tablinkcurrent":"#ac205f","tablinkhover":"#ffffff","tablinkhoverbg":"#e96ea5","tablinkfrom":"#FEFEFE","tablinkto":"#F4F4F4","alertcolor":"#ffb2b2","titlebg":"#fae1ed","titlelabel":"#ac205f","boxborder":"#ac205f"};
+    colors['black'] = {"bodybg":"#F4F4F4","link_color":"#000000","link_hover_color":"#ffffff","header_bg":"#000000","header_h1":"#ffffff","headerbottom":"#F4F4F4","settingtxt":"#ffffff","tablinkbg":"#666666","tablink":"#ffffff","tablinkcurrent":"#000000","tablinkhover":"#000000","tablinkhoverbg":"#efefef","tablinkfrom":"#FEFEFE","tablinkto":"#F4F4F4","alertcolor":"#ffb2b2","titlebg":"#eeeeee","titlelabel":"#222222","boxborder":"#222222"};
     
     for(i in colors[t]){
         $('#theme_edit_form').find('input[name="'+i+'"]').val(colors[t][i]);
