@@ -448,7 +448,7 @@ class image_gd {
             $posY = rand(5,($ground_h - $h - 5));
             break;
         }
-        if($this->param['water_mark_shadow'] == 'gray'){
+        /*if($this->param['water_mark_shadow'] == 'gray'){
             $shadowcolor = imagecolorallocate( $this->image, 160, 160, 160 );
             imagettftext($this->image,
                  $this->param['water_mark_fontsize'],
@@ -468,7 +468,7 @@ class image_gd {
                  $shadowcolor,
                  $this->param['water_mark_font'],
                  $this->param['water_mark_string']);
-        }
+        }*/
         
         imagettftext($this->image,
              $this->param['water_mark_fontsize'],
