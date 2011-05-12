@@ -234,4 +234,144 @@ class plugin_cla{
     function current_filter(){
         return end($this->current_filter);
     }
+    
+    function get_plugins(){
+        $plugindir = ROOTDIR.'plugins';
+        $plugins = array();
+        
+        if($directory = @dir($plugindir)) {
+            while($entry = $directory->read()) {
+                $plugin_path = $plugindir.'/'.$entry;
+                $plugin_file_path = $plugin_path.'/'.$entry.'.php';
+                $plugin_class = 'plugin_'.$entry;
+                $config_file = $plugin_path.'/_config.htm';
+                
+                if(!preg_match('/^[a-zA-Z0-9\-\_]+$/',$entry)){
+                    continue;
+                }
+                if(is_dir($plugin_path) && file_exists($plugin_file_path)){
+                    $this->db->select('#@plugins','*','plugin_id='.$this->db->q_str($entry));
+                    $arr = $this->db->getRow();
+                    if($arr){
+                        $arr['installed'] = true;
+                        $arr['available'] = $arr['available'] == 'true'?true:false;
+                    }else{
+                        $arr = array();
+                        include($plugin_file_path);
+                        $plugin_obj = new $plugin_class;
+                        $arr['plugin_id'] = $entry;
+                        $arr['plugin_name'] = isset($plugin_obj->name)?$plugin_obj->name:null;
+                        $arr['description'] = isset($plugin_obj->description)?$plugin_obj->description:null;
+                        $arr['installed'] = false;
+                        $arr['available'] = false;
+                        $arr['local_ver'] = isset($plugin_obj->local_ver)?$plugin_obj->local_ver:0;
+                        $arr['author_name'] = isset($plugin_obj->author_name)?$plugin_obj->author_name:null;
+                        $arr['author_url'] = isset($plugin_obj->author_url)?$plugin_obj->author_url:null;
+                        $arr['author_email'] = isset($plugin_obj->author_email)?$plugin_obj->author_email:null;
+                    }
+                    
+                    if(file_exists($config_file)){
+                        $arr['hasconfig'] = true;
+                    }else{
+                        $arr['hasconfig'] = false;
+                    }
+                    $plugins[] = $arr;
+                }
+            }
+            $directory->close();
+        }
+        return $plugins;
+    }
+    
+    function install_plugin($plugin){
+        if(!preg_match('/^[a-zA-Z0-9\-\_]+$/',$plugin)){
+            return false;
+        }
+        $plugin_path = ROOTDIR.'plugins/'.$plugin;
+        $plugin_file_path = $plugin_path.'/'.$plugin.'.php';
+        $plugin_class = 'plugin_'.$plugin;
+        
+        include($plugin_file_path);
+        $plugin_obj = new $plugin_class;
+        
+        $arr['plugin_id'] = $plugin;
+        $arr['plugin_name'] = isset($plugin_obj->name)?$plugin_obj->name:null;
+        $arr['description'] = isset($plugin_obj->description)?$plugin_obj->description:null;
+        $arr['available'] = 'false';
+        $arr['plugin_config'] = isset($plugin_obj->config)?serialize($plugin_obj->config):null;
+        $arr['local_ver'] = isset($plugin_obj->local_ver)?$plugin_obj->local_ver:0;
+        $arr['author_name'] = isset($plugin_obj->author_name)?$plugin_obj->author_name:null;
+        $arr['author_url'] = isset($plugin_obj->author_url)?$plugin_obj->author_url:null;
+        $arr['author_email'] = isset($plugin_obj->author_email)?$plugin_obj->author_email:null;
+        
+        $this->db->insert('#@plugins',$arr);
+        return $this->db->query();
+    }
+    
+    function remove_plugin($plugin){
+        if(!preg_match('/^[a-zA-Z0-9\-\_]+$/',$plugin)){
+            return false;
+        }
+        $this->db->delete('#@plugins','plugin_id='.$this->db->q_str($plugin));
+        if($this->db->query()){
+            $cache =& loader::lib('cache');
+
+            $cache->remove('plugins');
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
+    function enable_plugin($plugin){
+        if(!preg_match('/^[a-zA-Z0-9\-\_]+$/',$plugin)){
+            return false;
+        }
+        
+        $this->db->update('#@plugins','plugin_id='.$this->db->q_str($plugin),array('available'=>'true'));
+        if($this->db->query()){
+            $cache =& loader::lib('cache');
+
+            $cache->remove('plugins');
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
+    function disable_plugin($plugin){
+        if(!preg_match('/^[a-zA-Z0-9\-\_]+$/',$plugin)){
+            return false;
+        }
+        
+        $this->db->update('#@plugins','plugin_id='.$this->db->q_str($plugin),array('available'=>'false'));
+        if($this->db->query()){
+            $cache =& loader::lib('cache');
+
+            $cache->remove('plugins');
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
+    function get_config($plugin){
+        $this->db->select('#@plugins','plugin_config','plugin_id='.$this->db->q_str($plugin));
+        $plugin_config = $this->db->getOne();
+        if($plugin_config){
+            return unserialize($plugin_config);
+        }
+        return false;
+    }
+    
+    function save_config($plugin,$config){
+        $this->db->update('#@plugins','plugin_id='.$this->db->q_str($plugin),array('plugin_config'=>serialize($config)));
+        if($this->db->query()){
+            $cache =& loader::lib('cache');
+            $cache->remove('plugins');
+            return true;
+        }else{
+            return false;
+        }
+    }
 }

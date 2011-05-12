@@ -675,3 +675,51 @@ textarea.settinginput{
 .themelist .item .ctl a{
     margin-right:10px;
 }
+
+.pluginlist{
+    padding-bottom:20px;
+}
+table.datalist{
+    width:100%;
+    border-collapse: collapse;
+}
+table.datalist thead th{
+    padding:5px;
+    font-size:14px;
+    background:-moz-linear-gradient(center top , #FDFDFD, #E5E5E5) repeat scroll 0 0 transparent;
+    background:-webkit-gradient(linear,0% 0%, 0% 100%, from(#FDFDFD), to(#E5E5E5));
+}
+
+table.datalist td{
+    padding:0 5px;
+    line-height:30px;
+    border-bottom:1px solid #ddd;
+    display: table-cell;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.sysinfo .section{
+    height:30px;
+    line-height:30px;
+    font-size:18px;
+    padding-left:30px;
+    margin-top:20px;
+    background:#eee;
+}
+.sysinfo table.info{
+    width:100%;
+    border-collapse: collapse;
+    border:1px solid #eee;
+}
+.sysinfo table.info td,.sysinfo table.info th{
+    border:1px solid #eee;
+    padding:5px;
+}
+.sysinfo table.info th{
+    width:20%;
+}
+.sysinfo .moreinfo{
+    line-height:30px;
+    text-align:right;
+}

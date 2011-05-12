@@ -1,0 +1,40 @@
+{template block/header}
+
+<div id="bodywrap">
+    <table class="layout">
+        <tr>
+            <td class="left">
+                <div class="mainbody">
+                    <div class="col titbg">
+                        <h4 class="f_left"><a href="{link ctl=setting}">基本设置</a></h4>
+                        <h4 class="f_left"><a href="{link ctl=setting act=upload}">上传设置</a></h4>
+                        <h4 class="f_left"><a href="{link ctl=setting act=watermark}">水印设置</a></h4>
+                        <h4 class="f_left"><a href="{link ctl=setting act=themes}">风格管理</a></h4>
+                        <h4 class="f_left"><a href="{link ctl=setting act=plugins}">插件管理</a></h4>
+                        <h1 class="f_left">系统信息</h1>
+                        <div class="rmenu f_right">
+                        </div>
+                    </div>
+                    <div class="innercol">
+                            <div class="innerconetent">
+                                <div class="sysinfo">
+                                 <div class="btns"><input class="ylbtn" type="button" value="清空所有缓存" /> <input class="ml10 ylbtn" type="button" value="检查更新" /></div>
+                                 <div class="section">系统信息</div>
+                                 <table class="info">
+                                     {loop $info $v}
+                                     <tr>
+                                         <th>{$v['title']}</th><td>{$v['value']} </td>
+                                     </tr>
+                                     {/loop}
+                                 </table> 
+                                 <div class="moreinfo">更多系统信息 <a href="{link ctl=setting act=phpinfo}" target="_blank">phpinfo()</a></div>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+{template block/footer}

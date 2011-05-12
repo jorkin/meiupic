@@ -12,6 +12,8 @@
 class db_cla{
     var $db;
     
+    var $adapter;
+    
     var $pre='';
     
     var $table;
@@ -31,11 +33,12 @@ class db_cla{
         else{
             exit(lang('db_config_error'));
         }
+        $this->adapter = $db_config['adapter'];
         
         if(isset($db_config['pre']))
               $this->pre=$db_config['pre'];
         
-        require_once(LIBDIR.'db_adapter/'.$db_config['adapter'].'.php');
+        require_once(LIBDIR.'db_adapter/'.strtolower($db_config['adapter']).'.php');
 
         $this->db= new $adapterName($db_config);
     }
@@ -469,6 +472,10 @@ class db_cla{
             $time=time();
         }
         return $this->db->dbTimeStamp($time);
+    }
+    
+    function version(){
+        return $this->db->version();
     }
     
 }

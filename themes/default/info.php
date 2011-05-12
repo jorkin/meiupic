@@ -4,23 +4,24 @@ $theme_copyright = 'Designed by <a href="http://www.meiu.cn/" target="_blank">ç¾
 $theme_config = array(
     'bodybg'    => '#F4F4F4',
     'link_color' => '#1d64ad',
-    'link_hover_color' => '#fff',
-    'header_bg' => '#036',
-    'header_h1' => '#fc0',
+    'link_hover_color' => '#ffffff',
+    'header_bg' => '#003366',
+    'header_h1' => '#ffcc00',
     'headerbottom' => '#F4F4F4',
-    'settingtxt' => '#fff',
+    'settingtxt' => '#ffffff',
     'tablinkbg' => '#1A4F85',
-    'tablink' => '#fff',
-    'tablinkcurrent' => '#090',
-    'tablinkhover' => '#fff',
+    'tablink' => '#ffffff',
+    'tablinkcurrent' => '#009900',
+    'tablinkhover' => '#ffffff',
     'tablinkhoverbg' => '#1D64AD',
     'tablinkfrom' => '#FEFEFE',
     'tablinkto' => '#F4F4F4',
     'alertcolor' => '#ffb2b2',
     'titlebg' => '#edf3fe',
-    'titlelabel' => '#036',
-    'boxborder' => '#036'
+    'titlelabel' => '#003366',
+    'boxborder' => '#003366'
 );
+
 
 /*
 $theme_config = array(
@@ -42,4 +43,6 @@ $theme_config = array(
     'titlebg' => '#f0ffee',
     'titlelabel' => '#6B9F1F',
     'boxborder' => '#6B9F1F'
-);*/
+);
+
+echo json_encode($theme_config);*/
