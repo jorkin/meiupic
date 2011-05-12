@@ -6,6 +6,10 @@ class comments_ctl extends pagecore{
         $this->mdl_comment = & loader::model('comment');
     }
     function post(){
+        if(!$this->setting->get_conf('system.enable_comment')){
+            form_ajax_failed('text','相册关闭了评论！');
+        }
+        
         $comment['email'] = safe_convert($this->getPost('email'));
         $comment['author'] = safe_convert($this->getPost('author'));
         $comment['content'] = safe_convert($this->getPost('content'));
@@ -50,6 +54,10 @@ class comments_ctl extends pagecore{
     }
     
     function save_reply(){
+        if(!$this->setting->get_conf('system.enable_comment')){
+            form_ajax_failed('text','相册关闭了评论！');
+        }
+        
         $comment['email'] = safe_convert($this->getPost('email'));
         $comment['author'] = safe_convert($this->getPost('author'));
         $comment['content'] = safe_convert($this->getPost('content'));

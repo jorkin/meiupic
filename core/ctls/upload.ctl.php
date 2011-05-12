@@ -16,6 +16,7 @@ class upload_ctl extends pagecore{
         
         $this->output->set('album_menu',$this->plugin->filter('album_menu',''));
         $this->output->set('albums_list',$this->mdl_album->get_kv());
+        $this->output->set('upload_setting',$this->setting->get_conf('upload'));
         
         $page_title = '上传照片 - '.$this->setting->get_conf('site.title');
         $page_keywords = $this->setting->get_conf('site.keywords');

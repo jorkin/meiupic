@@ -21,28 +21,3 @@ $theme_config = array(
     'titlelabel' => '#003366',
     'boxborder' => '#003366'
 );
-
-
-/*
-$theme_config = array(
-    'link_color' => '#6B9F1F',
-    'link_hover_color' => '#fff',
-    'header_bg' => '#fff',
-    'header_h1' => '#555',
-    'headerbottom' => '#ddd',
-    'settingtxt' => '#666',
-    'tablinkbg' => '#fff',
-    'tablink' => '#6B9F1F',
-    'tablinkcurrent' => '#fff',
-    'tablinkhover' => '#6B9F1F',
-    'tablinkhoverbg' => '#f0ffee',
-    'bodybg'    => '#fff',
-    'tablinkfrom' => '#6B9F1F',
-    'tablinkto' => '#6B9F1F',
-    'alertcolor' => '#ffb2b2',
-    'titlebg' => '#f0ffee',
-    'titlelabel' => '#6B9F1F',
-    'boxborder' => '#6B9F1F'
-);
-
-echo json_encode($theme_config);*/

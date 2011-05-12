@@ -18,7 +18,7 @@
                     <div class="innercol">
                             <div class="innerconetent">
                                 <div class="sysinfo">
-                                 <div class="btns"><input class="ylbtn" type="button" value="清空所有缓存" /> <input class="ml10 ylbtn" type="button" value="检查更新" /></div>
+                                 <div class="btns">缓存大小{$cache_size} <input class="ml10 ylbtn" type="button" onclick="Mui.box.show('{link ctl=setting act=clear_cache}')" value="清空所有缓存" /> <!--<input class="ml10 ylbtn" type="button" value="检查更新" />--></div>
                                  <div class="section">系统信息</div>
                                  <table class="info">
                                      {loop $info $v}
