@@ -102,4 +102,21 @@ $language   =   array(
 'config_file_not_exists' =>   '配置文件不存在！',
 'load_model_error'       =>   '装载model "%s" 错误!',
 'load_lib_error'         =>   '装载library "%s" 错误!',
+
+
+//系统信息
+'meiupic_version'       =>  '相册系统版本',
+'operate_system'        =>  '操作系统',
+'server_software'       =>  '服务器软件',
+'php_runmode'           =>  'php运行模式',
+'php_version'           =>  'php版本',
+'mysql_support'         =>  '是否支持Mysql',
+'mysqli_support'        =>  '是否支持Mysqli',
+'sqlite_support'        =>  '是否支持Sqlite',
+'database_version'      =>  '数据库及版本',
+'gd_info'               =>  'GD库',
+'imagick_support'       =>  'Imagick扩展',
+'zlib_support'          =>  '是否支持Zlib',
+'support'               =>  '支持',
+'notsupport'            =>  '不支持',
 );

@@ -3,7 +3,7 @@
 class setting_ctl extends pagecore{
     
     function _init(){
-        //$this->plugin =& loader::lib('plugin');
+        $this->plugin =& loader::lib('plugin');
         //$this->mdl_album = & loader::model('album');
     }
     
@@ -184,7 +184,7 @@ class setting_ctl extends pagecore{
         $themes = $mdl_theme->all_themes();
         $this->output->set('themes',$themes);
 
-        $page_title = '基本设置 - 系统设置 - '.$this->setting->get_conf('site.title');
+        $page_title = '风格设置 - 系统设置 - '.$this->setting->get_conf('site.title');
         $page_keywords = $this->setting->get_conf('site.keywords');
         $page_description = $this->setting->get_conf('site.description');
 
@@ -202,6 +202,8 @@ class setting_ctl extends pagecore{
     }
     
     function theme_edit(){
+        need_login('ajax_page');
+        
         $theme = $this->getGet('theme');
         $this->output->set('theme',$theme);
         
@@ -216,6 +218,8 @@ class setting_ctl extends pagecore{
     }
     
     function theme_save_setting(){
+        need_login('ajax');
+        
         $theme = $this->getGet('theme');
         $config = $this->getPosts();
         
@@ -252,5 +256,111 @@ class setting_ctl extends pagecore{
             ajax_box('删除主题失败！');
         }
         
+    }
+    
+    function plugins(){
+        need_login('page');
+
+        $plugins = $this->plugin->get_plugins();
+        $this->output->set('plugins',$plugins);
+        
+        $page_title = '插件管理 - 系统设置 - '.$this->setting->get_conf('site.title');
+        $page_keywords = $this->setting->get_conf('site.keywords');
+        $page_description = $this->setting->get_conf('site.description');
+
+        $this->page_init($page_title,$page_keywords,$page_description);
+        $this->render();
+    }
+    
+    function plugin_install(){
+        need_login('ajax_page');
+        
+        $plugin = $this->getGet('plugin');
+        if($this->plugin->install_plugin($plugin)){
+            ajax_box('安装插件成功！',null,0.5,$_SERVER['HTTP_REFERER']);
+        }else{
+            ajax_box('安装插件失败！');
+        }
+    }
+    
+    function plugin_enable(){
+        need_login('ajax_page');
+        
+        $plugin = $this->getGet('plugin');
+        if($this->plugin->enable_plugin($plugin)){
+            ajax_box('启用插件成功！',null,0.5,$_SERVER['HTTP_REFERER']);
+        }else{
+            ajax_box('启用插件失败！');
+        }
+    }
+    
+    function plugin_disable(){
+        need_login('ajax_page');
+        
+        $plugin = $this->getGet('plugin');
+        if($this->plugin->disable_plugin($plugin)){
+            ajax_box('停用插件成功！',null,0.5,$_SERVER['HTTP_REFERER']);
+        }else{
+            ajax_box('停用插件失败！');
+        }
+    }
+    
+    function plugin_remove(){
+        need_login('ajax_page');
+        
+        $plugin = $this->getGet('plugin');
+        if($this->plugin->remove_plugin($plugin)){
+            ajax_box('删除插件成功！',null,0.5,$_SERVER['HTTP_REFERER']);
+        }else{
+            ajax_box('删除插件失败！');
+        }
+    }
+    
+    function plugin_config(){
+        need_login('ajax_page');
+        
+        $plugin = $this->getGet('plugin');
+        $this->output->set('plugin',$plugin);
+
+        $_config = $this->plugin->get_config($plugin);
+        
+        ob_start();
+        include template('_config',$plugin,'plugins/'.$plugin);
+        $plugin_config_fields = ob_get_clean();
+        
+        $this->output->set('plugin_config_fields',$plugin_config_fields);
+        $this->render();
+    }
+    
+    function plugin_save_config(){
+        need_login('ajax');
+        
+        $plugin = $this->getGet('plugin');
+        $config = $this->getPosts();
+        if($this->plugin->save_config($plugin,$config)){
+            form_ajax_success('box','保存设置成功！',null,0.5,$_SERVER['HTTP_REFERER']);
+        }else{
+            form_ajax_success('text','保存设置失败！',null,0.5,$_SERVER['HTTP_REFERER']);
+        }
+        
+    }
+    
+    function info(){
+        need_login('page');
+        $info = loader::model('utility')->sys_info();
+        $this->output->set('info',$info);
+        
+        $page_title = '系统信息 - 系统设置 - '.$this->setting->get_conf('site.title');
+        $page_keywords = $this->setting->get_conf('site.keywords');
+        $page_description = $this->setting->get_conf('site.description');
+
+        $this->page_init($page_title,$page_keywords,$page_description);
+        $this->render();
+    }
+    
+    function phpinfo(){
+        need_login('page');
+        
+        phpinfo();
     }
 }

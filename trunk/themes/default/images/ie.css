@@ -26,3 +26,7 @@ a span.sprite{
 .data_tab li.current{
     filter: none;
 }
+
+table.datalist thead th{
+    filter: progid:DXImageTransform.Microsoft.gradient(enabled='true', startColorstr=#FDFDFD, endColorstr=#E5E5E5);
+}

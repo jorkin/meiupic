@@ -1,5 +1,15 @@
 <?php
 
+if(!function_exists('file_put_contents')) {
+    function file_put_contents($filename, $s) {
+        $fp = @fopen($filename, 'w');
+        @fwrite($fp, $s);
+        @fclose($fp);
+        return TRUE;
+    }
+}
+
+//create link
 function site_link($ctl='default',$act='index',$pars=array()){
     $uri =& loader::lib('uri');
     return $uri->mk_uri($ctl,$act,$pars);
@@ -10,14 +20,6 @@ function redirect($uri){
     exit;
 }
 
-if(!function_exists('file_put_contents')) {
-    function file_put_contents($filename, $s) {
-        $fp = @fopen($filename, 'w');
-        @fwrite($fp, $s);
-        @fclose($fp);
-        return TRUE;
-    }
-}
 /*
 type:
     page: 页面
@@ -207,13 +209,6 @@ function get_real_ip(){
     }
     return preg_match ( '/[\d\.]{7,15}/', $ip, $matches ) ? $matches [0] : '';
 }
-//check email avalible
-function check_email($str){
-    if(!preg_match('/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i', $str)){
-        return false;
-    }
-    return true;
-}
 
 //Words Filter
 function safe_convert($string, $html=0, $filterslash=0) {
@@ -251,6 +246,8 @@ function safe_invert($string, $html=0) {
     return $string;
 }
 
+
+
 function touch_file($file,$content = ''){
     $flag = @file_put_contents($file,$content);
     return $flag;
@@ -258,7 +255,7 @@ function touch_file($file,$content = ''){
 
 /*
 flag: 1, new files added
-      2, remove trash
+      2, clear trash
 */
 function trash_status($flag){
     if($flag == 1){
@@ -324,13 +321,21 @@ function get_fonts(){
     return $fonts;
 }
 
+/* validate start */
+//check email avalible
+function check_email($str){
+    if(!preg_match('/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i', $str)){
+        return false;
+    }
+    return true;
+}
 function check_color($c){
     if(preg_match('/^\#[0-9A-F]{2}[0-9A-F]{2}[0-9A-F]{2}$/i', $c) || preg_match('/^\#[0-9A-F]{3}$/i', $c)){
         return true;
     }
     return false;
 }
-
+/* validate end */
 
 function deldir($dir) {
     if($directory = @dir($dir)) {
@@ -348,7 +353,7 @@ function deldir($dir) {
     }else{
         return false;
     }
-    if(rmdir($dir)) {
+    if(@rmdir($dir)) {
         return true;
     } else {
         return false;
