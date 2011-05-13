@@ -17,6 +17,7 @@
                     </div>
                     <div class="innercol">
                             <div class="innerconetent">
+                                {if $plugins}
                                 <div class="pluginlist">
                                     <table class="datalist">
                                         <thead>
@@ -51,7 +52,7 @@
                                                     {/if}
                                                     
                                                     {if $v['hasconfig']}
-                                                    <a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=setting act=plugin_config plugin=$v['plugin_id']}')">配置</a>
+                                                    <a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=setting act=plugin_config plugin=$v['plugin_id']}',true)">配置</a>
                                                     {/if}
                                                 {else}
                                                 <a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=setting act=plugin_install plugin=$v['plugin_id']}')">安装</a>
@@ -61,6 +62,9 @@
                                         </tbody>
                                     </table>
                                 </div>
+                                {else}
+                                没有任何可用的插件！
+                                {/if}
                             </div>
                     </div>
                 </div>
