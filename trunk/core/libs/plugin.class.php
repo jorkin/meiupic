@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id: plugin.class.php 97 2011-01-30 02:54:36Z lingter $
+ * $Id$
  *
  * The plugin API is located in this file
  *

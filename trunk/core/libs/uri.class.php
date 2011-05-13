@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id: uri.class.php 97 2011-01-30 02:54:36Z lingter $
+ * $Id$
  *
  * Parse and make uri
  *

@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id: theme.mdl.php 56 2010-07-09 08:13:40Z lingter $
+ * $Id$
  * 
  * @author : Lingter
  * @support : http://www.meiu.cn

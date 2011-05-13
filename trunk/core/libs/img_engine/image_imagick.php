@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id: image_gd.php -1   $
+ * $Id$
  * 
  * @author : Lingter
  * @support : http://www.meiu.cn

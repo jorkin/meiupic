@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id: cache.class.php 99 2011-02-20 13:57:57Z lingter $
+ * $Id$
  * 
  * Cache Class:  Including apc,file,memcache and xcache. This is a factory class.
  *
