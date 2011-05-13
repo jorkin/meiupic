@@ -473,6 +473,8 @@ table.layout td.right{
     padding:5px;
     background:#fff;
     width:120px;
+    height:120px;
+    overflow:hidden;
     margin: 0 auto 10px;
 }
 .pic_nav .body li#pic_last{
