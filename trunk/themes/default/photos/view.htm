@@ -206,7 +206,7 @@
                         <div class="title"><a href="{link ctl=photos act=index aid=$info['album_id']}">{$album_info['name']}</a> [共{$album_info['photos_num']}张]</div>
                         <div class="body">
                             <div>
-                                <a href="javascript:void(0)" onclick="nav_turn(this,'up')" class="turn_page_up">上一张</a>
+                                <a href="{if $picture['previous']}{link ctl=photos act=view id=$picture['previous']['id']}#pic_block{else}javascript:void(0){/if}" class="turn_page_up">上一张</a>
                             </div>
                             <div class="navlist">
                             <ul>
@@ -224,7 +224,7 @@
                             </ul>
                             </div>
                             <div>
-                                <a href="javascript:void(0)" onclick="nav_turn(this,'down')" class="turn_page_down">下一张</a>
+                                <a href="{if $picture['next']}{link ctl=photos act=view id=$picture['next']['id']}#pic_block{else}javascript:void(0){/if}" class="turn_page_down">下一张</a>
                             </div>
                         </div>
                     </div>
@@ -233,49 +233,4 @@
         </tr>
     </table>
 </div>
-<script>
-
-    function nav_move(moveto){
-        var sctop =  $('.pic_nav div.body .navlist').scrollTop();
-        $('.pic_nav div.body .navlist').animate({ scrollTop : sctop+moveto }, 'fast');
-    }
-    var nav_loading = 0;
-    function nav_turn(obj,action){
-        var action_url = '{link ctl=photos act=nav aid=$info['album_id']}';
-        if(action=='up'){
-            if($('#pic_first').length == 0){
-                var top_id = $('.pic_nav div.body ul li:first').attr('id');
-                var top_id = top_id.split('_')[1];
-                if(nav_loading == 1){
-                    return false;
-                }
-                nav_loading = 1;
-                $.post(action_url,{direction:'up',rank_id:top_id},function(data){
-                    $('.pic_nav div.body ul').prepend(data);
-                    nav_move(-426);
-                    nav_loading = 0;
-                });
-            }else{
-                nav_move(-426);
-            }
-            
-        }else{
-            if($('#pic_last').length == 0){
-                var last_id = $('.pic_nav div.body ul li:last').attr('id');
-                var last_id = last_id.split('_')[1];
-                if(nav_loading == 1){
-                    return false;
-                }
-                nav_loading = 1;
-                $.post(action_url,{direction:'down',rank_id:last_id},function(data){
-                    $('.pic_nav div.body ul').append(data);
-                    nav_move(426);
-                    nav_loading = 0;
-                });
-            }else{
-                nav_move(426);
-            }
-        }
-    }
-</script>
 {template block/footer}
