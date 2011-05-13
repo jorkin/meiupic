@@ -1,7 +1,7 @@
 <?php
 
 /**
- * $Id: memcached.php 99 2011-02-20 13:57:57Z lingter $
+ * $Id$
  * 
  * Cache engine: Memcache
  *      

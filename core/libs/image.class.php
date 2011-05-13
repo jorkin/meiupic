@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id: image.class.php 99 2011-02-20 13:57:57Z lingter $
+ * $Id$
  * 
  * Image class: resize, cut, rotate, add water mark 
  *      

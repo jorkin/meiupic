@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id: json.class.php 70 2010-07-14 14:41:20Z lingter $
+ * $Id$
  * 
  * @author : Lingter
  * @support : http://www.meiu.cn

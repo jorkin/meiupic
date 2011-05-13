@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id: page.class.php 99 2011-02-20 13:57:57Z lingter $
+ * $Id$
  * 
  * Page Class: Generate paging code
  *      
