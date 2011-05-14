@@ -287,6 +287,11 @@ textarea.inputstyle{
     width:10px;
     padding-top:10px;
 }
+.i_moveto{
+    background-position:-287px -4px;
+    width:16px;
+    padding-top:16px;
+}
 /*selector*/
 .selectlist{
     line-height:24px;
