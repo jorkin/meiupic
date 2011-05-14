@@ -320,6 +320,7 @@ class photos_ctl extends pagecore{
     }
     
     function do_move(){
+        need_login('ajax');
         $album_id = $this->getPost('album_id');
         $id = $this->getGet('id');
         if(!$album_id){
