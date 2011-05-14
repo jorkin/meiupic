@@ -15,9 +15,25 @@ function site_link($ctl='default',$act='index',$pars=array()){
     return $uri->mk_uri($ctl,$act,$pars);
 }
 
-function redirect($uri){
-    header('location: '.$uri);
-    exit;
+function redirect($url,$time=0,$msg=''){
+    $url = str_replace(array("\n", "\r"), '', $url);
+    if(empty($msg))
+        $msg  =  "This page will redirect to {$url} in {$time} seconds！";
+    
+    if (!headers_sent()) {
+        if(0===$time) {
+            header("Location: ".$url);
+        }else {
+            header("refresh:{$time};url={$url}");
+            echo($msg);
+        }
+        exit();
+    }else {
+        $str    = "<meta http-equiv='Refresh' content='{$time};URL={$url}'>";
+        if($time!=0)
+            $str   .=   $msg;
+        exit($str);
+    }
 }
 
 /*
@@ -184,11 +200,10 @@ function get_album_cover($aid,$ext){
 }
 
 function get_avatar($comment){
-    //global $base_path;
-    //return $base_path.'statics/img/no_avatar.jpg';
-    $file = md5(strtolower($comment['email']));
-    $avatar_prefix = 'http://www.gravatar.com/avatar.php?rating=G&size=48&gravatar_id=';
-    $url = $avatar_prefix.$file;
+    $gravatar_url = GRAVATAR_URL;
+    $id = md5(strtolower($comment['email']));
+    $url = str_replace('{idstring}',$id,$gravatar_url);
+    
     return $url;
 }
 

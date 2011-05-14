@@ -14,6 +14,7 @@ class setting_ctl extends pagecore{
         $site['description'] = safe_invert($site['description']);
         $this->output->set('site',$site);
         $this->output->set('enable_comment',$this->setting->get_conf('system.enable_comment'));
+        $this->output->set('gravatar_url',$this->setting->get_conf('system.gravatar_url'));
         
         $page_title = '基本设置 - 系统设置 - '.$this->setting->get_conf('site.title');
         $page_keywords = $this->setting->get_conf('site.keywords');
@@ -32,6 +33,8 @@ class setting_ctl extends pagecore{
         $site['keywords'] = safe_convert($site['keywords']);
         $site['description'] = safe_convert($site['description']);
         
+        $gravatar_url = safe_convert($this->getPost('gravatar_url'));
+        
         if($site['title'] == ''){
             form_ajax_failed('box','站点名称不能为空！');
         }
@@ -42,6 +45,8 @@ class setting_ctl extends pagecore{
         $this->setting->set_conf('site.url',$site['url']);
         $this->setting->set_conf('site.keywords',$site['keywords']);
         $this->setting->set_conf('site.description',$site['description']);
+        $this->setting->set_conf('system.gravatar_url',$gravatar_url);
+        
         if($this->getPost('enable_comment')){
             $this->setting->set_conf('system.enable_comment',true);
         }else{
