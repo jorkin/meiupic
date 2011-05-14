@@ -233,10 +233,29 @@ class upload_ctl extends pagecore{
             }
             $empty_num = 0;
             $error = '';
+            $allowsize = allowsize($this->setting->get_conf('upload.allow_size'));
             foreach($_FILES['imgs']['name'] as $k=>$upfile){
-                $tmpfile = $_FILES['imgs']['tmp_name'][$k];
+                
                 if (!empty($upfile)) {
+                    $filesize = $_FILES['imgs']['size'][$k];
+                    $tmpfile = $_FILES['imgs']['tmp_name'][$k];
                     $filename = $upfile;
+                    
+                    if($_FILES['imgs']['error'][$k] == 1){
+                        $error .= '文件'.$filename.'上传失败:文件大小超过服务器限制！<br />';
+                        continue;
+                    }
+                    
+                    if($allowsize && $filesize>$allowsize){
+                        $error .= '文件'.$filename.'上传失败:大小超过用户限制！<br />';
+                        continue;
+                    }
+                    
+                    if($filesize == 0){
+                        $error .= '文件'.$filename.'上传失败:请确认上传的是否为文件！<br />';
+                        continue;
+                    }
+                    
                     $fileext = strtolower(end(explode('.',$filename)));
                     
                     $key = str_replace('.','',microtime(true));
@@ -246,7 +265,7 @@ class upload_ctl extends pagecore{
                         $realpath = ROOTDIR.$media_dirname.'/'.$key.'.'.$fileext;
                     }
 
-                    if(@move_uploaded_file($tmpfile,$realpath)){
+                    if($tmpfile && @move_uploaded_file($tmpfile,$realpath)){
                         $arr['album_id'] = $album_id;
                         $arr['path'] = $media_dirname.'/'.$key.'.'.$fileext;
                         $arr['thumb'] = $thumb_dirname.'/'.$key.'.'.$fileext;

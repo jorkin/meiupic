@@ -321,6 +321,27 @@ function bytes2u($size){
     return $result;
 }
 
+function allowsize($size){
+    switch($size){
+        case '512K':
+            $byte = 512*1024;
+            break;
+        case '1M':
+            $byte = 1024*1024;
+            break;
+        case '2M':
+            $byte = 2*1024*1024;
+            break;
+        case '5M':
+            $byte = 5*1024*1024;
+            break;
+        default:
+            $byte = false;
+    }
+    return $byte;
+}
+
+
 function get_fonts(){
     $fontdir = ROOTDIR.'statics/font';
     $fonts = array();
