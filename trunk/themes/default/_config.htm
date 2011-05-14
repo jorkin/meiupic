@@ -5,6 +5,7 @@
         <label><input type="radio" name="style" value="green" {if $_config['style'] == 'green'}checked="checked"{/if} onclick="seltheme('green')" /> 绿色</label>
         <label><input type="radio" name="style" value="pink" {if $_config['style'] == 'pink'}checked="checked"{/if} onclick="seltheme('pink')" /> 紫色</label>
         <label><input type="radio" name="style" value="black" {if $_config['style'] == 'black'}checked="checked"{/if} onclick="seltheme('black')" /> 黑色</label>
+        <label><input type="radio" name="style" value="brown" {if $_config['style'] == 'brown'}checked="checked"{/if} onclick="seltheme('brown')" /> 褐色</label>
     </div>
     <div class="clear"></div>
 </div>
@@ -107,7 +108,7 @@ function seltheme(t){
     colors['green'] =  {"bodybg":"#F4F4F4","link_color":"#437c56","link_hover_color":"#ffffff","header_bg":"#cbeac7","header_h1":"#000000","headerbottom":"#F4F4F4","settingtxt":"#666666","tablinkbg":"#437c56","tablink":"#ffffff","tablinkcurrent":"#000000","tablinkhover":"#d6ffda","tablinkhoverbg":"#1e5a28","tablinkfrom":"#FEFEFE","tablinkto":"#F4F4F4","alertcolor":"#ffb2b2","titlebg":"#eefef1","titlelabel":"#1e5a28","boxborder":"#1e5a28"};
     colors['pink'] = {"bodybg":"#F4F4F4","link_color":"#ac205f","link_hover_color":"#ffffff","header_bg":"#ac205f","header_h1":"#98cbe9","headerbottom":"#F4F4F4","settingtxt":"#ffffff","tablinkbg":"#e44c90","tablink":"#ffffff","tablinkcurrent":"#ac205f","tablinkhover":"#ffffff","tablinkhoverbg":"#e96ea5","tablinkfrom":"#FEFEFE","tablinkto":"#F4F4F4","alertcolor":"#ffb2b2","titlebg":"#fae1ed","titlelabel":"#ac205f","boxborder":"#ac205f"};
     colors['black'] = {"bodybg":"#F4F4F4","link_color":"#000000","link_hover_color":"#ffffff","header_bg":"#000000","header_h1":"#ffffff","headerbottom":"#F4F4F4","settingtxt":"#ffffff","tablinkbg":"#666666","tablink":"#ffffff","tablinkcurrent":"#000000","tablinkhover":"#000000","tablinkhoverbg":"#efefef","tablinkfrom":"#FEFEFE","tablinkto":"#F4F4F4","alertcolor":"#ffb2b2","titlebg":"#eeeeee","titlelabel":"#222222","boxborder":"#222222"};
-    
+    colors['brown'] = {"bodybg":"#FCF8F7","link_color":"#A85401","link_hover_color":"#ffffff","header_bg":"#512909","header_h1":"#eeeeee","headerbottom":"#f18c00","settingtxt":"#ffffff","tablinkbg":"#64340f","tablink":"#ffffff","tablinkcurrent":"#F5F1E8","tablinkhover":"#ffffff","tablinkhoverbg":"#825837","tablinkfrom":"#825837","tablinkto":"#825837","alertcolor":"#ffb2b2","titlebg":"#F5F1E8","titlelabel":"#222222","boxborder":"#512909"};
     for(i in colors[t]){
         $('#theme_edit_form').find('input[name="'+i+'"]').val(colors[t][i]);
     }

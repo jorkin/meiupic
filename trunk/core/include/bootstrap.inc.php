@@ -170,9 +170,13 @@ function init_defines(){
 }
 
 function init_template(){
+    global $language;
     $current_theme = loader::model('setting')->get_conf('system.current_theme','default');
     define('TEMPLATEID', $current_theme);
     define('TPLDIR','themes/'.TEMPLATEID);
+    if(file_exists(ROOTDIR.TPLDIR.'/lang/'.LANGSET.'.lang.php')){
+        include_once(ROOTDIR.TPLDIR.'/lang/'.LANGSET.'.lang.php');
+    }
 }
 
 function meiu_bootstrap(){
