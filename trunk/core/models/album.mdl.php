@@ -153,7 +153,8 @@ class album_mdl extends modelfactory{
             $this->db->query();
             $this->db->update('#@photos','id='.intval($cover_info['cover_id']),array('is_cover'=>1));
             $this->db->query();
-            $this->make_cover_img($id,$photo_info['path'],$ext);
+            
+            $this->make_cover_img($id,$photo_info['path'],$ext,$info['cover_ext']);
         
             $cover_info['cover_ext'] = $ext;
         }else{
@@ -163,13 +164,22 @@ class album_mdl extends modelfactory{
         return $this->update($id,$cover_info);
     }
     
-    function make_cover_img($album_id,$path,& $ext){
+    function make_cover_img($album_id,$path,& $ext,$old_ext = ''){
+        if($old_ext){
+            //remove old cover
+            $old_cover_path = ROOTDIR.get_album_cover($album_id,$old_ext);
+            if(file_exists($old_cover_path)){
+                @unlink($old_cover_path);
+            }
+        }
+        
         $imglib =& loader::lib('image');
         $imglib->load(ROOTDIR.$path);
         $imglib->square(150);
         $ext = $imglib->getExtension();
         $cover_dir = ROOTDIR.'data/cover';
-        $cover_path = $cover_dir.'/'.$album_id.'.'.$ext;
+        $cover_path = ROOTDIR.get_album_cover($album_id,$ext);
+        
         if(!is_dir($cover_dir)){
             mkdir($cover_dir);
         }
@@ -180,11 +190,13 @@ class album_mdl extends modelfactory{
         $pic_info = loader::model('photo')->get_info($pic_id);
         $arr['cover_id'] = $pic_id;
         
+        $album_info = $this->get_info($pic_info['album_id']);
+        
         $this->db->update('#@photos','album_id='.intval($pic_info['album_id']),array('is_cover'=>0));
         $this->db->query();
         $this->db->update('#@photos','id='.intval($pic_id),array('is_cover'=>1));
         $this->db->query();
-        $this->make_cover_img($pic_info['album_id'],$pic_info['path'],$ext);
+        $this->make_cover_img($pic_info['album_id'],$pic_info['path'],$ext,$album_info['cover_ext']);
         $arr['cover_ext'] = $ext;
         return $this->update($pic_info['album_id'],$arr);
     }

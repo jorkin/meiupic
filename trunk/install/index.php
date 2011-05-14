@@ -238,8 +238,10 @@ if($method == 'license'){
         $mdl_setting = loader::model('setting');
         $mdl_setting->set_conf('system.version',MPIC_VERSION);
         $mdl_setting->set_conf('system.installed_time',time());
+        $mdl_setting->set_conf('system.gravatar_url','http://www.gravatar.com/avatar.php?rating=G&size=48&default='.$siteurl.'statics/img/no_avatar.jpg&gravatar_id={idstring}');
         $mdl_setting->set_conf('site.title',$sitename);
         $mdl_setting->set_conf('site.url',$siteurl);
+        
         $mdl_setting->set_conf('site.email',$email);
         
         showjsmessage(lang('update_user_setting'));

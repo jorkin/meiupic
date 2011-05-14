@@ -53,6 +53,13 @@
                                             <label><input type="checkbox" name="enable_comment" value="1" {if $enable_comment}checked="checked"{/if} /> 开启</label>
                                         </div>
                                     </div>
+                                    <div class="settingfield">
+                                        <div class="label">Gravatar头像地址设置</div>
+                                        <div class="descinfo">系统将自动替换{idstring}为相应的gravatar_id</div>
+                                        <div class="input">
+                                            <input type="text" name="gravatar_url" class="settinginput iptw6" value="{$gravatar_url}" />
+                                        </div>
+                                    </div>
                                     <div class="ctl_button">
                                         <input type="submit" name="submit" class="ylbtn" value="保存设置" onclick="Mui.form.sendPop('setting_basic_form')" />
                                     </div>

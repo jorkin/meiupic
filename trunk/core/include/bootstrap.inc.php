@@ -167,6 +167,8 @@ function init_defines(){
     }
     
     timezone_set($Config['timeoffset']);
+    $setting =& loader::model('setting');
+    define('GRAVATAR_URL',$setting->get_conf('system.gravatar_url'));
 }
 
 function init_template(){
