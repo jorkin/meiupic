@@ -235,6 +235,8 @@ if($method == 'license'){
             showjsmessage(lang('create_admin_account').lang('failed'));
         }
         
+        $siteurl = rtrim($siteurl,'/').'/';
+        
         $mdl_setting = loader::model('setting');
         $mdl_setting->set_conf('system.version',MPIC_VERSION);
         $mdl_setting->set_conf('system.installed_time',time());
