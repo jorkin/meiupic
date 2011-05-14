@@ -58,7 +58,7 @@ class album_mdl extends modelfactory{
     function get_kv($album_id = 0){
         $where = 'deleted=0';
         if($album_id>0){
-            $where = ' and id <> '.intval($album_id);
+            $where .= ' and id <> '.intval($album_id);
         }
         $this->db->select('#@albums','id,name',$where,'id desc');
         return $this->db->getAssoc();

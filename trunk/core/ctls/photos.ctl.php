@@ -308,6 +308,37 @@ class photos_ctl extends pagecore{
         }
     }
     
+    function move(){
+        need_login('ajax_page');
+        
+        $id = $this->getGet('id');
+        $this->output->set('id',$id);
+        $photo_info = $this->mdl_photo->get_info($id);
+        $this->output->set('albums_list',$this->mdl_album->get_kv($photo_info['album_id']));
+        $this->output->set('info',$photo_info);
+        $this->render();
+    }
+    
+    function do_move(){
+        $album_id = $this->getPost('album_id');
+        $id = $this->getGet('id');
+        if(!$album_id){
+            form_ajax_failed('box','移动失败！您没有选择要移动至的相册！');
+        }
+        $photo_info = $this->mdl_photo->get_info($id);
+        $old_album  = $photo_info['album_id'];
+        if($this->mdl_photo->update($id,array('album_id'=>$album_id,'is_cover'=>0))){
+            $this->mdl_album->update_photos_num($old_album);
+            $this->mdl_album->update_photos_num($album_id);
+            $this->mdl_album->check_repare_cover($old_album);
+            $this->mdl_album->check_repare_cover($album_id);
+            
+            form_ajax_success('box','移动成功！',null,0.5,$_SERVER['HTTP_REFERER']);
+        }else{
+            form_ajax_failed('box','移动失败！');
+        }
+    }
+    
     function confirm_delete(){
         need_login('ajax_page');
         

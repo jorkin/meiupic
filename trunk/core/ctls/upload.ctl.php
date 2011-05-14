@@ -12,11 +12,15 @@ class upload_ctl extends pagecore{
         need_login('page');
         
         $album_id = $this->getGet('aid');
+        
         $this->output->set('album_id',$album_id);
         
         $this->output->set('album_menu',$this->plugin->filter('album_menu',''));
         $this->output->set('albums_list',$this->mdl_album->get_kv());
         $this->output->set('upload_setting',$this->setting->get_conf('upload'));
+        
+        $supportType =  loader::lib('image')->supportType();
+        $this->output->set('support_type',implode(',',$supportType));
         
         $page_title = '上传照片 - '.$this->setting->get_conf('site.title');
         $page_keywords = $this->setting->get_conf('site.keywords');
@@ -136,7 +140,7 @@ class upload_ctl extends pagecore{
                 $tmpfile = $target_dir . DIRECTORY_SEPARATOR . $this->getPost("muilti_uploader_{$i}_tmpname");
                 $filename = $this->getPost("muilti_uploader_{$i}_name");
                 $status =  $this->getPost("muilti_uploader_{$i}_status");
-                $fileext = strtolower(end(explode('.',$filename)));
+                $fileext = file_ext($filename);
                 $key = str_replace('.','',microtime(true));
                 
                 $realpath = ROOTDIR.$media_dirname.'/'.$key.'.'.$fileext;
@@ -222,6 +226,7 @@ class upload_ctl extends pagecore{
             $exiflib =& loader::lib('exif');
             $media_dirname = 'data/'.date('Ymd');
             $thumb_dirname = 'data/thumb/'.date('Ymd');
+            $supportType = $imglib->supportType();
             if(!file_exists(ROOTDIR.$media_dirname)){
                 @mkdir(ROOTDIR.$media_dirname);
             }
@@ -240,6 +245,7 @@ class upload_ctl extends pagecore{
                     $filesize = $_FILES['imgs']['size'][$k];
                     $tmpfile = $_FILES['imgs']['tmp_name'][$k];
                     $filename = $upfile;
+                    $fileext = file_ext($filename);
                     
                     if($_FILES['imgs']['error'][$k] == 1){
                         $error .= '文件'.$filename.'上传失败:文件大小超过服务器限制！<br />';
@@ -255,8 +261,10 @@ class upload_ctl extends pagecore{
                         $error .= '文件'.$filename.'上传失败:请确认上传的是否为文件！<br />';
                         continue;
                     }
-                    
-                    $fileext = strtolower(end(explode('.',$filename)));
+                    if(!in_array($fileext,$supportType)){
+                        $error .= '文件'.$filename.'上传失败:不支持此格式！<br />';
+                        continue;
+                    }
                     
                     $key = str_replace('.','',microtime(true));
                     $realpath = ROOTDIR.$media_dirname.'/'.$key.'.'.$fileext;

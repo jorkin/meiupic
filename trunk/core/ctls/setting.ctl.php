@@ -177,7 +177,7 @@ class setting_ctl extends pagecore{
                 @mkdir(ROOTDIR.$path_dir);
             }
             $filename = $_FILES[$fileElementName]['name'];
-            $fileext = strtolower(end(explode('.',$filename)));
+            $fileext = file_ext($filename);
             $path = $path_dir.'/'.date('Ymd').'.'.$fileext;
             if(@move_uploaded_file($_FILES[$fileElementName]['tmp_name'],ROOTDIR.$path)){
                 $msg = $path;

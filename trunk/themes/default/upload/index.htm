@@ -39,7 +39,7 @@ $(function() {
         unique_names : true,
         multipart: false,
         filters : [
-            {title : "Image files", extensions : "jpg,jpeg,gif,png,bmp"}
+            {title : "Image files", extensions : "{$support_type}"}
         ],
         flash_swf_url : '{$statics_path}swf/plupload.flash.swf'
         {if $upload_setting['enable_pre_resize']},

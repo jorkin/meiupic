@@ -295,6 +295,10 @@ function showError($error_msg){
     exit;
 }
 
+function file_ext($filename){
+    return strtolower(end(explode('.',$filename)));
+}
+
 //covert bytes to be readable
 function bytes2u($size){
     $result = '';
@@ -347,7 +351,7 @@ function get_fonts(){
     $fonts = array();
     if($directory = @dir($fontdir)) {
         while($entry = $directory->read()) {
-            $fileext = end(explode('.',$entry));
+            $fileext = file_ext($entry);
             if(strtolower($fileext) == 'ttf' || strtolower($fileext) == 'ttc'){
                 $fonts[] = $entry;
             }
