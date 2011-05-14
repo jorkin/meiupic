@@ -330,7 +330,7 @@ function check_email($str){
     return true;
 }
 function check_color($c){
-    if(preg_match('/^\#[0-9A-F]{2}[0-9A-F]{2}[0-9A-F]{2}$/i', $c) || preg_match('/^\#[0-9A-F]{3}$/i', $c)){
+    if(preg_match('/^\#([0-9A-F]{2}[0-9A-F]{2}[0-9A-F]{2}|[0-9A-F]{3})$/i', $c)){
         return true;
     }
     return false;
