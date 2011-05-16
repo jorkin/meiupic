@@ -1,7 +1,12 @@
 <?php
 /**
- * 此文件为超级装载器
+ * $Id$
  *
+ * supper loader
+ *
+ * @author : Lingter
+ * @support : http://www.meiu.cn
+ * @copyright : (c)2010 - 2011 meiu.cn lingter@gmail.com
  */
 
 require_once(INCDIR.'modelfactory.php');

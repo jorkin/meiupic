@@ -21,6 +21,7 @@ Madmin.check_all = function(je,check){
     }
 }
 Madmin.checked_action = function(je,action_url){
+    $('.gallary_wrap .gallary_item').removeClass('sel_on');
     var check_vals = $(je+':checked');
     $.post(action_url,check_vals.serializeArray(),function(data) {
         Mui.box.setData(data,true);

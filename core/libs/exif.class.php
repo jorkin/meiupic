@@ -1,5 +1,13 @@
 <?php
-
+/**
+ * $Id$
+ * 
+ * Exif lib: get image exif infos
+ *      
+ * @author : Lingter
+ * @support : http://www.meiu.cn
+ * @copyright : (c)2010 - 2011 meiu.cn lingter@gmail.com
+ */
 class exif_cla{
     
     function get_exif($file){
