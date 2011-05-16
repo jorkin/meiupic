@@ -14,7 +14,6 @@
                     </div>
                     <div class="innercol grid">
 <!--{if count($albums_list) > 0}-->
-<link rel="stylesheet" href="{$statics_path}plupload/plupload.queue.css" type="text/css" />
 <script type="text/javascript" src="{$statics_path}js/plupload.min.js"></script>
 <script type="text/javascript" src="{$statics_path}js/jquery.plupload.queue.min.js"></script>
 <script>
@@ -48,25 +47,27 @@ $(function() {
     });
     var uploader = $('#muilti_uploader').pluploadQueue();
     var usubmited = 0;
-    uploader.bind('UploadProgress', function() {
-        if (uploader.total.uploaded == uploader.files.length && usubmited == 0){
-            usubmited = 1;
-            Mui.box.setData('<div class="loading">Loading...</div>');
-            Mui.form.sendPop('upload_photos_form');
-            setTimeout(function(){
-                $('#upload_photos_form').submit();
-            },200);
-        }
-    });
-    $('#upload_photos_form').find('input[name="uploadbtn"]').click(function(e) {
-        if (uploader.total.uploaded == 0) {
-            if (uploader.files.length > 0) {
-                uploader.start();
-            } else {
-                Mui.box.alert('提示','至少选择一个文件上传.','确定');
+    if(uploader){
+        uploader.bind('UploadProgress', function() {
+            if (uploader.total.uploaded == uploader.files.length && usubmited == 0){
+                usubmited = 1;
+                Mui.box.setData('<div class="loading">Loading...</div>');
+                Mui.form.sendPop('upload_photos_form');
+                setTimeout(function(){
+                    $('#upload_photos_form').submit();
+                },200);
             }
-        }
-    });
+        });
+        $('#upload_photos_form').find('input[name="uploadbtn"]').click(function(e) {
+            if (uploader.total.uploaded == 0) {
+                if (uploader.files.length > 0) {
+                    uploader.start();
+                } else {
+                    Mui.box.alert('提示','至少选择一个文件上传.','确定');
+                }
+            }
+        });
+    }
 });
 
 function reload_albums_options(je){
@@ -83,6 +84,7 @@ function reload_albums_options(je){
     },'json');
 }
 </script>
+<link rel="stylesheet" href="{$statics_path}plupload/plupload.queue.css" type="text/css" />
                         <div id="upload_field">
                             <form id="upload_photos_form" method="post" action="{link ctl=upload act=save t=multi}" onsubmit="return false;">
                                 <div class="field">
@@ -119,5 +121,4 @@ function reload_albums_options(je){
         </tr>
     </table>
 </div>
-
 {template block/footer}

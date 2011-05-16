@@ -30,7 +30,9 @@ class pagecore{
         $head_str = "<title>{$title} - Powered by MeiuPic</title>\n";
         $head_str .= "<meta name=\"keywords\" content=\"{$keywords}\" />\n";
         $head_str .= "<meta name=\"description\" content=\"{$description}\" />\n";
-        $this->output->set('meu_head',loader::lib('plugin')->filter('meu_head',$head_str,$arr));
+        $meu_head = loader::lib('plugin')->filter('meu_head',$head_str,$arr);
+        $meu_head .= "\n".'<meta name="generator" content="Mei'.'u'.'Pic '.MPIC_VERSION.'" />'."\n";
+        $this->output->set('meu_head',$meu_head);
 
         if(!$this->user->loggedin()){
             $user_status = '<a href="'.site_link('users','login').'" onclick="Mui.box.show(this.href,true);return false;">登录</a>';

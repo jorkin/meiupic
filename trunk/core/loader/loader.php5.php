@@ -78,9 +78,20 @@ class Loader{
         $style_path = $base_path.TPLDIR.'/';
         $params = loader::lib('output')->getAll();
         extract($params);
-        //$_config = $GLOBALS['THEME_CONFIG'];
-        $_config = loader::model('setting')->get_conf('theme.'.TEMPLATEID,array());
-
+        
+        $setting =& loader::model('setting');
+        $_config = $setting->get_conf('theme.'.TEMPLATEID,array());
+        
+        $footer = '<script src="'.$statics_path.'js/common.js" type="text/javascript"></script>';
+        if(isset($loggedin) && $loggedin){
+            $footer .= '<script src="'.$statics_path.'js/admin.js" type="text/javascript"></script>';
+        }
+        $footer .= 'Powered by <a href="http://mei'.'upic.m'.'eiu.cn/" target="_blank">Mei'.'uPic '.MPIC_VERSION.'</a>';
+        $footer .= '&nbsp; Copyright &copy; 2010-2011 <a href="http://www.meiu.cn" target="_blank">Meiu Studio</a> ';
+        $footer .= safe_invert($setting->get_conf('site.footer'),true);
+        
+        $show_process_info = $setting->get_conf('system.show_process_info');
+        
         ob_start();
         include template($tplFile);
         $content = ob_get_clean();

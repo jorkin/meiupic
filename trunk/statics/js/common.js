@@ -263,8 +263,10 @@ function drop_select(je){
     });
     $(je).hover(function(){
         $(je).find('.optlist').show();
+        $(je).css('zIndex','200');
         },function(){
         $(je).find('.optlist').hide();
+        $(je).css('zIndex','100');
     });
 }
 

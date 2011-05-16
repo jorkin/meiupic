@@ -229,33 +229,34 @@ function get_real_ip(){
 }
 
 //Words Filter
-function safe_convert($string, $html=0, $filterslash=0) {
+function safe_convert($string, $html=false, $filterslash=false) {
     $string = stripslashes(trim($string));
-    if ($html==0) {
+    if (!$html) {
         $string=htmlspecialchars($string, ENT_QUOTES);
         $string=str_replace("<","&lt;",$string);
         $string=str_replace(">","&gt;",$string);
-        if ($filterslash==1) $string=str_replace("\\", '&#92;', $string);
+        if ($filterslash) $string=str_replace("\\", '&#92;', $string);
+        
+        $string=str_replace('|', '&#124;', $string);
+        $string=str_replace("&amp;#96;","&#96;",$string);
+        $string=str_replace("&amp;#92;","&#92;",$string);
+        $string=str_replace("&amp;#91;","&#91;",$string);
+        $string=str_replace("&amp;#93;","&#93;",$string);
     } else {
-        $string=addslashes($string);
-        if ($filterslash==1) $string=str_replace("\\\\", '&#92;', $string);
+        //$string=addslashes($string);
+        if ($filterslash) $string=str_replace("\\\\", '&#92;', $string);
     }
     $string=str_replace("\r","",$string);
     $string=str_replace("\n","<br />",$string);
     $string=str_replace("\t","&nbsp;&nbsp;",$string);
     $string=str_replace("  ","&nbsp;&nbsp;",$string);
-    $string=str_replace('|', '&#124;', $string);
-    $string=str_replace("&amp;#96;","&#96;",$string);
-    $string=str_replace("&amp;#92;","&#92;",$string);
-    $string=str_replace("&amp;#91;","&#91;",$string);
-    $string=str_replace("&amp;#93;","&#93;",$string);
     $string=preg_replace('/[a-zA-Z](&nbsp;)[a-zA-Z]/i',' ',$string);
     return $string;
 }
 //Transfer the converted words into editable characters
-function safe_invert($string, $html=0) {
+function safe_invert($string, $html=false) {
     $string = str_ireplace(array("<br />",'<br/>','<br>'),"\n",$string);
-    if ($html!=0) {        
+    if ($html) {        
         $string = str_replace("<br/>","\n",$string);
         $string = str_replace("&nbsp;"," ",$string);
         //$string = str_replace("&","&amp;",$string);

@@ -12,9 +12,13 @@ class setting_ctl extends pagecore{
         
         $site = $this->setting->get_conf('site');
         $site['description'] = safe_invert($site['description']);
+        $site['footer'] = safe_invert($site['footer'],true);
         $this->output->set('site',$site);
         $this->output->set('enable_comment',$this->setting->get_conf('system.enable_comment'));
+        $this->output->set('show_process_info',$this->setting->get_conf('system.show_process_info'));
         $this->output->set('gravatar_url',$this->setting->get_conf('system.gravatar_url'));
+        
+        
         
         $page_title = '基本设置 - 系统设置 - '.$this->setting->get_conf('site.title');
         $page_keywords = $this->setting->get_conf('site.keywords');
@@ -45,12 +49,18 @@ class setting_ctl extends pagecore{
         $this->setting->set_conf('site.url',$site['url']);
         $this->setting->set_conf('site.keywords',$site['keywords']);
         $this->setting->set_conf('site.description',$site['description']);
+        $this->setting->set_conf('site.footer',safe_convert($site['footer'],true));
         $this->setting->set_conf('system.gravatar_url',$gravatar_url);
         
         if($this->getPost('enable_comment')){
             $this->setting->set_conf('system.enable_comment',true);
         }else{
             $this->setting->set_conf('system.enable_comment',false);
+        }
+        if($this->getPost('show_process_info')){
+            $this->setting->set_conf('system.show_process_info',true);
+        }else{
+            $this->setting->set_conf('system.show_process_info',false);
         }
         form_ajax_success('box','保存设置成功！',null,0.5,$_SERVER['HTTP_REFERER']);
     }
