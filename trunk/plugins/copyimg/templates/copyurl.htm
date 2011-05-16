@@ -1,0 +1,15 @@
+<div class="close png" onclick="Mui.bubble.close()">X</div>
+<table id="listcopy">
+    <tr>
+        <td> 图片地址：</td>
+        <td><input type="text" class="inputstyle iptw1" name="imgcode" value="{$photo_info['path']}" onmouseover="$(this).select()" /> <input type="button" class="ylbtn1" value="复制" onclick="copy_to_clipboard(this,$('#listcopy input[name=imgcode]').val())" /></td>
+    </tr>
+    <tr>
+        <td> ubb代码：</td>
+        <td><input type="text" class="inputstyle iptw1" name="ubbcode" value="[IMG]{$photo_info['path']}[/IMG]" onmouseover="$(this).select()" /> <input type="button" class="ylbtn1" value="复制" onclick="copy_to_clipboard(this,$('#listcopy input[name=ubbcode]').val())" /></td>
+    </tr>
+    <tr>
+        <td> html代码：</td>
+        <td><input type="text" class="inputstyle iptw1" name="htmlcode" value="<div align=&quot;center&quot;><img src=&quot;{$photo_info['path']}&quot; /></div>" onmouseover="$(this).select()" /> <input type="button" class="ylbtn1" value="复制" onclick="copy_to_clipboard(this,$('#listcopy input[name=htmlcode]').val())" /></td>
+    </tr>
+</table>

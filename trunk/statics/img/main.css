@@ -292,6 +292,16 @@ textarea.inputstyle{
     width:16px;
     padding-top:16px;
 }
+.i_move_sp{
+    background-position:-308px -6px;
+    width:12px;
+    padding-top:12px;
+}
+.i_copyclip{
+    background-position:-325px -4px;
+    width:16px;
+    padding-top:16px;
+}
 /*selector*/
 .selectlist{
     line-height:24px;
@@ -545,6 +555,42 @@ div.modaldiv{
 }
 #meiu_float_box .box_container.success{
     color:green;
+}
+
+#meiu_float_bubble{
+    background:#fff;
+    position:absolute;
+    z-index:1002;
+    width:200px;
+    text-align:left;
+    border:1px solid #ccc;
+    -moz-border-radius: 5px 5px 5px 5px;
+    -webkit-border-radius: 5px 5px 5px 5px;
+    border-radius: 5px 5px 5px 5px;
+    
+    -webkit-box-shadow:2px 2px 8px rgba(0, 0, 0, 0.45);
+    -moz-box-shadow:2px 2px 8px rgba(0, 0, 0, 0.45);
+    box-shadow:2px 2px 8px rgba(0, 0, 0, 0.45);
+}
+
+#meiu_float_bubble .bubble_container{
+    padding:10px;
+    position:relative;
+}
+#meiu_float_bubble .bubble_container div.close{
+    background:url("icons.png") no-repeat;
+    background-position:0 -46px;
+    width:30px;
+    height:30px;
+    position:absolute;
+    right:-8px;
+    top:-10px;
+    text-indent:-1000px;
+    overflow:hidden;
+    cursor:pointer;
+}
+#meiu_float_bubble div.arrow{
+    
 }
 .meiu_notice_div{
     background:  #FFFDD7;

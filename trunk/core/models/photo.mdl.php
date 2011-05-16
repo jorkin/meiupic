@@ -150,6 +150,38 @@ class photo_mdl extends modelfactory{
         return true;
     }
     
+    function move($id,$album_id){
+        $photo_info = $this->get_info($id);
+        $old_album  = $photo_info['album_id'];
+        if($this->update($id,array('album_id'=>$album_id,'is_cover'=>0))){
+            $album_mdl =& loader::model('album');
+            $album_mdl->update_photos_num($old_album);
+            $album_mdl->update_photos_num($album_id);
+            $album_mdl->check_repare_cover($old_album);
+            $album_mdl->check_repare_cover($album_id);
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
+    function move_batch($ids,$album_id){
+        $photo_info = $this->get_info($ids[0]);
+        $old_album  = $photo_info['album_id'];
+        
+        $this->db->update('#@photos','id in ('.implode(',',$ids).')',array('album_id'=>$album_id,'is_cover'=>0));
+        if(!$this->db->query()){
+            return false;
+        }
+        
+        $album_mdl =& loader::model('album');
+        $album_mdl->update_photos_num($old_album);
+        $album_mdl->update_photos_num($album_id);
+        $album_mdl->check_repare_cover($old_album);
+        $album_mdl->check_repare_cover($album_id);
+        return true;
+    }
+    
     function add_hit($id){
         return $this->update($id,array('hits'=>new DB_Expr('hits+1')));
     }
