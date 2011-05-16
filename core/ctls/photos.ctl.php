@@ -326,17 +326,41 @@ class photos_ctl extends pagecore{
         if(!$album_id){
             form_ajax_failed('box','移动失败！您没有选择要移动至的相册！');
         }
-        $photo_info = $this->mdl_photo->get_info($id);
-        $old_album  = $photo_info['album_id'];
-        if($this->mdl_photo->update($id,array('album_id'=>$album_id,'is_cover'=>0))){
-            $this->mdl_album->update_photos_num($old_album);
-            $this->mdl_album->update_photos_num($album_id);
-            $this->mdl_album->check_repare_cover($old_album);
-            $this->mdl_album->check_repare_cover($album_id);
-            
+        if($this->mdl_photo->move($id,$album_id)){            
             form_ajax_success('box','移动成功！',null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
             form_ajax_failed('box','移动失败！');
+        }
+    }
+    
+    function move_batch(){
+        need_login('ajax_page');
+        
+        $ids = $this->getPost('sel_id');
+        
+        if(!$ids || count($ids) == 0){
+            ajax_box('请先选择要移动的照片!');
+        }
+        $ids = array_keys($ids);
+        $this->output->set('sel_ids',implode(',',$ids));
+        $photo_info = $this->mdl_photo->get_info($ids[0]);
+        $this->output->set('albums_list',$this->mdl_album->get_kv($photo_info['album_id']));
+        $this->output->set('info',$photo_info);
+        $this->render();
+    }
+    
+    function do_move_batch(){
+        need_login('ajax');
+        
+        $ids = $this->getPost('ids');
+        $album_id = $this->getPost('album_id');
+        if(!$ids){
+            form_ajax_failed('box','请先选择要移动的照片!');
+        }
+        if($this->mdl_photo->move_batch(explode(',',$ids),$album_id)){
+            form_ajax_success('box','成功批量移动照片!',null,0.5,$_SERVER['HTTP_REFERER']);
+        }else{
+            form_ajax_failed('box','批量移动照片失败!');
         }
     }
     

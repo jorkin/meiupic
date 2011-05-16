@@ -1,10 +1,10 @@
 $(function(){
     $('.gallary_item').hover(function(){
+        $('.gallary_wrap .gallary_item').removeClass('sel_on');
         $(this).addClass('sel_on');
     },
-    function(){
-        $(this).removeClass('sel_on');
-    });
+    function(){});
+    
     $('.inline_edit').hover(function(){
         $(this).addClass('editbg');
     },function(){

@@ -1,0 +1,74 @@
+<?php
+
+class plugin_copyimg extends plugin{
+    var $config = array();
+    
+    var $name = '拷贝图片地址';
+    var $description = '一键拷贝图片地址！';
+    var $local_ver = '1.0';
+    var $author_name = '美优网';
+    var $author_url = 'http://www.meiu.cn';
+    var $author_email = 'lingter@gmail.com';
+    
+    function init(){
+        $this->plugin_mgr->add_filter('photo_control_icons',array('copyimg','photo_list_page_icon'));
+        
+        $this->plugin_mgr->add_filter('custom_page.utils.copyurl',array('copyimg','copyurl_act'));
+        $this->plugin_mgr->add_filter('meu_head',array('copyimg','html_head'));
+        
+        $this->loggedin = loader::model('user')->loggedin();
+    }
+    
+    function photo_list_page_icon($str,$id){
+        if($this->loggedin){
+            return $str.'<li><a href="javascript:void(0);" onclick="Mui.bubble.show(this,\''.site_link('utils','copyurl',array('id'=>$id)).'\',true);Mui.bubble.resize(320)" title="拷贝地址到剪切板"><span class="i_copyclip sprite"></span></a></li>';
+        }else{
+            return $str;
+        }
+    }
+    
+    function copyurl_act(){
+        include_once('utils.cct.php');
+        $ctl = new utils_cct();
+        $ctl->copyurl();
+    }
+    
+    function html_head($str){
+        return $str.'<script>
+            function show_copy_notice(o,notice){
+                var pos = $(o).offset();
+                var width = $(o).width();
+                var left = pos.left+width-140;
+                var top = pos.top;
+                
+                if($("#copy_notice").length == 0){
+                    $("body").prepend(\'<div id="copy_notice"></div>\');
+                }
+                $("#copy_notice").css({"left":left,"top":top});
+                $("#copy_notice").html(notice).show().animate({opacity: 1.0}, 1000).fadeOut();
+            }
+            
+            function copy_to_clipboard(o,str){
+                if($.browser.msie) {
+                    window.clipboardData.setData(\'text\',str);
+                    show_copy_notice(o,"拷贝成功！");
+                    setTimeout(function(){
+                        Mui.bubble.close();
+                    },1300)
+                }else{
+                    show_copy_notice(o,"您的浏览器不支持自动复制！");
+                }
+            }
+        </script>
+        <style>
+            #copy_notice{
+                position:absolute;
+                z-index:1003;
+                height:15px;
+                padding:5px;
+                border:1px solid #eee;
+                background:#FFFFEE;
+            }
+        </style>';
+    }
+}

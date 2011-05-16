@@ -60,6 +60,9 @@ function need_login($type = 'page'){
             case 'ajax_box':
                 form_ajax_failed('box','您没有权限，需要登录！');
                 break;
+            case 'ajax_bubble':
+                echo '<div class="close png" onclick="Mui.bubble.close()">X</div>您没有权限，需要登录！';
+                break;
         }
         exit;
     }

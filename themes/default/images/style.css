@@ -185,6 +185,7 @@ table.layout td.right{
     width:150px;
 }
 .grid .sel_on .item{
+    z-index:101;
     border:1px solid #eee;
     background:#f6f6f6;
     padding-right:0;

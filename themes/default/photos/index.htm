@@ -75,7 +75,7 @@
                                 {$pagestr}
                             </div>
                             <div class="f_right">
-                                <!--{if $loggedin}--><label><input type="checkbox" value="1" onclick="Madmin.check_all('.selitem',this.checked)" />全选 <span class="i_trash_sp sprite"></span></label> <a href="javascript:void(0)" onclick="Madmin.checked_action('.selitem','{link ctl=photos act=confirm_delete_batch}');">选中项移入回收站</a><!--{/if}-->
+                                <!--{if $loggedin}--><label><input type="checkbox" value="1" onclick="Madmin.check_all('.selitem',this.checked)" />全选</label> <span class="i_trash_sp sprite"></span> <a href="javascript:void(0)" onclick="Madmin.checked_action('.selitem','{link ctl=photos act=confirm_delete_batch}');">选中项移入回收站</a> <span class="i_move_sp sprite"></span> <a href="javascript:void(0)" onclick="Madmin.checked_action('.selitem','{link ctl=photos act=move_batch}');">移动选中项</a><!--{/if}-->
                             </div>
                             <div class="clear"></div>
                         </div>
