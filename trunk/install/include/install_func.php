@@ -352,9 +352,9 @@ function runquery($sql) {
 
 
 function getstatinfo() {
-    if($siteid && $key) {
+    /*if($siteid && $key) {
         return;
-    }
+    }*/
     $version = MPIC_VERSION;
     $onlineip = '';
     if(getenv('HTTP_CLIENT_IP') && strcasecmp(getenv('HTTP_CLIENT_IP'), 'unknown')) {

@@ -256,8 +256,9 @@ if($method == 'license'){
         
         showjsmessage(lang('install_default_plugins'));
         
-        echo '<script type="text/javascript">document.getElementById("laststep").disabled=false;document.getElementById("laststep").value = \''.lang('installed_complete').'\';</script><script type="text/javascript">setTimeout(function(){window.location=\'index.php?method=complete\'}, 3000);</script>'."\r\n";
+        echo '<script type="text/javascript">document.getElementById("laststep").disabled=false;document.getElementById("laststep").value = \''.lang('installed_complete').'\';</script><script type="text/javascript">setTimeout(function(){window.location=\'index.php?method=complete\'}, 2000);</script>'."\r\n";
         @touch(ROOTDIR.'conf/install.lock');
+        getstatinfo();
         show_footer();
     }else{
         show_form($form_db_init_items, $error_msg);
