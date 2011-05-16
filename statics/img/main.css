@@ -589,8 +589,28 @@ div.modaldiv{
     overflow:hidden;
     cursor:pointer;
 }
-#meiu_float_bubble div.arrow{
-    
+#meiu_float_bubble .bubble_container div.close{
+    background:url("icons.png") no-repeat;
+    background-position:0 -46px;
+    width:30px;
+    height:30px;
+    position:absolute;
+    right:-8px;
+    top:-10px;
+    text-indent:-1000px;
+    overflow:hidden;
+    cursor:pointer;
+}
+.topbtn a.close{
+    display:block;
+    background:url("icons.png") no-repeat;
+    background-position:0 -46px;
+    width:30px;
+    height:30px;
+    position:absolute;
+    text-indent:-1000px;
+    overflow:hidden;
+    cursor:pointer;
 }
 .meiu_notice_div{
     background:  #FFFDD7;
