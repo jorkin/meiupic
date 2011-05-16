@@ -34,41 +34,44 @@ class plugin_copyimg extends plugin{
     }
     
     function html_head($str){
-        return $str.'<script>
-            function show_copy_notice(o,notice){
-                var pos = $(o).offset();
-                var width = $(o).width();
-                var left = pos.left+width-140;
-                var top = pos.top;
-                
-                if($("#copy_notice").length == 0){
-                    $("body").prepend(\'<div id="copy_notice"></div>\');
-                }
-                $("#copy_notice").css({"left":left,"top":top});
-                $("#copy_notice").html(notice).show().animate({opacity: 1.0}, 1000).fadeOut();
-            }
-            
-            function copy_to_clipboard(o,str){
-                if($.browser.msie) {
-                    window.clipboardData.setData(\'text\',str);
-                    show_copy_notice(o,"拷贝成功！");
-                    setTimeout(function(){
-                        Mui.bubble.close();
-                    },1300)
-                }else{
-                    show_copy_notice(o,"您的浏览器不支持自动复制！");
-                }
-            }
-        </script>
-        <style>
-            #copy_notice{
-                position:absolute;
-                z-index:1003;
-                height:15px;
-                padding:5px;
-                border:1px solid #eee;
-                background:#FFFFEE;
-            }
-        </style>';
+            $head_str = <<<eot
+<script>
+    function show_copy_notice(o,notice){
+        var pos = $(o).offset();
+        var width = $(o).width();
+        var left = pos.left+width-140;
+        var top = pos.top;
+        
+        if($("#copy_notice").length == 0){
+            $("body").prepend('<div id="copy_notice"></div>');
+        }
+        $("#copy_notice").css({"left":left,"top":top});
+        $("#copy_notice").html(notice).show().animate({opacity: 1.0}, 1000).fadeOut();
+    }
+    
+    function copy_to_clipboard(o,str){
+        if($.browser.msie) {
+            window.clipboardData.setData('text',str);
+            show_copy_notice(o,"拷贝成功！");
+            setTimeout(function(){
+                Mui.bubble.close();
+            },1300)
+        }else{
+            show_copy_notice(o,"您的浏览器不支持自动复制！");
+        }
+    }
+</script>
+<style>
+    #copy_notice{
+        position:absolute;
+        z-index:1003;
+        height:15px;
+        padding:5px;
+        border:1px solid #eee;
+        background:#FFFFEE;
+    }
+</style>
+eot;
+        return $str.$head_str;
     }
 }

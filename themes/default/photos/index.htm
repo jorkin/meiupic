@@ -10,11 +10,6 @@
                         <h4 class="f_left">{lang total_photo|$total_num}</h4>
                         {$photo_col_menu}
                     </div>
-                    <script type="text/javascript">
-                    drop_select('.listorder');
-                    drop_select('.pset');
-                    drop_select('.viewtype');
-                    </script>
                     <div class="innercol grid">
                         <div class="gallary_wrap">
                             <!--{loop $photos $k $v}-->
@@ -216,4 +211,11 @@
         </tr>
     </table>
 </div>
+<script type="text/javascript">
+$(function(){
+    drop_select('.listorder');
+    drop_select('.pset');
+    drop_select('.viewtype');
+});
+</script>
 {template block/footer}

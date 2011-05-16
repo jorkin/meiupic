@@ -47,6 +47,21 @@
                                         </div>
                                     </div>
                                     <div class="settingfield">
+                                        <div class="label">页面底部代码</div>
+                                        <div class="descinfo">可以插入备案号，统计代码等，支持html</div>
+                                        <div class="input">
+                                            <textarea name="site[footer]" class="settinginput iptw5 ipth1">{$site['footer']}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="settingfield">
+                                        <div class="label">显示页脚程序运行信息</div>
+                                        <div class="descinfo">可以关闭</div>
+                                        <div class="input">
+                                            <label><input type="checkbox" name="show_process_info" value="1" {if $show_process_info}checked="checked"{/if} /> 开启</label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="settingfield">
                                         <div class="label">是否允许评论</div>
                                         <div class="descinfo">如果关闭此选项，用户无法对所有相册/照片进行评论</div>
                                         <div class="input">

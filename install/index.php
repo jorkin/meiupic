@@ -21,6 +21,7 @@ if (floor(PHP_VERSION) < 5){
     define('PHPVer',5);
 }
 require_once(COREDIR.'loader.php');
+require_once(INCDIR.'plugin.php');
 require_once(INSDIR.'include/install_var.php');
 require_once(INSDIR.'include/lang.php');
 
@@ -241,14 +242,15 @@ if($method == 'license'){
         $mdl_setting->set_conf('system.version',MPIC_VERSION);
         $mdl_setting->set_conf('system.installed_time',time());
         $mdl_setting->set_conf('system.gravatar_url','http://www.gravatar.com/avatar.php?rating=G&size=48&default='.$siteurl.'statics/img/no_avatar.jpg&gravatar_id={idstring}');
+        $mdl_setting->set_conf('system.show_process_info',false);
         $mdl_setting->set_conf('site.title',$sitename);
         $mdl_setting->set_conf('site.url',$siteurl);
-        
+        $mdl_setting->set_conf('site.footer','');
         $mdl_setting->set_conf('site.email',$email);
         
         showjsmessage(lang('update_user_setting'));
         
-        $plugin = loader::lib('plugin');
+        $plugin =& loader::lib('plugin');
         $plugin->install_plugin('copyimg');
         $plugin->enable_plugin('copyimg');
         
