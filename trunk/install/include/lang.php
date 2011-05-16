@@ -199,4 +199,5 @@ $lang = array(
     
     'install_default_theme'  =>     '安装默认模版',
     'miss_default_theme'     =>    '缺失默认模版',
+    'install_default_plugins' => '安装默认插件',
 );

@@ -247,7 +247,13 @@ if($method == 'license'){
         $mdl_setting->set_conf('site.email',$email);
         
         showjsmessage(lang('update_user_setting'));
-    
+        
+        $plugin = loader::lib('plugin');
+        $plugin->install_plugin('copyimg');
+        $plugin->enable_plugin('copyimg');
+        
+        showjsmessage(lang('install_default_plugins'));
+        
         echo '<script type="text/javascript">document.getElementById("laststep").disabled=false;document.getElementById("laststep").value = \''.lang('installed_complete').'\';</script><script type="text/javascript">setTimeout(function(){window.location=\'index.php?method=complete\'}, 3000);</script>'."\r\n";
         @touch(ROOTDIR.'conf/install.lock');
         show_footer();
