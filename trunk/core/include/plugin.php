@@ -1,5 +1,11 @@
 <?php
-
+/**
+ * $Id$
+ * plugin base class
+ * @author : Lingter
+ * @support : http://meiupic.meiu.cn
+ * @copyright : (c)2011 meiu.cn lingter@gmail.com
+ */
 class plugin{
     var $config = array();
     

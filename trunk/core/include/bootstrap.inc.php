@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id:index.php 93 2011-1-07 15:35:32Z lingter $
+ * $Id$
  * 
  * @author : Lingter
  * @support : http://meiupic.meiu.cn

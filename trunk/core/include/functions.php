@@ -1,5 +1,11 @@
 <?php
-
+/**
+ * $Id$
+ * Global functions
+ * @author : Lingter
+ * @support : http://meiupic.meiu.cn
+ * @copyright : (c)2011 meiu.cn lingter@gmail.com
+ */
 if(!function_exists('file_put_contents')) {
     function file_put_contents($filename, $s) {
         $fp = @fopen($filename, 'w');
