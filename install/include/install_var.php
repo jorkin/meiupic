@@ -5,10 +5,10 @@ define('INSTALL_LANG', 'zh_cn');
 define('MPIC_VERSION','2.0');
 
 $sqlfile = INSDIR.'data/install.sql';
+$sqlite_sqlfile = INSDIR.'data/install_sqlite.sql';
 $datasqlfile = INSDIR.'data/install_data.sql';
 $lockfile = ROOTDIR.'conf/install.lock';
 $confile =  ROOTDIR.'conf/config.php';
-$sqlitefile =  INSDIR.'data/sqlite.db';
 $dst_dbfile = 'data/meiupic.db';
 
 define('ORIG_TABLEPRE', 'meu_');

@@ -340,8 +340,12 @@ function runquery($sql) {
         if($query) {
             if(substr($query, 0, 12) == 'CREATE TABLE') {
                 $name = preg_replace("/CREATE TABLE `?([a-z0-9_]+)`? .*/is", "\\1", $query);
+                if($db->adapter=='sqlite'){
+                    $db->query($query);
+                }else{
+                    $db->query(createtable($query));
+                }
                 showjsmessage(lang('create_table').' '.$name.' ... '.lang('succeed'));
-                $db->query(createtable($query));
             } else {
                 $db->query($query);
             }

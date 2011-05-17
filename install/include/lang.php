@@ -179,8 +179,6 @@ $lang = array(
 	'mysqldbinfo_forceinstall_invalid' => '当前数据库当中已经含有同样表前缀的数据表，您可以修改“表名前缀”来避免删除旧的数据，或者选择强制安装。强制安装会删除旧数据，且无法恢复',
     'forceinstall_check_label' => '我要删除数据，强制安装 !!!',
     
-    'copy_sqlite' => '拷贝数据库至',
-    
     'tips_sqlite' => 'Sqlite信息',
     'sqlite_forceinstall_invalid' => '目标目录中已经存在Sqlite数据库,您可以选择强制安装。强制安装会删除旧数据，且无法恢复',
     
