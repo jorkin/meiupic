@@ -14,6 +14,8 @@ Class adapter_sqlite{
      * @var Int
      */
     var $query_num = 0;
+    
+    var $type = null;
     /**
      * 数据库连接信息
      *
@@ -39,6 +41,8 @@ Class adapter_sqlite{
      * @var mixed
      */
     var $lasterrcode=null;
+    
+    var $lastResult = null;
     /**
      * 指示事务是否启用了事务
      *
@@ -77,7 +81,35 @@ Class adapter_sqlite{
                 exit(lang('sqlite_not_exists'));
             }
         }
-        $this->conn=sqlite_open($dbinfo['dbpath']);
+        
+        $ver = $this->version();
+        switch(true)
+        {
+            case class_exists("PDO") && ($ver==-1 || $ver==3):
+                $this->conn = new PDO("sqlite:".$dbinfo['dbpath']);
+                if($this->conn!=NULL)
+                {
+                    $this->type = "PDO";
+                    break;
+                }
+            case class_exists("SQLite3") && ($ver==-1 || $ver==3):
+                $this->conn = new SQLite3($dbinfo['dbpath']);
+                if($this->conn!=NULL)
+                {
+                    $this->type = "SQLite3";
+                    break;
+                }
+            case function_exists("sqlite_open") && ($ver==-1 || $ver==2):
+                $this->conn = sqlite_open($dbinfo['dbpath']);
+                if($this->conn!=NULL)
+                {
+                    $this->type = "SQLite2";
+                    break;
+                }
+            default:
+                exit('Sqlite not support!');
+        }
+
         if($this->conn){
             return $this->conn;
         }
@@ -89,7 +121,17 @@ Class adapter_sqlite{
      */
     function close() {
         if ($this->conn) {
-            sqlite_close($this->conn);
+            switch($this->type){
+                case 'SQLite2':
+                    sqlite_close($this->conn);
+                    break;
+                case 'SQLite3':
+                    $this->conn->close();
+                    break;
+                case 'PDO':
+                    break;
+            }
+            
         }
         $this->conn = null;
         $this->lasterr = null;
@@ -110,16 +152,28 @@ Class adapter_sqlite{
         if (is_bool($value)) { return $value ? 1:0; }
         if (is_null($value)) { return 'NULL'; }
         
-        //return "'".$value."'";
-        
-        //if (get_magic_quotes_gpc()) {
         $value = stripslashes($value);
-        //}
         
-        if(phpversion()>='4.0.3'){
-            $value = sqlite_escape_string($value);
+        if($this->type=="PDO")
+        {
+            if($addquote){
+                return $this->conn->quote($value);
+            }else{
+                return $value;
+            }
         }
-        return $addquote?"'".$value."'":$value;
+        else if($this->type=="SQLite3")
+        {
+            $value = $this->conn->escapeString($value);
+            return $addquote?"'".$value."'":$value;
+        }
+        else
+        {
+            $value = sqlite_escape_string($value);
+            return $addquote?"'".$value."'":$value;
+        }
+        
+        
     }
     /**
      * 直接查询Sql
@@ -127,29 +181,53 @@ Class adapter_sqlite{
      * @param String $SQL
      * @return Mix
      */
-    function query($SQL) {
+    function query($sql) {
         if(!$this->conn){
             $this->connect();
         }
         
-        $query = sqlite_query($SQL, $this->conn);
-        $this->query_num++;
-        if (!$query){
-            $this->lasterr = sqlite_last_error($this->conn);
-            $this->lasterrcode = sqlite_error_string($this->lasterr);
+        if(strtolower(substr(ltrim($sql),0,5))=='alter') //this query is an ALTER query - call the necessary function
+        {
+            //TODO : sqlite Alter Table;
+            
+            /*$queryparts = preg_split("/[\s]+/", $query, 4, PREG_SPLIT_NO_EMPTY);
+            $tablename = $queryparts[2];
+            $alterdefs = $queryparts[3];
+            $result = $this->alterTable($tablename, $alterdefs);*/
+            exit('Not support for alter!');
+        }else{
+            if($this->type=="SQLite2"){
+                $result = sqlite_query($sql, $this->conn);
+            }else{
+                $result = $this->conn->query($sql);
+            }
+        }
+        if(!$result){
+            if($this->type=="SQLite2"){
+                $this->lasterr = sqlite_last_error($this->conn);
+                $this->lasterrcode = sqlite_error_string($this->lasterr);
+            }elseif($this->type=="SQLite3"){
+                $this->lasterr = $this->conn->lastErrorCode();
+                $this->lasterrcode = $this->conn->lastErrorMsg();
+                
+            }elseif($this->type == 'PDO'){
+                $this->lasterr = $this->conn->errorCode();
+                $this->lasterrcode = implode(',',$this->conn->errorInfo());
+            }
             if($this->_transflag){
                 $this->_transErrors[]['sql'] = $sql;
                 $this->_transErrors[]['errcode'] = $this->lasterrcode;
                 $this->_transErrors[]['err'] = $this->lasterr;
             }else{
-                exit('SQL:' . $SQL .' ERROR_INFO:'.$this->lasterrcode.','.$this->lasterr);
+                exit('SQL:' . $sql .' ERROR_INFO:'.$this->lasterrcode.','.$this->lasterr);
                 return false;
             }
         }else{
-            $this->lasterr = null;
-            $this->lasterrcode = null;
-            return $query;
+            $this->query_num++;
+            $this->lastResult = $result;
+            return $result;
         }
+        
     }
     
     function getAll($sql){
@@ -160,9 +238,9 @@ Class adapter_sqlite{
         }
         
         $data = array();
-               while ($row = @sqlite_fetch_array($res,SQLITE_ASSOC)) {
+        while ($row = $this->fetchArray($res,'assoc')) {
             $data[] = $row;
-            }
+        }
            
         return $data;
     }
@@ -174,7 +252,7 @@ Class adapter_sqlite{
         } else {
             $res = $this->query($sql);
         }
-        $row = @sqlite_fetch_array($res,SQLITE_NUM);
+        $row = $this->fetchArray($res,'num');
         
         return isset($row[0]) ? $row[0] : null;
     }
@@ -193,7 +271,7 @@ Class adapter_sqlite{
         } else {
             $res = $this->query($sql);
         }
-        $row = sqlite_fetch_array($res,SQLITE_ASSOC);
+        $row = $this->fetchArray($res,'assoc');
         return $row;
     }
 
@@ -213,7 +291,7 @@ Class adapter_sqlite{
             $res = $this->query($sql);
         }
         $data = array();
-        while ($row = @sqlite_fetch_array($res,SQLITE_NUM)) {
+        while ($row = $this->fetchArray($res,'num')) {
             $data[] = $row[$col];
         }
         return $data;
@@ -226,7 +304,7 @@ Class adapter_sqlite{
             $res = $this->query($sql);
         }
         $data = array();
-        while ($row = @sqlite_fetch_array($res,SQLITE_NUM)) {
+        while ($row = $this->fetchArray($res,'num')) {
             $data[$row[0]] = $row[1];
         }
         return $data;
@@ -259,8 +337,35 @@ Class adapter_sqlite{
      * @param resouce $query
      * @return Array
      */
-    function fetchArray($query) {
-        return @sqlite_fetch_array($query,SQLITE_ASSOC);
+    function fetchArray($result,$mode="both") {
+        if($this->type=="PDO")
+        {
+            if($mode=="assoc")
+                $mode = PDO::FETCH_ASSOC;
+            else if($mode=="num")
+                $mode = PDO::FETCH_NUM;
+            else
+                $mode = PDO::FETCH_BOTH;
+            return $result->fetch($mode);
+        }
+        else if($this->type=="SQLite3")
+        {
+            if($mode=="assoc")
+                $mode = SQLITE3_ASSOC;
+            else if($mode=="num")
+                $mode = SQLITE3_NUM;
+            else
+                $mode = SQLITE3_BOTH;
+            return $result->fetchArray($mode);
+        }else{
+            if($mode=="assoc")
+                $mode = SQLITE_ASSOC;
+            else if($mode=="num")
+                $mode = SQLITE_NUM;
+            else
+                $mode = SQLITE_BOTH;
+            return @sqlite_fetch_array($result,$mode);
+        }
     }
     /**
      * 返回最近一次数据库操作受到影响的记录数
@@ -268,7 +373,12 @@ Class adapter_sqlite{
      * @return int
      */
     function affectedRows() {
-        return sqlite_changes($this->conn);
+        if($this->type=="PDO")
+            return $this->lastResult->rowCount();
+        else if($this->type=="SQLite3")
+            return $this->conn->changes();
+        else if($this->type=="SQLite2")
+            return sqlite_changes($this->conn);
     }
     /**
      * 从记录集中返回一行数据
@@ -278,7 +388,7 @@ Class adapter_sqlite{
      * @return array
      */
     function fetchRow($query) {
-        return @sqlite_fetch_array($query,SQLITE_ASSOC);
+        return $this->fetchArray($query,'assoc');
     }
 
     /**
@@ -287,11 +397,17 @@ Class adapter_sqlite{
      * @param resouce $query
      * @return Int
      */
-    function numRows($query) {
-        if(is_resource($query))
-        $rows = @sqlite_num_rows($query);
-        else{
-            $rows = @sqlite_num_rows($this->query($query));
+    function numRows($sql) {
+        if(!$this->conn){
+            $this->connect();
+        }
+        
+        if($this->type=="PDO"){
+            $rows = $this->getOne('select count(*) from ('.$sql.')');
+        }else if($this->type=="SQLite3"){
+            $rows = $this->getOne('select count(*) from ('.$sql.')');
+        }else if($this->type=="SQLite2"){
+            $rows = @sqlite_num_rows($this->query($sql));
         }
         return $rows;
     }
@@ -301,7 +417,20 @@ Class adapter_sqlite{
      * @return String
      */
     function version() {
-        return sqlite_libversion();
+        //return sqlite_libversion();
+        if(file_exists($this->dbinfo['dbpath'])) //make sure file exists before getting its contents
+        {
+            $content = strtolower(file_get_contents($this->dbinfo['dbpath'], NULL, NULL, 0, 40)); //get the first 40 characters of the database file
+            $p = strpos($content, "** this file contains an sqlite 2"); //this text is at the beginning of every SQLite2 database
+            if($p!==false) //the text is found - this is version 2
+                return 2;
+            else
+                return 3;
+        }
+        else //return -1 to indicate that it does not exist and needs to be created
+        {
+            return -1;
+        }
     }
     /**
      * 获得刚插入数据的ID号
@@ -309,8 +438,12 @@ Class adapter_sqlite{
      * @return Int
      */
     function insertId() {
-        $id = sqlite_last_insert_rowid($this->conn);
-        return $id;
+        if($this->type=="PDO")
+            return $this->conn->lastInsertId();
+        else if($this->type=="SQLite3")
+            return $this->conn->lastInsertRowID();
+        else if($this->type=="SQLite2")
+            return sqlite_last_insert_rowid($this->conn);
     }
      /**
      * 返回数据库可以接受的日期格式

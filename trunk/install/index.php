@@ -214,12 +214,16 @@ if($method == 'license'){
             $CONFIG['img_engine'] = class_exists('imagick')?'imagick':'gd';
             
             save_config_file($confile, $CONFIG, $default_config);
-            if(copy($sqlitefile,ROOTDIR.$dst_dbfile)){
-                showjsmessage(lang('copy_sqlite').$dst_dbfile.lang('succeed'));
-            }else{
-                showjsmessage(lang('copy_sqlite').$dst_dbfile.lang('failed'));
+            if(file_exists(ROOTDIR.$dst_dbfile)){
+                @unlink(ROOTDIR.$dst_dbfile);
             }
+            @touch(ROOTDIR.$dst_dbfile);
+            
             $db =& loader::database();
+            
+            $sql = file_get_contents($sqlite_sqlfile);
+            $sql = str_replace("\r\n", "\n", $sql);
+            runquery($sql);
         }
         $datasql = file_get_contents($datasqlfile);
         runquery($datasql);

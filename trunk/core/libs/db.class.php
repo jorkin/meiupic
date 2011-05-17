@@ -33,7 +33,7 @@ class db_cla{
         else{
             exit(lang('db_config_error'));
         }
-        $this->adapter = $db_config['adapter'];
+        $this->adapter = strtolower($db_config['adapter']);
         
         if(isset($db_config['pre']))
               $this->pre=$db_config['pre'];
@@ -171,7 +171,7 @@ class db_cla{
     function toPage($no_p,$title_rows,$sqlcount=null,$sql=null){
         if(!$sql)
         $sql = $this->sql;
-        
+
         if(!$sqlcount){
           $total=$this->numRows($sql);
         }else{
