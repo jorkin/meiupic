@@ -173,9 +173,22 @@ function init_defines(){
 
 function init_template(){
     global $language;
-    $current_theme = loader::model('setting')->get_conf('system.current_theme','default');
-    define('TEMPLATEID', $current_theme);
-    define('TPLDIR','themes/'.TEMPLATEID);
+    
+    if(isset($_GET['tem'])){
+        $meu_theme = $_GET['tem'];
+        setcookie('MPIC_THEME',$meu_theme,0,'/');
+    }else{
+        $meu_theme = isset($_COOKIE['MPIC_THEME'])?$_COOKIE['MPIC_THEME']:'';
+    }
+    
+    if($meu_theme && file_exists('themes/'.$meu_theme)){
+        define('TEMPLATEID', $meu_theme);
+        define('TPLDIR','themes/'.TEMPLATEID);
+    }else{
+        $current_theme = loader::model('setting')->get_conf('system.current_theme','default');
+        define('TEMPLATEID', $current_theme);
+        define('TPLDIR','themes/'.TEMPLATEID);
+    }
     if(file_exists(ROOTDIR.TPLDIR.'/lang/'.LANGSET.'.lang.php')){
         include_once(ROOTDIR.TPLDIR.'/lang/'.LANGSET.'.lang.php');
     }
