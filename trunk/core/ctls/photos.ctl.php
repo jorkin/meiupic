@@ -118,14 +118,14 @@ class photos_ctl extends pagecore{
             if($album_info['priv_pass'] != $priv_pass){
                 form_ajax_failed('text','相册密码输入错误！');
             }
-            setCookie($key,md5($priv_pass));
+            setCookie($key,md5($priv_pass),0,'/');
             form_ajax_success('box','验证成功！',null,0.5,$go_url);
         }elseif($album_info['priv_type'] == 2){
             $priv_answer = $this->getPost('priv_answer');
             if($album_info['priv_answer'] != $priv_answer){
                 form_ajax_failed('text','相册答案输入错误！');
             }
-            setCookie($key,md5($album_info['priv_question'].$priv_answer));
+            setCookie($key,md5($album_info['priv_question'].$priv_answer),0,'/');
             form_ajax_success('box','验证成功！',null,0.5,$go_url);
         }
         form_ajax_failed('text','相册类别错误！');

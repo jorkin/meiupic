@@ -218,6 +218,8 @@ class setting_ctl extends pagecore{
     function theme_set(){
         need_login('ajax_page');
         
+        setcookie('MPIC_THEME','',- 86400 * 365,'/');
+        
         $theme = $this->getGet('theme');
         $this->setting->set_conf('system.current_theme',$theme);
         
