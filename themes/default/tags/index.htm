@@ -21,9 +21,13 @@
                                </ul>
                            </div>
                            <ul class="taglist">
+                               {if $tag_list}
                                {loop $tag_list $v}
                                <li><a href="{if $v['type']==1}{link ctl=albums act=index tag=$v['name']}{else}{link ctl=photos act=search tag=$v['name']}{/if}" style="font-size:{$v['fontsize']};">{$v['name']}</a></li>
                                {/loop}
+                               {else}
+                                <div style="padding:20px">当前没有标签！</div>
+                               {/if}
                            </ul>
                        </div>
                        <div class="bot_toolbar clear">

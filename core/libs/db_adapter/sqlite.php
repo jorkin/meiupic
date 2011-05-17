@@ -85,7 +85,7 @@ Class adapter_sqlite{
         $ver = $this->version();
         switch(true)
         {
-            case class_exists("PDO") && ($ver==-1 || $ver==3):
+            case function_exists("pdo_drivers") && in_array('sqlite',pdo_drivers()) && ($ver==-1 || $ver==3):
                 $this->conn = new PDO("sqlite:".$dbinfo['dbpath']);
                 if($this->conn!=NULL)
                 {
