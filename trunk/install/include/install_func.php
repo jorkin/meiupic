@@ -292,7 +292,7 @@ function env_check(&$env_items) {
             if(function_exists('mysql_connect') || function_exists('mysqli_connect')){
                 $database_support += 1;
             }
-            if(function_exists('sqlite_open')){
+            if(function_exists('sqlite_open') || class_exists("SQLite3") || (function_exists('pdo_drivers') && in_array('sqlite',pdo_drivers()))){
                 $database_support += 2;
             }
             
