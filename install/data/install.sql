@@ -26,6 +26,7 @@ CREATE TABLE `meu_albums` (
   `priv_answer` varchar(255) DEFAULT NULL,
   `desc` longtext,
   `deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `enable_comment` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `cover_id` (`cover_id`)
 ) TYPE=MyISAM ;
@@ -94,6 +95,7 @@ CREATE TABLE `meu_photos` (
   `tags` varchar(255) DEFAULT NULL,
   `is_cover` tinyint(1) NOT NULL DEFAULT '0',
   `deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `type` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `album_id` (`album_id`)
 ) TYPE=MyISAM ;
