@@ -195,7 +195,11 @@ function meiu_bootstrap(){
     $templatelangs=array();
     
     $plugin =& loader::lib('plugin');
-    $plugin->init_plugins();
+    
+    $Config =& loader::config();
+    if(!$Config['safemode']){
+        $plugin->init_plugins();
+    }
     
     $uri =& loader::lib('uri');
     $uriinfo = $uri->parse_uri();
