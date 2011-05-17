@@ -24,6 +24,7 @@
                                </ul>
                            </div>
                            <div class="gallary_wrap">
+                               <!--{if $data}-->
                                <!--{loop $data $k $v}-->
                                <div class="gallary_item {if $type==1}album{/if}">
                                    <div class="item">
@@ -64,6 +65,11 @@
                                    </div>
                                </div>
                                <!--{/loop}-->
+                               <!--{elseif $type==1}-->
+                               <div style="padding:20px">回收站中没有已删除的相册！</div>
+                               <!--{elseif $type==2}-->
+                               <div style="padding:20px">回收站中没有已删除的照片！</div>
+                               <!--{/if}-->
                            </div>
                        </div>
                        <div class="bot_toolbar">
