@@ -30,4 +30,6 @@ $CONFIG['cookie_auth_key'] = 'eijs21aa0332$jsdf23';
 $CONFIG['cookie_domain'] = '';
 
 $CONFIG['timeoffset'] = '8';
+//安全模式
+$CONFIG['safemode'] = false;
 ?>

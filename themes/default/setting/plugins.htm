@@ -17,6 +17,10 @@
                     </div>
                     <div class="innercol">
                             <div class="innerconetent">
+                                {if $safemode}
+                                <div class="meiu_notice_div"><div class="failed">您当前处在安全模式，所有插件均未生效，若想使用插件请关闭安全模式！</div></div>
+                                {/if}
+                                
                                 {if $plugins}
                                 <div class="pluginlist">
                                     <table class="datalist">

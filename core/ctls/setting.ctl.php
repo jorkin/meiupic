@@ -290,7 +290,9 @@ class setting_ctl extends pagecore{
         $page_title = '插件管理 - 系统设置 - '.$this->setting->get_conf('site.title');
         $page_keywords = $this->setting->get_conf('site.keywords');
         $page_description = $this->setting->get_conf('site.description');
-
+        $Config = loader::config();
+        $this->output->set('safemode',$Config['safemode']);
+        
         $this->page_init($page_title,$page_keywords,$page_description);
         $this->render();
     }
