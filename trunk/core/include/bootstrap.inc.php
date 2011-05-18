@@ -243,12 +243,12 @@ function meiu_bootstrap(){
                 call_user_func(array($controller,$uriinfo['act']));
             }else{
                 header("HTTP/1.1 404 Not Found");
-                showError('404 页面不存在!');
+                showError(lang('404_not_found'));
             }
             $controller->_called();
         }else{
             header("HTTP/1.1 404 Not Found");
-            showError('404 页面不存在!');
+            showError(lang('404_not_found'));
         }
     }
 }

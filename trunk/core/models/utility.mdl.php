@@ -58,6 +58,13 @@ class utility_mdl extends modelfactory{
                     $rversion = '';
                 }
                 $info[] = array('title'=>lang($k),'value'=>MPIC_VERSION.' '.$rversion);
+            }elseif($k == 'sqlite_support'){
+                if(function_exists('sqlite_open') || class_exists("SQLite3") || (function_exists('pdo_drivers') && in_array('sqlite',pdo_drivers()))){
+                    $support = true;
+                }else{
+                    $support = false;
+                }
+                $info[] = array('title'=>lang($k),'value'=>$support?lang('support'):lang('notsupport'));
             }elseif(isset($v['f'])){
                 $info[] = array('title'=>lang($k),'value'=>function_exists($v['f'])?lang('support'):lang('notsupport'));
             }elseif(isset($v['c'])){

@@ -39,7 +39,7 @@ class feed_ctl extends pagecore{
             $item->link  = $sitedomain.site_link('photos','view',array('id'=>$v['id']));
             $item->set_pubdate($v['create_time']);
             if(!$this->mdl_album->check_album_priv($album_id,isset($album_info)?$album_info:null)){
-                $img = '图片设置了访问权限，您无权查看！<br />';
+                $img = lang('photo_has_priv').'<br />';
             }else{
                 $img = '<img src="'.$siteurl.$v['path'].'" /><br />';
             }

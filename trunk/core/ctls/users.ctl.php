@@ -12,7 +12,7 @@ class users_ctl extends pagecore{
             $this->output->set('ajax',true);
         }else{
             $this->output->set('ajax',false);
-            $page_title = '用户登录 '.$this->setting->get_conf('site.title');
+            $page_title = lang('user_login').' '.$this->setting->get_conf('site.title');
             $page_keywords = $this->setting->get_conf('site.keywords');
             $page_description = $this->setting->get_conf('site.description');
             $this->page_init($page_title,$page_keywords,$page_description);
@@ -26,10 +26,10 @@ class users_ctl extends pagecore{
         $remember_pass = $this->getPost('remember_pass');
         $normal = $this->getPost('normal');
         if(!$login_name){
-            form_ajax_failed('text','请输入用户名！');
+            form_ajax_failed('text',lang('username_empty'));
         }
         if(!$login_pass){
-            form_ajax_failed('text','请输入密码！');
+            form_ajax_failed('text',lang('userpass_empty'));
         }
         if($remember_pass){
             $expire_time = time()+86400*30; //记住密码30天
@@ -38,9 +38,9 @@ class users_ctl extends pagecore{
         }
         $go_url = $normal?site_link('default'):$_SERVER['HTTP_REFERER'];
         if($this->user->set_login($login_name,md5($login_pass),$expire_time)){
-            form_ajax_success('box','登录成功！',null,0.5,$go_url);
+            form_ajax_success('box',lang('login_success'),null,0.5,$go_url);
         }else{
-            form_ajax_failed('text','请验证用户名和密码是否正确！');
+            form_ajax_failed('text',lang('username_pass_error'));
         }
     }
     
@@ -51,7 +51,7 @@ class users_ctl extends pagecore{
         
         $this->output->set('info',$this->user->get_all_field());
         
-        $page_title = '修改个人资料 - '.$this->setting->get_conf('site.title');
+        $page_title = lang('modify_profile').' - '.$this->setting->get_conf('site.title');
         $page_keywords = $this->setting->get_conf('site.keywords');
         $page_description = $this->setting->get_conf('site.description');
         $this->page_init($page_title,$page_keywords,$page_description);
@@ -69,22 +69,22 @@ class users_ctl extends pagecore{
         $new_pass_again = $this->getPost('new_pass_again');
         if($new_pass){
             if(!$this->user->check_pass($current_id,md5($old_pass))){
-                form_ajax_failed('text','旧密码输入错误！');
+                form_ajax_failed('text',lang('old_pass_error'));
             }
             if($new_pass != $new_pass_again){
-                form_ajax_failed('text','两次密码输入不一致！');
+                form_ajax_failed('text',lang('pass_twice_error'));
             }
             $arr['user_pass'] = md5($new_pass);
         }
         if($this->user->update($current_id,$arr)){
-            form_ajax_success('box','修改成功！'.($new_pass?'您的密码已经修改，请重新登录！':''),null,0.5,$_SERVER['HTTP_REFERER']);
+            form_ajax_success('box',lang('modify_success').($new_pass?lang('pass_edit_ok'):''),null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
-            form_ajax_failed('text','保存失败！');
+            form_ajax_failed('text',lang('modify_failed'));
         }
     }
     
     function logout(){
         $this->user->clear_login();
-        ajax_box('退出登录成功！',null,0.5,$_SERVER['HTTP_REFERER']);
+        ajax_box(lang('logout_success'),null,0.5,$_SERVER['HTTP_REFERER']);
     }
 }

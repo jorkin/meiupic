@@ -22,7 +22,7 @@ class upload_ctl extends pagecore{
         $supportType =  loader::lib('image')->supportType();
         $this->output->set('support_type',implode(',',$supportType));
         
-        $page_title = '上传照片 - '.$this->setting->get_conf('site.title');
+        $page_title = lang('upload_photo').' - '.$this->setting->get_conf('site.title');
         $page_keywords = $this->setting->get_conf('site.keywords');
         $page_description = $this->setting->get_conf('site.description');
         
@@ -39,7 +39,7 @@ class upload_ctl extends pagecore{
         $this->output->set('album_menu',$this->plugin->filter('album_menu',''));
         $this->output->set('albums_list',$this->mdl_album->get_kv());
         
-        $page_title = '上传照片 - '.$this->setting->get_conf('site.title');
+        $page_title = lang('upload_photo').' - '.$this->setting->get_conf('site.title');
         $page_keywords = $this->setting->get_conf('site.keywords');
         $page_description = $this->setting->get_conf('site.description');
         
@@ -56,7 +56,7 @@ class upload_ctl extends pagecore{
                     'jsonrpc'=>'2.0',
                     'error'=> array( 
                         'code'=>100,
-                        'message'=>'请先登录后上传'
+                        'message'=>lang('pls_login_before_upload')
                      ),
                      'id'=>'id');
                  echo loader::lib('json')->encode($return);
@@ -118,7 +118,7 @@ class upload_ctl extends pagecore{
             need_login('ajax');
             
             if(!$album_id){
-                form_ajax_failed('box','请先选择相册！');
+                form_ajax_failed('box',lang('pls_sel_album'));
             }
             
             $target_dir = ROOTDIR.'cache'.DIRECTORY_SEPARATOR.'tmp';
@@ -202,7 +202,7 @@ class upload_ctl extends pagecore{
             $this->mdl_album->check_repare_cover($album_id);
             
             $gourl = site_link('photos','index',array('aid'=>$album_id));
-            form_ajax_success('box','上传照片成功！',null,1,$gourl);
+            form_ajax_success('box',lang('upload_photo_success'),null,1,$gourl);
         }else{
             need_login('page');
             
@@ -211,14 +211,14 @@ class upload_ctl extends pagecore{
             $this->output->set('album_menu',$this->plugin->filter('album_menu',''));
             $this->output->set('albums_list',$this->mdl_album->get_kv());
 
-            $page_title = '上传照片 - '.$this->setting->get_conf('site.title');
+            $page_title = lang('upload_photo').' - '.$this->setting->get_conf('site.title');
             $page_keywords = $this->setting->get_conf('site.keywords');
             $page_description = $this->setting->get_conf('site.description');
 
             $this->page_init($page_title,$page_keywords,$page_description);
             
             if(!$album_id){
-                $this->output->set('msginfo','请先选择相册！');
+                $this->output->set('msginfo',lang('pls_sel_album'));
                 loader::view('upload/normal');
                 return;
             }
@@ -248,21 +248,21 @@ class upload_ctl extends pagecore{
                     $fileext = file_ext($filename);
                     
                     if($_FILES['imgs']['error'][$k] == 1){
-                        $error .= '文件'.$filename.'上传失败:文件大小超过服务器限制！<br />';
+                        $error .= lang('failed_larger_than_server',$filename).'<br />';
                         continue;
                     }
                     
                     if($allowsize && $filesize>$allowsize){
-                        $error .= '文件'.$filename.'上传失败:大小超过用户限制！<br />';
+                        $error .= lang('failed_larger_than_usetting',$filename).'<br />';
                         continue;
                     }
                     
                     if($filesize == 0){
-                        $error .= '文件'.$filename.'上传失败:请确认上传的是否为文件！<br />';
+                        $error .= lang('failed_if_file',$filename).'<br />';
                         continue;
                     }
                     if(!in_array($fileext,$supportType)){
-                        $error .= '文件'.$filename.'上传失败:不支持此格式！<br />';
+                        $error .= lang('failed_not_support',$filename).'<br />';
                         continue;
                     }
                     
@@ -317,14 +317,14 @@ class upload_ctl extends pagecore{
                         
                         $this->mdl_photo->save($arr);
                     }else{
-                        $error .= '文件'.$filename.'上传失败！'.'<br />';
+                        $error .= lang('file_upload_failed',$filename).'<br />';
                     }
                 }else{
                     $empty_num++;
                 }
             }
             if($empty_num == count($_FILES['imgs']['name'])){
-                $this->output->set('msginfo','<div class="failed">您没有选择图片上传，请重新上传！</div>');
+                $this->output->set('msginfo','<div class="failed">'.lang('need_sel_upload_file').'</div>');
             }else{
                 $this->mdl_album->update_photos_num($album_id);
                 $this->mdl_album->check_repare_cover($album_id);
@@ -332,7 +332,7 @@ class upload_ctl extends pagecore{
                 if($error){
                     $this->output->set('msginfo','<div class="failed">'.$error.'</div>');
                 }else{
-                    $this->output->set('msginfo','<div class="success">上传成功！'.'<a href="'.site_link('photos','index',array('aid'=>$album_id)).'">查看相册</a></div>');
+                    $this->output->set('msginfo','<div class="success">'.lang('upload_photo_success').'<a href="'.site_link('photos','index',array('aid'=>$album_id)).'">'.lang('view_album').'</a></div>');
                 }
             }
             
