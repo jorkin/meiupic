@@ -52,22 +52,22 @@ function need_login($type = 'page'){
     if(!loader::model('user')->loggedin()){
         switch($type){
             case 'page':
-                showError('您没有权限，需要登录！');
+                showError(lang('not_authorized'));
                 break;
             case 'ajax_page':
-                ajax_box('您没有权限，需要登录！');
+                ajax_box(lang('not_authorized'));
                 break;
             case 'ajax_inline':
-                echo '<form><div class="form_notice_div">您没有权限，需要登录！</div><input type="button" name="cancel" class="graysmlbtn" value="取消" /></form>';
+                echo '<form><div class="form_notice_div">'.lang('not_authorized').'</div><input type="button" name="cancel" class="graysmlbtn" value="'.lang('cancel').'" /></form>';
                 break;
             case 'ajax':
-                form_ajax_failed('text','您没有权限，需要登录！');
+                form_ajax_failed('text',lang('not_authorized'));
                 break;
             case 'ajax_box':
-                form_ajax_failed('box','您没有权限，需要登录！');
+                form_ajax_failed('box',lang('not_authorized'));
                 break;
             case 'ajax_bubble':
-                echo '<div class="close png" onclick="Mui.bubble.close()">X</div>您没有权限，需要登录！';
+                echo '<div class="close png" onclick="Mui.bubble.close()">X</div>'.lang('not_authorized');
                 break;
         }
         exit;
@@ -134,7 +134,7 @@ function enum_priv_type($v){
 
 function get_sort_list($setting,$type,$default){
     $str = '<div class="listorder f_right selectlist">
-    <span class="label">排序:</span>';
+    <span class="label">'.lang('sort').':</span>';
     $str .= '<div class="selected"></div><ul class="optlist">';
     $sort = isset($_COOKIE['Mpic_sortset_'.$type])?$_COOKIE['Mpic_sortset_'.$type]:$default;
     foreach($setting as $k=>$v){
@@ -155,7 +155,7 @@ function get_page_setting($type){
     $current = isset($_COOKIE['Mpic_pageset_'.$type])?$_COOKIE['Mpic_pageset_'.$type]:'12';
     
     $str = '<div class="pset f_right selectlist">
-        <span class="label">显示数:</span>';
+        <span class="label">'.lang('show_nums_per_page').':</span>';
     $str .= '<div class="selected"></div><ul class="optlist">';
     foreach($arr as $v){
         $str .= '<li '.($current==$v?'class="current"':'').'><a href="javascript:void(0);" onclick="page_setting(\''.$type.'\','.$v.');">'.$v.'</a></li>';
@@ -298,7 +298,6 @@ function has_trash(){
 }
 
 function showError($error_msg){
-    //$_config = $GLOBALS['THEME_CONFIG'];
     $_config = loader::model('setting')->get_conf('theme.'.TEMPLATEID,array());
     loader::lib('output')->set('error_msg',$error_msg);
     loader::view('block/showerror');

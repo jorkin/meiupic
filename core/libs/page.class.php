@@ -21,7 +21,7 @@ class page_cla{
         if(file_exists(LIBDIR.'page_styles/'.$tpl.'.php')){
             include(LIBDIR.'page_styles/'.$tpl.'.php');
         }else{
-            exit('Pagination Template don\'t exists!');
+            exit(lang('pagination_tpl_not_exists!'));
         }
         $this->pagination = $pagination;
     }

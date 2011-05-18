@@ -39,13 +39,13 @@ class pagecore{
         $this->output->set('meu_head',$meu_head);
 
         if(!$this->user->loggedin()){
-            $user_status = '<a href="'.site_link('users','login').'" onclick="Mui.box.show(this.href,true);return false;">登录</a>';
+            $user_status = '<a href="'.site_link('users','login').'" title="'.lang('login_title').'" onclick="Mui.box.show(this.href,true);return false;">'.lang('login').'</a>';
         }else{
             $user_status = '<span class="name">'.$this->user->get_field('user_nicename').'</span>
             <span class="pipe">|</span>
-            <a title="查看和修改我的个人资料" href="'.site_link('users','profile').'">我的资料</a>
+            <a title="'.lang('profile_title').'" href="'.site_link('users','profile').'">'.lang('profile').'</a>
             <span class="pipe">|</span>
-            <a title="登出系统" href="'.site_link('users','logout').'" onclick="Mui.box.show(this.href);return false;">登出</a>';
+            <a title="'.lang('logout_title').'" href="'.site_link('users','logout').'" onclick="Mui.box.show(this.href);return false;">'.lang('logout').'</a>';
         }
         $this->output->set('user_status',loader::lib('plugin')->filter('user_status',$user_status));
         $this->output->set('trash_status',has_trash());

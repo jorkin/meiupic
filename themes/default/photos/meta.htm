@@ -6,7 +6,7 @@
             <td class="left">
                 <div class="mainbody">
                     <div class="col titbg">
-                        <h1 class="f_left">查看照片{$info['name']}的更多信息</h1>
+                        <h1 class="f_left">{lang view_more_meta|`$info['name']`}</h1>
                         <h4 class="f_left"></h4>
                         <div class="rmenu f_right">
                            
@@ -15,8 +15,8 @@
                     <div class="innercol grid">
                         <div class="meta_thumb">
                             <p><a href="{link ctl=photos act=view id=$info['id']}"><img src="{img $info['thumb']}" /></a></p>
-                            <p class="datetime">上传于：{echo date('Y-m-d',$info['create_time'])}</p>
-                            <p class="datetime">拍摄于：{echo date('Y-m-d',$info['taken_time'])}</p>
+                            <p class="datetime">{in_upload_time}: {echo date('Y-m-d',$info['create_time'])}</p>
+                            <p class="datetime">{in_taken_time}: {echo date('Y-m-d',$info['taken_time'])}</p>
                         </div>
                         <div class="meta_data">
                             <table>
@@ -27,7 +27,7 @@
                                 </tr>
                                {/loop}
                             </table>
-                            <div class="lht2"><a href="{link ctl=photos act=view id=$info['id']}">返回页面</a></div>
+                            <div class="lht2"><a href="{link ctl=photos act=view id=$info['id']}">{lang go_back}</a></div>
                         </div>
                         <div class="clear">
                         </div>

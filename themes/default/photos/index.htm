@@ -31,10 +31,10 @@
                                     <div class="pic_ctl">
                                         <ul class="btns">
                                             <!--{if $loggedin}-->
-                                            <li><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=photos act=confirm_delete id=$v['id']}',true);" title="移动到回收站"><span class="i_littletrash sprite"></span></a></li>
-                                            <li><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=photos act=modify id=$v['id']}',true);" title="编辑"><span class="i_edit sprite"></span></a></li>
-                                            <li><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=albums act=update_cover pic_id=$v['id']}');" title="设为封面"><span class="i_cover sprite"></span></a></li>
-                                            <li><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=photos act=move id=$v['id']}',true);" title="移动图片"><span class="i_moveto sprite"></span></a></li>
+                                            <li><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=photos act=confirm_delete id=$v['id']}',true);" title="{lang move_to_trash}"><span class="i_littletrash sprite"></span></a></li>
+                                            <li><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=photos act=modify id=$v['id']}',true);" title="{lang modify}"><span class="i_edit sprite"></span></a></li>
+                                            <li><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=albums act=update_cover pic_id=$v['id']}');" title="{lang set_cover}"><span class="i_cover sprite"></span></a></li>
+                                            <li><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=photos act=move id=$v['id']}',true);" title="{lang move_photo}"><span class="i_moveto sprite"></span></a></li>
                                             <!--{/if}-->
                                             <!--{$v['photo_control_icons']}-->
                                         </ul>
@@ -43,23 +43,23 @@
                                         <span class="f_left"></span>
                                         <span class="f_right gray">
                                             {if $show_takentime && $v['taken_time']}
-                                            拍摄于{echo date('Y-m-d',$v['taken_time'])}
+                                            {lang in_taken_time}{echo date('Y-m-d',$v['taken_time'])}
                                             {else}
-                                            上传于{echo date('Y-m-d',$v['create_time'])}
+                                            {lang in_upload_time}{echo date('Y-m-d',$v['create_time'])}
                                             {/if}
                                         </span>
                                     </div>
                                 </div>
                                 <div class="info">
                                     <div class="title">
-                                    <!--{if $loggedin}--><input class="selitem" type="checkbox" name="sel_id[{$v['id']}]" value="1" /><span class="name"><a nid="{$v['id']}" title="点击修改相册名" href="javascript:void(0)" onclick="Madmin.rename(this,'{link ctl=photos act=rename id=$v['id']}')">{$v['name']}</a></span>
+                                    <!--{if $loggedin}--><input class="selitem" type="checkbox" name="sel_id[{$v['id']}]" value="1" /><span class="name"><a nid="{$v['id']}" title="{lang click_to_rename}" href="javascript:void(0)" onclick="Madmin.rename(this,'{link ctl=photos act=rename id=$v['id']}')">{$v['name']}</a></span>
                                     <!--{else}-->
                                     <span class="name">{$v['name']}</span>
                                     <!--{/if}-->
                                     </div>
                                     <div class="info_col">
-                                        <span class="f_left gray">{$v['hits']}浏览 </span>
-                                        <span class="f_right gray"><!--{if $v['comments_num'] && $enable_comment}--><a href="{link ctl=photos act=view id=$v['id']}#comments">{lang comments_num|`$v['comments_num']`}</a><!--{/if}--> <!--{if $v['is_cover']}--><span class="cover">封面</span><!--{/if}--></span>
+                                        <span class="f_left gray">{lang view_nums|`$v['hits']`} </span>
+                                        <span class="f_right gray"><!--{if $v['comments_num'] && $enable_comment}--><a href="{link ctl=photos act=view id=$v['id']}#comments">{lang comments_num|`$v['comments_num']`}</a><!--{/if}--> <!--{if $v['is_cover']}--><span class="cover">{lang cover}</span><!--{/if}--></span>
                                     </div>
                                 </div>
                             </div>
@@ -70,7 +70,7 @@
                                 {$pagestr}
                             </div>
                             <div class="f_right">
-                                <!--{if $loggedin}--><label><input type="checkbox" value="1" onclick="Madmin.check_all('.selitem',this.checked)" />全选</label> <span class="i_trash_sp sprite"></span> <a href="javascript:void(0)" onclick="Madmin.checked_action('.selitem','{link ctl=photos act=confirm_delete_batch}');">选中项移入回收站</a> <span class="i_move_sp sprite"></span> <a href="javascript:void(0)" onclick="Madmin.checked_action('.selitem','{link ctl=photos act=move_batch}');">移动选中项</a><!--{/if}-->
+                                <!--{if $loggedin}--><label><input type="checkbox" value="1" onclick="Madmin.check_all('.selitem',this.checked)" />{lang sel_all}</label> <span class="i_trash_sp sprite"></span> <a href="javascript:void(0)" onclick="Madmin.checked_action('.selitem','{link ctl=photos act=confirm_delete_batch}');">{lang delete_selected}</a> <span class="i_move_sp sprite"></span> <a href="javascript:void(0)" onclick="Madmin.checked_action('.selitem','{link ctl=photos act=move_batch}');">{lang move_selected}</a><!--{/if}-->
                             </div>
                             <div class="clear"></div>
                         </div>
@@ -101,7 +101,7 @@
                                     </div>
                                     <div class="field">
                                         <div class="label"> &nbsp;</div>
-                                        <div class="ipts"><input type="submit" name="submit" class="ylbtn f_left" value="发表评论" onclick="Mui.box.callback=function(){ reload_comments('{link ctl=comments act=more ref_id=$ref_id type=$comments_type}');$('#album_comment_form').get(0).reset(); };Mui.form.sendAuto('album_comment_form');" /></div>
+                                        <div class="ipts"><input type="submit" name="submit" class="ylbtn f_left" value="{lang post_comments}" onclick="Mui.box.callback=function(){ reload_comments('{link ctl=comments act=more ref_id=$ref_id type=$comments_type}');$('#album_comment_form').get(0).reset(); };Mui.form.sendAuto('album_comment_form');" /></div>
                                         <div class="clear"></div>
                                     </div>
                                 </form>
@@ -119,7 +119,7 @@
                             <div class="pic no_photo_search"></div>
                             <div class="data_msg">
                                 <div>{lang no_photo_search_notice}</div >
-                                <div class="button"><a href="{link ctl=photos act=index aid=$album_info['id']}">此相册所有照片</a></div>
+                                <div class="button"><a href="{link ctl=photos act=index aid=$album_info['id']}">{lang all_photo_this_album}</a></div>
                             </div>
                             <div class="clear"></div>
                             <!--{else}-->
@@ -131,7 +131,7 @@
                                 <div class="button"><div class="bigbutton"><a href="{link ctl=upload act=index aid=$album_info['id']}"><span>{lang upload_new_photo}</span></a></div></div>
                                 <!--{else}-->
                                 <div>{lang no_photo_notice_notlogin}</div >
-                                <div class="button"><a href="{link ctl=albums}">查看相册列表</a></div>
+                                <div class="button"><a href="{link ctl=albums}">{lang view_all_album}</a></div>
                                 <!--{/if}-->
                             </div>
                             <!--{/if}-->
@@ -159,7 +159,7 @@
                         </h2>
                         <div class="info_body">
                             <!--{if $loggedin}-->
-                            <div class="inline_edit" title="点击可编辑" onclick="Madmin.inline_edit(this,'{link ctl=albums act=modify_desc_inline id=$album_info['id']}')"><!--{if $album_info['desc']}-->{$album_info['desc']}<!--{else}-->还没有描述，为相册添加描述吧！<!--{/if}-->
+                            <div class="inline_edit" title="{lang click_editable}" onclick="Madmin.inline_edit(this,'{link ctl=albums act=modify_desc_inline id=$album_info['id']}')"><!--{if $album_info['desc']}-->{$album_info['desc']}<!--{else}-->{lang no_album_desc}<!--{/if}-->
                                 <span class="i_editinfo sprite"></span>
                             </div>
                             <!--{else}-->
@@ -170,14 +170,14 @@
                         </div>
                         <div class="tags mb10">
                             <!--{if $loggedin}-->
-                            <div class="inline_edit" title="点击可编辑" onclick="Madmin.inline_edit(this,'{link ctl=albums act=modify_tags_inline id=$album_info['id']}')">
-                                标签: 
-                                <!--{if !$album_info['tags']}-->点击添加标签吧！<!--{else}-->{$album_info['tags']}<!--{/if}-->
+                            <div class="inline_edit" title="{lang click_editable}" onclick="Madmin.inline_edit(this,'{link ctl=albums act=modify_tags_inline id=$album_info['id']}')">
+                                {lang tags}: 
+                                <!--{if !$album_info['tags']}-->{lang no_album_tags}<!--{else}-->{$album_info['tags']}<!--{/if}-->
                                 <span class="i_editinfo sprite"></span>
                             </div>
                             <!--{else}-->
                                 <!--{if $album_info['tags']}-->
-                                <div class="inline">标签: 
+                                <div class="inline">{lang tags}: 
                                 <!--{loop $album_info['tags_list'] $v}-->
                                     <a href="{link ctl=albums act=index tag=$v}">{$v}</a>
                                 <!--{/loop}-->
@@ -187,20 +187,20 @@
                         </div>
                     </div>
                     <div class="priv">
-                        <span class="f_left">访问权限：  <span class="i_greenicn sprite"></span> {echo enum_priv_type($album_info['priv_type'])}</span>
-                        <!--{if $loggedin}--><span class="f_right"><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=albums act=modify_priv id=$album_info['id']}',true);">编辑</a></span><!--{/if}-->
+                        <span class="f_left">{lang view_priv}:  <span class="i_greenicn sprite"></span> {echo enum_priv_type($album_info['priv_type'])}</span>
+                        <!--{if $loggedin}--><span class="f_right"><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=albums act=modify_priv id=$album_info['id']}',true);">{lang modify}</a></span><!--{/if}-->
                         <div class="clear"></div>
                     </div>
                     <div class="mb10 tinfo">
-                        <p>共{$album_info['photos_num']}张照片</p>
-                        <p>创建日期：{echo date('Y-m-d',$album_info['create_time'])}</p>
-                        <p>最近上传：{echo date('Y-m-d',$album_info['up_time'])}</p>
+                        <p>{lang total_photo|`$album_info['photos_num']`}</p>
+                        <p>{lang create_date}{echo date('Y-m-d',$album_info['create_time'])}</p>
+                        <p>{lang uploaded_date}{echo date('Y-m-d',$album_info['up_time'])}</p>
                     </div>
                     <div class="sidesearch mb20">
                         <h2>{lang search_photos}</h2>
                             <form class="search" action="{link ctl=photos act=search}" method="post">
                                 <input type="hidden" name="album_id" value="{$album_info['id']}" />
-                                <p class="mb10"><label><input type="radio" name="searchtype" value="album" checked="checked" /> 当前相册 </label> <label><input type="radio" name="searchtype" value="all" /> 全部相册</label></p>
+                                <p class="mb10"><label><input type="radio" name="searchtype" value="album" checked="checked" /> {lang current_album} </label> <label><input type="radio" name="searchtype" value="all" /> {lang all_album}</label></p>
                                 <input type="text" class="inputstyle iptw1" name="sname" value="{$search['name']}" />
                                 <input type="submit" name="submit" class="ylbtn1 ml5" value="{lang search}" />
                             </form>

@@ -7,7 +7,7 @@ class comments_ctl extends pagecore{
     }
     function post(){
         if(!$this->setting->get_conf('system.enable_comment')){
-            form_ajax_failed('text','相册关闭了评论！');
+            form_ajax_failed('text',lang('album_comment_closed'));
         }
         
         $comment['email'] = safe_convert($this->getPost('email'));
@@ -17,16 +17,16 @@ class comments_ctl extends pagecore{
         $comment['type'] = intval($this->getPost('type'));
         
         if($comment['email'] && !check_email($comment['email'])){
-            form_ajax_failed('text','请输入有效的Email地址！');
+            form_ajax_failed('text',lang('error_email'));
         }
         if(!$comment['author']){
-            form_ajax_failed('text','请输入评论者名字！');
+            form_ajax_failed('text',lang('error_comment_author'));
         }
         if(!$comment['content']){
-            form_ajax_failed('text','内容不能为空！');
+            form_ajax_failed('text',lang('empty_content'));
         }
         if(!$comment['ref_id'] || !$comment['type']){
-            form_ajax_failed('text','参数丢失！');
+            form_ajax_failed('text',lang('miss_argument'));
         }
         $comment['post_time'] = time();
         $comment['author_ip'] = get_real_ip();
@@ -38,9 +38,9 @@ class comments_ctl extends pagecore{
                 loader::model('photo')->update_comments_num($comment['ref_id']);
             }
             
-            form_ajax_success('box','评论成功！',null,0.5);
+            form_ajax_success('box',lang('post_comment_success'),null,0.5);
         }else{
-            form_ajax_failed('text','评论失败！');
+            form_ajax_failed('text',lang('post_comment_failed'));
         }
     }
     
@@ -55,7 +55,7 @@ class comments_ctl extends pagecore{
     
     function save_reply(){
         if(!$this->setting->get_conf('system.enable_comment')){
-            form_ajax_failed('text','相册关闭了评论！');
+            form_ajax_failed('text',lang('album_comment_closed'));
         }
         
         $comment['email'] = safe_convert($this->getPost('email'));
@@ -67,16 +67,16 @@ class comments_ctl extends pagecore{
         $comment['pid'] = intval($this->getPost('pid'));
         
         if($comment['email'] && !check_email($comment['email'])){
-            form_ajax_failed('text','请输入有效的Email地址！');
+            form_ajax_failed('text',lang('error_email'));
         }
         if(!$comment['author']){
-            form_ajax_failed('text','请输入评论者名字！');
+            form_ajax_failed('text',lang('error_comment_author'));
         }
         if(!$comment['content']){
-            form_ajax_failed('text','内容不能为空！');
+            form_ajax_failed('text',lang('empty_content'));
         }
         if(!$comment['ref_id'] || !$comment['type'] || !$comment['pid'] || !$comment['reply_author']){
-            form_ajax_failed('text','参数丢失！');
+            form_ajax_failed('text',lang('miss_argument'));
         }
         $comment['post_time'] = time();
         $comment['author_ip'] = get_real_ip();
@@ -93,7 +93,7 @@ class comments_ctl extends pagecore{
 
             form_ajax_success('text',loader::view('comments/view',false));
         }else{
-            form_ajax_failed('text','回复失败！');
+            form_ajax_failed('text',lang('reply_failed'));
         }
     }
     
@@ -117,9 +117,9 @@ class comments_ctl extends pagecore{
             }elseif($comment['type'] == 2){
                 loader::model('photo')->update_comments_num($info['ref_id']);
             }
-            ajax_box('成功删除评论!',null,0.5,$_SERVER['HTTP_REFERER']);
+            ajax_box(lang('delete_comment_success'),null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
-            ajax_box('删除评论失败!');
+            ajax_box(lang('delete_comment_failed'));
         }
     }
     

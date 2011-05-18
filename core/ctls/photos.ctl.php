@@ -9,7 +9,7 @@ class photos_ctl extends pagecore{
     }
     
     function _sort_setting(){
-        return array('上传时间' => 'tu','拍摄时间' => 'tt','浏览数'=>'h','评论数'=>'c','照片名'=>'n');
+        return array(lang('upload_time') => 'tu',lang('taken_time') => 'tt',lang('hits')=>'h',lang('comments_nums')=>'c',lang('photo_name')=>'n');
     }
     
     function index(){
@@ -23,7 +23,7 @@ class photos_ctl extends pagecore{
         
         $album_info = $this->mdl_album->get_info($album_id);
         if(!$album_info){
-            showError('您要访问的相册不存在！');
+            showError(lang('album_not_exists'));
         }
         if(!$this->mdl_album->check_album_priv($album_id,$album_info)){
             $this->_priv_page($album_id,$album_info);
@@ -47,11 +47,11 @@ class photos_ctl extends pagecore{
         $this->mdl_photo->set_pageset($pageset);
         
         $view_type = '<div class="f_right selectlist viewtype">
-        <span class="label">浏览模式:</span>
+        <span class="label">'.lang('view_type').':</span>
         <div class="selected"></div>
         <ul class="optlist">
-        <li class="current"><a href="'.site_link('photos','index',array('aid'=>$album_id)).'">平铺模式</a></li>
-        <li><a href="'.site_link('photos','slide',array('aid'=>$album_id)).'">幻灯模式</a></li>
+        <li class="current"><a href="'.site_link('photos','index',array('aid'=>$album_id)).'">'.lang('flat_mode').'</a></li>
+        <li><a href="'.site_link('photos','slide',array('aid'=>$album_id)).'">'.lang('slide_mode').'</a></li>
         </ul>
         </div>';
         
@@ -116,19 +116,19 @@ class photos_ctl extends pagecore{
         if($album_info['priv_type'] == 1){
             $priv_pass = $this->getPost('priv_pass');
             if($album_info['priv_pass'] != $priv_pass){
-                form_ajax_failed('text','相册密码输入错误！');
+                form_ajax_failed('text',lang('album_pass_error'));
             }
             setCookie($key,md5($priv_pass),0,'/');
-            form_ajax_success('box','验证成功！',null,0.5,$go_url);
+            form_ajax_success('box',lang('validate_success'),null,0.5,$go_url);
         }elseif($album_info['priv_type'] == 2){
             $priv_answer = $this->getPost('priv_answer');
             if($album_info['priv_answer'] != $priv_answer){
-                form_ajax_failed('text','相册答案输入错误！');
+                form_ajax_failed('text',lang('album_answer_error'));
             }
             setCookie($key,md5($album_info['priv_question'].$priv_answer),0,'/');
-            form_ajax_success('box','验证成功！',null,0.5,$go_url);
+            form_ajax_success('box',lang('validate_success'),null,0.5,$go_url);
         }
-        form_ajax_failed('text','相册类别错误！');
+        form_ajax_failed('text',lang('album_priv_error'));
     }
     
     function auth_priv(){
@@ -146,11 +146,11 @@ class photos_ctl extends pagecore{
         if($ajax == 'true'){
             $this->output->set('ajax',true);
             if($this->mdl_album->check_album_priv($id,$album_info)){
-                ajax_box('已认证，正在转入...',null,0.5,site_link('photos','index',array('aid'=>$id)));
+                ajax_box(lang('has_validate'),null,0.5,site_link('photos','index',array('aid'=>$id)));
             }
         }else{
             $this->output->set('ajax',false);
-            $page_title = '访问需要验证 - 系统信息 - '.$this->setting->get_conf('site.title');
+            $page_title = lang('title_need_validate').' - '.lang('system_notice').' - '.$this->setting->get_conf('site.title');
             $page_keywords = $this->setting->get_conf('site.keywords');
             $page_description = $this->setting->get_conf('site.description');
             $this->page_init($page_title,$page_keywords,$page_description);
@@ -164,7 +164,7 @@ class photos_ctl extends pagecore{
         $album_info = $this->mdl_album->get_info($album_id);
         $refer = isset($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:site_link('photos','index',array('aid'=>$album_id));
         
-        $page_title = $album_info['name'].' - 幻灯片 - '.$this->setting->get_conf('site.title');
+        $page_title = $album_info['name'].' - '.lang('slideshow').' - '.$this->setting->get_conf('site.title');
         $page_keywords = $this->setting->get_conf('site.keywords');
         $page_description = $this->setting->get_conf('site.description');
         $this->page_init($page_title,$page_keywords,$page_description,array('aid'=>$album_id));
@@ -179,7 +179,7 @@ class photos_ctl extends pagecore{
         $info = $this->mdl_album->get_info($album_id);
         
         if(!$this->mdl_album->check_album_priv($album_id,$info)){
-            exit('对不起你没有权限！');
+            exit(lang('no_access'));
         }
         
         $title = $info['name'];
@@ -266,9 +266,9 @@ class photos_ctl extends pagecore{
             $this->output->set('total_num',$photos['count']);
             $this->output->set('album_menu',$this->plugin->filter('album_menu','<li><a href="'.
                             site_link('photos','search',array('sname'=>$search['name'])).
-                          '" class="current">搜索结果</a></li>'));
+                          '" class="current">'.lang('search_result').'</a></li>'));
 
-            $page_title = $search['name'].' - 搜索结果 - '.$this->setting->get_conf('site.title');
+            $page_title = $search['name'].' - '.lang('search_result').' - '.$this->setting->get_conf('site.title');
             $page_keywords = $this->setting->get_conf('site.keywords');
             $page_description = $this->setting->get_conf('site.description');
             $this->page_init($page_title,$page_keywords,$page_description);
@@ -296,15 +296,15 @@ class photos_ctl extends pagecore{
         $album['tags'] = safe_convert($this->getPost('photo_tags'));
         
         if($album['name'] == ''){
-            form_ajax_failed('text','照片名不能为空！');
+            form_ajax_failed('text',lang('photo_name_empty'));
         }
         
         if($this->mdl_photo->update($id,$album)){
             loader::model('tag')->save_tags($id,$album['tags'],2);
             
-            form_ajax_success('box','修改照片成功！',null,0.5,$_SERVER['HTTP_REFERER']);
+            form_ajax_success('box',lang('modify_photo_success'),null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
-            form_ajax_failed('text','修改照片失败！');
+            form_ajax_failed('text',lang('modify_photo_failed'));
         }
     }
     
@@ -324,12 +324,12 @@ class photos_ctl extends pagecore{
         $album_id = $this->getPost('album_id');
         $id = $this->getGet('id');
         if(!$album_id){
-            form_ajax_failed('box','移动失败！您没有选择要移动至的相册！');
+            form_ajax_failed('box',lang('havnt_sel_album'));
         }
         if($this->mdl_photo->move($id,$album_id)){            
-            form_ajax_success('box','移动成功！',null,0.5,$_SERVER['HTTP_REFERER']);
+            form_ajax_success('box',lang('move_photo_success'),null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
-            form_ajax_failed('box','移动失败！');
+            form_ajax_failed('box',lang('move_photo_failed'));
         }
     }
     
@@ -339,7 +339,7 @@ class photos_ctl extends pagecore{
         $ids = $this->getPost('sel_id');
         
         if(!$ids || count($ids) == 0){
-            ajax_box('请先选择要移动的照片!');
+            ajax_box(lang('pls_sel_photo_want_to_move'));
         }
         $ids = array_keys($ids);
         $this->output->set('sel_ids',implode(',',$ids));
@@ -355,12 +355,12 @@ class photos_ctl extends pagecore{
         $ids = $this->getPost('ids');
         $album_id = $this->getPost('album_id');
         if(!$ids){
-            form_ajax_failed('box','请先选择要移动的照片!');
+            form_ajax_failed('box',lang('pls_sel_photo_want_to_move'));
         }
         if($this->mdl_photo->move_batch(explode(',',$ids),$album_id)){
-            form_ajax_success('box','成功批量移动照片!',null,0.5,$_SERVER['HTTP_REFERER']);
+            form_ajax_success('box',lang('batch_move_photo_success'),null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
-            form_ajax_failed('box','批量移动照片失败!');
+            form_ajax_failed('box',lang('batch_move_photo_failed'));
         }
     }
     
@@ -378,9 +378,9 @@ class photos_ctl extends pagecore{
         need_login('ajax_page');
         
         if($this->mdl_photo->trash($this->getGet('id'))){
-            ajax_box('成功删除照片!',null,0.5,$_SERVER['HTTP_REFERER']);
+            ajax_box(lang('delete_photo_success'),null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
-            ajax_box('删除照片失败!');
+            ajax_box(lang('delete_photo_failed'));
         }
     }
     
@@ -389,7 +389,7 @@ class photos_ctl extends pagecore{
         
         $ids = $this->getPost('sel_id');
         if(!$ids || count($ids) == 0){
-            ajax_box('请先选择要删除的照片!');
+            ajax_box(lang('pls_sel_photo_want_to_delete'));
         }
         $this->render();
     }
@@ -399,12 +399,12 @@ class photos_ctl extends pagecore{
         
         $ids = $this->getPost('sel_id');
         if(!$ids || count($ids) == 0){
-            ajax_box('请先选择要删除的照片!');
+            ajax_box(lang('pls_sel_photo_want_to_delete'));
         }else{
             if($this->mdl_photo->trash_batch(array_keys($ids))){
-                ajax_box('成功批量删除照片!',null,0.5,$_SERVER['HTTP_REFERER']);
+                ajax_box(lang('batch_delete_photo_success'),null,0.5,$_SERVER['HTTP_REFERER']);
             }else{
-                ajax_box('批量删除照片失败!');
+                ajax_box(lang('batch_delete_photo_failed'));
             }
         }
     }
@@ -415,12 +415,12 @@ class photos_ctl extends pagecore{
         $id = $this->getGet('id');
         $arr['name'] = safe_convert($this->getPost('name'));
         if($arr['name'] == ''){
-            form_ajax_failed('text','照片名不能为空！');
+            form_ajax_failed('text',lang('photo_name_empty'));
         }
         if($this->mdl_photo->update($id,$arr)){
             form_ajax_success('text',$arr['name']);
         }else{
-            form_ajax_failed('text','照片名保存失败！');
+            form_ajax_failed('text',lang('save_photo_name_failed'));
         }
         return;
     }
@@ -431,7 +431,7 @@ class photos_ctl extends pagecore{
         $info = $this->mdl_photo->get_info($id);
         
         if(!$info){
-            showError('您要访问的照片不存在！');
+            showError(lang('photo_not_exists'));
         }
         
         $info['exif'] = unserialize($info['exif']);
@@ -536,10 +536,10 @@ class photos_ctl extends pagecore{
         $info = $this->mdl_photo->get_info($id);
         
         if(!$info){
-            showError('您要访问的照片不存在！');
+            showError(lang('photo_not_exists'));
         }
         if(!$info['exif']){
-            showError('无权查看EXIF！');
+            showError(lang('no_access_view_exif'));
         }
         if(!$this->mdl_album->check_album_priv($info['album_id'])){
             $this->_priv_page($info['album_id']);
@@ -560,7 +560,7 @@ class photos_ctl extends pagecore{
         
         $this->output->set('album_menu',$this->plugin->filter('album_menu','',$info['album_id']));
         
-        $page_title = '查看看照片'.$info['name'].'的EXIF信息 - '.$this->setting->get_conf('site.title');
+        $page_title = lang('view_photo_exif',$info['name']).' - '.$this->setting->get_conf('site.title');
         $page_keywords = $this->setting->get_conf('site.keywords');
         $page_description = $this->setting->get_conf('site.description');
         $this->page_init($page_title,$page_keywords,$page_description,array('id'=>$id));
@@ -593,9 +593,9 @@ class photos_ctl extends pagecore{
         
         if( $this->mdl_photo->update($id,array('tags'=>$tags)) ){
             loader::model('tag')->save_tags($id,$tags,2);
-            form_ajax_success('text','标签: '.$tags);
+            form_ajax_success('text',lang('tags').': '.$tags);
         }else{
-            form_ajax_failed('text','编辑相册标签失败！');
+            form_ajax_failed('text',lang('modify_photo_tags_failed'));
         }
         return;
     }
@@ -615,12 +615,12 @@ class photos_ctl extends pagecore{
         $id = $this->getGet('id');
         $desc = safe_convert($this->getPost('desc'));
         if($desc == ''){
-            form_ajax_failed('text','相册描述不能为空！');
+            form_ajax_failed('text',lang('empty_photo_desc'));
         }
         if( $this->mdl_photo->update($id,array('desc'=>$desc)) ){
             form_ajax_success('text',$desc);
         }else{
-            form_ajax_failed('text','编辑相册描述失败！');
+            form_ajax_failed('text',lang('modify_photo_desc_failed'));
         }
         return;
     }

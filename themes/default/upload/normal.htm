@@ -6,10 +6,10 @@
             <td class="left">
                 <div class="mainbody">
                     <div class="col titbg">
-                        <h1 class="f_left">上传照片</h1>
+                        <h1 class="f_left">{lang upload_photo}</h1>
                         <h4 class="f_left"></h4>
                         <div class="rmenu f_right">
-                           切换上传方式: <a href="{link ctl=upload act=index}">高级上传</a> | <a href="{if $album_id}{link ctl=upload act=normal aid=$album_id}{else}{link ctl=upload act=normal}{/if}" class="current">普通上传</a>
+                           {lang switch_upload_type}: <a href="{link ctl=upload act=index}">{lang expert_mode}</a> | <a href="{if $album_id}{link ctl=upload act=normal aid=$album_id}{else}{link ctl=upload act=normal}{/if}" class="current">{lang normal_mode}</a>
                         </div>
                     </div>
                     <div class="innercol grid">
@@ -36,13 +36,13 @@ function reload_albums_options(je){
                             
                             <form id="upload_photos_form" method="post" enctype="multipart/form-data" action="{link ctl=upload act=save t=normal}">
                                 <div class="field">
-                                    <div class="label">选择相册:</div>
+                                    <div class="label">{lang select_album}:</div>
                                     <div class="ipts">
                                         <select id="album_id" name="album_id">
                                             <!--{loop $albums_list $k $v}-->
                                                 <option value="{$k}" {if $album_id==$k}selected="selected"{/if}>{$v}</option>
                                             <!--{/loop}-->
-                                        </select> <a  href="javascript:void(0)" onclick="Mui.box.show('{link ctl=albums act=create}',true);Mui.box.callback = function(){ reload_albums_options('#album_id'); }" class="ml10">新建相册</a></div>
+                                        </select> <a  href="javascript:void(0)" onclick="Mui.box.show('{link ctl=albums act=create}',true);Mui.box.callback = function(){ reload_albums_options('#album_id'); }" class="ml10">{lang new_album}</a></div>
                                     <div class="clear"></div>
                                 </div>
                                 <div id="normal_uploader">
@@ -64,7 +64,7 @@ function reload_albums_options(je){
                                         </li>
                                     </ol>
                                 </div>
-                                <div align="left" style="padding-left:50px"><input type="submit" name="uploadbtn" class="ylbtn" value="立即上传" /></div>
+                                <div align="left" style="padding-left:50px"><input type="submit" name="uploadbtn" class="ylbtn" value="{lang upload_immediatly}" /></div>
                             </form>
                         </div>
                         <!--{else}-->

@@ -30,7 +30,7 @@ class tags_ctl extends pagecore{
         $this->output->set('tag_list',$tags['ls']);
         $this->output->set('tag_type',$type);
         
-        $page_title = '标签列表 - '.$this->setting->get_conf('site.title');
+        $page_title = lang('tag_list').' - '.$this->setting->get_conf('site.title');
         $page_keywords = $this->setting->get_conf('site.keywords');
         $page_description = $this->setting->get_conf('site.description');
         $this->page_init($page_title,$page_keywords,$page_description);

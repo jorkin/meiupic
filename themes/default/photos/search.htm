@@ -10,11 +10,6 @@
                         <h4 class="f_left">{lang total_photo|$total_num}</h4>
                         {$photo_col_menu}
                     </div>
-                    <script type="text/javascript">
-                    drop_select('.listorder');
-                    drop_select('.pset');
-                    drop_select('.viewtype');
-                    </script>
                     <div class="innercol grid">
                         <div class="gallary_wrap">
                             <!--{loop $photos $k $v}-->
@@ -39,7 +34,7 @@
                                     </div>
                                     <div class="clear brief">
                                         <span class="f_left"></span>
-                                        <span class="f_right gray">上传于{echo date('Y-m-d',$v['create_time'])}</span>
+                                        <span class="f_right gray">{lang in_upload_time}{echo date('Y-m-d',$v['create_time'])}</span>
                                     </div>
                                 </div>
                                 <div class="info">
@@ -47,7 +42,7 @@
                                     <span class="name">{$v['name']}</span>
                                     </div>
                                     <div class="info_col">
-                                        <span class="f_left gray">{$v['hits']}浏览 </span>
+                                        <span class="f_left gray">{lang view_nums|`$v['hits']`} </span>
                                         <span class="f_right gray"><!--{if $v['comments_num']}--><a href="{link ctl=photos act=view id=$v['id']}#comments">{lang comments_num|`$v['comments_num']`}</a><!--{/if}--></span>
                                     </div>
                                 </div>
@@ -91,4 +86,12 @@
         </tr>
     </table>
 </div>
+
+<script type="text/javascript">
+$(function(){
+    drop_select('.listorder');
+    drop_select('.pset');
+    drop_select('.viewtype');
+});
+</script>
 {template block/footer}

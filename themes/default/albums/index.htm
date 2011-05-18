@@ -36,8 +36,8 @@
                                     <div class="pic_ctl">
                                         <ul class="btns">
                                             <!--{if $loggedin}-->
-                                            <li><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=albums act=confirm_delete id=$v['id']}',true);" title="移动到回收站"><span class="i_littletrash sprite"></span></a></li>
-                                            <li><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=albums act=modify id=$v['id']}',true);" title="修改"><span class="i_edit sprite"></span></a></li>
+                                            <li><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=albums act=confirm_delete id=$v['id']}',true);" title="{lang move_to_trash}"><span class="i_littletrash sprite"></span></a></li>
+                                            <li><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=albums act=modify id=$v['id']}',true);" title="{lang modify}"><span class="i_edit sprite"></span></a></li>
                                             <!--{/if}-->
                                             <!--{$v['album_control_icons']}-->
                                         </ul>
@@ -46,9 +46,9 @@
                                         <span class="f_left"></span>
                                         <span class="f_right gray">
                                             {if $show_uptime}
-                                            上传于{echo date('Y-m-d',$v['up_time'])}
+                                            {lang in_upload_time}{echo date('Y-m-d',$v['up_time'])}
                                             {else}
-                                            创建于{echo date('Y-m-d',$v['create_time'])}
+                                            {lang in_create_time}{echo date('Y-m-d',$v['create_time'])}
                                             {/if}
                                         </span>
                                     </div>
@@ -56,13 +56,13 @@
                                 <div class="info">
                                     <div class="title">
                                     <!--{if $loggedin}-->
-                                    <input class="selitem" type="checkbox" name="sel_id[{$v['id']}]" value="1" /> <span class="name"><a nid="{$v['id']}" title="点击修改相册名" href="javascript:void(0)" onclick="Madmin.rename(this,'{link ctl=albums act=rename id=$v['id']}')">{$v['name']}</a></span>
+                                    <input class="selitem" type="checkbox" name="sel_id[{$v['id']}]" value="1" /> <span class="name"><a nid="{$v['id']}" title="{lang click_to_rename}" href="javascript:void(0)" onclick="Madmin.rename(this,'{link ctl=albums act=rename id=$v['id']}')">{$v['name']}</a></span>
                                     <!--{else}-->
                                     <span class="name">{$v['name']}</span>
                                     <!--{/if}-->
                                     </div>
                                     <div class="info_col">
-                                        <span class="f_left gray">{$v['photos_num']}张照片</span>
+                                        <span class="f_left gray">{lang photos_num|`$v['photos_num']`}</span>
                                         <span class="f_right gray"><span class="i_greenicn sprite"></span>{echo enum_priv_type($v['priv_type'])}</span>
                                     </div>
                                 </div>
@@ -74,7 +74,7 @@
                                 {$pagestr}
                             </div>
                             <div class="f_right">
-                                <!--{if $loggedin}--><label><input type="checkbox" value="1" onclick="Madmin.check_all('.selitem',this.checked)" />全选 <span class="i_trash_sp sprite"></span></label> <a href="javascript:void(0)" onclick="Madmin.checked_action('.selitem','{link ctl=albums act=confirm_delete_batch}');">选中项移入回收站</a><!--{/if}-->
+                                <!--{if $loggedin}--><label><input type="checkbox" value="1" onclick="Madmin.check_all('.selitem',this.checked)" />{lang sel_all} <span class="i_trash_sp sprite"></span></label> <a href="javascript:void(0)" onclick="Madmin.checked_action('.selitem','{link ctl=albums act=confirm_delete_batch}');">{lang delete_selected}</a><!--{/if}-->
                             </div>
                             <div class="clear"></div>
                         </div>
@@ -85,7 +85,7 @@
                             <div class="pic no_album_search"></div>
                             <div class="data_msg">
                                 <div>{lang no_album_search_notice}</div >
-                                <div class="button"><a href="{link ctl=albums}">查看所有相册</a></div>
+                                <div class="button"><a href="{link ctl=albums}">{lang view_all_album}</a></div>
                             </div>
                             <div class="clear"></div>
                             <!--{else}-->
@@ -96,7 +96,7 @@
                                 <div class="button"><div class="bigbutton"><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=albums act=create}',true);"><span>{lang create_new_album}</span></a></div></div>
                                 <!--{else}-->
                                 <div>{lang no_album_notice_notlogin}</div>
-                                <div class="button"><a href="javascript:void(0);" onclick="Mui.box.show('{link ctl=users act=login}',true);">登录后创建</a></div>
+                                <div class="button"><a href="javascript:void(0);" onclick="Mui.box.show('{link ctl=users act=login}',true);">{lang create_after_login}</a></div>
                                 <!--{/if}-->
                             </div>
                             <div class="clear"></div>
