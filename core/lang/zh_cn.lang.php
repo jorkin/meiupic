@@ -30,6 +30,7 @@ $language   =   array(
 'auto'              =>  '自动',
 'delete'            =>  '删除',
 'cancel'            =>  '取消',
+'copy'              =>  '复制',
 'not_authorized'    =>  '您没有权限，需要登录！',   
 'sort'              =>  '排序',
 'show_nums_per_page'=>  '显示数',

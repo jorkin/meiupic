@@ -44,7 +44,7 @@ class utility_mdl extends modelfactory{
                 if(isset($tmp['GIF Read Support'])){
                     $gd_rst[] = 'gif';
                 }
-                if(isset($tmp['JPEG Support'])){
+                if(isset($tmp['JPEG Support']) || isset($tmp['JPG Support'])){
                     $gd_rst[] = 'jpg';
                 }
                 if(isset($tmp['PNG Support'])){

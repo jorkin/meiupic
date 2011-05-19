@@ -2,6 +2,7 @@
 $theme_name = '默认风格';
 $theme_copyright = 'Designed by <a href="http://www.meiu.cn/" target="_blank">Meiu Studio</a>';
 $theme_config = array(
+    'style'     =>  'blue',
     'bodybg'    => '#F4F4F4',
     'link_color' => '#1d64ad',
     'link_hover_color' => '#ffffff',

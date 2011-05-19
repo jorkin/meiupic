@@ -21,7 +21,7 @@ class plugin_copyimg extends plugin{
     
     function photo_list_page_icon($str,$id){
         if($this->loggedin){
-            return $str.'<li><a href="javascript:void(0);" onclick="Mui.bubble.show(this,\''.site_link('utils','copyurl',array('id'=>$id)).'\',true);Mui.bubble.resize(320)" title="拷贝地址到剪切板"><span class="i_copyclip sprite"></span></a></li>';
+            return $str.'<li><a href="javascript:void(0);" onclick="Mui.bubble.show(this,\''.site_link('utils','copyurl',array('id'=>$id)).'\',true);Mui.bubble.resize(320)" title="'.lang('copyimg:copy_to_clipboard').'"><span class="i_copyclip sprite"></span></a></li>';
         }else{
             return $str;
         }
@@ -34,12 +34,14 @@ class plugin_copyimg extends plugin{
     }
     
     function html_head($str){
-            $head_str = <<<eot
+        global $base_path;
+        $head_str = <<<eot
+<script type="text/javascript" src="{$base_path}plugins/copyimg/ZeroClipboard.js"></script>
 <script>
     function show_copy_notice(o,notice){
         var pos = $(o).offset();
         var width = $(o).width();
-        var left = pos.left+width-140;
+        var left = pos.left+width-80;
         var top = pos.top;
         
         if($("#copy_notice").length == 0){
@@ -48,24 +50,13 @@ class plugin_copyimg extends plugin{
         $("#copy_notice").css({"left":left,"top":top});
         $("#copy_notice").html(notice).show().animate({opacity: 1.0}, 1000).fadeOut();
     }
-    
-    function copy_to_clipboard(o,str){
-        if($.browser.msie) {
-            window.clipboardData.setData('text',str);
-            show_copy_notice(o,"拷贝成功！");
-            setTimeout(function(){
-                Mui.bubble.close();
-            },1300)
-        }else{
-            show_copy_notice(o,"您的浏览器不支持自动复制！");
-        }
-    }
 </script>
 <style>
     #copy_notice{
         position:absolute;
-        z-index:1003;
+        z-index:1103;
         height:15px;
+        width:80px;
         padding:5px;
         border:1px solid #eee;
         background:#FFFFEE;
