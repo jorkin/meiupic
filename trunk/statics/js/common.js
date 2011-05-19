@@ -83,6 +83,7 @@ var Mui = {
 
 Mui.box = {
     callback : null,
+    onClose : null,
     show : function(url,modal){
         Mui.bubble.close();
         
@@ -133,6 +134,10 @@ Mui.box = {
         }
         $('div').remove('.modaldiv');
         this.callback = null;
+        if(this.onClose){
+            this.onClose()
+            this.onClose = null;
+        }
     },
     alert: function(title,content,btn_name){
         Mui.box.setData('<div class="box_title titbg">'+
@@ -145,6 +150,7 @@ Mui.box = {
 
 Mui.bubble = {
     callback : null,
+    onClose: null,
     show : function(obj,url,modal){
         if( $('#meiu_float_bubble').length == 0 ){
             $('body').prepend('<div id="meiu_float_bubble"><div class="arrow"></div><div class="bubble_container"></div></div>');
@@ -191,6 +197,10 @@ Mui.bubble = {
         }
         $('div').remove('.modaldiv');
         this.callback = null;
+        if(this.onClose){
+            this.onClose()
+            this.onClose = null;
+        }
     }
 };
 
