@@ -14,7 +14,7 @@
                 {$v['content']}
             </div>
             <div class="ctlbtn">
-                <a href="javascript:void(0);" onclick="reply_comment(this,'{link ctl=comments act=reply id=$v['id']}');">回复</a>  <!--{if $loggedin}--><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=comments act=confirm_delete id=$v['id']}',true)">删除</a><!--{/if}-->
+                <a href="javascript:void(0);" onclick="reply_comment(this,'{link ctl=comments act=reply id=$v['id']}');">{lang reply}</a>  <!--{if $loggedin}--><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=comments act=confirm_delete id=$v['id']}',true)">{lang delete}</a><!--{/if}-->
             </div>
             <!--{loop $v['sub_comments'] $vv}-->
             <div class="cmt_item bdwt sub">
@@ -26,13 +26,13 @@
                         {echo date('Y-m-d H:i:s',$vv['post_time'])}
                     </span>
                     <div class="tt">
-                        <span class="title_c">{$vv['author']}</span> 回复 <span class="title_c">{$vv['reply_author']}</span>
+                        <span class="title_c">{$vv['author']}</span> {lang reply} <span class="title_c">{$vv['reply_author']}</span>
                     </div>
                     <div class="cnt">
                         {$vv['content']}
                     </div>
                     <div class="ctlbtn">
-                        <a href="javascript:void(0);" onclick="reply_comment(this,'{link ctl=comments act=reply id=$vv['id']}');">回复</a>  <!--{if $loggedin}--><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=comments act=confirm_delete id=$vv['id']}',true)">删除</a><!--{/if}-->
+                        <a href="javascript:void(0);" onclick="reply_comment(this,'{link ctl=comments act=reply id=$vv['id']}');">{lang reply}</a>  <!--{if $loggedin}--><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=comments act=confirm_delete id=$vv['id']}',true)">{lang delete}</a><!--{/if}-->
                     </div>
                 </div>
             </div>
@@ -42,5 +42,5 @@
     <!--{/loop}-->
     {if $comments_total_page > $comments_current_page}
     {php $page=$comments_current_page+1;}
-    <div class="more_comments" onclick="load_comments('{link ctl=comments act=more ref_id=$ref_id type=$comments_type page=$page}')">载入更多评论 ({$comments_current_page}/{$comments_total_page})</div>
+    <div class="more_comments" onclick="load_comments('{link ctl=comments act=more ref_id=$ref_id type=$comments_type page=$page}')">{lang load_more_comments} ({$comments_current_page}/{$comments_total_page})</div>
     {/if}

@@ -309,6 +309,10 @@ $language = array(
 'delete_comment_success' => '成功刪除評論!',
 'delete_comment_failed' => '刪除評論失敗!',
 
+'confirm_delete_comments' => '確定要刪除這條評論麼？刪除後無法恢復！ ',
+'reply' => '回复',
+'load_more_comments' => '載入更多評論',
+
 //trash
 'recycle' => '回收站',
 'real_delete_success' => '徹底刪除成功！ ',

@@ -309,6 +309,11 @@ $language   =   array(
 'delete_comment_success' => '成功删除评论!',
 'delete_comment_failed' => '删除评论失败!',
 
+'confirm_delete_comments'   =>  '确定要删除这条评论么？删除后无法恢复！',
+'reply'             =>  '回复',
+'load_more_comments'    =>  '载入更多评论',
+
+
 //trash
 'recycle'       =>  '回收站',
 'real_delete_success'   =>  '彻底删除成功！',
