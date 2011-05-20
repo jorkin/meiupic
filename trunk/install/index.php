@@ -23,7 +23,23 @@ if (floor(PHP_VERSION) < 5){
 require_once(COREDIR.'loader.php');
 require_once(INCDIR.'plugin.php');
 require_once(INSDIR.'include/install_var.php');
-require_once(INSDIR.'include/lang.php');
+
+if(r('lang')){
+    setCookie('install_lang',r('lang'));
+    define('INS_LANG',r('lang'));
+}else{
+    if(isset($_COOKIE['install_lang'])){
+        define('INS_LANG',$_COOKIE['install_lang']);
+    }else{
+        define('INS_LANG','zh_cn');
+    }
+}
+if(file_exists(INSDIR.'lang/'.INS_LANG.'.lang.php')){
+    require_once(INSDIR.'lang/'.INS_LANG.'.lang.php');
+}else{
+    require_once(INSDIR.'lang/zh_cn.lang.php');
+}
+
 
 $allow_method = array('license', 'env','db_init', 'feedback', 'complete');
 
@@ -247,6 +263,8 @@ if($method == 'license'){
         $mdl_setting->set_conf('system.installed_time',time());
         $mdl_setting->set_conf('system.gravatar_url','http://www.gravatar.com/avatar.php?rating=G&size=48&default='.$siteurl.'statics/img/no_avatar.jpg&gravatar_id={idstring}');
         $mdl_setting->set_conf('system.show_process_info',false);
+        $mdl_setting->set_conf('system.language',INS_LANG);
+        $mdl_setting->set_conf('system.timezone',8);
         $mdl_setting->set_conf('site.title',$sitename);
         $mdl_setting->set_conf('site.url',$siteurl);
         $mdl_setting->set_conf('site.footer','');
