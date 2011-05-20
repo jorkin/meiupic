@@ -7,13 +7,13 @@
             {echo date('Y-m-d H:i:s',$info['post_time'])}
         </span>
         <div class="tt">
-            <span class="title_c">{$info['author']}</span> 回复 <span class="title_c">{$info['reply_author']}</span>
+            <span class="title_c">{$info['author']}</span> {lang reply} <span class="title_c">{$info['reply_author']}</span>
         </div>
         <div class="cnt">
             {$info['content']}
         </div>
         <div class="ctlbtn">
-            <a href="javascript:void(0);" onclick="reply_comment(this,'{link ctl=comments act=reply id=$info['id']}');">回复</a> <!--{if $loggedin}--><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=comments act=confirm_delete id=$info['id']}',true)">删除</a><!--{/if}-->
+            <a href="javascript:void(0);" onclick="reply_comment(this,'{link ctl=comments act=reply id=$info['id']}');">{lang reply}</a> <!--{if $loggedin}--><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=comments act=confirm_delete id=$info['id']}',true)">{lang delete}</a><!--{/if}-->
         </div>
     </div>
 </div>

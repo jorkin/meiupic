@@ -34,6 +34,7 @@ if(r('lang')){
         define('INS_LANG','zh_cn');
     }
 }
+
 if(file_exists(INSDIR.'lang/'.INS_LANG.'.lang.php')){
     require_once(INSDIR.'lang/'.INS_LANG.'.lang.php');
 }else{
