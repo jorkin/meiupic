@@ -6,12 +6,7 @@
             <td class="left">
                 <div class="mainbody">
                     <div class="col titbg">
-                        <h4 class="f_left"><a href="{link ctl=setting}">基本设置</a></h4>
-                        <h4 class="f_left"><a href="{link ctl=setting act=upload}">上传设置</a></h4>
-                        <h4 class="f_left"><a href="{link ctl=setting act=watermark}">水印设置</a></h4>
-                        <h1 class="f_left">风格管理</h1>
-                        <h4 class="f_left"><a href="{link ctl=setting act=plugins}">插件管理</a></h4>
-                        <h4 class="f_left"><a href="{link ctl=setting act=info}">系统信息</a></h4>
+                        {template setting/setting_menu}
                         <div class="rmenu f_right">
                         </div>
                     </div>
@@ -34,7 +29,7 @@
                                         {$theme['copyright']}
                                         </div>
                                         <div class="ctl">
-                                            {if $theme['withconfig']}<a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=setting act=theme_edit theme=$theme['dir']}',true);">编辑</a>{/if} {if $theme['dir']!='default'}<a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=setting act=theme_confirm_remove theme=$theme['dir']}',true);">删除</a>{/if} {if $theme['iscurrent']}<span class="current">启用中</span>{else}  <a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=setting act=theme_set theme=$theme['dir']}',true);">启用</a>{/if}
+                                            {if $theme['withconfig']}<a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=setting act=theme_edit theme=$theme['dir']}',true);">{lang edit_style}</a>{/if} {if $theme['dir']!='default'}<a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=setting act=theme_confirm_remove theme=$theme['dir']}',true);">{lang delete}</a>{/if} {if $theme['iscurrent']}<span class="current">{lang using}</span>{else}  <a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=setting act=theme_set theme=$theme['dir']}',true);">{lang enable}</a>{/if}
                                         </div>
                                     </div>
                                 {/loop}

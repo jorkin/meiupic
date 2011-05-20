@@ -7,7 +7,6 @@
  * @copyright : (c)2011 meiu.cn lingter@gmail.com
  */
 error_reporting(E_ALL);
-define('LANGSET','zh_cn');
 
 @ini_set('memory_limit', '128M');
 
