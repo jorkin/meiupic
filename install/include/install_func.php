@@ -38,7 +38,7 @@ function show_header() {
     define('SHOW_HEADER', TRUE);
     global $step;
     $version = MPIC_VERSION;
-    $install_lang = lang(INSTALL_LANG);
+    $install_lang = lang('lang_name');
     $title = lang('title_install');
     echo <<<EOT
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -486,9 +486,17 @@ function show_license(){
     $license = str_replace('  ', '&nbsp; ', lang('license'));
     $lang_agreement_yes = lang('agreement_yes');
     $lang_agreement_no = lang('agreement_no');
+    $langs = loader::model('utility')->get_languages();
+    $lang_select = '<select name="language" onchange="if(this.value) window.location.href=\'?lang=\'+this.value;"><option value=\'\'>Please Select</option>';
+    foreach($langs as $v){
+        $lang_select .='<option value="'.$v['name'].'" '.(INS_LANG==$v['name']?'selected="selected"':'').'>'.$v['lang_name'].'</option>';
+    }
+    $lang_select .= '</select>';
+    
     echo <<<EOT
 </div>
 <div class="main" style="margin-top:-123px;">
+    <div style="margin:10px 0;">Select the installation language: $lang_select</div>
     <div class="licenseblock">$license</div>
     <div class="btnbox marginbot">
         <form method="get" autocomplete="off" action="index.php">
