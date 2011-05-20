@@ -166,9 +166,14 @@ function init_defines(){
         define('IMG_ENGINE','gd');
     }
     
-    timezone_set($Config['timeoffset']);
     $setting =& loader::model('setting');
     define('GRAVATAR_URL',$setting->get_conf('system.gravatar_url'));
+    if(!defined('LANGSET'))
+        define('LANGSET',$setting->get_conf('system.language','zh_cn'));
+    if(!defined('TIMEZONE'))
+        define('TIMEZONE',$setting->get_conf('system.timezone',8.00));
+    
+    timezone_set(TIMEZONE);
 }
 
 function init_template(){
@@ -197,12 +202,15 @@ function init_template(){
 function meiu_bootstrap(){
     global $base_url, $base_path, $base_root, $language,$templatelangs;
     timer_start('page');
-    require_once(COREDIR.'lang'.DIRECTORY_SEPARATOR.LANGSET.'.lang.php');
     require_once(COREDIR.'loader.php');
     require_once(INCDIR.'functions.php');
     
     unset_globals();
     init_defines();
+    if(file_exists(COREDIR.'lang'.DIRECTORY_SEPARATOR.LANGSET.'.lang.php')){
+        require_once(COREDIR.'lang'.DIRECTORY_SEPARATOR.LANGSET.'.lang.php');
+    }
+    
     boot_init();
     init_template();
     $templatelangs=array();

@@ -20,7 +20,7 @@ class setting_ctl extends pagecore{
         
         
         
-        $page_title = '基本设置 - 系统设置 - '.$this->setting->get_conf('site.title');
+        $page_title = lang('basic_setting').' - '.lang('system_setting').' - '.$this->setting->get_conf('site.title');
         $page_keywords = $this->setting->get_conf('site.keywords');
         $page_description = $this->setting->get_conf('site.description');
         
@@ -40,10 +40,10 @@ class setting_ctl extends pagecore{
         $gravatar_url = safe_convert($this->getPost('gravatar_url'));
         
         if($site['title'] == ''){
-            form_ajax_failed('box','站点名称不能为空！');
+            form_ajax_failed('box',lang('empty_site_name'));
         }
         if($site['url'] == ''){
-            form_ajax_failed('box','相册URL不能为空！');
+            form_ajax_failed('box',lang('empty_site_url'));
         }
         $this->setting->set_conf('site.title',$site['title']);
         $this->setting->set_conf('site.url',$site['url']);
@@ -62,7 +62,7 @@ class setting_ctl extends pagecore{
         }else{
             $this->setting->set_conf('system.show_process_info',false);
         }
-        form_ajax_success('box','保存设置成功！',null,0.5,$_SERVER['HTTP_REFERER']);
+        form_ajax_success('box',lang('save_setting_success'),null,0.5,$_SERVER['HTTP_REFERER']);
     }
     
     function upload(){
@@ -71,7 +71,7 @@ class setting_ctl extends pagecore{
         $upload = $this->setting->get_conf('upload');
         $this->output->set('upload',$upload);
         
-        $page_title = '上传设置 - 系统设置 - '.$this->setting->get_conf('site.title');
+        $page_title = lang('upload_setting').' - '.lang('system_setting').' - '.$this->setting->get_conf('site.title');
         $page_keywords = $this->setting->get_conf('site.keywords');
         $page_description = $this->setting->get_conf('site.description');
         
@@ -86,13 +86,13 @@ class setting_ctl extends pagecore{
         $enable_pre_resize = $this->getPost('enable_pre_resize');
         if($enable_pre_resize){
             if($upload['resize_width'] == '' || !is_numeric($upload['resize_width'])){
-                form_ajax_failed('box','图片的最大宽度不能为空，并且必须为数字！');
+                form_ajax_failed('box',lang('resize_width_error'));
             }
             if($upload['resize_height'] == '' || !is_numeric($upload['resize_height'])){
-                form_ajax_failed('box','图片的最大高度不能为空，并且必须为数字！');
+                form_ajax_failed('box',lang('resize_height_error'));
             }
             if($upload['resize_quality'] < 1 || $upload['resize_quality'] > 100){
-                form_ajax_failed('box','图片质量必须介于1-100！');
+                form_ajax_failed('box',lang('resize_quality_error'));
             }
             $this->setting->set_conf('upload.resize_width',$upload['resize_width']);
             $this->setting->set_conf('upload.resize_height',$upload['resize_height']);
@@ -103,7 +103,7 @@ class setting_ctl extends pagecore{
         }
         
         $this->setting->set_conf('upload.allow_size',$upload['allow_size']);
-        form_ajax_success('box','保存设置成功！',null,0.5,$_SERVER['HTTP_REFERER']);
+        form_ajax_success('box',lang('save_setting_success'),null,0.5,$_SERVER['HTTP_REFERER']);
     }
     
     function watermark(){
@@ -115,7 +115,7 @@ class setting_ctl extends pagecore{
         $watermark = $this->setting->get_conf('watermark');
         $this->output->set('watermark',$watermark);
         
-        $page_title = '水印设置 - 系统设置 - '.$this->setting->get_conf('site.title');
+        $page_title = lang('watermark_setting').' - '.lang('system_setting').' - '.$this->setting->get_conf('site.title');
         $page_keywords = $this->setting->get_conf('site.keywords');
         $page_description = $this->setting->get_conf('site.description');
         
@@ -135,32 +135,32 @@ class setting_ctl extends pagecore{
         
         if($watermark_type == 1){
             if($watermark['water_mark_image'] == ''){
-                form_ajax_failed('box','图片水印地址不能为空！');
+                form_ajax_failed('box',lang('water_mark_image_error'));
             }
             if($watermark['water_mark_opacity'] < 0 || $watermark['water_mark_opacity'] > 100){
-                form_ajax_failed('box','水印透明度必须介于0-100！');
+                form_ajax_failed('box',lang('water_mark_opacity_error'));
             }
             $this->setting->set_conf('watermark.water_mark_image',$watermark['water_mark_image']);
             $this->setting->set_conf('watermark.water_mark_opacity',$watermark['water_mark_opacity']);
             $this->setting->set_conf('watermark.water_mark_pos',$watermark['water_mark_pos']);
         }elseif($watermark_type == 2){
             if($watermark['water_mark_string'] == ''){
-                form_ajax_failed('box','水印文字内容不能为空！');
+                form_ajax_failed('box',lang('water_mark_string_error'));
             }
             if($watermark['water_mark_fontsize'] < 1){
-                form_ajax_failed('box','水印文字大小必须大于1！');
+                form_ajax_failed('box',lang('water_mark_fontsize_error'));
             }
             if(!check_color($watermark['water_mark_color'])){
-                form_ajax_failed('box','水印文字颜色不是有效的颜色！');
+                form_ajax_failed('box',lang('water_mark_color_error'));
             }
             if(!isset($watermark['water_mark_font']) || !$watermark['water_mark_font']){
-                form_ajax_failed('box','请选择水印文字字体！');
+                form_ajax_failed('box',lang('water_mark_font_error'));
             }
             if($watermark['water_mark_angle'] < 0 || $watermark['water_mark_angle'] > 360){
-                form_ajax_failed('box','水印文字角度必须在0-360度之间！');
+                form_ajax_failed('box',lang('water_mark_angle_error'));
             }
             if($watermark['water_mark_opacity'] < 0 || $watermark['water_mark_opacity'] > 100){
-                form_ajax_failed('box','水印透明度必须介于0-100！');
+                form_ajax_failed('box',lang('water_mark_opacity_error'));
             }
             $this->setting->set_conf('watermark.water_mark_string',$watermark['water_mark_string']);
             $this->setting->set_conf('watermark.water_mark_fontsize',$watermark['water_mark_fontsize']);
@@ -170,7 +170,7 @@ class setting_ctl extends pagecore{
             $this->setting->set_conf('watermark.water_mark_opacity',$watermark['water_mark_opacity']);
             $this->setting->set_conf('watermark.water_mark_pos',$watermark['water_mark_pos']);
         }
-        form_ajax_success('box','保存设置成功！',null,0.5,$_SERVER['HTTP_REFERER']);
+        form_ajax_success('box',lang('save_setting_success'),null,0.5,$_SERVER['HTTP_REFERER']);
     }
     
     function fileupload(){
@@ -178,9 +178,9 @@ class setting_ctl extends pagecore{
         $msg = "";
         $fileElementName = 'fileToUpload';
         if(!empty($_FILES[$fileElementName]['error'])){
-            $error = '上传失败！';
+            $error = lang('upload_error');
         }elseif(empty($_FILES[$fileElementName]['tmp_name']) || $_FILES[$fileElementName]['tmp_name'] == 'none'){
-            $error = '您没有选择文件上传！';
+            $error = lang('need_sel_upload_file');
         }else{
             $path_dir = 'data/watermark';
             if(!file_exists(ROOTDIR.$path_dir)){
@@ -192,7 +192,7 @@ class setting_ctl extends pagecore{
             if(@move_uploaded_file($_FILES[$fileElementName]['tmp_name'],ROOTDIR.$path)){
                 $msg = $path;
             }else{
-                $error = '上传失败！';
+                $error = lang('upload_error');
             }
         }
         
@@ -207,7 +207,7 @@ class setting_ctl extends pagecore{
         $themes = $mdl_theme->all_themes();
         $this->output->set('themes',$themes);
 
-        $page_title = '风格设置 - 系统设置 - '.$this->setting->get_conf('site.title');
+        $page_title = lang('theme_setting').' - '.lang('system_setting').' - '.$this->setting->get_conf('site.title');
         $page_keywords = $this->setting->get_conf('site.keywords');
         $page_description = $this->setting->get_conf('site.description');
 
@@ -223,7 +223,7 @@ class setting_ctl extends pagecore{
         $theme = $this->getGet('theme');
         $this->setting->set_conf('system.current_theme',$theme);
         
-        ajax_box('设置成功！',null,0.5,$_SERVER['HTTP_REFERER']);
+        ajax_box(lang('enable_success'),null,0.5,$_SERVER['HTTP_REFERER']);
     }
     
     function theme_edit(){
@@ -231,6 +231,11 @@ class setting_ctl extends pagecore{
         
         $theme = $this->getGet('theme');
         $this->output->set('theme',$theme);
+        $theme_lang_file = ROOTDIR.'themes/'.$theme.'/lang/'.LANGSET.'.lang.php';
+        if(file_exists($theme_lang_file)){
+            global $language;
+            @include($theme_lang_file);
+        }
         
         $_config =  $this->setting->get_conf('theme.'.$theme);
         
@@ -249,7 +254,7 @@ class setting_ctl extends pagecore{
         $config = $this->getPosts();
         
         $this->setting->set_conf('theme.'.$theme,$config);
-        form_ajax_success('box','保存设置成功！',null,0.5,$_SERVER['HTTP_REFERER']);
+        form_ajax_success('box',lang('save_setting_success'),null,0.5,$_SERVER['HTTP_REFERER']);
     }
     
     function theme_confirm_remove(){
@@ -265,20 +270,20 @@ class setting_ctl extends pagecore{
         
         $theme = $this->getGet('theme');
         if($theme == ''){
-            ajax_box('请确认要删除的风格是否存在！');
+            ajax_box(lang('empty_theme'));
         }
         if($theme == 'default'){
-            ajax_box('默认风格不能删除！');
+            ajax_box(lang('can_not_delete_default'));
         }
         $current_theme = $this->setting->get_conf('system.current_theme');
         if($current_theme == $theme){
-            ajax_box('当前风格正在使用中，无法删除！');
+            ajax_box(lang('theme_is_using'));
         }
         
         if(loader::model('theme')->remove($theme)){
-            ajax_box('删除主题成功！',null,0.5,$_SERVER['HTTP_REFERER']);
+            ajax_box(lang('delete_theme_success'),null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
-            ajax_box('删除主题失败！');
+            ajax_box(lang('delete_theme_failed'));
         }
         
     }
@@ -289,7 +294,7 @@ class setting_ctl extends pagecore{
         $plugins = $this->plugin->get_plugins();
         $this->output->set('plugins',$plugins);
         
-        $page_title = '插件管理 - 系统设置 - '.$this->setting->get_conf('site.title');
+        $page_title = lang('plugin_setting').' - '.lang('system_setting').' - '.$this->setting->get_conf('site.title');
         $page_keywords = $this->setting->get_conf('site.keywords');
         $page_description = $this->setting->get_conf('site.description');
         $Config = loader::config();
@@ -304,9 +309,9 @@ class setting_ctl extends pagecore{
         
         $plugin = $this->getGet('plugin');
         if($this->plugin->install_plugin($plugin)){
-            ajax_box('安装插件成功！',null,0.5,$_SERVER['HTTP_REFERER']);
+            ajax_box(lang('install_plugin_success'),null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
-            ajax_box('安装插件失败！');
+            ajax_box(lang('install_plugin_failed'));
         }
     }
     
@@ -315,9 +320,9 @@ class setting_ctl extends pagecore{
         
         $plugin = $this->getGet('plugin');
         if($this->plugin->enable_plugin($plugin)){
-            ajax_box('启用插件成功！',null,0.5,$_SERVER['HTTP_REFERER']);
+            ajax_box(lang('enable_plugin_success'),null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
-            ajax_box('启用插件失败！');
+            ajax_box(lang('enable_plugin_failed'));
         }
     }
     
@@ -326,9 +331,9 @@ class setting_ctl extends pagecore{
         
         $plugin = $this->getGet('plugin');
         if($this->plugin->disable_plugin($plugin)){
-            ajax_box('停用插件成功！',null,0.5,$_SERVER['HTTP_REFERER']);
+            ajax_box(lang('stop_plugin_success'),null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
-            ajax_box('停用插件失败！');
+            ajax_box(lang('stop_plugin_failed'));
         }
     }
     
@@ -337,9 +342,9 @@ class setting_ctl extends pagecore{
         
         $plugin = $this->getGet('plugin');
         if($this->plugin->remove_plugin($plugin)){
-            ajax_box('删除插件成功！',null,0.5,$_SERVER['HTTP_REFERER']);
+            ajax_box(lang('remove_plugin_success'),null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
-            ajax_box('删除插件失败！');
+            ajax_box(lang('remove_plugin_failed'));
         }
     }
     
@@ -365,9 +370,9 @@ class setting_ctl extends pagecore{
         $plugin = $this->getGet('plugin');
         $config = $this->getPosts();
         if($this->plugin->save_config($plugin,$config)){
-            form_ajax_success('box','保存设置成功！',null,0.5,$_SERVER['HTTP_REFERER']);
+            form_ajax_success('box',lang('save_setting_success'),null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
-            form_ajax_success('text','保存设置失败！',null,0.5,$_SERVER['HTTP_REFERER']);
+            form_ajax_success('text',lang('save_setting_failed'),null,0.5,$_SERVER['HTTP_REFERER']);
         }
         
     }
@@ -378,7 +383,7 @@ class setting_ctl extends pagecore{
         $this->output->set('info',$info);
         $size = dirsize(ROOTDIR.'cache');
         $this->output->set('cache_size',bytes2u($size));
-        $page_title = '系统信息 - 系统设置 - '.$this->setting->get_conf('site.title');
+        $page_title = lang('system_info').' - '.lang('system_setting').' - '.$this->setting->get_conf('site.title');
         $page_keywords = $this->setting->get_conf('site.keywords');
         $page_description = $this->setting->get_conf('site.description');
 
@@ -391,12 +396,49 @@ class setting_ctl extends pagecore{
         dir_clear(ROOTDIR.'cache/templates');
         dir_clear(ROOTDIR.'cache/tmp');
         
-        ajax_box('清空缓存成功！',null,0.5,$_SERVER['HTTP_REFERER']);
+        ajax_box(lang('clear_cache_success'),null,0.5,$_SERVER['HTTP_REFERER']);
     }
     
     function phpinfo(){
         need_login('page');
         
         phpinfo();
+    }
+    
+    
+    function language(){
+        need_login('page');
+        
+        $langs = loader::model('utility')->get_languages();
+        $time_zones = loader::model('utility')->get_time_zones();
+        
+        $this->output->set('lang_list',$langs);
+        $this->output->set('time_zones',$time_zones);
+        $this->output->set('current_lang',$this->setting->get_conf('system.language'));
+        $this->output->set('current_timezone',$this->setting->get_conf('system.timezone'));
+        
+        $page_title = lang('language_and_locale').' - '.lang('system_setting').' - '.$this->setting->get_conf('site.title');
+        $page_keywords = $this->setting->get_conf('site.keywords');
+        $page_description = $this->setting->get_conf('site.description');
+        
+        $this->page_init($page_title,$page_keywords,$page_description);
+        $this->render();
+    }
+    
+    function save_language(){
+        need_login('ajax_box');
+        
+        $system = $this->getPost('system');
+        if($system['language'] == ''){
+            form_ajax_failed('box',lang('empty_langset'));
+        }
+        if($system['timezone'] == ''){
+            form_ajax_failed('box',lang('empty_timezone'));
+        }
+        
+        $this->setting->set_conf('system.language',$system['language']);
+        $this->setting->set_conf('system.timezone',$system['timezone']);
+        
+        form_ajax_success('box',lang('save_setting_success'),null,0.5,$_SERVER['HTTP_REFERER']);
     }
 }

@@ -6,12 +6,7 @@
             <td class="left">
                 <div class="mainbody">
                     <div class="col titbg">
-                        <h4 class="f_left"><a href="{link ctl=setting}">基本设置</a></h1>
-                        <h1 class="f_left">上传设置</h4>
-                        <h4 class="f_left"><a href="{link ctl=setting act=watermark}">水印设置</a></h4>
-                        <h4 class="f_left"><a href="{link ctl=setting act=themes}">风格管理</a></h4>
-                        <h4 class="f_left"><a href="{link ctl=setting act=plugins}">插件管理</a></h4>
-                        <h4 class="f_left"><a href="{link ctl=setting act=info}">系统信息</a></h4>
+                        {template setting/setting_menu}
                         <div class="rmenu f_right">
                         </div>
                     </div>
@@ -19,30 +14,30 @@
                             <div class="innerconetent">
                                 <form id="setting_upload_form" action="{link ctl=setting act=save_upload}" method="post" onsubmit="return false;">
                                     <div class="settingfield">
-                                        <div class="label">是否开启客户端预处理</div>
-                                        <div class="descinfo">启用此选项，在高级模式下会自动将大图片缩小，然后再上传，有利于大大减少网络传输，缩短上传时间。</div>
+                                        <div class="label">{lang enable_pre_resize_label}</div>
+                                        <div class="descinfo">{lang enable_pre_resize_tips}</div>
                                         <div class="input">
-                                            <label><input type="checkbox" id="enable_pre_resize" name="enable_pre_resize" value="1" onclick="switch_div(this,'pre_resize')" {if $upload['enable_pre_resize']}checked="checked"{/if} /> 开启</label>
+                                            <label><input type="checkbox" id="enable_pre_resize" name="enable_pre_resize" value="1" onclick="switch_div(this,'pre_resize')" {if $upload['enable_pre_resize']}checked="checked"{/if} /> {lang enable}</label>
                                         </div>
                                     </div>
                                     <div id="pre_resize">
                                     <div class="settingfield">
-                                        <div class="label">图片的最大宽度</div>
-                                        <div class="descinfo">客户端预处理图片的最大宽度</div>
+                                        <div class="label">{lang upload_resize_width_label}</div>
+                                        <div class="descinfo">{lang upload_resize_width_tips}</div>
                                         <div class="input">
                                             <input type="text" name="upload[resize_width]" class="settinginput iptw1" value="{$upload['resize_width']}" />
                                         </div>
                                     </div>
                                     <div class="settingfield">
-                                        <div class="label">图片的最大高度</div>
-                                        <div class="descinfo">客户端预处理图片的最大高度</div>
+                                        <div class="label">{lang upload_resize_height_label}</div>
+                                        <div class="descinfo">{lang upload_resize_height_tips}</div>
                                         <div class="input">
                                             <input type="text" name="upload[resize_height]" class="settinginput iptw1" value="{$upload['resize_height']}" />
                                         </div>
                                     </div>
                                     <div class="settingfield">
-                                        <div class="label">图片质量</div>
-                                        <div class="descinfo">客户端预处理图片的质量 1-100</div>
+                                        <div class="label">{lang upload_resize_quality_label}</div>
+                                        <div class="descinfo">{lang upload_resize_quality_tips}</div>
                                         <div class="input">
                                             <input type="text" name="upload[resize_quality]" class="settinginput iptw1" value="{$upload['resize_quality']}" />
                                         </div>
@@ -56,21 +51,21 @@
                                         }
                                     </script>
                                     <div class="settingfield">
-                                        <div class="label">允许上传的图片大小</div>
-                                        <div class="descinfo">请谨慎选择，如果空间服务商配置有限制，尺寸过大可能会导致系统瘫痪，高级上传不受影响</div>
+                                        <div class="label">{lang upload_allow_size_label}</div>
+                                        <div class="descinfo">{lang upload_allow_size_tips}</div>
                                         <div class="input">
                                              <select name="upload[allow_size]">
                                                  <option value="512K" {if $upload['allow_size']=='512K'}selected="selected"{/if}>512K</option>
                                                  <option value="1M" {if $upload['allow_size']=='1M'}selected="selected"{/if}>1M</option>
                                                  <option value="2M" {if $upload['allow_size']=='2M'}selected="selected"{/if}>2M</option>
                                                  <option value="5M" {if $upload['allow_size']=='5M'}selected="selected"{/if}>5M</option>
-                                                 <option value="0"  {if $upload['allow_size']=='0'}selected="selected"{/if}>无限制</option>
+                                                 <option value="0"  {if $upload['allow_size']=='0'}selected="selected"{/if}>{lang no_limit}</option>
                                              </select>
                                         </div>
                                     </div>
                                     
                                     <div class="ctl_button">
-                                        <input type="submit" name="submit" class="ylbtn" value="保存设置" onclick="Mui.form.sendPop('setting_upload_form')" />
+                                        <input type="submit" name="submit" class="ylbtn" value="{lang save_setting}" onclick="Mui.form.sendPop('setting_upload_form')" />
                                     </div>
                                 </form>
                             </div>

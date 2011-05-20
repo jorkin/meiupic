@@ -6,12 +6,7 @@
             <td class="left">
                 <div class="mainbody">
                     <div class="col titbg">
-                        <h1 class="f_left">基本设置</h1>
-                        <h4 class="f_left"><a href="{link ctl=setting act=upload}">上传设置</a></h4>
-                        <h4 class="f_left"><a href="{link ctl=setting act=watermark}">水印设置</a></h4>
-                        <h4 class="f_left"><a href="{link ctl=setting act=themes}">风格管理</a></h4>
-                        <h4 class="f_left"><a href="{link ctl=setting act=plugins}">插件管理</a></h4>
-                        <h4 class="f_left"><a href="{link ctl=setting act=info}">系统信息</a></h4>
+                        {template setting/setting_menu}
                         <div class="rmenu f_right">
                         </div>
                     </div>
@@ -19,64 +14,64 @@
                             <div class="innerconetent">
                                 <form id="setting_basic_form" action="{link ctl=setting act=save_basic}" method="post" onsubmit="return false;">
                                     <div class="settingfield">
-                                        <div class="label">站点名称</div>
-                                        <div class="descinfo">显示在每个页面的最顶端</div>
+                                        <div class="label">{lang site_title_label}</div>
+                                        <div class="descinfo">{lang site_title_tips}</div>
                                         <div class="input">
                                             <input type="text" name="site[title]" class="settinginput iptw3" value="{$site['title']}" />
                                         </div>
                                     </div>
                                     <div class="settingfield">
-                                        <div class="label">你的相册URL</div>
-                                        <div class="descinfo">图片地址时及超链接的前缀，请保留最后的"/"</div>
+                                        <div class="label">{lang site_url_label}</div>
+                                        <div class="descinfo">{lang site_url_tips}</div>
                                         <div class="input">
                                             <input type="text" name="site[url]" class="settinginput iptw3" value="{$site['url']}" />
                                         </div>
                                     </div>
                                     <div class="settingfield">
-                                        <div class="label">你的相册默认关键字</div>
-                                        <div class="descinfo">便于搜索引擎抓取，meta keywords</div>
+                                        <div class="label">{lang site_keywords_label}</div>
+                                        <div class="descinfo">{lang site_keywords_tips}</div>
                                         <div class="input">
                                             <input type="text" name="site[keywords]" class="settinginput iptw3" value="{$site['keywords']}" />
                                         </div>
                                     </div>
                                     <div class="settingfield">
-                                        <div class="label">你的相册描述</div>
-                                        <div class="descinfo">便于搜索引擎抓取，meta description</div>
+                                        <div class="label">{lang site_description_label}</div>
+                                        <div class="descinfo">{lang site_description_tips}</div>
                                         <div class="input">
                                             <textarea name="site[description]" class="settinginput iptw5 ipth1">{$site['description']}</textarea>
                                         </div>
                                     </div>
                                     <div class="settingfield">
-                                        <div class="label">页面底部代码</div>
-                                        <div class="descinfo">可以插入备案号，统计代码等，支持html</div>
+                                        <div class="label">{lang site_footer_label}</div>
+                                        <div class="descinfo">{lang site_footer_tips}</div>
                                         <div class="input">
                                             <textarea name="site[footer]" class="settinginput iptw5 ipth1">{$site['footer']}</textarea>
                                         </div>
                                     </div>
                                     <div class="settingfield">
-                                        <div class="label">显示页脚程序运行信息</div>
-                                        <div class="descinfo">包括页面执行时间和数据库请求次数</div>
+                                        <div class="label">{lang show_process_info_label}</div>
+                                        <div class="descinfo">{lang show_process_info_tips}</div>
                                         <div class="input">
-                                            <label><input type="checkbox" name="show_process_info" value="1" {if $show_process_info}checked="checked"{/if} /> 开启</label>
+                                            <label><input type="checkbox" name="show_process_info" value="1" {if $show_process_info}checked="checked"{/if} /> {lang enable}</label>
                                         </div>
                                     </div>
                                     
                                     <div class="settingfield">
-                                        <div class="label">是否允许评论</div>
-                                        <div class="descinfo">如果关闭此选项，用户无法对所有相册/照片进行评论</div>
+                                        <div class="label">{lang enable_comment_label}</div>
+                                        <div class="descinfo">{lang enable_comment_tips}</div>
                                         <div class="input">
-                                            <label><input type="checkbox" name="enable_comment" value="1" {if $enable_comment}checked="checked"{/if} /> 开启</label>
+                                            <label><input type="checkbox" name="enable_comment" value="1" {if $enable_comment}checked="checked"{/if} /> {lang enable}</label>
                                         </div>
                                     </div>
                                     <div class="settingfield">
-                                        <div class="label">Gravatar头像地址设置</div>
-                                        <div class="descinfo">系统将自动替换{idstring}为相应的gravatar_id</div>
+                                        <div class="label">{lang gravatar_url_label}</div>
+                                        <div class="descinfo">{lang gravatar_url_tips}</div>
                                         <div class="input">
                                             <input type="text" name="gravatar_url" class="settinginput iptw6" value="{$gravatar_url}" />
                                         </div>
                                     </div>
                                     <div class="ctl_button">
-                                        <input type="submit" name="submit" class="ylbtn" value="保存设置" onclick="Mui.form.sendPop('setting_basic_form')" />
+                                        <input type="submit" name="submit" class="ylbtn" value="{lang save_setting}" onclick="Mui.form.sendPop('setting_basic_form')" />
                                     </div>
                                 </form>
                             </div>

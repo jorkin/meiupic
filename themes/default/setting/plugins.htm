@@ -6,19 +6,14 @@
             <td class="left">
                 <div class="mainbody">
                     <div class="col titbg">
-                        <h4 class="f_left"><a href="{link ctl=setting}">基本设置</a></h4>
-                        <h4 class="f_left"><a href="{link ctl=setting act=upload}">上传设置</a></h4>
-                        <h4 class="f_left"><a href="{link ctl=setting act=watermark}">水印设置</a></h4>
-                        <h4 class="f_left"><a href="{link ctl=setting act=themes}">风格管理</a></h4>
-                        <h1 class="f_left">插件管理</h1>
-                        <h4 class="f_left"><a href="{link ctl=setting act=info}">系统信息</a></h4>
+                        {template setting/setting_menu}
                         <div class="rmenu f_right">
                         </div>
                     </div>
                     <div class="innercol">
                             <div class="innerconetent">
                                 {if $safemode}
-                                <div class="meiu_notice_div"><div class="failed">您当前处在安全模式，所有插件均未生效，若想使用插件请关闭安全模式！</div></div>
+                                <div class="meiu_notice_div"><div class="failed">{lang in_safe_mode}</div></div>
                                 {/if}
                                 
                                 {if $plugins}
@@ -26,13 +21,13 @@
                                     <table class="datalist">
                                         <thead>
                                         <tr>
-                                            <th>插件id</th>
-                                            <th>插件名</th>
-                                            <th>插件介绍</th>
-                                            <th>版本</th>
-                                            <th>开发者</th>
-                                            <th>状态</th>
-                                            <th>操作</th>
+                                            <th>{lang plugin_id}</th>
+                                            <th>{lang plugin_name}</th>
+                                            <th>{lang plugin_desc}</th>
+                                            <th>{lang version}</th>
+                                            <th>{lang developer}</th>
+                                            <th>{lang status}</th>
+                                            <th>{lang operate}</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -44,22 +39,24 @@
                                             <td>{$v['local_ver']}</td>
                                             <td><a href="{$v['author_url']}" target="_blank">{$v['author_name']}</a></td>
                                             <td>{if $v['installed']}
-                                                {if $v['available']}已启用{else}未启用{/if}
+                                                {if $v['available']}
+                                                {lang enabled}
+                                                {else}{lang disabled}{/if}
                                                 {else}
-                                                未安装
+                                                {lang not_installed}
                                                 {/if} </td>
                                             <td>{if $v['installed']}
                                                     {if $v['available']}
-                                                    <a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=setting act=plugin_disable plugin=$v['plugin_id']}')">停用</a>
+                                                    <a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=setting act=plugin_disable plugin=$v['plugin_id']}')">{lang disable}</a>
                                                     {else}
-                                                    <a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=setting act=plugin_enable plugin=$v['plugin_id']}')">启用</a> <a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=setting act=plugin_remove plugin=$v['plugin_id']}')">删除</a>
+                                                    <a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=setting act=plugin_enable plugin=$v['plugin_id']}')">{lang enable}</a> <a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=setting act=plugin_remove plugin=$v['plugin_id']}')">{lang delete}</a>
                                                     {/if}
                                                     
                                                     {if $v['hasconfig']}
-                                                    <a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=setting act=plugin_config plugin=$v['plugin_id']}',true)">配置</a>
+                                                    <a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=setting act=plugin_config plugin=$v['plugin_id']}',true)">{lang config}</a>
                                                     {/if}
                                                 {else}
-                                                <a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=setting act=plugin_install plugin=$v['plugin_id']}')">安装</a>
+                                                <a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=setting act=plugin_install plugin=$v['plugin_id']}')">{lang install}</a>
                                                 {/if}</td>
                                         </tr>
                                         {/loop}
@@ -67,7 +64,7 @@
                                     </table>
                                 </div>
                                 {else}
-                                没有任何可用的插件！
+                                {lang no_plugins}
                                 {/if}
                             </div>
                     </div>
