@@ -28,7 +28,7 @@ if(r('lang')){
     setCookie('install_lang',r('lang'));
     define('INS_LANG',r('lang'));
 }else{
-    if(isset($_COOKIE['install_lang'])){
+    if(isset($_COOKIE['install_lang']) && file_exists(COREDIR.'lang/'.$_COOKIE['install_lang'].'.lang.php')){
         define('INS_LANG',$_COOKIE['install_lang']);
     }else{
         define('INS_LANG','zh_cn');
@@ -39,7 +39,6 @@ if(file_exists(INSDIR.'lang/'.INS_LANG.'.lang.php')){
 }else{
     require_once(INSDIR.'lang/zh_cn.lang.php');
 }
-
 
 $allow_method = array('license', 'env','db_init', 'feedback', 'complete');
 
