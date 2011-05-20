@@ -2,8 +2,23 @@ $(function(){
     $('.gallary_item').hover(function(){
         $('.gallary_wrap .gallary_item').removeClass('sel_on');
         $(this).addClass('sel_on');
-    },
-    function(){});
+        var obj = this;
+        $(document).unbind('mousedown').bind("mousedown",function(e){
+            var popup = obj;
+            var e = e || window.event;
+            var target = e.target || e.srcElement;
+            while (target != document && target != popup 
+                && target != $('#meiu_float_bubble').get(0) 
+                && target != $('#meiu_float_box').get(0) 
+                && target != $('.modaldiv').get(0)
+                && target != $('.clipboard').get(0)) {
+                target = target.parentNode;
+            }
+            if (target == document) {
+                $('.gallary_wrap .gallary_item').removeClass('sel_on');
+            }
+        });
+    });
     
     $('.inline_edit').hover(function(){
         $(this).addClass('editbg');
@@ -21,7 +36,6 @@ Madmin.check_all = function(je,check){
     }
 }
 Madmin.checked_action = function(je,action_url){
-    $('.gallary_wrap .gallary_item').removeClass('sel_on');
     var check_vals = $(je+':checked');
     $.post(action_url,check_vals.serializeArray(),function(data) {
         Mui.box.setData(data,true);

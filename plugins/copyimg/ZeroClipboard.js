@@ -127,6 +127,7 @@ ZeroClipboard.Client.prototype = {
 		style.width = '' + box.width + 'px';
 		style.height = '' + box.height + 'px';
 		style.zIndex = zIndex;
+		this.div.className = 'clipboard';
 		
 		if (typeof(stylesToAdd) == 'object') {
 			for (addedStyle in stylesToAdd) {
