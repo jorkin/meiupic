@@ -477,6 +477,22 @@ function dir_clear($dir) {
     }
 }
 
+function get_languages(){
+    $lang_dir = COREDIR.'lang';
+    $languages = array();
+    if($directory = @dir($lang_dir)) {
+        while($entry = $directory->read()) {
+            $language = null;
+            if(preg_match('/^([A-Za-z0-9\_\-]+)\.lang\.php$/is',$entry,$matches)){
+                 $file = $lang_dir.'/'.$entry;
+                 $name = $matches[1];
+                 @include($file);
+                 $languages[] = array('name'=>$name ,'lang_name' => isset($language['lang_name'])?$language['lang_name']:$name);
+            }
+        }
+    }
+    return $languages;
+}
 
 function show_license(){
     global $self, $step;
@@ -486,7 +502,7 @@ function show_license(){
     $license = str_replace('  ', '&nbsp; ', lang('license'));
     $lang_agreement_yes = lang('agreement_yes');
     $lang_agreement_no = lang('agreement_no');
-    $langs = loader::model('utility')->get_languages();
+    $langs = get_languages();
     $lang_select = '<select name="language" onchange="if(this.value) window.location.href=\'?lang=\'+this.value;"><option value=\'\'>Please Select</option>';
     foreach($langs as $v){
         $lang_select .='<option value="'.$v['name'].'" '.(INS_LANG==$v['name']?'selected="selected"':'').'>'.$v['lang_name'].'</option>';
