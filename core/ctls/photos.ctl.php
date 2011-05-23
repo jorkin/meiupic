@@ -3,7 +3,6 @@
 class photos_ctl extends pagecore{
     
     function _init(){
-        $this->plugin =& loader::lib('plugin');
         $this->mdl_album = & loader::model('album');
         $this->mdl_photo = & loader::model('photo');
     }
@@ -17,7 +16,6 @@ class photos_ctl extends pagecore{
     }
     
     function normal(){
-        $page = $this->getGet('page',1);
         $search['name'] = $this->getRequest('sname');
         $search['album_id'] = $album_id = $this->getGet('aid');
         
@@ -42,9 +40,17 @@ class photos_ctl extends pagecore{
 
         $sort_setting = $this->_sort_setting();
         list($sort,$sort_list) =  get_sort_list($sort_setting,'photo','tu_desc');
-        
         list($pageset,$page_setting_str) = get_page_setting('photo');
+        
+        $page = $this->getGet('page',1);
         $this->mdl_photo->set_pageset($pageset);
+        $photos = $this->mdl_photo->get_all($page,$search,$sort);
+        
+        if(is_array($photos['ls'])){
+            foreach($photos['ls'] as $k=>$v){
+                $photos['ls'][$k]['photo_control_icons'] = $this->plugin->filter('photo_control_icons','',$v['album_id'],$v['id']);
+            }
+        }
         
         $view_type = '<div class="f_right selectlist viewtype">
         <span class="label">'.lang('view_type').':</span>
@@ -54,29 +60,24 @@ class photos_ctl extends pagecore{
         <li><a href="'.site_link('photos','slide',array('aid'=>$album_id)).'">'.lang('slide_mode').'</a></li>
         </ul>
         </div>';
-        
-        
-        
-        $photos = $this->mdl_photo->get_all($page,$search,$sort);
-        if(is_array($photos['ls'])){
-            foreach($photos['ls'] as $k=>$v){
-                $photos['ls'][$k]['photo_control_icons'] = $this->plugin->filter('photo_control_icons','',$v['id']);
-            }
-        }
-        
-        $pagestr = loader::lib('page')->fetch($photos['total'],$photos['current'],$pageurl);
-        $album_menu = '<li><a href="'.
+        $album_nav = '<li><a href="'.
                         site_link('photos','index',array('aid'=>$album_id)).
                       '" class="current">'.$album_info['name'].'</a></li>';
         
-        $album_info['tags_list'] = explode(' ',$album_info['tags']);
-        
+        //load comments
         if($this->setting->get_conf('system.enable_comment')){
             $mdl_comment =& loader::model('comment');
             $album_comments = $mdl_comment->get_all(1,array('ref_id'=>$album_id,'type'=>'1'));
             if($album_comments['ls']){
                 foreach($album_comments['ls'] as $k=>$v){
-                    $album_comments['ls'][$k]['sub_comments'] = $mdl_comment->get_sub($v['id']);
+                    $sub_comments = $mdl_comment->get_sub($v['id']);
+                    if($sub_comments){
+                        foreach($sub_comments as $kk=>$vv){
+                            $sub_comments[$kk]['content'] = $this->plugin->filter('comment_content',$vv['content'],$vv['id']);
+                        }
+                    }
+                    $album_comments['ls'][$k]['content'] = $this->plugin->filter('comment_content',$v['content'],$v['id']);
+                    $album_comments['ls'][$k]['sub_comments'] = $sub_comments;
                 }
             }
             $this->output->set('comments_list',$album_comments['ls']);
@@ -89,19 +90,27 @@ class photos_ctl extends pagecore{
         }else{
             $this->output->set('enable_comment',false);
         }
-        $this->output->set('photo_col_menu',$this->plugin->filter('photo_col_menu',$view_type.$page_setting_str.$sort_list));
+        
+        $album_info['tags_list'] = explode(' ',$album_info['tags']);
+        $album_info['desc'] = $this->plugin->filter('album_desc',$album_info['desc'],$album_id);
+        
+        $this->output->set('photo_col_menu',$this->plugin->filter('photo_col_menu',$view_type.$page_setting_str.$sort_list,$album_id));
+        $this->output->set('photo_multi_opt',$this->plugin->filter('photo_multi_opt','',$album_id));
+        $this->output->set('photo_sidebar',$this->plugin->filter('photo_sidebar','',$album_id));
+        
         $this->output->set('photos',$photos['ls']);
         $this->output->set('search',$search);
-        $this->output->set('pagestr',$pagestr);
+        $this->output->set('pagestr',loader::lib('page')->fetch($photos['total'],$photos['current'],$pageurl));
         $this->output->set('total_num',$photos['count']);
         $this->output->set('album_info',$album_info);
-        $this->output->set('album_menu',$this->plugin->filter('album_menu',$album_menu,$album_id));
+        $this->output->set('album_nav',$album_nav);
         $this->output->set('show_takentime',($sort=='tt_desc'||$sort=='tt_asc')?true:false);
         
+        
         $page_title = $album_info['name'].' - '.$this->setting->get_conf('site.title');
-        $page_keywords = $this->setting->get_conf('site.keywords');
-        $page_description = $this->setting->get_conf('site.description');
-        $this->page_init($page_title,$page_keywords,$page_description,array('aid'=>$album_id));
+        $page_keywords = ($album_info['tags']?implode(',',$album_info['tags_list']).',':'').$this->setting->get_conf('site.keywords');
+        $page_description = $album_info['desc']?strip_tags($album_info['desc']):$this->setting->get_conf('site.description');
+        $this->page_init($page_title,$page_keywords,$page_description,$album_id);
         
         $this->render();
     }
@@ -153,7 +162,7 @@ class photos_ctl extends pagecore{
             $page_title = lang('title_need_validate').' - '.lang('system_notice').' - '.$this->setting->get_conf('site.title');
             $page_keywords = $this->setting->get_conf('site.keywords');
             $page_description = $this->setting->get_conf('site.description');
-            $this->page_init($page_title,$page_keywords,$page_description);
+            $this->page_init($page_title,$page_keywords,$page_description,$id);
         }
         
         loader::view('photos/priv_page');
@@ -167,7 +176,7 @@ class photos_ctl extends pagecore{
         $page_title = $album_info['name'].' - '.lang('slideshow').' - '.$this->setting->get_conf('site.title');
         $page_keywords = $this->setting->get_conf('site.keywords');
         $page_description = $this->setting->get_conf('site.description');
-        $this->page_init($page_title,$page_keywords,$page_description,array('aid'=>$album_id));
+        $this->page_init($page_title,$page_keywords,$page_description,$album_id);
         
         $this->output->set('refer',$refer);
         $this->output->set('album_id',$album_id);
@@ -259,14 +268,14 @@ class photos_ctl extends pagecore{
 
             $pagestr = loader::lib('page')->fetch($photos['total'],$photos['current'],$pageurl);
 
-            $this->output->set('photo_col_menu',$this->plugin->filter('photo_col_menu',$page_setting_str.$sort_list));
+            $this->output->set('photo_col_menu',$this->plugin->filter('photo_col_menu',$page_setting_str.$sort_list,null));
             $this->output->set('photos',$photos['ls']);
             $this->output->set('search',$search);
             $this->output->set('pagestr',$pagestr);
             $this->output->set('total_num',$photos['count']);
-            $this->output->set('album_menu',$this->plugin->filter('album_menu','<li><a href="'.
+            $this->output->set('album_nav','<li><a href="'.
                             site_link('photos','search',array('sname'=>$search['name'])).
-                          '" class="current">'.lang('search_result').'</a></li>'));
+                          '" class="current">'.lang('search_result').'</a></li>');
 
             $page_title = $search['name'].' - '.lang('search_result').' - '.$this->setting->get_conf('site.title');
             $page_keywords = $this->setting->get_conf('site.keywords');
@@ -302,6 +311,7 @@ class photos_ctl extends pagecore{
         if($this->mdl_photo->update($id,$album)){
             loader::model('tag')->save_tags($id,$album['tags'],2);
             
+            $this->plugin->add_trigger('modified_photo',$id);
             form_ajax_success('box',lang('modify_photo_success'),null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
             form_ajax_failed('text',lang('modify_photo_failed'));
@@ -326,7 +336,9 @@ class photos_ctl extends pagecore{
         if(!$album_id){
             form_ajax_failed('box',lang('havnt_sel_album'));
         }
-        if($this->mdl_photo->move($id,$album_id)){            
+        if($this->mdl_photo->move($id,$album_id)){
+            
+            $this->plugin->add_trigger('moved_photo',$id);
             form_ajax_success('box',lang('move_photo_success'),null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
             form_ajax_failed('box',lang('move_photo_failed'));
@@ -358,6 +370,7 @@ class photos_ctl extends pagecore{
             form_ajax_failed('box',lang('pls_sel_photo_want_to_move'));
         }
         if($this->mdl_photo->move_batch(explode(',',$ids),$album_id)){
+            $this->plugin->add_trigger('moved_many_photos',explode(',',$ids));
             form_ajax_success('box',lang('batch_move_photo_success'),null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
             form_ajax_failed('box',lang('batch_move_photo_failed'));
@@ -376,8 +389,10 @@ class photos_ctl extends pagecore{
     
     function delete(){
         need_login('ajax_page');
-        
-        if($this->mdl_photo->trash($this->getGet('id'))){
+        $id = $this->getGet('id');
+        if($this->mdl_photo->trash($id)){
+            $this->plugin->add_trigger('trashed_photo',$id);
+            
             ajax_box(lang('delete_photo_success'),null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
             ajax_box(lang('delete_photo_failed'));
@@ -402,6 +417,8 @@ class photos_ctl extends pagecore{
             ajax_box(lang('pls_sel_photo_want_to_delete'));
         }else{
             if($this->mdl_photo->trash_batch(array_keys($ids))){
+                $this->plugin->add_trigger('trashed_many_photos',array_keys($ids));
+                
                 ajax_box(lang('batch_delete_photo_success'),null,0.5,$_SERVER['HTTP_REFERER']);
             }else{
                 ajax_box(lang('batch_delete_photo_failed'));
@@ -418,6 +435,8 @@ class photos_ctl extends pagecore{
             form_ajax_failed('text',lang('photo_name_empty'));
         }
         if($this->mdl_photo->update($id,$arr)){
+            $this->plugin->add_trigger('renamed_photo',$id);
+            
             form_ajax_success('text',$arr['name']);
         }else{
             form_ajax_failed('text',lang('save_photo_name_failed'));
@@ -443,9 +462,11 @@ class photos_ctl extends pagecore{
             exit;
         }
         
-        $album_menu = '<li><a href="'.site_link('photos','index',array('aid'=>$info['album_id'])).'" class="current">'.$album_info['name'].'</a></li>';
+        $album_nav = '<li><a href="'.site_link('photos','index',array('aid'=>$info['album_id'])).'" class="current">'.$album_info['name'].'</a></li>';
         $photo_col_ctl = '';
-
+        
+        $this->plugin->add_trigger('viewed_photo',$id);
+        
         $this->mdl_photo->add_hit($id);
         
         $sort_setting = $this->_sort_setting();
@@ -500,7 +521,14 @@ class photos_ctl extends pagecore{
             $comments = $mdl_comment->get_all(1,array('ref_id'=>$id,'type'=>2));
             if($comments['ls']){
                 foreach($comments['ls'] as $k=>$v){
-                    $comments['ls'][$k]['sub_comments'] = $mdl_comment->get_sub($v['id']);
+                    $sub_comments = $mdl_comment->get_sub($v['id']);
+                    if($sub_comments){
+                        foreach($sub_comments as $kk=>$vv){
+                            $sub_comments[$kk]['content'] = $this->plugin->filter('comment_content',$vv['content'],$vv['id']);
+                        }
+                    }
+                    $comments['ls'][$k]['content'] = $this->plugin->filter('comment_content',$v['content'],$v['id']);
+                    $comments['ls'][$k]['sub_comments'] = $sub_comments;
                 }
             }
             $this->output->set('comments_list',$comments['ls']);
@@ -513,20 +541,23 @@ class photos_ctl extends pagecore{
             $this->output->set('enable_comment',false);
         }
         
-        
+        $info['desc'] = $this->plugin->filter('photo_desc',$info['desc'],$album_info['id'],$id);
         $this->output->set('picture',$picture);
+        $this->output->set('photo_col_ctl',$this->plugin->filter('photo_col_ctl',$photo_col_ctl,$id));
+        $view_nav = loader::view('photos/view_nav',false);
+        $this->output->set('view_nav',$this->plugin->filter('photo_view_nav',$view_nav,$album_info['id'],$id));
+        $this->output->set('photo_view_sidebar',$this->plugin->filter('photo_view_sidebar','',$album_info['id'],$id));
+        
         $this->output->set('current_rank',$nav['current_rank']);
         $this->output->set('current_photo',$nav['current_rank']+1);
-        
         $this->output->set('album_info',$album_info);
         $this->output->set('info',$info);
-        $this->output->set('album_menu',$this->plugin->filter('album_menu',$album_menu,$info['album_id']));
-        $this->output->set('photo_col_ctl',$this->plugin->filter('photo_col_ctl',$photo_col_ctl,$id));
+        $this->output->set('album_nav',$album_nav);
         
         $page_title = $info['name'].' - '.$album_info['name'].' - '.$this->setting->get_conf('site.title');
-        $page_keywords = $this->setting->get_conf('site.keywords');
-        $page_description = $this->setting->get_conf('site.description');
-        $this->page_init($page_title,$page_keywords,$page_description,array('id'=>$id));
+        $page_keywords = ($info['tags']?implode(',',$info['tags_list']).',':'').$this->setting->get_conf('site.keywords');
+        $page_description = $info['desc']?strip_tags($info['desc']):$this->setting->get_conf('site.description');
+        $this->page_init($page_title,$page_keywords,$page_description,$info['album_id'],$id);
         
         $this->render();
     }
@@ -557,13 +588,11 @@ class photos_ctl extends pagecore{
         }
         $this->output->set('metas',$metas);
         $this->output->set('info',$info);
-        
-        $this->output->set('album_menu',$this->plugin->filter('album_menu','',$info['album_id']));
-        
+                
         $page_title = lang('view_photo_exif',$info['name']).' - '.$this->setting->get_conf('site.title');
         $page_keywords = $this->setting->get_conf('site.keywords');
         $page_description = $this->setting->get_conf('site.description');
-        $this->page_init($page_title,$page_keywords,$page_description,array('id'=>$id));
+        $this->page_init($page_title,$page_keywords,$page_description,$info['album_id'],$id);
         
         $this->render();
     }
@@ -593,6 +622,8 @@ class photos_ctl extends pagecore{
         
         if( $this->mdl_photo->update($id,array('tags'=>$tags)) ){
             loader::model('tag')->save_tags($id,$tags,2);
+            $this->plugin->add_trigger('modified_photo_tags',$id);
+            
             form_ajax_success('text',lang('tags').': '.$tags);
         }else{
             form_ajax_failed('text',lang('modify_photo_tags_failed'));
@@ -618,6 +649,8 @@ class photos_ctl extends pagecore{
             form_ajax_failed('text',lang('empty_photo_desc'));
         }
         if( $this->mdl_photo->update($id,array('desc'=>$desc)) ){
+            $this->plugin->add_trigger('modified_photo_desc',$id);
+            
             form_ajax_success('text',$desc);
         }else{
             form_ajax_failed('text',lang('modify_photo_desc_failed'));

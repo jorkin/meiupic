@@ -3,7 +3,6 @@
 class feed_ctl extends pagecore{
     
     function _init(){
-        $this->plugin =& loader::lib('plugin');
         $this->mdl_photo= & loader::model('photo');
         $this->mdl_album=& loader::model('album');
     }

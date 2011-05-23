@@ -13,6 +13,9 @@ class pagecore{
         $this->db =& loader::database();
         $this->user =& loader::model('user');
         $this->setting =& loader::model('setting');
+        $this->plugin =& loader::lib('plugin');
+        
+        $this->plugin->trigger('controller_init');
     }
     
     function _init(){
@@ -26,11 +29,13 @@ class pagecore{
      run page init
      initialize page head and user status
     */
-    function page_init($title = '',$keywords = '',$description='',$arr=array()){
+    function page_init($title = '',$keywords = '',$description='',$album_id=null,$photo_id=null){
+        $plugin =& loader::lib('plugin');
+        
         $head_str = "<title>{$title} - Powered by MeiuPic</title>\n";
         $head_str .= "<meta name=\"keywords\" content=\"{$keywords}\" />\n";
         $head_str .= "<meta name=\"description\" content=\"{$description}\" />\n";
-        $meu_head = loader::lib('plugin')->filter('meu_head',$head_str,$arr);
+        $meu_head = $plugin->filter('meu_head',$head_str,$album_id,$photo_id);
         $meu_head .= "\n".'<meta name="generator" content="Mei'.'u'.'Pic '.MPIC_VERSION.'" />'."\n";
         
         $feed_url = isset($arr['aid'])?site_link('feed','index',array('aid'=>$arr['aid'])):site_link('feed');
@@ -47,8 +52,16 @@ class pagecore{
             <span class="pipe">|</span>
             <a title="'.lang('logout_title').'" href="'.site_link('users','logout').'" onclick="Mui.box.show(this.href);return false;">'.lang('logout').'</a>';
         }
-        $this->output->set('user_status',loader::lib('plugin')->filter('user_status',$user_status));
+        $this->output->set('user_status',$plugin->filter('user_status',$user_status));
+        $page_head = $plugin->filter('page_head','',$album_id,$photo_id);
+        $page_foot = $plugin->filter('page_foot','',$album_id,$photo_id);
+        
+        $this->output->set('page_head',$page_head);
+        $this->output->set('page_foot',$page_foot);
         $this->output->set('trash_status',has_trash());
+        
+        $main_menu = loader::view('block/main_menu',false);
+        $this->output->set('main_menu',$plugin->filter('main_menu',$main_menu,$album_id,$photo_id));
     }
     
     function render($type = 'normal'){

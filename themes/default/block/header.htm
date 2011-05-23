@@ -83,6 +83,7 @@ a:hover,#settings_person a:hover {
     </div>
   </div>
 </noscript>
+{$page_head}
 <div id="header">
     <h1>{$site_name}</h1>
     <div id="settings_person">
@@ -91,17 +92,12 @@ a:hover,#settings_person a:hover {
     <div id="tabs">
         <ul id="album_tabs">
             <li><a title="{lang album_index}" {if (IN_CTL=='albums' and IN_ACT=='index')||(IN_CTL=='default')}class="current"{/if} href="{$base_path}">{lang myalbum}</a></li>
-            <!--{if isset($album_menu)}-->
-                {$album_menu}
+            <!--{if isset($album_nav)}-->
+                {$album_nav}
             <!--{/if}-->
         </ul>
         <ul id="main_tabs">
-            <li><a title="{lang tags_title}" href="{link ctl=tags}" {if IN_CTL=='tags'}class="current"{/if}>{lang tags}</a></li>
-            <!--{if $loggedin}-->
-            <li><a title="{lang upload_photo_title}" href="{link ctl=upload act=index}" {if IN_CTL=='upload'}class="current"{/if}>{lang upload_photo}</a></li>
-            <li><a title="{lang sys_setting_title}" href="{link ctl=setting}" {if IN_CTL=='setting'}class="current"{/if}>{lang sys_setting}</a></li>
-            <li class="trash"><a href="{link ctl=trash}" title="{lang trash_title}"><span class="{if $trash_status}i_trash_full{else}i_trash{/if} sprite">{lang trash}</span></a></li>
-            <!--{/if}-->
+           {$main_menu}
         </ul>
         <div class="clear"></div>
     </div>

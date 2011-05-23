@@ -3,7 +3,6 @@
 class upload_ctl extends pagecore{
     
     function _init(){
-        $this->plugin =& loader::lib('plugin');
         $this->mdl_album = & loader::model('album');
         $this->mdl_photo =& loader::model('photo');
     }
@@ -15,7 +14,6 @@ class upload_ctl extends pagecore{
         
         $this->output->set('album_id',$album_id);
         
-        $this->output->set('album_menu',$this->plugin->filter('album_menu',''));
         $this->output->set('albums_list',$this->mdl_album->get_kv());
         $this->output->set('upload_setting',$this->setting->get_conf('upload'));
         
@@ -36,7 +34,6 @@ class upload_ctl extends pagecore{
         $album_id = $this->getGet('aid');
         $this->output->set('album_id',$album_id);
         
-        $this->output->set('album_menu',$this->plugin->filter('album_menu',''));
         $this->output->set('albums_list',$this->mdl_album->get_kv());
         
         $page_title = lang('upload_photo').' - '.$this->setting->get_conf('site.title');
@@ -189,11 +186,12 @@ class upload_ctl extends pagecore{
                         $imglib->resizeScale(180,180);
                         
                         $imglib->save(ROOTDIR.$arr['thumb']);
-                        if(!$this->mdl_photo->save($arr)){
+                        if(!($photo_id = $this->mdl_photo->save($arr))){
                             @unlink($realpath);
                             @unlink(ROOTDIR.$arr['thumb']);
                         }
                         @unlink($tmpfile);
+                        $this->plugin->add_trigger('uploaded_photo',$photo_id);
                     }
                 }
             }
@@ -208,7 +206,6 @@ class upload_ctl extends pagecore{
             
             $this->output->set('album_id',$album_id);
 
-            $this->output->set('album_menu',$this->plugin->filter('album_menu',''));
             $this->output->set('albums_list',$this->mdl_album->get_kv());
 
             $page_title = lang('upload_photo').' - '.$this->setting->get_conf('site.title');
@@ -315,7 +312,8 @@ class upload_ctl extends pagecore{
                         
                         $imglib->save(ROOTDIR.$arr['thumb']);
                         
-                        $this->mdl_photo->save($arr);
+                        $photo_id = $this->mdl_photo->save($arr);
+                        $this->plugin->add_trigger('uploaded_photo',$photo_id);
                     }else{
                         $error .= lang('file_upload_failed',$filename).'<br />';
                     }

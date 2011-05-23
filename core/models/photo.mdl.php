@@ -159,6 +159,7 @@ class photo_mdl extends modelfactory{
             $album_mdl->update_photos_num($album_id);
             $album_mdl->check_repare_cover($old_album);
             $album_mdl->check_repare_cover($album_id);
+            
             return true;
         }else{
             return false;

@@ -130,7 +130,14 @@ class comments_ctl extends pagecore{
         $comments = $this->mdl_comment->get_all($page,array('ref_id'=>$ref_id,'type'=>$type));
         if($comments['ls']){
             foreach($comments['ls'] as $k=>$v){
-                $comments['ls'][$k]['sub_comments'] = $this->mdl_comment->get_sub($v['id']);
+                $sub_comments = $this->mdl_comment->get_sub($v['id']);
+                if($sub_comments){
+                    foreach($sub_comments as $kk=>$vv){
+                        $sub_comments[$kk]['content'] = $this->plugin->filter('comment_content',$vv['content'],$vv['id']);
+                    }
+                }
+                $comments['ls'][$k]['content'] = $this->plugin->filter('comment_content',$v['content'],$v['id']);
+                $comments['ls'][$k]['sub_comments'] = $sub_comments;
             }
         }
         $this->output->set('comments_list',$comments['ls']);
