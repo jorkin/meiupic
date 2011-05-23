@@ -311,7 +311,7 @@ class photos_ctl extends pagecore{
         if($this->mdl_photo->update($id,$album)){
             loader::model('tag')->save_tags($id,$album['tags'],2);
             
-            $this->plugin->add_trigger('modified_photo',$id);
+            $this->plugin->trigger('modified_photo',$id);
             form_ajax_success('box',lang('modify_photo_success'),null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
             form_ajax_failed('text',lang('modify_photo_failed'));
@@ -338,7 +338,7 @@ class photos_ctl extends pagecore{
         }
         if($this->mdl_photo->move($id,$album_id)){
             
-            $this->plugin->add_trigger('moved_photo',$id);
+            $this->plugin->trigger('moved_photo',$id);
             form_ajax_success('box',lang('move_photo_success'),null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
             form_ajax_failed('box',lang('move_photo_failed'));
@@ -370,7 +370,7 @@ class photos_ctl extends pagecore{
             form_ajax_failed('box',lang('pls_sel_photo_want_to_move'));
         }
         if($this->mdl_photo->move_batch(explode(',',$ids),$album_id)){
-            $this->plugin->add_trigger('moved_many_photos',explode(',',$ids));
+            $this->plugin->trigger('moved_many_photos',explode(',',$ids));
             form_ajax_success('box',lang('batch_move_photo_success'),null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
             form_ajax_failed('box',lang('batch_move_photo_failed'));
@@ -391,7 +391,7 @@ class photos_ctl extends pagecore{
         need_login('ajax_page');
         $id = $this->getGet('id');
         if($this->mdl_photo->trash($id)){
-            $this->plugin->add_trigger('trashed_photo',$id);
+            $this->plugin->trigger('trashed_photo',$id);
             
             ajax_box(lang('delete_photo_success'),null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
@@ -417,7 +417,7 @@ class photos_ctl extends pagecore{
             ajax_box(lang('pls_sel_photo_want_to_delete'));
         }else{
             if($this->mdl_photo->trash_batch(array_keys($ids))){
-                $this->plugin->add_trigger('trashed_many_photos',array_keys($ids));
+                $this->plugin->trigger('trashed_many_photos',array_keys($ids));
                 
                 ajax_box(lang('batch_delete_photo_success'),null,0.5,$_SERVER['HTTP_REFERER']);
             }else{
@@ -435,7 +435,7 @@ class photos_ctl extends pagecore{
             form_ajax_failed('text',lang('photo_name_empty'));
         }
         if($this->mdl_photo->update($id,$arr)){
-            $this->plugin->add_trigger('renamed_photo',$id);
+            $this->plugin->trigger('renamed_photo',$id);
             
             form_ajax_success('text',$arr['name']);
         }else{
@@ -465,7 +465,7 @@ class photos_ctl extends pagecore{
         $album_nav = '<li><a href="'.site_link('photos','index',array('aid'=>$info['album_id'])).'" class="current">'.$album_info['name'].'</a></li>';
         $photo_col_ctl = '';
         
-        $this->plugin->add_trigger('viewed_photo',$id);
+        $this->plugin->trigger('viewed_photo',$id);
         
         $this->mdl_photo->add_hit($id);
         
@@ -622,7 +622,7 @@ class photos_ctl extends pagecore{
         
         if( $this->mdl_photo->update($id,array('tags'=>$tags)) ){
             loader::model('tag')->save_tags($id,$tags,2);
-            $this->plugin->add_trigger('modified_photo_tags',$id);
+            $this->plugin->trigger('modified_photo_tags',$id);
             
             form_ajax_success('text',lang('tags').': '.$tags);
         }else{
@@ -649,7 +649,7 @@ class photos_ctl extends pagecore{
             form_ajax_failed('text',lang('empty_photo_desc'));
         }
         if( $this->mdl_photo->update($id,array('desc'=>$desc)) ){
-            $this->plugin->add_trigger('modified_photo_desc',$id);
+            $this->plugin->trigger('modified_photo_desc',$id);
             
             form_ajax_success('text',$desc);
         }else{

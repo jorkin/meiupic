@@ -38,7 +38,7 @@ class comments_ctl extends pagecore{
                 loader::model('photo')->update_comments_num($comment['ref_id']);
             }
             
-            $this->plugin->add_trigger('post_comment',$comment_id);
+            $this->plugin->trigger('post_comment',$comment_id);
             form_ajax_success('box',lang('post_comment_success'),null,0.5);
         }else{
             form_ajax_failed('text',lang('post_comment_failed'));
@@ -92,7 +92,7 @@ class comments_ctl extends pagecore{
             
             $this->output->set('info',$comment);
             
-            $this->plugin->add_trigger('reply_comment',$reply_id);
+            $this->plugin->trigger('reply_comment',$reply_id);
             form_ajax_success('text',loader::view('comments/view',false));
         }else{
             form_ajax_failed('text',lang('reply_failed'));
@@ -120,7 +120,7 @@ class comments_ctl extends pagecore{
                 loader::model('photo')->update_comments_num($info['ref_id']);
             }
             
-            $this->plugin->add_trigger('deleted_comment',$id);
+            $this->plugin->trigger('deleted_comment',$id);
             ajax_box(lang('delete_comment_success'),null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
             ajax_box(lang('delete_comment_failed'));

@@ -111,7 +111,7 @@ class albums_ctl extends pagecore{
         
         if($album_id = $this->mdl_album->save($album)){
             loader::model('tag')->save_tags($album_id,$album['tags'],1);
-            $this->plugin->add_trigger('created_album',$album_id);
+            $this->plugin->trigger('created_album',$album_id);
             
             form_ajax_success('box',lang('create_album_success'),null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
@@ -159,7 +159,7 @@ class albums_ctl extends pagecore{
         
         if($this->mdl_album->update($album_id,$album)){
             loader::model('tag')->save_tags($album_id,$album['tags'],1);
-            $this->plugin->add_trigger('modified_album',$album_id);
+            $this->plugin->trigger('modified_album',$album_id);
             
             form_ajax_success('box',lang('modify_album_success'),null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
@@ -194,7 +194,7 @@ class albums_ctl extends pagecore{
         $album_id = $this->getGet('id');
         
         if($this->mdl_album->trash($album_id)){
-            $this->plugin->add_trigger('trashed_album',$album_id);
+            $this->plugin->trigger('trashed_album',$album_id);
             
             ajax_box(lang('delete_album_success'),null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
@@ -220,7 +220,7 @@ class albums_ctl extends pagecore{
             ajax_box(lang('pls_sel_album_to_delete'));
         }else{
             if($this->mdl_album->trash_batch(array_keys($ids))){
-                $this->plugin->add_trigger('trashed_many_albums',array_keys($ids));
+                $this->plugin->trigger('trashed_many_albums',array_keys($ids));
                 
                 ajax_box(lang('batch_delete_album_success'),null,1,$_SERVER['HTTP_REFERER']);
             }else{
@@ -247,7 +247,7 @@ class albums_ctl extends pagecore{
             form_ajax_failed('text',lang('album_name_empty'));
         }
         if($this->mdl_album->update($id,$arr)){
-            $this->plugin->add_trigger('renamed_album',$id);
+            $this->plugin->trigger('renamed_album',$id);
             
             form_ajax_success('text',$arr['name']);
         }else{
@@ -273,7 +273,7 @@ class albums_ctl extends pagecore{
         if( $this->mdl_album->update($id,array('tags'=>$tags)) ){
             loader::model('tag')->save_tags($id,$tags,1);
             
-            $this->plugin->add_trigger('modified_album_tags',$id);
+            $this->plugin->trigger('modified_album_tags',$id);
             form_ajax_success('text',lang('tags').': '.$tags);
         }else{
             form_ajax_failed('text',lang('modify_tags_failed'));
@@ -299,7 +299,7 @@ class albums_ctl extends pagecore{
             form_ajax_failed('text',lang('empty_album_desc'));
         }
         if( $this->mdl_album->update($id,array('desc'=>$desc)) ){
-            $this->plugin->add_trigger('modified_album_desc',$id);
+            $this->plugin->trigger('modified_album_desc',$id);
             form_ajax_success('text',$desc);
         }else{
             form_ajax_failed('text',lang('modify_album_desc_failed'));
@@ -340,7 +340,7 @@ class albums_ctl extends pagecore{
         }
         
         if($this->mdl_album->update($this->getGet('id'),$album)){
-            $this->plugin->add_trigger('modified_album_priv',$id);
+            $this->plugin->trigger('modified_album_priv',$id);
             form_ajax_success('box',lang('modify_album_priv_success'),null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
             form_ajax_failed('text',lang('modify_album_priv_failed'));

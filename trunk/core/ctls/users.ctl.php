@@ -38,7 +38,7 @@ class users_ctl extends pagecore{
         }
         $go_url = $normal?site_link('default'):$_SERVER['HTTP_REFERER'];
         if($this->user->set_login($login_name,md5($login_pass),$expire_time)){
-            $this->plugin->add_trigger('user_loged_in',$login_name);
+            $this->plugin->trigger('user_loged_in',$login_name);
             
             form_ajax_success('box',lang('login_success'),null,0.5,$go_url);
         }else{
@@ -89,7 +89,7 @@ class users_ctl extends pagecore{
         $current_username = $this->user->get_field('user_name');
         
         $this->user->clear_login();
-        $this->plugin->add_trigger('user_loged_out',$current_username);
+        $this->plugin->trigger('user_loged_out',$current_username);
         ajax_box(lang('logout_success'),null,0.5,$_SERVER['HTTP_REFERER']);
     }
 }

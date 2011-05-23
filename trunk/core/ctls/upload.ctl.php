@@ -191,7 +191,7 @@ class upload_ctl extends pagecore{
                             @unlink(ROOTDIR.$arr['thumb']);
                         }
                         @unlink($tmpfile);
-                        $this->plugin->add_trigger('uploaded_photo',$photo_id);
+                        $this->plugin->trigger('uploaded_photo',$photo_id);
                     }
                 }
             }
@@ -313,7 +313,7 @@ class upload_ctl extends pagecore{
                         $imglib->save(ROOTDIR.$arr['thumb']);
                         
                         $photo_id = $this->mdl_photo->save($arr);
-                        $this->plugin->add_trigger('uploaded_photo',$photo_id);
+                        $this->plugin->trigger('uploaded_photo',$photo_id);
                     }else{
                         $error .= lang('file_upload_failed',$filename).'<br />';
                     }
