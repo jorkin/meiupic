@@ -1,9 +1,9 @@
 {if $picture['first']}<a href="{link ctl=photos act=view id=$picture['first']['id']}#pic_block">{lang first_photo}</a>{else}{lang first_photo}{/if}
-<span class="pipe">|</span>
+ <span class="pipe">|</span>
 {if $picture['previous']}<a href="{link ctl=photos act=view id=$picture['previous']['id']}#pic_block" class="btnprev">{lang prev_photo}</a>{else}{lang prev_photo}{/if}
-<span class="pipe">|</span>
+ <span class="pipe">|</span>
 {if $picture['next']}<a href="{link ctl=photos act=view id=$picture['next']['id']}#pic_block" class="btnnext">{lang next_photo}</a>{else}{lang next_photo}{/if}
-<span class="pipe">|</span>
+ <span class="pipe">|</span>
 {if $picture['last']}<a href="{link ctl=photos act=view id=$picture['last']['id']}#pic_block">{lang last_photo}</a>{else}{lang last_photo}{/if}
-<span class="pipe">|</span>
+ <span class="pipe">|</span>
 <span class="i_slideshow sprite"></span> <a href="{link ctl=photos act=slide aid=$info['album_id']}">{lang slideshow_view}</a>
