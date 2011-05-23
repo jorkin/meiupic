@@ -12,14 +12,13 @@ class plugin_copyimg extends plugin{
     
     function init(){
         $this->plugin_mgr->add_filter('photo_control_icons',array('copyimg','photo_list_page_icon'));
-        
-        $this->plugin_mgr->add_filter('custom_page.utils.copyurl',array('copyimg','copyurl_act'));
-        $this->plugin_mgr->add_filter('meu_head',array('copyimg','html_head'));
+        $this->plugin_mgr->add_filter('meu_head',array('copyimg','html_head'),10);
+        $this->plugin_mgr->add_trigger('custom_page.utils.copyurl',array('copyimg','copyurl_act'));
         
         $this->loggedin = loader::model('user')->loggedin();
     }
     
-    function photo_list_page_icon($str,$id){
+    function photo_list_page_icon($str,$album_id,$id){
         if($this->loggedin){
             return $str.'<li><a href="javascript:void(0);" onclick="Mui.bubble.show(this,\''.site_link('utils','copyurl',array('id'=>$id)).'\',true);Mui.bubble.resize(320)" title="'.lang('copyimg:copy_to_clipboard').'"><span class="i_copyclip sprite"></span></a></li>';
         }else{
@@ -30,7 +29,9 @@ class plugin_copyimg extends plugin{
     function copyurl_act(){
         include_once('utils.cct.php');
         $ctl = new utils_cct();
+        $ctl->_init();
         $ctl->copyurl();
+        $ctl->_called();
     }
     
     function html_head($str){

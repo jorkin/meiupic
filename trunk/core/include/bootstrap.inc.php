@@ -222,6 +222,8 @@ function meiu_bootstrap(){
         $plugin->init_plugins();
     }
     
+    $plugin->trigger('boot_init');
+    
     $uri =& loader::lib('uri');
     $uriinfo = $uri->parse_uri();
     
@@ -238,9 +240,10 @@ function meiu_bootstrap(){
     $_REQUEST = array_merge($_REQUEST,$uriinfo['pars']);
     
     require_once(INCDIR.'pagecore.php');
-    $custom_page = $plugin->trigger('custom_page.'.IN_CTL.'.'.IN_ACT) || $plugin->trigger('custom_page.'.IN_CTL,IN_ACT);
 
-    if($custom_page === false){
+    if($plugin->has_trigger('custom_page.'.IN_CTL.'.'.IN_ACT) || $plugin->has_trigger('custom_page.'.IN_CTL,IN_ACT)){
+        $plugin->trigger('custom_page.'.IN_CTL.'.'.IN_ACT) || $plugin->trigger('custom_page.'.IN_CTL,IN_ACT);
+    }else{
         if(file_exists(CTLDIR.$uriinfo['ctl'].'.ctl.php')){
             require_once(CTLDIR.$uriinfo['ctl'].'.ctl.php');
 

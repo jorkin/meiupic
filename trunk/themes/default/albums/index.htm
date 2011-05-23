@@ -74,7 +74,10 @@
                                 {$pagestr}
                             </div>
                             <div class="f_right">
-                                <!--{if $loggedin}--><label><input type="checkbox" value="1" onclick="Madmin.check_all('.selitem',this.checked)" />{lang sel_all} <span class="i_trash_sp sprite"></span></label> <a href="javascript:void(0)" onclick="Madmin.checked_action('.selitem','{link ctl=albums act=confirm_delete_batch}');">{lang delete_selected}</a><!--{/if}-->
+                                <!--{if $loggedin}-->
+                                <label><input type="checkbox" value="1" onclick="Madmin.check_all('.selitem',this.checked)" />{lang sel_all} <span class="i_trash_sp sprite"></span></label> <a href="javascript:void(0)" onclick="Madmin.checked_action('.selitem','{link ctl=albums act=confirm_delete_batch}');">{lang delete_selected}</a>
+                                <!--{$album_multi_opt}-->
+                                <!--{/if}-->
                             </div>
                             <div class="clear"></div>
                         </div>
@@ -119,6 +122,7 @@
                                 <input type="submit" name="submit" class="ylbtn1 ml5" value="{lang search}" />
                             </form>
                     </div>
+                    {$album_sidebar}
                 </div>
             </td>
         </tr>
