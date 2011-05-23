@@ -49,6 +49,10 @@ class photos_ctl extends pagecore{
         if(is_array($photos['ls'])){
             foreach($photos['ls'] as $k=>$v){
                 $photos['ls'][$k]['photo_control_icons'] = $this->plugin->filter('photo_control_icons','',$v['album_id'],$v['id']);
+                $img_thumb = '<a href="'.site_link('photos','view',array('id'=>$v['id'])).'">
+                <img src="'.img_path($v['thumb']).'" /></a>';
+                $photos['ls'][$k]['img_thumb'] = $this->plugin->filter('photo_list_thumb',$img_thumb,$v['id'],$v['thumb'],$v['path']);
+                
             }
         }
         
@@ -261,8 +265,10 @@ class photos_ctl extends pagecore{
             $photos = $this->mdl_photo->get_all($page,$search,$sort);
             if(is_array($photos['ls'])){
                 foreach($photos['ls'] as $k=>$v){
-                    $photos['ls'][$k]['photo_control_icons'] = $this->plugin->filter('photo_control_icons','',$v['id']);
                     $photos['ls'][$k]['photo_priv'] = $this->mdl_album->check_album_priv($v['album_id']);
+                    $img_thumb = '<a href="'.site_link('photos','view',array('id'=>$v['id'])).'">
+                    <img src="'.img_path($v['thumb']).'" /></a>';
+                    $photos['ls'][$k]['img_thumb'] = $this->plugin->filter('photo_list_thumb',$img_thumb,$v['id'],$v['thumb'],$v['path']);
                 }
             }
 

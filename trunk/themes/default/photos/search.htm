@@ -19,13 +19,15 @@
                                         <table>
                                             <tr>
                                                 <td>
-                                                    <a href="{link ctl=photos act=view id=$v['id']}">
+                                                    
                                                     <!--{if !$v['photo_priv']}-->
+                                                    <a href="{link ctl=photos act=view id=$v['id']}">
                                                         <img src="{$base_path}statics/img/lock.gif" />
-                                                    <!--{else}-->
-                                                        <img src="{img $v['thumb']}" />
-                                                    <!--{/if}-->
                                                     </a>
+                                                    <!--{else}-->
+                                                        {$v['img_thumb']}
+                                                    <!--{/if}-->
+                                                    
                                                 </td>
                                             </tr>
                                         </table>
