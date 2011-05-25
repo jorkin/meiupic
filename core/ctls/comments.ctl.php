@@ -16,6 +16,8 @@ class comments_ctl extends pagecore{
         $comment['ref_id'] = intval($this->getPost('ref_id'));
         $comment['type'] = intval($this->getPost('type'));
         
+        $this->plugin->trigger('before_post_comment');
+        
         if($comment['email'] && !check_email($comment['email'])){
             form_ajax_failed('text',lang('error_email'));
         }
@@ -66,6 +68,8 @@ class comments_ctl extends pagecore{
         $comment['type'] = intval($this->getPost('type'));
         $comment['reply_author'] = safe_convert($this->getPost('reply_author'));
         $comment['pid'] = intval($this->getPost('pid'));
+        
+        $this->plugin->trigger('before_post_comment');
         
         if($comment['email'] && !check_email($comment['email'])){
             form_ajax_failed('text',lang('error_email'));

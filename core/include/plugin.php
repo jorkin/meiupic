@@ -20,4 +20,19 @@ class plugin{
     function init(){
         ;
     }
+    function callback_install(){
+        ;
+    }
+    function callback_enable(){
+        ;
+    }
+    function callback_disable(){
+        ;
+    }
+    function callback_remove(){
+        ;
+    }
+    function save_config($posts){
+        ;
+    }
 }

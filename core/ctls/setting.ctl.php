@@ -249,7 +249,19 @@ class setting_ctl extends pagecore{
         need_login('ajax');
         
         $theme = $this->getGet('theme');
+        
         $config = $this->getPosts();
+        
+        $check_config_file = ROOTDIR.'themes/'.$theme.'/_config.php';
+        if(file_exists($check_config_file)){
+            $theme_lang_file = ROOTDIR.'themes/'.$theme.'/lang/'.LANGSET.'.lang.php';
+            if(file_exists($theme_lang_file)){
+                global $language;
+                @include($theme_lang_file);
+            }
+            include_once($check_config_file);
+            check_theme_config($config);
+        }
         
         $this->setting->set_conf('theme.'.$theme,$config);
         form_ajax_success('box',lang('save_setting_success'),null,0.5,$_SERVER['HTTP_REFERER']);
@@ -306,6 +318,10 @@ class setting_ctl extends pagecore{
         need_login('ajax_page');
         
         $plugin = $this->getGet('plugin');
+        
+        $plugin_obj = $this->plugin->get_plugin_obj($plugin);
+        $plugin_obj && $plugin_obj->callback_install();
+        
         if($this->plugin->install_plugin($plugin)){
             ajax_box(lang('install_plugin_success'),null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
@@ -317,6 +333,10 @@ class setting_ctl extends pagecore{
         need_login('ajax_page');
         
         $plugin = $this->getGet('plugin');
+        
+        $plugin_obj = $this->plugin->get_plugin_obj($plugin);
+        $plugin_obj && $plugin_obj->callback_enable();
+        
         if($this->plugin->enable_plugin($plugin)){
             ajax_box(lang('enable_plugin_success'),null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
@@ -328,6 +348,10 @@ class setting_ctl extends pagecore{
         need_login('ajax_page');
         
         $plugin = $this->getGet('plugin');
+        
+        $plugin_obj = $this->plugin->get_plugin_obj($plugin);
+        $plugin_obj && $plugin_obj->callback_disable();
+        
         if($this->plugin->disable_plugin($plugin)){
             ajax_box(lang('stop_plugin_success'),null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
@@ -339,6 +363,10 @@ class setting_ctl extends pagecore{
         need_login('ajax_page');
         
         $plugin = $this->getGet('plugin');
+        
+        $plugin_obj = $this->plugin->get_plugin_obj($plugin);
+        $plugin_obj && $plugin_obj->callback_remove();
+        
         if($this->plugin->remove_plugin($plugin)){
             ajax_box(lang('remove_plugin_success'),null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
@@ -366,7 +394,13 @@ class setting_ctl extends pagecore{
         need_login('ajax');
         
         $plugin = $this->getGet('plugin');
+        
+        $plugin_obj = $this->plugin->get_plugin_obj($plugin);
+        
         $config = $this->getPosts();
+        
+        $plugin_obj && $plugin_obj->save_config($config);
+        
         if($this->plugin->save_config($plugin,$config)){
             form_ajax_success('box',lang('save_setting_success'),null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
