@@ -23,3 +23,5 @@ $language['style_alertcolor'] = '警告色';
 $language['style_titlebg'] = '標題背景色';
 $language['style_titlelabel'] = '表單Label色';
 $language['style_boxborder'] = '邊框顏色';
+
+$language['not_aliable_color']   =  '顏色無效！';

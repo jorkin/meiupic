@@ -374,4 +374,23 @@ class plugin_cla{
             return false;
         }
     }
+    
+    function get_plugin_obj($plugin){
+        if(!preg_match('/^[a-zA-Z0-9\-\_]+$/',$plugin)){
+            return false;
+        }
+        
+        $plugin_file = PLUGINDIR.$plugin.'/'.$plugin.'.php';
+        $plugin_name = "plugin_$plugin";
+        
+        if(isset($this->plugin_pool[$plugin_name])){
+            return $this->plugin_pool[$plugin_name];
+        }
+        if(file_exists($plugin_file)){
+            include($plugin_file);
+            $plugin_obj = new $plugin_name;
+            return $plugin_obj;
+        }
+        return false;
+    }
 }
