@@ -549,6 +549,7 @@ class photos_ctl extends pagecore{
         
         $info['desc'] = $this->plugin->filter('photo_desc',$info['desc'],$album_info['id'],$id);
         $this->output->set('picture',$picture);
+        $this->output->set('info',$info);
         $this->output->set('photo_col_ctl',$this->plugin->filter('photo_col_ctl',$photo_col_ctl,$id));
         $view_nav = loader::view('photos/view_nav',false);
         $this->output->set('view_nav',$this->plugin->filter('photo_view_nav',$view_nav,$album_info['id'],$id));
@@ -557,7 +558,6 @@ class photos_ctl extends pagecore{
         $this->output->set('current_rank',$nav['current_rank']);
         $this->output->set('current_photo',$nav['current_rank']+1);
         $this->output->set('album_info',$album_info);
-        $this->output->set('info',$info);
         $this->output->set('album_nav',$album_nav);
         
         $page_title = $info['name'].' - '.$album_info['name'].' - '.$this->setting->get_conf('site.title');
