@@ -5,7 +5,8 @@ CREATE TABLE meu_users (
       user_name varchar(50) NOT NULL,
       user_pass varchar(50) NOT NULL,
       user_nicename varchar(100) NOT NULL,
-      create_time int(11) NOT NULL DEFAULT 0
+      create_time int(11) NOT NULL DEFAULT 0,
+      user_status tinyint(1) NOT NULL DEFAULT 0
     );
 CREATE TABLE meu_usermeta (
       umeta_id integer NOT NULL primary key,
@@ -56,7 +57,8 @@ CREATE TABLE meu_comments (
         author_ip varchar(50) NOT NULL,
         content text NOT NULL,
         pid int(11) NOT NULL DEFAULT 0,
-        post_time int(11) NOT NULL DEFAULT 0
+        post_time int(11) NOT NULL DEFAULT 0,
+        status tinyint(1) NOT NULL DEFAULT 1
     );
 CREATE TABLE meu_commentmeta (
         meta_id integer NOT NULL primary key,
