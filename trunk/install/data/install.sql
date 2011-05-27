@@ -55,6 +55,7 @@ CREATE TABLE `meu_comments` (
   `content` text NOT NULL,
   `pid` bigint(20) unsigned NOT NULL DEFAULT '0',
   `post_time` int(11) unsigned NOT NULL DEFAULT '0',
+  `status` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `ref_id` (`ref_id`),
   KEY `pid` (`pid`)
@@ -158,5 +159,6 @@ CREATE TABLE `meu_users` (
   `user_pass` varchar(50) NOT NULL,
   `user_nicename` varchar(100) NOT NULL,
   `create_time` int(11) NOT NULL DEFAULT '0',
+  `user_status` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) TYPE=MyISAM ;
