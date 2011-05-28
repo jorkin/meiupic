@@ -3,6 +3,8 @@
 class setting_ctl extends pagecore{
     
     function _init(){
+        $setting_menu = $this->plugin->filter('setting_menu','');
+        $this->output->set('setting_menu',$setting_menu);
     }
     
     function index(){
