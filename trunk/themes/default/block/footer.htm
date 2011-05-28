@@ -5,6 +5,6 @@
     Processed in {echo timer_read('page');}ms
     {/if}
 </div>
-{$page_foot}
+{if isset($page_foot)}{$page_foot}{/if}
 </body>
 </html>

@@ -253,9 +253,12 @@ class photos_ctl extends pagecore{
             $search['tag'] = safe_convert($this->getRequest('tag'));
             $par['page'] = '[#page#]';
             if($search['name']){
-                $par['name'] = $search['name'];
+                $par['sname'] = $search['name'];
             }
-            $pageurl = site_link('photos','index',$par);
+            if($search['tag']){
+                $par['tag'] = $search['tag'];
+            }
+            $pageurl = site_link('photos','search',$par);
 
             $sort_setting = $this->_sort_setting();
             list($sort,$sort_list) =  get_sort_list($sort_setting,'photo','tu_desc');
@@ -279,11 +282,12 @@ class photos_ctl extends pagecore{
             $this->output->set('search',$search);
             $this->output->set('pagestr',$pagestr);
             $this->output->set('total_num',$photos['count']);
+            unset($par['page']);
             $this->output->set('album_nav','<li><a href="'.
-                            site_link('photos','search',array('sname'=>$search['name'])).
+                            site_link('photos','search',$par).
                           '" class="current">'.lang('search_result').'</a></li>');
 
-            $page_title = $search['name'].' - '.lang('search_result').' - '.$this->setting->get_conf('site.title');
+            $page_title = (isset($par['tag'])?$par['tag']:$search['name']).' - '.lang('search_result').' - '.$this->setting->get_conf('site.title');
             $page_keywords = $this->setting->get_conf('site.keywords');
             $page_description = $this->setting->get_conf('site.description');
             $this->page_init($page_title,$page_keywords,$page_description);

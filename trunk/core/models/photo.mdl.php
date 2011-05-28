@@ -15,10 +15,10 @@ class photo_mdl extends modelfactory{
         if(isset($filters['album_id'])){
             $str .= ' and album_id='.intval($filters['album_id']);
         }
-        if(isset($filters['name']) && $filters['name']!=''){
+        if(isset($filters['name']) && $filters['name']!='' && $filters['name']!='ANY'){
             $str .= " and name like '%".$this->db->q_str($filters['name'],false)."%'";
         }
-        if(isset($filters['tag']) && $filters['tag'] != ''){
+        if(isset($filters['tag']) && $filters['tag'] != '' && $filters['tag'] != 'ANY'){
             $tag_info = loader::model('tag')->get_by_type_name($filters['tag'],2);
             if($tag_info){
                 $str .= " and id in (select rel_id from ".$this->db->stripTpre('#@tag_rel')." where tag_id=".intval($tag_info['id']).")";

@@ -298,7 +298,7 @@ function has_trash(){
 }
 
 function showError($error_msg){
-    $_config = loader::model('setting')->get_conf('theme.'.TEMPLATEID,array());
+    //$_config = loader::model('setting')->get_conf('theme.'.TEMPLATEID,array());
     loader::lib('output')->set('error_msg',$error_msg);
     loader::view('block/showerror');
     exit;
