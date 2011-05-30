@@ -176,18 +176,43 @@ class setting_ctl extends pagecore{
     function fileupload(){
         $error = "";
         $msg = "";
+        if(!$this->user->loggedin()){
+            echo loader::lib('json')->encode(array('error'=>lang('not_authorized'),'msg'=>''));
+            exit;
+        }
+        $upaction = $this->getPost('upaction');
+        if($upaction == 'watermark'){
+            $path_dir = 'data/watermark';
+            $file_type = array('png','jpg','gif');
+        }
+        
+        
         $fileElementName = 'fileToUpload';
         if(!empty($_FILES[$fileElementName]['error'])){
             $error = lang('upload_error');
         }elseif(empty($_FILES[$fileElementName]['tmp_name']) || $_FILES[$fileElementName]['tmp_name'] == 'none'){
             $error = lang('need_sel_upload_file');
         }else{
-            $path_dir = 'data/watermark';
+            $filename = $_FILES[$fileElementName]['name'];
+            $fileext = file_ext($filename);
+            $filesize = $_FILES[$fileElementName]['size'];
+            $allowsize = allowsize($this->setting->get_conf('upload.allow_size'));
+            
+            if(!in_array($fileext,$file_type)){
+                echo loader::lib('json')->encode(array('error'=>lang('failed_not_support',$filename),'msg'=>''));
+                exit;
+            }
+            if($allowsize && $filesize>$allowsize){
+                echo loader::lib('json')->encode(array('error'=>lang('failed_larger_than_usetting',$filename),'msg'=>''));
+                exit;
+            }
+            if($filesize == 0){
+                echo loader::lib('json')->encode(array('error'=>lang('failed_if_file',$filename),'msg'=>''));
+                exit;
+            }
             if(!file_exists(ROOTDIR.$path_dir)){
                 @mkdir(ROOTDIR.$path_dir);
             }
-            $filename = $_FILES[$fileElementName]['name'];
-            $fileext = file_ext($filename);
             $path = $path_dir.'/'.date('Ymd').'.'.$fileext;
             if(@move_uploaded_file($_FILES[$fileElementName]['tmp_name'],ROOTDIR.$path)){
                 $msg = $path;
