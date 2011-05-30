@@ -179,6 +179,7 @@ if($method == 'license'){
                 }
 
                 if(mysql_get_server_info() > '4.1') {
+                    mysql_query("SET　NAMES 'utf8'");
                     mysql_query("CREATE DATABASE IF NOT EXISTS `$dbname` DEFAULT CHARACTER SET utf8", $link);
                 } else {
                     mysql_query("CREATE DATABASE IF NOT EXISTS `$dbname`", $link);
