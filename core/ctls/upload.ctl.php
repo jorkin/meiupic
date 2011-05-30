@@ -48,7 +48,7 @@ class upload_ctl extends pagecore{
         set_time_limit(0);
         $type = $this->getGet('t');
         if($type == 'save_tmp'){
-            if(!loader::model('user')->loggedin()){
+            if(!$this->user->loggedin()){
                 $return = array(
                     'jsonrpc'=>'2.0',
                     'error'=> array( 

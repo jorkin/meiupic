@@ -150,6 +150,7 @@ function ajaxFileUpload(){
             secureuri:false,
             fileElementId:'fileToUpload',
             dataType: 'json',
+            data:{upaction:'watermark'},
             success: function (data, status)
             {
                 if(typeof(data.error) != 'undefined'){
