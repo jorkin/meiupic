@@ -34,9 +34,9 @@ class theme_mdl{
                     }else{
                         $iscurrent = false;
                     }
-                    $db_theme_config = $mdl_setting->get_conf('theme.'.$entry);
+                    $db_theme_config = $mdl_setting->get_conf('theme_'.$entry);
                     if($theme_config && !$db_theme_config){
-                        $mdl_setting->set_conf('theme.'.$entry,$theme_config);
+                        $mdl_setting->set_conf('theme_'.$entry,$theme_config);
                     }
                     $themes[] = array(
                         'name' => $theme_name,
@@ -56,7 +56,7 @@ class theme_mdl{
     function remove($theme){
         $theme_dir = ROOTDIR.'themes/'.$theme;
         if(is_dir($theme_dir) && deldir($theme_dir)){
-            loader::model('setting')->set_conf('theme.'.$theme,false);
+            loader::model('setting')->remove_conf('theme_'.$theme,false);
             return true;
         }else{
             return false;

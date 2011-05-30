@@ -200,12 +200,14 @@ function init_template(){
 }
 
 function meiu_bootstrap(){
+    unset_globals();
+    
     global $base_url, $base_path, $base_root, $language,$templatelangs;
     timer_start('page');
     require_once(COREDIR.'loader.php');
     require_once(INCDIR.'functions.php');
-    
-    unset_globals();
+    include_once(INCDIR.'plugin.php');
+
     init_defines();
     if(file_exists(COREDIR.'lang'.DIRECTORY_SEPARATOR.LANGSET.'.lang.php')){
         require_once(COREDIR.'lang'.DIRECTORY_SEPARATOR.LANGSET.'.lang.php');

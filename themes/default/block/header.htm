@@ -91,7 +91,7 @@ a:hover,#settings_person a:hover {
     </div>
     <div id="tabs">
         <ul id="album_tabs">
-            <li><a title="{lang album_index}" {if (IN_CTL=='albums' and IN_ACT=='index')||(IN_CTL=='default')}class="current"{/if} href="{$base_path}">{lang myalbum}</a></li>
+            <li><a title="{lang album_index}" {if (IN_CTL=='albums' and IN_ACT=='index')||(IN_CTL=='default')}class="current"{/if} href="{link ctl=default}">{lang myalbum}</a></li>
             <!--{if isset($album_nav)}-->
                 {$album_nav}
             <!--{/if}-->
