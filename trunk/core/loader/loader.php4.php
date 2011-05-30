@@ -89,7 +89,7 @@ class loader{
         extract($params);
         
         $setting =& loader::model('setting');
-        $_config = $setting->get_conf('theme.'.TEMPLATEID,array());
+        $_config = $setting->get_conf('theme_'.TEMPLATEID,array());
         
         $footer = '<script src="'.$statics_path.'js/common.js" type="text/javascript"></script>';
         if(isset($loggedin) && $loggedin){

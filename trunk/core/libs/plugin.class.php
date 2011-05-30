@@ -35,7 +35,6 @@ class plugin_cla{
             $plugins = $this->db->getAll();
             $cache->set('plugins',$plugins);
         }
-        include_once(INCDIR.'plugin.php');
         foreach((array) $plugins as $v){
             $plugin_path = PLUGINDIR.$v['plugin_id'].'/'.$v['plugin_id'].'.php';
             if(file_exists($plugin_path)){

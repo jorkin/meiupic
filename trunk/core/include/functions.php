@@ -209,7 +209,7 @@ function ajax_box( $content , $title = '', $close_time = 0 , $forward = '' , $di
     if(!$title){
         $title = lang('system_notice');
     }
-    $_config = loader::model('setting')->get_conf('theme.'.TEMPLATEID,array());
+    $_config = loader::model('setting')->get_conf('theme_'.TEMPLATEID,array());
     ob_start();
     include template('block/ajax_box');
     $page_content = ob_get_clean();
@@ -401,7 +401,6 @@ function has_trash(){
 }
 
 function showError($error_msg){
-    //$_config = loader::model('setting')->get_conf('theme.'.TEMPLATEID,array());
     loader::lib('output')->set('error_msg',$error_msg);
     loader::view('block/showerror');
     exit;

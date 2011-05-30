@@ -26,6 +26,9 @@ class setting_mdl extends modelfactory {
                 $data = $this->db->getOne();
                 if($data){
                     $value = unserialize($data);
+                    if (!is_array($value) && count($key_arr)>0) {
+                        return $default;
+                    }
                 }else{
                     return false;
                 }
@@ -40,6 +43,7 @@ class setting_mdl extends modelfactory {
                 return $default;
             }
         }
+        
         return $value;
     }
     
@@ -49,13 +53,13 @@ class setting_mdl extends modelfactory {
         $key_arr = explode('.',$key);
         $k = array_shift($key_arr);
 
-        $eval_str = "\$this->setting_pool[\$k]";
-        foreach($key_arr as $val){
-            $eval_str .= '["'.$val.'"]';
+        if(count($key_arr)>0){
+            $s_k = array_shift($key_arr);
+            $this->setting_pool[$k][$s_k] = $value;
+        }else{
+            $this->setting_pool[$k] = $value;
         }
-        $eval_str .= " = \$value;";
-        eval($eval_str);
-
+        
         if($immediately){
             $this->_save();
             return true;
@@ -68,6 +72,16 @@ class setting_mdl extends modelfactory {
         }
     }
     
+    function remove_conf($k){
+        if(!$k){
+            return ;
+        }
+        $cache =& loader::lib('cache');
+        $cache->remove('setting_'.$k);
+        
+        $this->db->delete('#@setting','name="'.$k.'"');
+        return $this->db->query();
+    }
     
     function _save(){
         $cache =& loader::lib('cache');
@@ -76,7 +90,11 @@ class setting_mdl extends modelfactory {
             $data = $this->db->getOne();
             if($data){
                 $keyvalue = unserialize($data);
-                $keyvalue = array_merge($keyvalue,$values);
+                if(is_array($keyvalue)){
+                    $keyvalue = array_merge($keyvalue,$values);
+                }else{
+                    $keyvalue = $values;
+                }
                 $this->db->update('#@setting','name="'.$k.'"',array('value'=>serialize($keyvalue)));
                 $this->db->query();
             }else{

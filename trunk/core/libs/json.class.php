@@ -8,19 +8,27 @@
  */
 
 class json_cla{
+   
+    var $service_json = null;
     
     function encode($str){
         if(!function_exists('json_encode')){
-            include_once('Services_JSON.php');
-            return Services_JSON::encode($str);
+            if(!$this->service_json){
+                include_once('Services_JSON.php');
+                $this->service_json = new Services_JSON();
+            }
+            return $this->service_json->encode($str);
         }
         return json_encode($str);
     }
 
     function decode($str){
         if(!function_exists('json_decode')){
-            include_once('Services_JSON.php');
-            return Services_JSON::decode($str);
+            if(!$this->service_json){
+                include_once('Services_JSON.php');
+                $this->service_json = new Services_JSON();
+            }
+            return $this->service_json->decode($str);
         }
         return json_decode($str);
     }

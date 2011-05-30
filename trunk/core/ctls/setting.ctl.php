@@ -237,7 +237,7 @@ class setting_ctl extends pagecore{
             @include($theme_lang_file);
         }
         
-        $_config =  $this->setting->get_conf('theme.'.$theme);
+        $_config =  $this->setting->get_conf('theme_'.$theme);
         
         ob_start();
         include template('_config',$theme,'themes/'.$theme);
@@ -265,7 +265,7 @@ class setting_ctl extends pagecore{
             check_theme_config($config);
         }
         
-        $this->setting->set_conf('theme.'.$theme,$config);
+        $this->setting->set_conf('theme_'.$theme,$config);
         form_ajax_success('box',lang('save_setting_success'),null,0.5,$_SERVER['HTTP_REFERER']);
     }
     

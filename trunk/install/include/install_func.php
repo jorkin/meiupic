@@ -310,10 +310,11 @@ function env_check(&$env_items) {
 }
 
 function createtable($sql) {
+    global $db;
     $type = strtoupper(preg_replace("/^\s*CREATE TABLE\s+.+\s+\(.+?\).*(ENGINE|TYPE)\s*=\s*([a-z]+?).*$/isU", "\\2", $sql));
     $type = in_array($type, array('MYISAM', 'HEAP', 'MEMORY')) ? $type : 'MYISAM';
     return preg_replace("/^\s*(CREATE TABLE\s+.+\s+\(.+?\)).*$/isU", "\\1", $sql).
-    (mysql_get_server_info() > '4.1' ? " ENGINE=$type DEFAULT CHARSET=utf8" : " TYPE=$type");
+    ($db->version() > '4.1' ? " ENGINE=$type DEFAULT CHARSET=utf8" : " TYPE=$type");
 }
 
 function runquery($sql) {
@@ -566,9 +567,12 @@ function show_env_result(&$env_items, &$dirfile_items, &$func_items) {
         $$variable .= "<td>$item[path]</td><td class=\"w pdleft1\">".lang('writeable')."</td>\n";
         if($item['status'] == 1) {
             $$variable .= "<td class=\"w pdleft1\">".lang('writeable')."</td>\n";
-        } elseif($item['status'] == -1) {
+        } elseif($item['type'] == 'dir' && $item['status'] == -1) {
             $error_code = ENV_CHECK_ERROR;
             $$variable .= "<td class=\"nw pdleft1\">".lang('nodir')."</td>\n";
+        } elseif($item['type'] == 'file' && $item['status'] == -1) {
+            $error_code = ENV_CHECK_ERROR;
+            $$variable .= "<td class=\"nw pdleft1\">".lang('unwriteable')."</td>\n";
         } else {
             $error_code = ENV_CHECK_ERROR;
             $$variable .= "<td class=\"nw pdleft1\">".lang('unwriteable')."</td>\n";
