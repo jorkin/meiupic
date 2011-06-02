@@ -309,7 +309,6 @@ class plugin_cla{
             $funcurl = 'http://meiupic'.'.mei'.'u'.'.c'.'n/stats_in.php';
             $PHP_SELF = htmlspecialchars($_SERVER['PHP_SELF'] ? $_SERVER['PHP_SELF'] : $_SERVER['SCRIPT_NAME']);
             $url = htmlspecialchars('http://'.$_SERVER['HTTP_HOST'].preg_replace("/\/+(api|archiver|wap)?\/*$/i", '', substr($PHP_SELF, 0, strrpos($PHP_SELF, '/'))));
-            $url = substr($url, 0, -9);
             $hash = md5("{$url}{$plugin}{$plugin_ver}{$version}");
             $q = "url=$url&plugin=$plugin&plugin_ver=$plugin_ver&version=$version&time=".time()."&hash=$hash";
             $q=rawurlencode(base64_encode($q));

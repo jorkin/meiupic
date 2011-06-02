@@ -463,7 +463,10 @@ class photos_ctl extends pagecore{
             showError(lang('photo_not_exists'));
         }
         
-        $info['exif'] = unserialize($info['exif']);
+        if($info['exif']){
+            $info['exif'] = unserialize($info['exif']);
+        }
+        
         $info['tags_list'] = explode(' ',$info['tags']);
         
         $album_info = $this->mdl_album->get_info($info['album_id']);
