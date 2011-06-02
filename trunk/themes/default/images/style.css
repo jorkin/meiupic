@@ -365,6 +365,19 @@ table.layout td.right{
     margin:20px 0;
     text-align:center;
 }
+#photo_body span.loading{
+    position:absolute;padding:5px 20px;
+    background:#fff;
+    left:50%;
+    margin-left:-180px;
+    display:block;
+    filter:alpha(opacity=50);
+    -moz-opacity:0.5;
+    opacity:0.5;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    border-radius:5px;
+}
 #photo_body div.ctl{
     position:absolute;
     z-index:1

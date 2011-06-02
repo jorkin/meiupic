@@ -20,6 +20,7 @@
                         <div id="photo_body">
                             <img class="photo" alt="{$info['name']}" src="{img $info['thumb']}" />
                             <div class="ctl"><div class="prev"><span>{lang prev_photo}</span></div><div class="next"><span>{lang next_photo}</span></div></div>
+                            <div class="loading" style="display:none;"></div>
                         </div>
                         <div id="photo_infos">
                             <div class="photo_others">
@@ -113,11 +114,12 @@
        });
        {/if}
    }
-   
    detect_resize_img();
+   $('#photo_body').prepend('<span class="loading">Loading...</span>');
    var img = new Image();
    img.onload = function(){
        $('#photo_body img.photo').attr('src',img.src);
+       $('#photo_body span').remove('.loading');
    };
    img.src = "{img $info['path']}";
    
