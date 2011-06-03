@@ -29,7 +29,6 @@ class image_imagick {
      * @return void
      */
     function load($filename) {
-        
         $this->image = new Imagick($filename);
 
         $this->image_type = strtoupper($this->image->getImageFormat());
