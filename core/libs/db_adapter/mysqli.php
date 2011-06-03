@@ -85,7 +85,7 @@ Class adapter_mysqli{
         $this->conn = @mysqli_connect($dbinfo['host'], $dbinfo['dbuser'],$dbinfo['dbpass'],$dbinfo['dbname'],isset($dbinfo['port']) && !empty($dbinfo['port'])?$dbinfo['port']:0);
         
         if (!$this->conn){
-            exit( lang('connect_mysql',$host,$dbinfo['dbuser']) );
+            exit( lang('connect_mysql',$dbinfo['host'],$dbinfo['dbuser']) );
         }
         
         if (isset($dbinfo['charset']) && $dbinfo['charset'] != '') {
