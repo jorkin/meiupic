@@ -150,7 +150,7 @@ class upload_ctl extends pagecore{
                         $arr['album_id'] = $album_id;
                         $arr['path'] = $media_dirname.'/'.$key.'.'.$fileext;
                         $arr['thumb'] = $thumb_dirname.'/'.$key.'.'.$fileext;
-                        $arr['name'] = $filename;
+                        $arr['name'] = file_pure_name($filename);
                         $arr['create_time'] = time();
                         $arr['create_y'] = date('Y');
                         $arr['create_m'] = date('n');
@@ -274,7 +274,7 @@ class upload_ctl extends pagecore{
                         $arr['album_id'] = $album_id;
                         $arr['path'] = $media_dirname.'/'.$key.'.'.$fileext;
                         $arr['thumb'] = $thumb_dirname.'/'.$key.'.'.$fileext;
-                        $arr['name'] = $filename;
+                        $arr['name'] = file_pure_name($filename);
                         $arr['create_time'] = time();
                         $arr['create_y'] = date('Y');
                         $arr['create_m'] = date('n');
