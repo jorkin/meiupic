@@ -409,6 +409,11 @@ function showError($error_msg){
 function file_ext($filename){
     return strtolower(end(explode('.',$filename)));
 }
+function file_pure_name($filename){
+    $arr = explode('.',$filename);
+    array_pop($arr);
+    return implode('.',$arr);
+}
 
 //covert bytes to be readable
 function bytes2u($size){
