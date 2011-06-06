@@ -27,13 +27,13 @@ class cache_file
     var $_head_len = 64;
     var $_static_head_len = 16;
 
-    function cache_file(array $policy = null){
+    function cache_file($policy = null){
         if(is_array($policy)){
             $this->_default_policy = array_merge($this->_default_policy, $policy);
         }
     }
 
-    function set($id, $data, array $policy = null){
+    function set($id, $data, $policy = null){
         $policy = $this->_policy($policy);
         
         $data = serialize($data);
@@ -56,7 +56,7 @@ class cache_file
         file_put_contents(ROOTDIR.$policy['cache_dir'].'/'.$id.'.php', $content, LOCK_EX);
     }
     
-    function get($id, array $policy = null)
+    function get($id, $policy = null)
     {
         $policy = $this->_policy($policy);
 
@@ -152,7 +152,7 @@ class cache_file
      * @param string $id
      * @param array $policy
      */
-    function remove($id, array $policy = null)
+    function remove($id, $policy = null)
     {
         $policy = $this->_policy($policy);
 
@@ -160,7 +160,7 @@ class cache_file
         if (is_file($path)) { unlink($path); }
     }
 
-    function _policy(array $policy = null){
+    function _policy( $policy = null){
         return !is_null($policy) ? array_merge($this->_default_policy, $policy) : $this->_default_policy;
     }
 }

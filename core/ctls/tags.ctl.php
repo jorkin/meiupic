@@ -23,8 +23,8 @@ class tags_ctl extends pagecore{
                 $tags['ls'][$k]['fontsize'] = $this->mdl_tag->get_fontsize($v['count']);
             }
         }
-        
-        $pagestr = loader::lib('page')->fetch($tags['total'],$tags['current'],$pageurl);
+        $page_obj =& loader::lib('page');
+        $pagestr = $page_obj->fetch($tags['total'],$tags['current'],$pageurl);
         $this->output->set('pagestr',$pagestr);
         $this->output->set('tag_list',$tags['ls']);
         $this->output->set('tag_type',$type);

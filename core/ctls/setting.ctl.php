@@ -174,10 +174,12 @@ class setting_ctl extends pagecore{
     }
     
     function fileupload(){
+        $json =& loader::lib('json');
+
         $error = "";
         $msg = "";
         if(!$this->user->loggedin()){
-            echo loader::lib('json')->encode(array('error'=>lang('not_authorized'),'msg'=>''));
+            echo $json->encode(array('error'=>lang('not_authorized'),'msg'=>''));
             exit;
         }
         $upaction = $this->getPost('upaction');
@@ -199,15 +201,15 @@ class setting_ctl extends pagecore{
             $allowsize = allowsize($this->setting->get_conf('upload.allow_size'));
             
             if(!in_array($fileext,$file_type)){
-                echo loader::lib('json')->encode(array('error'=>lang('failed_not_support',$filename),'msg'=>''));
+                echo $json->encode(array('error'=>lang('failed_not_support',$filename),'msg'=>''));
                 exit;
             }
             if($allowsize && $filesize>$allowsize){
-                echo loader::lib('json')->encode(array('error'=>lang('failed_larger_than_usetting',$filename),'msg'=>''));
+                echo $json->encode(array('error'=>lang('failed_larger_than_usetting',$filename),'msg'=>''));
                 exit;
             }
             if($filesize == 0){
-                echo loader::lib('json')->encode(array('error'=>lang('failed_if_file',$filename),'msg'=>''));
+                echo $json->encode(array('error'=>lang('failed_if_file',$filename),'msg'=>''));
                 exit;
             }
             if(!file_exists(ROOTDIR.$path_dir)){
@@ -221,7 +223,7 @@ class setting_ctl extends pagecore{
             }
         }
         
-        echo loader::lib('json')->encode(array('error'=>$error,'msg'=>$msg));
+        echo $json->encode(array('error'=>$error,'msg'=>$msg));
         exit;
     }
     
@@ -317,7 +319,8 @@ class setting_ctl extends pagecore{
             ajax_box(lang('theme_is_using'));
         }
         
-        if(loader::model('theme')->remove($theme)){
+        $theme_mdl =& loader::model('theme');
+        if($theme_mdl->remove($theme)){
             ajax_box(lang('delete_theme_success'),null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
             ajax_box(lang('delete_theme_failed'));
@@ -436,7 +439,8 @@ class setting_ctl extends pagecore{
     
     function info(){
         need_login('page');
-        $info = loader::model('utility')->sys_info();
+        $utility_mdl =& loader::model('utility');
+        $info = $utility_mdl->sys_info();
         $this->output->set('info',$info);
         $size = dirsize(ROOTDIR.'cache');
         $this->output->set('cache_size',bytes2u($size));
@@ -465,9 +469,10 @@ class setting_ctl extends pagecore{
     
     function language(){
         need_login('page');
-        
-        $langs = loader::model('utility')->get_languages();
-        $time_zones = loader::model('utility')->get_time_zones();
+        $utility_mdl =& loader::model('utility');
+
+        $langs = $utility_mdl->get_languages();
+        $time_zones = $utility_mdl->get_time_zones();
         
         $this->output->set('lang_list',$langs);
         $this->output->set('time_zones',$time_zones);

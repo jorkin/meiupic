@@ -49,7 +49,8 @@ class albums_ctl extends pagecore{
         $this->output->set('album_col_menu',$this->plugin->filter('album_col_menu',$page_setting_str.$sort_list));
         $this->output->set('album_multi_opt',$this->plugin->filter('album_multi_opt',''));
         $this->output->set('albums',$albums['ls']);
-        $this->output->set('pagestr',loader::lib('page')->fetch($albums['total'],$albums['current'],$pageurl));
+        $page_obj =& loader::lib('page');
+        $this->output->set('pagestr',$page_obj->fetch($albums['total'],$albums['current'],$pageurl));
         $this->output->set('total_num',$albums['count']);
         $this->output->set('search',arr_stripslashes($search));
         $this->output->set('show_uptime',($sort=='ut_desc'||$sort=='ut_asc')?true:false);
@@ -71,7 +72,8 @@ class albums_ctl extends pagecore{
         }else{
             $ret = array('ret'=>false,'msg'=>lang('no_records'));
         }
-        echo loader::lib('json')->encode($ret);
+        $json =& loader::lib('json');
+        echo $json->encode($ret);
     }
     
     function create(){
@@ -110,7 +112,8 @@ class albums_ctl extends pagecore{
         }
         
         if($album_id = $this->mdl_album->save($album)){
-            loader::model('tag')->save_tags($album_id,$album['tags'],1);
+            $tag_mdl =& loader::model('tag');
+            $tag_mdl->save_tags($album_id,$album['tags'],1);
             $this->plugin->trigger('created_album',$album_id);
             
             form_ajax_success('box',lang('create_album_success'),null,0.5,$_SERVER['HTTP_REFERER']);
@@ -158,7 +161,8 @@ class albums_ctl extends pagecore{
         }
         
         if($this->mdl_album->update($album_id,$album)){
-            loader::model('tag')->save_tags($album_id,$album['tags'],1);
+            $tag_mdl =& loader::model('tag');
+            $tag_mdl->save_tags($album_id,$album['tags'],1);
             $this->plugin->trigger('modified_album',$album_id);
             
             form_ajax_success('box',lang('modify_album_success'),null,0.5,$_SERVER['HTTP_REFERER']);
@@ -271,7 +275,8 @@ class albums_ctl extends pagecore{
         $tags = safe_convert($this->getPost('tags'));
         
         if( $this->mdl_album->update($id,array('tags'=>$tags)) ){
-            loader::model('tag')->save_tags($id,$tags,1);
+            $tag_mdl =& loader::model('tag');
+            $tag_mdl->save_tags($id,$tags,1);
             
             $this->plugin->trigger('modified_album_tags',$id);
             form_ajax_success('text',lang('tags').': '.$tags);

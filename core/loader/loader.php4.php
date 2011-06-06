@@ -85,7 +85,8 @@ class loader{
         global $base_path;
         
         $style_path = $base_path.TPLDIR.'/';
-        $params = loader::lib('output')->getAll();
+        $output =& loader::lib('output');
+        $params = $output->getAll();
         extract($params);
         
         $setting =& loader::model('setting');

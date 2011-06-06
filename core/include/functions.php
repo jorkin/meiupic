@@ -152,7 +152,8 @@ type:
     ajax: 返回ajax
 */
 function need_login($type = 'page'){
-    if(!loader::model('user')->loggedin()){
+    $user_mdl =& loader::model('user');
+    if(!$user_mdl->loggedin()){
         switch($type){
             case 'page':
                 showError(lang('not_authorized'));
@@ -198,7 +199,8 @@ function form_ajax($type = 'box|text', $flag , $content , $title = null, $close_
     if($type == 'box'){
         $content = ajax_box($content,$title,$close_time,$forward,false);
     }
-    echo loader::lib('json')->encode(
+    $json =& loader::lib('json');
+    echo $json->encode(
         array('ret'=>$flag,'html'=>$content)
     );
     exit;
@@ -209,7 +211,8 @@ function ajax_box( $content , $title = '', $close_time = 0 , $forward = '' , $di
     if(!$title){
         $title = lang('system_notice');
     }
-    $_config = loader::model('setting')->get_conf('theme_'.TEMPLATEID,array());
+    $setting_mdl =& loader::model('setting');
+    $_config = $setting_mdl->get_conf('theme_'.TEMPLATEID,array());
     ob_start();
     include template('block/ajax_box');
     $page_content = ob_get_clean();
@@ -286,7 +289,8 @@ function template($file,$templateid=null,$tpldir=null) {
     
     $compiledtplfile = ROOTDIR.'cache/templates/'.$templateid.'_'.str_replace(array('/','\\'),'_',$file).'.tpl.php';
     if(!file_exists($compiledtplfile) || @filemtime($tplfile) > @filemtime($compiledtplfile)){
-        loader::model('template')->template_compile($tplfile,$compiledtplfile);
+        $template_mdl =& loader::model('template');
+        $template_mdl->template_compile($tplfile,$compiledtplfile);
     }
     return $compiledtplfile;
 }
@@ -364,7 +368,7 @@ function safe_convert($string, $html=false, $filterslash=false) {
 }
 //Transfer the converted words into editable characters
 function safe_invert($string, $html=false) {
-    $string = str_ireplace(array("<br />",'<br/>','<br>'),"\n",$string);
+    $string = str_replace(array("<br />",'<br/>','<br>'),"\n",$string);
     if ($html) {        
         $string = str_replace("<br/>","\n",$string);
         $string = str_replace("&nbsp;"," ",$string);
@@ -401,7 +405,8 @@ function has_trash(){
 }
 
 function showError($error_msg){
-    loader::lib('output')->set('error_msg',$error_msg);
+    $output =& loader::lib('output');
+    $output->set('error_msg',$error_msg);
     loader::view('block/showerror');
     exit;
 }

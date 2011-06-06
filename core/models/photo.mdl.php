@@ -19,7 +19,8 @@ class photo_mdl extends modelfactory{
             $str .= " and name like '%".$this->db->q_str($filters['name'],false)."%'";
         }
         if(isset($filters['tag']) && $filters['tag'] != '' && $filters['tag'] != 'ANY'){
-            $tag_info = loader::model('tag')->get_by_type_name($filters['tag'],2);
+            $tag_mdl =& loader::model('tag');
+            $tag_info = $tag_mdl->get_by_type_name($filters['tag'],2);
             if($tag_info){
                 $str .= " and id in (select rel_id from ".$this->db->stripTpre('#@tag_rel')." where tag_id=".intval($tag_info['id']).")";
             }else{

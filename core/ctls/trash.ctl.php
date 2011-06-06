@@ -32,8 +32,8 @@ class trash_ctl extends pagecore{
                 $data = $this->mdl_photo->get_trash($page);
             }
             $pageurl = site_link('trash','index',array('type'=>$type,'page'=>'[#page#]'));
-        
-            $pagestr = loader::lib('page')->fetch($data['total'],$data['current'],$pageurl);
+            $page_obj =& loader::lib('page');
+            $pagestr = $page_obj->fetch($data['total'],$data['current'],$pageurl);
             $this->output->set('isempty',false);
             $this->output->set('pagestr',$pagestr);
             $this->output->set('data',$data['ls']);
