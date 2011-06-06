@@ -197,6 +197,8 @@ if($method == 'license'){
 
             if(function_exists('mysqli_connect')){
                 $CONFIG['database']['default']['adapter'] = 'mysqli';
+            }else{
+                $CONFIG['database']['default']['adapter'] = 'mysql';
             }
             $CONFIG['database']['default']['host'] = $dbhost;
             $CONFIG['database']['default']['port'] = $dbport;

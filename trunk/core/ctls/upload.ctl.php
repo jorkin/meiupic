@@ -17,7 +17,8 @@ class upload_ctl extends pagecore{
         $this->output->set('albums_list',$this->mdl_album->get_kv());
         $this->output->set('upload_setting',$this->setting->get_conf('upload'));
         
-        $supportType =  loader::lib('image')->supportType();
+        $img_lib = & loader::lib('image');
+        $supportType =  $img_lib->supportType();
         $this->output->set('support_type',implode(',',$supportType));
         
         $page_title = lang('upload_photo').' - '.$this->setting->get_conf('site.title');
@@ -48,6 +49,7 @@ class upload_ctl extends pagecore{
         set_time_limit(0);
         $type = $this->getGet('t');
         if($type == 'save_tmp'){
+            $json =& loader::lib('json');
             if(!$this->user->loggedin()){
                 $return = array(
                     'jsonrpc'=>'2.0',
@@ -56,7 +58,7 @@ class upload_ctl extends pagecore{
                         'message'=>lang('pls_login_before_upload')
                      ),
                      'id'=>'id');
-                 echo loader::lib('json')->encode($return);
+                 echo $json->encode($return);
                  exit;
             }
             
@@ -64,8 +66,9 @@ class upload_ctl extends pagecore{
             $chunks = $this->getRequest('chunks',0);
             $filename = $this->getRequest('name','');
             $target_dir = ROOTDIR.'cache'.DIRECTORY_SEPARATOR.'tmp';
-        
-            $status = loader::model('storage')->upload_multi($target_dir,
+            
+            $storage_mdl =& loader::model('storage');
+            $status = $storage_mdl->upload_multi($target_dir,
                                             $chunk,$chunks,$filename,true);
             switch($status){
                 case 100:
@@ -98,7 +101,7 @@ class upload_ctl extends pagecore{
                 case 0:
                 $return = array('jsonrpc'=>'2.0','result'=>null,'id'=>'id');
             }
-            echo loader::lib('json')->encode($return);
+            echo $json->encode($return);
             exit;
         }elseif($type == 'normal'){
             //todo: normally save file

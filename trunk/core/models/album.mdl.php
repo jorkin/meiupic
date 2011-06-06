@@ -16,14 +16,16 @@ class album_mdl extends modelfactory{
             $str .= " and name like '%".$this->db->q_str($filters['name'],false)."%'";
         }
         if(isset($filters['tag']) && $filters['tag'] != '' && $filters['tag'] != 'ANY'){
-            $tag_info = loader::model('tag')->get_by_type_name($filters['tag'],1);
+            $tag_mdl =& loader::model('tag');
+            $tag_info = $tag_mdl->get_by_type_name($filters['tag'],1);
             if($tag_info){
                 $str .= " and id in (select rel_id from ".$this->db->stripTpre('#@tag_rel')." where tag_id=".intval($tag_info['id']).")";
             }else{
                 $str .= " and 1=0";
             }
         }
-        if(! loader::model('user')->loggedin()){
+        $user_mdl = loader::model('user');
+        if(! $user_mdl->loggedin()){
             $str .= " and priv_type<>3";
         }
         return $str;
@@ -139,7 +141,8 @@ class album_mdl extends modelfactory{
     
     function check_repare_cover($id){
         $info = $this->get_info($id);
-        $photo = loader::model('photo')->get_info($info['cover_id']);
+        $photo_mdl =& loader::model('photo');
+        $photo = $photo_mdl->get_info($info['cover_id']);
         if($photo && $photo['deleted']==0 && $photo['album_id']==$id){
             return true;
         }
@@ -187,7 +190,8 @@ class album_mdl extends modelfactory{
     }
     
     function set_cover($pic_id){
-        $pic_info = loader::model('photo')->get_info($pic_id);
+        $photo_mdl =& loader::model('photo');
+        $pic_info = $photo_mdl->get_info($pic_id);
         $arr['cover_id'] = $pic_id;
         
         $album_info = $this->get_info($pic_info['album_id']);
@@ -202,7 +206,8 @@ class album_mdl extends modelfactory{
     }
     
     function check_album_priv($id,$album_info = null){
-        $logined = loader::model('user')->loggedin();
+        $user_mdl =& loader::model('user');
+        $logined = $user_mdl->loggedin();
         if($logined){
             return true;
         }

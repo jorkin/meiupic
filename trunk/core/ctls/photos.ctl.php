@@ -104,7 +104,8 @@ class photos_ctl extends pagecore{
         
         $this->output->set('photos',$photos['ls']);
         $this->output->set('search',$search);
-        $this->output->set('pagestr',loader::lib('page')->fetch($photos['total'],$photos['current'],$pageurl));
+        $page_obj =& loader::lib('page');
+        $this->output->set('pagestr',$page_obj->fetch($photos['total'],$photos['current'],$pageurl));
         $this->output->set('total_num',$photos['count']);
         $this->output->set('album_info',$album_info);
         $this->output->set('album_nav',$album_nav);
@@ -274,8 +275,8 @@ class photos_ctl extends pagecore{
                     $photos['ls'][$k]['img_thumb'] = $this->plugin->filter('photo_list_thumb',$img_thumb,$v['id'],$v['thumb'],$v['path']);
                 }
             }
-
-            $pagestr = loader::lib('page')->fetch($photos['total'],$photos['current'],$pageurl);
+            $page_obj =& loader::lib('page');
+            $pagestr = $page_obj->fetch($photos['total'],$photos['current'],$pageurl);
 
             $this->output->set('photo_col_menu',$this->plugin->filter('photo_col_menu',$page_setting_str.$sort_list,null));
             $this->output->set('photos',$photos['ls']);
@@ -319,7 +320,8 @@ class photos_ctl extends pagecore{
         }
         
         if($this->mdl_photo->update($id,$album)){
-            loader::model('tag')->save_tags($id,$album['tags'],2);
+            $tag_mdl =& loader::model('tag');
+            $tag_mdl->save_tags($id,$album['tags'],2);
             
             $this->plugin->trigger('modified_photo',$id);
             form_ajax_success('box',lang('modify_photo_success'),null,0.5,$_SERVER['HTTP_REFERER']);
@@ -343,7 +345,7 @@ class photos_ctl extends pagecore{
         need_login('ajax');
         $album_id = $this->getPost('album_id');
         $id = $this->getGet('id');
-        if(!$album_id){
+        if(!$album_id || $album_id==''){
             form_ajax_failed('box',lang('havnt_sel_album'));
         }
         if($this->mdl_photo->move($id,$album_id)){
@@ -378,6 +380,9 @@ class photos_ctl extends pagecore{
         $album_id = $this->getPost('album_id');
         if(!$ids){
             form_ajax_failed('box',lang('pls_sel_photo_want_to_move'));
+        }
+        if(!$album_id || $album_id==''){
+            form_ajax_failed('box',lang('havnt_sel_album'));
         }
         if($this->mdl_photo->move_batch(explode(',',$ids),$album_id)){
             $this->plugin->trigger('moved_many_photos',explode(',',$ids));
@@ -592,7 +597,8 @@ class photos_ctl extends pagecore{
         }
         
         $info['exif'] = unserialize($info['exif']);
-        $exif = loader::lib('exif')->parse_exif($info['exif']);
+        $exif_obj =& loader::lib('exif');
+        $exif = $exif_obj->parse_exif($info['exif']);
         foreach($exif as $k=>$v){
             $metas[] = array(
                 'key' =>$k,
@@ -635,7 +641,8 @@ class photos_ctl extends pagecore{
         $tags = safe_convert($this->getPost('tags'));
         
         if( $this->mdl_photo->update($id,array('tags'=>$tags)) ){
-            loader::model('tag')->save_tags($id,$tags,2);
+            $tag_mdl =& loader::model('tag');
+            $tag_mdl->save_tags($id,$tags,2);
             $this->plugin->trigger('modified_photo_tags',$id);
             
             form_ajax_success('text',lang('tags').': '.$tags);

@@ -4,6 +4,8 @@ class comments_ctl extends pagecore{
     
     function _init(){
         $this->mdl_comment = & loader::model('comment');
+        $this->mdl_photo =& loader::model('photo');
+        $this->mdl_album =& loader::model('album');
     }
     function post(){
         if(!$this->setting->get_conf('system.enable_comment')){
@@ -35,9 +37,9 @@ class comments_ctl extends pagecore{
         
         if($comment_id = $this->mdl_comment->save($comment)){
             if($comment['type'] == 1){
-                loader::model('album')->update_comments_num($comment['ref_id']);
+                $this->mdl_album->update_comments_num($comment['ref_id']);
             }elseif($comment['type'] == 2){
-                loader::model('photo')->update_comments_num($comment['ref_id']);
+                $this->mdl_photo->update_comments_num($comment['ref_id']);
             }
             
             $this->plugin->trigger('post_comment',$comment_id);
@@ -89,9 +91,9 @@ class comments_ctl extends pagecore{
         if($reply_id = $this->mdl_comment->save($comment)){
             $comment['id'] = $this->mdl_comment->last_insert_id();
             if($comment['type'] == 1){
-                loader::model('album')->update_comments_num($comment['ref_id']);
+                $this->mdl_album->update_comments_num($comment['ref_id']);
             }elseif($comment['type'] == 2){
-                loader::model('photo')->update_comments_num($comment['ref_id']);
+                $this->mdl_photo->update_comments_num($comment['ref_id']);
             }
             
             $this->output->set('info',$comment);
@@ -119,9 +121,9 @@ class comments_ctl extends pagecore{
         $info = $this->mdl_comment->get_info($id);
         if($this->mdl_comment->delete($id)){
             if($info['type'] == 1){
-                loader::model('album')->update_comments_num($info['ref_id']);
+                $this->mdl_album->update_comments_num($info['ref_id']);
             }elseif($info['type'] == 2){
-                loader::model('photo')->update_comments_num($info['ref_id']);
+                $this->mdl_photo->update_comments_num($info['ref_id']);
             }
             
             $this->plugin->trigger('deleted_comment',$id);

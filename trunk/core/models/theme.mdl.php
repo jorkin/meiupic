@@ -56,7 +56,8 @@ class theme_mdl{
     function remove($theme){
         $theme_dir = ROOTDIR.'themes/'.$theme;
         if(is_dir($theme_dir) && deldir($theme_dir)){
-            loader::model('setting')->remove_conf('theme_'.$theme,false);
+            $setting_mdl =& loader::model('setting');
+            $setting_mdl->remove_conf('theme_'.$theme,false);
             return true;
         }else{
             return false;

@@ -22,8 +22,9 @@ class setting_mdl extends modelfactory {
             $cache =& loader::lib('cache');
             $value = $cache->get('setting_'.$k);
             if($value === false){
-                $this->db->select('#@setting','value','name="'.$k.'"');
+                $this->db->select('#@setting','value',"name='".$k."'");
                 $data = $this->db->getOne();
+                
                 if($data){
                     $value = unserialize($data);
                     if (!is_array($value) && count($key_arr)>0) {
@@ -36,6 +37,7 @@ class setting_mdl extends modelfactory {
             }
             $this->setting_pool[$k] = $value;
         }
+
         foreach($key_arr as $v){
             if(isset($value[$v])){
                 $value = $value[$v];

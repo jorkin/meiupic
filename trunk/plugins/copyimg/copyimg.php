@@ -15,7 +15,8 @@ class plugin_copyimg extends plugin{
         $this->plugin_mgr->add_filter('meu_head',array('copyimg','html_head'),10);
         $this->plugin_mgr->add_trigger('custom_page.utils.copyurl',array('copyimg','copyurl_act'));
         
-        $this->loggedin = loader::model('user')->loggedin();
+        $user_mdl =& loader::model('user');
+        $this->loggedin = $user_mdl->loggedin();
     }
     
     function photo_list_page_icon($str,$album_id,$id){

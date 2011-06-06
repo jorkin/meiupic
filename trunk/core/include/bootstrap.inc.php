@@ -190,7 +190,8 @@ function init_template(){
         define('TEMPLATEID', $meu_theme);
         define('TPLDIR','themes/'.TEMPLATEID);
     }else{
-        $current_theme = loader::model('setting')->get_conf('system.current_theme','default');
+        $setting_mdl =& loader::model('setting');
+        $current_theme = $setting_mdl->get_conf('system.current_theme','default');
         define('TEMPLATEID', $current_theme);
         define('TPLDIR','themes/'.TEMPLATEID);
     }
@@ -201,7 +202,7 @@ function init_template(){
 
 function meiu_bootstrap(){
     unset_globals();
-    
+
     global $base_url, $base_path, $base_root, $language,$templatelangs;
     timer_start('page');
     require_once(COREDIR.'loader.php');
@@ -212,7 +213,6 @@ function meiu_bootstrap(){
     if(file_exists(COREDIR.'lang'.DIRECTORY_SEPARATOR.LANGSET.'.lang.php')){
         require_once(COREDIR.'lang'.DIRECTORY_SEPARATOR.LANGSET.'.lang.php');
     }
-    
     boot_init();
     init_template();
     $templatelangs=array();
@@ -229,11 +229,11 @@ function meiu_bootstrap(){
     $uri =& loader::lib('uri');
     $uriinfo = $uri->parse_uri();
     
+    $setting_mdl =& loader::model('setting');
     $output =& loader::lib('output');
     $output->set('base_path',$base_path);
     $output->set('statics_path',$base_path.'statics/');
-    $output->set('site_name',loader::model('setting')->get_conf('site.title',lang('myalbum')));
-    
+    $output->set('site_name',$setting_mdl->get_conf('site.title',lang('myalbum')));
     $user =& loader::model('user');
     $output->set('loggedin',$user->loggedin());
     define('IN_CTL',$uriinfo['ctl']);

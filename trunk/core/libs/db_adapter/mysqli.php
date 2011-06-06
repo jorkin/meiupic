@@ -190,6 +190,7 @@ Class adapter_mysqli{
         }
         $row = @mysqli_fetch_row($res);
         @mysqli_free_result($res);
+        
         return isset($row[0]) ? $row[0] : null;
     }
 
