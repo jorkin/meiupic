@@ -30,20 +30,22 @@ class feed_ctl extends pagecore{
         $feed->description = $description;
 
         $this->mdl_photo->set_pageset(50);
-        $data = $this->mdl_photo->get_all(null,$search,'tu_desc');
+        $data = $this->mdl_photo->get_all(1,$search,'tu_desc');
         
-        foreach($data as $v){
-            $item = new RSSItem();
-            $item->title = "<![CDATA[ ".$v['name']." ]]>";;
-            $item->link  = $sitedomain.site_link('photos','view',array('id'=>$v['id']));
-            $item->set_pubdate($v['create_time']);
-            if(!$this->mdl_album->check_album_priv($album_id,isset($album_info)?$album_info:null)){
-                $img = lang('photo_has_priv').'<br />';
-            }else{
-                $img = '<img src="'.$siteurl.$v['path'].'" /><br />';
+        if($data['ls']){
+            foreach($data['ls'] as $v){
+                $item = new RSSItem();
+                $item->title = "<![CDATA[ ".$v['name']." ]]>";;
+                $item->link  = $sitedomain.site_link('photos','view',array('id'=>$v['id']));
+                $item->set_pubdate($v['create_time']);
+                if(!$this->mdl_album->check_album_priv($album_id,isset($album_info)?$album_info:null)){
+                    $img = lang('photo_has_priv').'<br />';
+                }else{
+                    $img = '<img src="'.$siteurl.$v['path'].'" /><br />';
+                }
+                $item->description = "<![CDATA[ ".$img.$v['desc']." ]]>";
+                $feed->add_item($item);
             }
-            $item->description = "<![CDATA[ ".$img.$v['desc']." ]]>";
-            $feed->add_item($item);
         }
         
         $feed->serve();

@@ -38,7 +38,7 @@ class pagecore{
         $meu_head = $plugin->filter('meu_head',$head_str,$album_id,$photo_id);
         $meu_head .= "\n".'<meta name="generator" content="Mei'.'u'.'Pic '.MPIC_VERSION.'" />'."\n";
         
-        $feed_url = isset($arr['aid'])?site_link('feed','index',array('aid'=>$arr['aid'])):site_link('feed');
+        $feed_url = $album_id?site_link('feed','index',array('aid'=>$album_id)):site_link('feed');
         $feed_title = $this->setting->get_conf('site.title');
         $meu_head .= "<link rel=\"alternate\" title=\"{$feed_title}\" href=\"".$feed_url."\" type=\"application/rss+xml\" />\n";
         $this->output->set('meu_head',$meu_head);
