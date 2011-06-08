@@ -14,7 +14,7 @@
                 {$v['content']}
             </div>
             <div class="ctlbtn">
-                <a href="javascript:void(0);" onclick="reply_comment(this,'{link ctl=comments act=reply id=$v['id']}');">{lang reply}</a>  <!--{if $loggedin}--><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=comments act=confirm_delete id=$v['id']}',true)">{lang delete}</a><!--{/if}-->
+                <a href="javascript:void(0);" onclick="reply_comment(this,'{link ctl=comments act=reply id=$v['id']}');">{lang reply}</a>  <!--{if $loggedin}--><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=comments act=confirm_delete id=$v['id']}',true)">{lang delete}</a>  <a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=comments act=block id=$v['id']}')">{lang block}</a><!--{/if}-->
             </div>
             <!--{loop $v['sub_comments'] $vv}-->
             <div class="cmt_item bdwt sub">
@@ -32,7 +32,7 @@
                         {$vv['content']}
                     </div>
                     <div class="ctlbtn">
-                        <a href="javascript:void(0);" onclick="reply_comment(this,'{link ctl=comments act=reply id=$vv['id']}');">{lang reply}</a>  <!--{if $loggedin}--><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=comments act=confirm_delete id=$vv['id']}',true)">{lang delete}</a><!--{/if}-->
+                        <a href="javascript:void(0);" onclick="reply_comment(this,'{link ctl=comments act=reply id=$vv['id']}');">{lang reply}</a>  <!--{if $loggedin}--><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=comments act=confirm_delete id=$vv['id']}',true)">{lang delete}</a>  <a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=comments act=block id=$vv['id']}')">{lang block}</a><!--{/if}-->
                     </div>
                 </div>
             </div>
