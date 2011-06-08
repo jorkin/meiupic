@@ -39,16 +39,18 @@ class utility_mdl extends modelfactory{
                 $tmp = function_exists('gd_info') ? gd_info() :false;
                 $gd_ver = empty($tmp['GD Version']) ? lang('notsupport') : $tmp['GD Version'];
                 $gd_rst = array();
-                if(isset($tmp['FreeType Support'])){
+                if(isset($tmp['FreeType Support']) && $tmp['FreeType Support']){
                     $gd_rst[] = 'freetype';
                 }
-                if(isset($tmp['GIF Read Support'])){
+                if(isset($tmp['GIF Read Support']) && $tmp['GIF Read Support']){
                     $gd_rst[] = 'gif';
                 }
-                if(isset($tmp['JPEG Support']) || isset($tmp['JPG Support'])){
+                if((isset($tmp['JPEG Support']) && $tmp['JPEG Support']) 
+                    || 
+                    (isset($tmp['JPG Support']) && $tmp['JPG Support'])){
                     $gd_rst[] = 'jpg';
                 }
-                if(isset($tmp['PNG Support'])){
+                if(isset($tmp['PNG Support']) && $tmp['PNG Support']){
                     $gd_rst[] = 'png';
                 }
                 $info[] = array('title'=>lang($k),'value'=>$gd_ver.' '.implode(',',$gd_rst));

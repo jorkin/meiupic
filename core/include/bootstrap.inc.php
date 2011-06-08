@@ -237,6 +237,11 @@ function meiu_bootstrap(){
     $output->set('site_name',$setting_mdl->get_conf('site.title',lang('myalbum')));
     $user =& loader::model('user');
     $output->set('loggedin',$user->loggedin());
+    if($user->loggedin()){
+        $output->set('u_info',$user->get_all_field());
+        $output->set('u_extrainfo',$user->get_extra($user->get_field('id')));
+    }
+    
     define('IN_CTL',$uriinfo['ctl']);
     define('IN_ACT',$uriinfo['act']);
     $_GET = array_merge($_GET,$uriinfo['pars']);

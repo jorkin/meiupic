@@ -51,7 +51,8 @@ class users_ctl extends pagecore{
             redirect(site_link('users','login'));
         }
         
-        $this->output->set('info',$this->user->get_all_field());
+        //$this->output->set('info',$this->user->get_all_field());
+        //$this->output->set('extra_info',$this->user->get_extra($this->user->get_field('id')));
         
         $page_title = lang('modify_profile').' - '.$this->setting->get_conf('site.title');
         $page_keywords = $this->setting->get_conf('site.keywords');
@@ -69,6 +70,11 @@ class users_ctl extends pagecore{
         $new_pass = $this->getPost('new_pass');
         $old_pass = $this->getPost('old_pass');
         $new_pass_again = $this->getPost('new_pass_again');
+        $extra_arr = $this->getPost('extra');
+        if($extra_arr['email'] && !check_email($extra_arr['email'])){
+            form_ajax_failed('text',lang('error_email'));
+        }
+        
         if($new_pass){
             if(!$this->user->check_pass($current_id,md5($old_pass))){
                 form_ajax_failed('text',lang('old_pass_error'));
@@ -79,6 +85,8 @@ class users_ctl extends pagecore{
             $arr['user_pass'] = md5($new_pass);
         }
         if($this->user->update($current_id,$arr)){
+            $this->user->save_extra($current_id,$extra_arr);
+            
             form_ajax_success('box',lang('modify_success').($new_pass?lang('pass_edit_ok'):''),null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
             form_ajax_failed('text',lang('modify_failed'));

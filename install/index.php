@@ -254,6 +254,9 @@ if($method == 'license'){
         
         $db->insert('#@users',array('user_name'=>$username,'user_nicename'=>$username,'user_pass'=>md5($password),'create_time'=>time()));
         if($db->query()){
+            $userid = $db->insertid();
+            $db->insert('#@usermeta',array('userid'=>$userid,'meta_key'=>'email','meta_value'=>$email));
+            $db->query();
             showjsmessage(lang('create_admin_account').lang('succeed'));
         }else{
             showjsmessage(lang('create_admin_account').lang('failed'));
