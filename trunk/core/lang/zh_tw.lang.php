@@ -308,10 +308,13 @@ $language = array(
 'reply_failed' => '回复失敗！ ',
 'delete_comment_success' => '成功刪除評論!',
 'delete_comment_failed' => '刪除評論失敗!',
+'block_comment_success' => '成功屏蔽評論！ ',
+'block_comment_failed' => '屏蔽評論失敗！ ',
 'loginwith' => '以 %s 的身份登錄。 ',
 
 'confirm_delete_comments' => '確定要刪除這條評論麼？刪除後無法恢復！ ',
 'reply' => '回复',
+'block' => '屏蔽',
 'load_more_comments' => '載入更多評論',
 
 //trash

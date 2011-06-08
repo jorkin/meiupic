@@ -158,4 +158,22 @@ class comments_ctl extends pagecore{
         
         $this->render();
     }
+    
+    function block(){
+        need_login('ajax_page');
+
+        $id = $this->getGet('id');
+        $info = $this->mdl_comment->get_info($id);
+        if($this->mdl_comment->block($id)){
+            if($info['type'] == 1){
+                $this->mdl_album->update_comments_num($info['ref_id']);
+            }elseif($info['type'] == 2){
+                $this->mdl_photo->update_comments_num($info['ref_id']);
+            }
+            
+            ajax_box(lang('block_comment_success'),null,0.5,$_SERVER['HTTP_REFERER']);
+        }else{
+            ajax_box(lang('block_comment_failed'));
+        }
+    }
 }

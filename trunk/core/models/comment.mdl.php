@@ -41,4 +41,14 @@ class comment_mdl extends modelfactory{
         }
         return $ret;
     }
+    
+    function block($id){
+        $this->db->update($this->table_name,$this->id_col.'='.intval($id),array('status'=>2));
+        $ret = $this->db->query();
+        if($ret){
+            $this->db->update($this->table_name,'pid='.intval($id),array('status'=>2));
+            $this->db->query();
+        }
+        return $ret;
+    }
 }
