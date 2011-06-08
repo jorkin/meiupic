@@ -16,14 +16,19 @@
                            <form id="user_profile" action="{link ctl=users act=save_profile}" method="post" onsubmit="return false;" style="padding-left:50px">
                                <div class="field">
                                       <div class="label">{lang loginname}</div>
-                                      <div class="ipts">{$info['user_name']}</div>
+                                      <div class="ipts">{$u_info['user_name']}</div>
                                       <div class="clear"></div>
                                </div>
                                <div class="field">
                                    <div class="label">{lang nickname} *</div>
-                                   <div class="ipts"><input type="text" name="user_nicename" class="inputstyle iptw3" value="{$info['user_nicename']}" /></div>
+                                   <div class="ipts"><input type="text" name="user_nicename" class="inputstyle iptw3" value="{$u_info['user_nicename']}" /></div>
                                    <div class="clear"></div>
                                </div>
+                               <div class="field">
+                                      <div class="label">{lang email}</div>
+                                      <div class="ipts"><input type="text" name="extra[email]" class="inputstyle iptw3" value="{if isset($u_extrainfo['email'])}{$u_extrainfo['email']}{/if}" /></div>
+                                      <div class="clear"></div>
+                                  </div>
                                <div class="field">
                                       <div class="label">{lang old_passport}</div>
                                       <div class="ipts"><input type="password" name="old_pass" class="inputstyle iptw3" value="" /></div>

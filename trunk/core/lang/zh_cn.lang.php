@@ -308,6 +308,7 @@ $language   =   array(
 'reply_failed'       =>  '回复失败！',
 'delete_comment_success' => '成功删除评论!',
 'delete_comment_failed' => '删除评论失败!',
+'loginwith'    =>  '以 %s 的身份登录。',
 
 'confirm_delete_comments'   =>  '确定要删除这条评论么？删除后无法恢复！',
 'reply'             =>  '回复',

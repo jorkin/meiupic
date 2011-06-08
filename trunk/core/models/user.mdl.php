@@ -127,7 +127,26 @@ class user_mdl extends modelfactory{
         @ob_clean();
         setcookie($this->cookie_name,'',- 86400 * 365,'/',$this->cookie_domain);
     }
-
+    
+    function save_extra($id,$extra){
+        if(is_array($extra)){
+            foreach($extra as $k => $v){
+                $this->db->select('#@usermeta','meta_value','userid='.intval($id).' and meta_key='.$this->db->q_str($k));
+                $row = $this->db->getRow();
+                if($row){
+                    $this->db->update('#@usermeta','userid='.intval($id).' and meta_key='.$this->db->q_str($k),array('meta_value'=>$v));
+                }else{
+                    $this->db->insert('#@usermeta',array('userid'=>intval($id),'meta_key'=>$k,'meta_value'=>$v));
+                }
+                $this->db->query();
+            }
+        }
+    }
+    
+    function get_extra($id){
+        $this->db->select('#@usermeta','meta_key,meta_value','userid='.intval($id));
+        return $this->db->getAssoc();
+    }
     /**
      * 认证加密
      *
