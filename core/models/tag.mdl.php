@@ -11,7 +11,7 @@ class tag_mdl extends modelfactory{
     var $table_name = '#@tags';
     
     function _filters($filters){
-        $str = '1';
+        $str = 'count>0';
         if(isset($filters['type'])){
             $str .= ' and type='.intval($filters['type']);
         }
@@ -54,6 +54,7 @@ class tag_mdl extends modelfactory{
     function add_tags($tag_names,$obj_id,$type){
         $changed_ids = array();
         foreach($tag_names as $tag_name){
+            $tag_name = trim($tag_name);
             if($tag_name != ''){
                 $this->db->select('#@tags','id','name='.$this->db->q_str($tag_name).' and type='.$type);
                 $tag_id = $this->db->getOne();
@@ -69,7 +70,7 @@ class tag_mdl extends modelfactory{
     }
     
     function save_tags($id,$tags,$type=1){
-        $tag_arr = explode(' ',$tags);
+        $tag_arr = parse_tag($tags);
         $tag_arr = array_unique($tag_arr);
         $this->db->select('#@tag_rel as tr left join #@tags as t on tr.tag_id=t.id','tag_id,name','t.type='.$type.' and tr.rel_id='.intval($id));
         $exist_tags = $this->db->getAll();
@@ -81,6 +82,7 @@ class tag_mdl extends modelfactory{
             foreach($exist_tags as $et){
                 $del_flag = true;
                 foreach($tag_arr as  $k => $tag){
+                    $tag = trim($tag);
                     if($et['name'] == $tag){
                         $exists[] = $et['tag_id'];
                         $del_flag = false;

@@ -95,7 +95,7 @@ class photos_ctl extends pagecore{
             $this->output->set('enable_comment',false);
         }
         
-        $album_info['tags_list'] = explode(' ',$album_info['tags']);
+        $album_info['tags_list'] = parse_tag($album_info['tags']);
         $album_info['desc'] = $this->plugin->filter('album_desc',$album_info['desc'],$album_id);
         
         $this->output->set('photo_col_menu',$this->plugin->filter('photo_col_menu',$view_type.$page_setting_str.$sort_list,$album_id));
@@ -472,7 +472,7 @@ class photos_ctl extends pagecore{
             $info['exif'] = unserialize($info['exif']);
         }
         
-        $info['tags_list'] = explode(' ',$info['tags']);
+        $info['tags_list'] = parse_tag($info['tags']);
         
         $album_info = $this->mdl_album->get_info($info['album_id']);
         if(!$this->mdl_album->check_album_priv($album_info['id'],$album_info)){
