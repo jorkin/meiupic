@@ -419,7 +419,15 @@ function file_pure_name($filename){
     array_pop($arr);
     return implode('.',$arr);
 }
-
+function parse_tag($str){
+    $tag_arr_tmp = explode(' ',$str);
+    $tag_arr =array();
+    foreach($tag_arr_tmp as $tv){
+        $arr = explode(',',$tv);
+        $tag_arr = array_merge($tag_arr,$arr);
+    }
+    return $tag_arr;
+}
 //covert bytes to be readable
 function bytes2u($size){
     $result = '';

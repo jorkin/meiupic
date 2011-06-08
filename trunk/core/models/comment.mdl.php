@@ -12,7 +12,7 @@ class comment_mdl extends modelfactory{
     var $pageset = 10;
     
     function _filters($filters){
-        $str = 'pid=0';
+        $str = 'status=1 and pid=0';
         if(isset($filters['ref_id'])){
             $str .= ' and ref_id='.intval($filters['ref_id']);
         }
@@ -23,7 +23,7 @@ class comment_mdl extends modelfactory{
     }
     
     function get_sub($pid){
-        $this->db->select('#@comments','*','pid='.intval($pid));
+        $this->db->select('#@comments','*','status=1 and pid='.intval($pid));
         return $this->db->getAll();
     }
     

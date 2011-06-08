@@ -134,7 +134,7 @@ class album_mdl extends modelfactory{
     }
     
     function update_comments_num($id){
-        $this->db->select('#@comments','count(id)','ref_id='.intval($id).' and type=1');
+        $this->db->select('#@comments','count(id)','ref_id='.intval($id).' and status=1 and type=1');
         $arr['comments_num'] = $this->db->getOne();
         return $this->update($id,$arr);
     }

@@ -140,12 +140,13 @@ function boot_init(){
     else {
         $base_root = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https' : 'http';
         $base_url = $base_root .= '://'. $_SERVER['HTTP_HOST'];
-        if ($dir = trim(dirname($_SERVER['SCRIPT_NAME']), '\,/')) {
+        $PHP_SELF = htmlspecialchars(isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : $_SERVER['PHP_SELF']);
+        $dir = trim( substr($PHP_SELF, 0, strrpos($PHP_SELF, 'index.php')) , '\,/');
+        if ($dir) {
           $base_path = "/$dir";
           $base_path .= '/';
           $base_url .= $base_path;
-        }
-        else {
+        }else {
           $base_path = '/';
         }
     }
