@@ -542,9 +542,9 @@ class setting_ctl extends pagecore{
         $langset = LANGSET;
         $time = time();
         $hash = md5("{$software}{$version}{$revision}{$langset}{$time}");
-        $q = base64_encode("software=$software&version=$version&revision=$revision&langset=$revision&time=$time&hash=$hash");
+        $q = base64_encode("software=$software&version=$version&revision=$revision&langset=$langset&time=$time&hash=$hash");
         $url = CHECK_UPDATE_URL.'?q='.$q;
-        $data = get_remote($url);
+        $data = get_remote($url,2);
         if(!$data){
             $data = lang('connect_to_server_failed');
         }
