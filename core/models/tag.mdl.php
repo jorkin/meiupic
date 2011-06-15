@@ -107,4 +107,27 @@ class tag_mdl extends modelfactory{
             $this->update(intval($tag_id),array('count'=>$num));
         }
     }
+    
+    function recount_all(){
+        $this->db->select('#@tag_rel as tr left join #@tags as t on tr.tag_id=t.id','t.type,tr.rel_id,tr.tag_id');
+        $data = $this->db->getAll();
+        if($data){
+            foreach($data as $v){
+                if($v['type'] == 1){
+                    $this->db->select('#@albums','count(id)','id='.intval($v['rel_id']));
+                }elseif($v['type'] == 2){
+                    $this->db->select('#@photos','count(id)','id='.intval($v['rel_id']));
+                }
+                if($this->db->getOne() == 0){
+                    $this->remove_obj_tag(array($v['tag_id']),$v['rel_id']);
+                }
+            }
+        }
+        
+        $this->db->select('#@tags','id');
+        $tags = $this->db->getCol(0);
+        if($tags){
+            $this->recount($tags);
+        }
+    }
 }

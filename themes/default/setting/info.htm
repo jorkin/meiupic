@@ -13,7 +13,26 @@
                     <div class="innercol">
                             <div class="innerconetent">
                                 <div class="sysinfo">
-                                 <div class="btns">{lang cache_size}{$cache_size} <input class="ml10 ylbtn" type="button" onclick="Mui.box.show('{link ctl=setting act=clear_cache}')" value="{lang clear_all_cache}" /></div>
+                                 <div class="btns">{lang cache_size}{$cache_size} <input class="ml10 ylbtn" type="button" onclick="Mui.box.show('{link ctl=setting act=clear_cache}')" value="{lang clear_all_cache}" /> <input class="ml10 ylbtn" type="button" onclick="Mui.box.show('{link ctl=setting act=check_update}',true)" value="{lang check_update}" /></div>
+                                 
+                                 <form id="recounter" action="{link ctl=setting act=counter}" method="post" onsubmit="return false;">
+                                     <div class="section">{lang recounter}</div>
+                                     <table class="info">
+                                         <tr>
+                                             <td>
+                                                <label><input type="checkbox" value="1" name="counter[comments]" /> {lang comment_recounter} </label>
+                                                <label><input type="checkbox" value="1" name="counter[photos]" /> {lang photo_recounter}</label>
+                                                <label><input type="checkbox" value="1" name="counter[tags]" /> {lang tag_recounter}</label>
+                                             </td>
+                                         </tr>
+                                         <tr>
+                                              <td>
+                                                <input type="submit" class="ylbtn" onclick="Mui.form.sendPop('recounter')" value="{lang confirm}" />
+                                              </td>
+                                         </tr>
+                                     </table>
+                                 </form>
+                                 
                                  <div class="section">{lang system_info}</div>
                                  <table class="info">
                                      {loop $info $v}

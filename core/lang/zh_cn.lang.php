@@ -590,7 +590,7 @@ $language   =   array(
 'water_mark_fontsize_label' =>  '水印文字大小',
 'water_mark_fontsize_tips'  =>  '水印文字大小设置，单位为px',
 'water_mark_color_label'    =>  '水印文字颜色',
-'water_mark_color_tips'     =>  '可以取色器取色',
+'water_mark_color_tips'     =>  '请使用HEX颜色代码。如:#332211',
 'water_mark_angle_label'    =>  '水印角度',
 'water_mark_angle_tips'     =>  '角度可取值范围为0-360度，逆时针方向（即如果值为 90 则表示从下向上阅读文本）',
 'water_mark_opacity_label'  =>  '水印透明度',
@@ -632,4 +632,13 @@ $language   =   array(
 'zlib_support'          =>  '是否支持Zlib',
 'support'               =>  '支持',
 'notsupport'            =>  '不支持',
+
+'nothing_to_do'     =>  '未做任何操作！',
+'recounter_success' =>  '更新统计成功！',
+'recounter'         =>  '更新统计',
+'comment_recounter' =>  '评论数重计',
+'photo_recounter'   =>  '照片数重计',
+'tag_recounter'     =>  '标签数重计',
+'check_update'      =>  '检查更新',
+'connect_to_server_failed'  =>  '连接服务器失败！',
 );
