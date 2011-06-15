@@ -9,6 +9,15 @@
 
 class utility_mdl extends modelfactory{
     
+    function get_revision(){
+        if(file_exists(ROOTDIR.'conf/revision.txt')){
+            $rversion = file_get_contents(ROOTDIR.'conf/revision.txt');
+        }else{
+            $rversion = '';
+        }
+        return $rversion;
+    }
+    
     function sys_info(){
         $env_items = array(
                     'meiupic_version' => array('c'=>'MPIC_VERSION'),
@@ -55,12 +64,9 @@ class utility_mdl extends modelfactory{
                 }
                 $info[] = array('title'=>lang($k),'value'=>$gd_ver.' '.implode(',',$gd_rst));
             }elseif($k == 'meiupic_version'){
-                if(file_exists(ROOTDIR.'conf/revision.txt')){
-                    $rversion = '('.file_get_contents(ROOTDIR.'conf/revision.txt').')';
-                }else{
-                    $rversion = '';
-                }
-                $info[] = array('title'=>lang($k),'value'=>MPIC_VERSION.' '.$rversion);
+                $rversion = $this->get_revision();
+                
+                $info[] = array('title'=>lang($k),'value'=>MPIC_VERSION.' '.$rversion?'('.$rversion.')':'');
             }elseif($k == 'sqlite_support'){
                 if(function_exists('sqlite_open') || class_exists("SQLite3") || (function_exists('pdo_drivers') && in_array('sqlite',pdo_drivers()))){
                     $support = true;

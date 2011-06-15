@@ -131,4 +131,21 @@ class comment_mdl extends modelfactory{
         $this->db->select($this->table_name,'status,count(*) as num','1 group by status');
         return $this->db->getAssoc();
     }
+    
+    function recount_all(){
+        $this->db->select($this->table_name,'type,ref_id,count(id) as num','status=1 group by type,ref_id');
+        $data = $this->db->getAll();
+        if($data){
+            foreach($data as $v){
+                if($v['type'] == 1){
+                    $this->db->update('#@albums','id='.intval($v['ref_id']),array('comments_num'=>$v['num']));
+                }elseif($v['type'] == 2){
+                    $this->db->update('#@photos','id='.intval($v['ref_id']),array('comments_num'=>$v['num']));
+                }
+                $this->db->query();
+            }
+        }
+        
+        return true;
+    }
 }

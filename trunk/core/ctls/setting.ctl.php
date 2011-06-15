@@ -503,4 +503,51 @@ class setting_ctl extends pagecore{
         
         form_ajax_success('box',lang('save_setting_success'),null,0.5,$_SERVER['HTTP_REFERER']);
     }
+    //重计数量
+    function counter(){
+        $counter = $this->getPost('counter');
+        if(!$counter){
+            form_ajax_failed('box',lang('nothing_to_do'),null,2);
+        }
+        set_time_limit(0);
+        
+        if(isset($counter['comments'])){
+            $comment_mdl =& loader::model('comment');
+            $comment_mdl->recount_all();
+        }
+        
+        if(isset($counter['photos'])){
+            $album_mdl =& loader::model('album');
+            $list = $album_mdl->get_all();
+            if($list){
+                foreach($list as $v){
+                    $album_mdl->update_photos_num($v['id'],false);
+                }
+            }
+        }
+        
+        if(isset($counter['tags'])){
+            $tag_mdl =& loader::model('tag');
+            $tag_mdl->recount_all();
+        }
+        
+        form_ajax_success('box',lang('recounter_success'),null,2);
+    }
+    //检查更新
+    function check_update(){
+        $software = 'meiupic';
+        $version = MPIC_VERSION;
+        $utility_mdl =& loader::model('utility');
+        $revision = $utility_mdl->get_revision();
+        $langset = LANGSET;
+        $time = time();
+        $hash = md5("{$software}{$version}{$revision}{$langset}{$time}");
+        $q = base64_encode("software=$software&version=$version&revision=$revision&langset=$revision&time=$time&hash=$hash");
+        $url = CHECK_UPDATE_URL.'?q='.$q;
+        $data = get_remote($url);
+        if(!$data){
+            $data = lang('connect_to_server_failed');
+        }
+        ajax_box($data,lang('check_update'));
+    }
 }
