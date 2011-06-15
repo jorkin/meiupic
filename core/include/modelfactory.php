@@ -43,7 +43,7 @@ class modelfactory{
             $sort = $this->default_order;
         }
         $this->db->select($this->table_name,$this->default_cols,$where,$sort);
-        if($page){
+        if(is_numeric($page)){
             $data = $this->db->toPage($page,$this->pageset);
         }else{
             $data = $this->db->getAll();

@@ -36,12 +36,6 @@ class comments_ctl extends pagecore{
         $comment['author_ip'] = get_real_ip();
         
         if($comment_id = $this->mdl_comment->save($comment)){
-            if($comment['type'] == 1){
-                $this->mdl_album->update_comments_num($comment['ref_id']);
-            }elseif($comment['type'] == 2){
-                $this->mdl_photo->update_comments_num($comment['ref_id']);
-            }
-            
             $this->plugin->trigger('post_comment',$comment_id);
             form_ajax_success('box',lang('post_comment_success'),null,0.5);
         }else{
@@ -89,15 +83,8 @@ class comments_ctl extends pagecore{
         $comment['author_ip'] = get_real_ip();
         
         if($reply_id = $this->mdl_comment->save($comment)){
-            $comment['id'] = $this->mdl_comment->last_insert_id();
-            if($comment['type'] == 1){
-                $this->mdl_album->update_comments_num($comment['ref_id']);
-            }elseif($comment['type'] == 2){
-                $this->mdl_photo->update_comments_num($comment['ref_id']);
-            }
-            
+            $comment['id'] = $reply_id;
             $this->output->set('info',$comment);
-            
             $this->plugin->trigger('reply_comment',$reply_id);
             form_ajax_success('text',loader::view('comments/view',false));
         }else{
@@ -118,14 +105,7 @@ class comments_ctl extends pagecore{
         need_login('ajax_page');
 
         $id = $this->getGet('id');
-        $info = $this->mdl_comment->get_info($id);
-        if($this->mdl_comment->delete($id)){
-            if($info['type'] == 1){
-                $this->mdl_album->update_comments_num($info['ref_id']);
-            }elseif($info['type'] == 2){
-                $this->mdl_photo->update_comments_num($info['ref_id']);
-            }
-            
+        if($this->mdl_comment->delete($id)){                        
             $this->plugin->trigger('deleted_comment',$id);
             ajax_box(lang('delete_comment_success'),null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
@@ -137,7 +117,7 @@ class comments_ctl extends pagecore{
         $ref_id = intval($this->getGet('ref_id'));
         $type = intval($this->getGet('type'));
         $page = $this->getGet('page',1);
-        $comments = $this->mdl_comment->get_all($page,array('ref_id'=>$ref_id,'type'=>$type));
+        $comments = $this->mdl_comment->get_all($page,array('status'=>1,'pid'=>0,'ref_id'=>$ref_id,'type'=>$type));
         if($comments['ls']){
             foreach($comments['ls'] as $k=>$v){
                 $sub_comments = $this->mdl_comment->get_sub($v['id']);
@@ -163,17 +143,131 @@ class comments_ctl extends pagecore{
         need_login('ajax_page');
 
         $id = $this->getGet('id');
-        $info = $this->mdl_comment->get_info($id);
         if($this->mdl_comment->block($id)){
-            if($info['type'] == 1){
-                $this->mdl_album->update_comments_num($info['ref_id']);
-            }elseif($info['type'] == 2){
-                $this->mdl_photo->update_comments_num($info['ref_id']);
-            }
-            
             ajax_box(lang('block_comment_success'),null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
             ajax_box(lang('block_comment_failed'));
+        }
+    }
+    
+    function approve(){
+        need_login('ajax_page');
+
+        $id = $this->getGet('id');
+        if($this->mdl_comment->approve($id)){
+            ajax_box(lang('approve_comment_success'),null,0.5,$_SERVER['HTTP_REFERER']);
+        }else{
+            ajax_box(lang('approve_comment_failed'));
+        }
+    }
+    
+    function manage(){
+        need_login('page');
+        
+        $page = $this->getGet('page',1);
+        $status = $this->getGet('status','all');
+        
+        $status_nums = $this->mdl_comment->count_group_status();
+        $pageurl = site_link('comments','manage',array('page'=>'[#page#]','status'=>$status));
+        $this->mdl_comment->set_pageset(20);
+        $data = $this->mdl_comment->get_all($page,array('status'=>$status));
+        if($data['ls']){
+            foreach($data['ls'] as $k => $v){
+                if($v['type'] == 1){
+                    $data['ls'][$k]['subject'] = $this->mdl_album->get_info($v['ref_id']);
+                }else{
+                    $data['ls'][$k]['subject'] = $this->mdl_photo->get_info($v['ref_id']);
+                }
+            }
+        }
+        $page_obj =& loader::lib('page');
+        $this->output->set('pagestr',$page_obj->fetch($data['total'],$data['current'],$pageurl));
+        $this->output->set('comments',$data['ls']);
+        $this->output->set('status',$status);
+        $this->output->set('status_nums',$status_nums);
+        
+        $page_title = lang('comments_manage').' - '.$this->setting->get_conf('site.title');
+        $page_keywords = $this->setting->get_conf('site.keywords');
+        $page_description = $this->setting->get_conf('site.description');
+        $this->page_init($page_title,$page_keywords,$page_description);
+        
+        $this->render();
+    }
+    
+    function confirm_delete_batch(){
+        need_login('ajax_page');
+        
+        $ids = $this->getPost('sel_id');
+        if(!$ids || count($ids) == 0){
+            ajax_box(lang('pls_sel_comments_want_to_delete'));
+        }
+        $this->render();
+    }
+    
+    function delete_batch(){
+        need_login('ajax_page');
+        
+        $ids = $this->getPost('sel_id');
+        if(!$ids || count($ids) == 0){
+            ajax_box(lang('pls_sel_comments_want_to_delete'));
+        }else{
+            if($this->mdl_comment->delete_batch(array_keys($ids))){
+                $this->plugin->trigger('deleted_many_comments',array_keys($ids));
+                
+                ajax_box(lang('batch_delete_comments_success'),null,1,$_SERVER['HTTP_REFERER']);
+            }else{
+                ajax_box(lang('batch_delete_comments_failed'));
+            }
+        }
+    }
+    
+    function confirm_block_batch(){
+        need_login('ajax_page');
+        
+        $ids = $this->getPost('sel_id');
+        if(!$ids || count($ids) == 0){
+            ajax_box(lang('pls_sel_comments_want_to_block'));
+        }
+        $this->render();
+    }
+    
+    function block_batch(){
+        need_login('ajax_page');
+        
+        $ids = $this->getPost('sel_id');
+        if(!$ids || count($ids) == 0){
+            ajax_box(lang('pls_sel_comments_want_to_block'));
+        }else{
+            if($this->mdl_comment->block_batch(array_keys($ids))){
+                ajax_box(lang('batch_block_comments_success'),null,1,$_SERVER['HTTP_REFERER']);
+            }else{
+                ajax_box(lang('batch_block_comments_failed'));
+            }
+        }
+    }
+    
+    function confirm_approve_batch(){
+        need_login('ajax_page');
+        
+        $ids = $this->getPost('sel_id');
+        if(!$ids || count($ids) == 0){
+            ajax_box(lang('pls_sel_comments_want_to_approve'));
+        }
+        $this->render();
+    }
+    
+    function approve_batch(){
+        need_login('ajax_page');
+        
+        $ids = $this->getPost('sel_id');
+        if(!$ids || count($ids) == 0){
+            ajax_box(lang('pls_sel_comments_want_to_approve'));
+        }else{
+            if($this->mdl_comment->approve_batch(array_keys($ids))){
+                ajax_box(lang('batch_approve_comments_success'),null,1,$_SERVER['HTTP_REFERER']);
+            }else{
+                ajax_box(lang('batch_approve_comments_failed'));
+            }
         }
     }
 }

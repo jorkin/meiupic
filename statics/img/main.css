@@ -646,10 +646,66 @@ div.modaldiv{
     list-style:decimal;
     height:30px;
 }
-
-
+.commentlist .datalist td{
+    line-height:1.4;
+    padding:4px;
+}
+.commentlist .datalist tfoot td{
+    border:none;
+    padding-top:8px;
+}
+.comments_num{
+    background:green;
+    color:white;
+    padding:0 4px;
+}
+td.comment_author {
+    line-height:2;
+    color:#888;
+}
+td.comment_author strong{
+    color:#444;
+}
+td.comment_author strong img{
+    float:left;
+    margin-right: 10px;
+    margin-top: 3px;
+    margin-bottom:10px;
+    width:38px;
+}
+td.comment_content .submit-on{
+    color:#888;
+}
+td.comment_content p{
+    margin:6px 0;
+    font-size:13px;
+}
+.commentlist .datalist a.c_block{
+    color:#D98500;
+}
+.commentlist .datalist a.c_approve{
+    color:green;
+}
+.commentlist .datalist a.c_delete{
+    color:red;
+}
+.commentlist .datalist a.c_block:hover,.commentlist .datalist a.c_approve:hover,.commentlist .datalist a.c_delete:hover{
+    background:none;
+    text-decoration:underline;
+    color:#777;
+}
 .container_scroll{
     height:300px;
     overflow-y:auto;
     margin-bottom:10px;
+}
+
+.subsubsub{
+    padding: 0 0 10px 0;
+}
+.subsubsub li{
+    display:inline;
+}
+.subsubsub li a.current{
+    font-size:14px;
 }

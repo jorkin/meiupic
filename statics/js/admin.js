@@ -111,3 +111,35 @@ Madmin.inline_edit = function(je,url){
         });
     },'html');
 }
+
+
+function admin_reply_comment(je,url){
+    var btn = $(je);
+    var parent = $(je).parent().parent();
+    if(parent.next('tr.form').length == 0){
+        $.get(url,{ajax:'true','_t':Math.random()}, function(data) {
+            parent.after('<tr class="form"><td colspan="5">'+data+'</td></tr>');
+            parent.next('tr.form').find('input[name=cancel]').click(function(){
+                parent.next('tr.form').hide();
+            });
+            parent.next('tr.form').find('form').submit(function(){
+                var postform = $(this);
+                $.post(postform.attr('action'),postform.serializeArray(),function(data) {
+                    if(data.ret){
+                        window.location.reload();
+                    }else{
+                        notice_div = postform.find('.form_notice_div');
+                        if( notice_div.length == 0 ){
+                            postform.prepend('<div class="form_notice_div">'+data.html+'</div>');
+                        }else{
+                            notice_div.html(data.html);
+                        }
+                        postform.find('.form_notice_div').css({display:'block'});
+                    }
+                },'json');
+            });
+        },'html');
+    }else{
+        parent.next('tr.form').show();
+    }
+}
