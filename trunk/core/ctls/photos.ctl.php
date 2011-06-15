@@ -70,8 +70,9 @@ class photos_ctl extends pagecore{
         
         //load comments
         if($this->setting->get_conf('system.enable_comment')){
+            $cpage = $this->getGet('cpage',1);
             $mdl_comment =& loader::model('comment');
-            $album_comments = $mdl_comment->get_all(1,array('ref_id'=>$album_id,'type'=>'1'));
+            $album_comments = $mdl_comment->get_all($cpage,array('status'=>1,'pid'=>0,'ref_id'=>$album_id,'type'=>'1'));
             if($album_comments['ls']){
                 foreach($album_comments['ls'] as $k=>$v){
                     $sub_comments = $mdl_comment->get_sub($v['id']);
@@ -535,8 +536,9 @@ class photos_ctl extends pagecore{
             }
         }
         if($this->setting->get_conf('system.enable_comment')){
+            $cpage = $this->getGet('cpage',1);
             $mdl_comment =& loader::model('comment');
-            $comments = $mdl_comment->get_all(1,array('ref_id'=>$id,'type'=>2));
+            $comments = $mdl_comment->get_all($cpage,array('status'=>1,'pid'=>0,'ref_id'=>$id,'type'=>2));
             if($comments['ls']){
                 foreach($comments['ls'] as $k=>$v){
                     $sub_comments = $mdl_comment->get_sub($v['id']);

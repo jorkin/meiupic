@@ -1,5 +1,5 @@
     <!--{loop $comments_list $v}-->
-    <div class="cmt_item bdwb">
+    <div class="cmt_item bdwb" id="comment-{$v['id']}">
         <div class="f_left cmt_fce">
             <img src="{echo get_avatar($v)}" />
         </div>
@@ -17,7 +17,7 @@
                 <a href="javascript:void(0);" onclick="reply_comment(this,'{link ctl=comments act=reply id=$v['id']}');">{lang reply}</a>  <!--{if $loggedin}--><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=comments act=confirm_delete id=$v['id']}',true)">{lang delete}</a>  <a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=comments act=block id=$v['id']}')">{lang block}</a><!--{/if}-->
             </div>
             <!--{loop $v['sub_comments'] $vv}-->
-            <div class="cmt_item bdwt sub">
+            <div class="cmt_item bdwt sub" id="comment-{$vv['id']}">
                 <div class="f_left cmt_fce">
                     <img src="{echo get_avatar($vv)}" />
                 </div>
