@@ -19,7 +19,7 @@
                         
                         <div id="photo_body">
                             {$photo_body_append}
-                            <img class="photo" alt="{$info['name']}" src="{img $info['thumb']}" />
+                            <img class="photo" alt="{$info['name']}" src="{img $info['path']}" />
                             <div class="ctl"><div class="prev"><span>{lang prev_photo}</span></div><div class="next"><span>{lang next_photo}</span></div></div>
                         </div>
                         <div id="photo_infos">
@@ -78,12 +78,17 @@
 <script>
    function detect_resize_img(){
        var max_width = $('body').width()-350;
-       var img_width = parseInt('{$info['width']}');
+       var img_width = orgi_width = parseInt('{$info['width']}');
+       var img_height = parseInt('{$info['height']}');
        if(isNaN(img_width) || img_width == 0){
            img_width = 600;
        }
        if(img_width > max_width){
            img_width = max_width;
+       }
+       if(orgi_width){
+           img_height = img_width/orgi_width*img_height;
+           $('#photo_body img.photo').attr('height',img_height)
        }
        $('#photo_body img.photo').attr('width',img_width);
    }
@@ -114,23 +119,16 @@
        });
        {/if}
    }
-   detect_resize_img();
-   $('#photo_body').prepend('<span class="loading">Loading...</span>');
-   var img = new Image();
-   img.onload = function(){
-       $('#photo_body img.photo').attr('src',img.src);
-       $('#photo_body span').remove('.loading');
-   };
-   img.src = "{img $info['path']}";
    
-   $(function(){
+   detect_resize_img();
+   
+   $('#photo_body img').load(function(){
        show_pic_ctl();
    });
    $(window).resize(function() {
        detect_resize_img();
        show_pic_ctl();
    });
-   
    $(document).bind('keydown',
        function(e){
            if (e.altKey) return true;
