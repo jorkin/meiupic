@@ -66,7 +66,7 @@ class utility_mdl extends modelfactory{
             }elseif($k == 'meiupic_version'){
                 $rversion = $this->get_revision();
                 
-                $info[] = array('title'=>lang($k),'value'=>MPIC_VERSION.' '.$rversion?'('.$rversion.')':'');
+                $info[] = array('title'=>lang($k),'value'=>MPIC_VERSION.' '.($rversion?'('.$rversion.')':''));
             }elseif($k == 'sqlite_support'){
                 if(function_exists('sqlite_open') || class_exists("SQLite3") || (function_exists('pdo_drivers') && in_array('sqlite',pdo_drivers()))){
                     $support = true;
