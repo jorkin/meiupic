@@ -660,6 +660,9 @@ div.modaldiv{
     color:white;
     padding:0 4px;
 }
+table.datalist{
+    table-layout: fixed;
+}
 td.comment_author {
     line-height:2;
     color:#888;
@@ -677,8 +680,13 @@ td.comment_author strong img{
 td.comment_content .submit-on{
     color:#888;
 }
+td.comment_content{
+    word-wrap: break-word;
+    overflow: hidden;
+}
 td.comment_content p{
     margin:6px 0;
+    word-wrap: break-word;
     font-size:13px;
 }
 .commentlist .datalist a.c_block{
