@@ -700,7 +700,6 @@ table.datalist td{
     border-bottom:1px solid #ddd;
     display: table-cell;
     overflow: hidden;
-    white-space: nowrap;
 }
 
 .sysinfo .section{

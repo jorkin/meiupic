@@ -45,7 +45,7 @@
                                                {$v['email']}
                                                <br />
                                                {$v['author_ip']}<br /></td>
-                                           <td class="comment_content"><div class="submit-on">{lang posted_at} <a href="{if $v['type']==1}{link ctl=photos act=index aid=$v['ref_id']}{else}{link ctl=photos act=view id=$v['ref_id']}{/if}#comment-{$v['id']}">{echo date('Y-m-d H:i:s',$v['post_time'])}</a> {if $v['reply_author']}| {lang replyed_to} <a href="{if $v['type']==1}{link ctl=photos act=index aid=$v['pid']}{else}{link ctl=photos act=view id=$v['ref_id']}{/if}#comment-{$v['pid']}">{$v['reply_author']}</a>{/if}</div>
+                                           <td class="comment_content"><div class="submit-on">{lang posted_at} <a href="{if $v['type']==1}{link ctl=photos act=index aid=$v['ref_id']}{else}{link ctl=photos act=view id=$v['ref_id']}{/if}#comment-{$v['id']}">{echo date('Y-m-d H:i:s',$v['post_time'])}</a> {if $v['reply_author']}| {lang replyed_to} <a href="{if $v['type']==1}{link ctl=photos act=index aid=$v['ref_id']}{else}{link ctl=photos act=view id=$v['ref_id']}{/if}#comment-{$v['pid']}">{$v['reply_author']}</a>{/if}</div>
                                                <p>{$v['content']}</p></td>
                                            <td>
                                                <a href="{if $v['type']==1}{link ctl=photos act=index aid=$v['subject']['id']}{else}{link ctl=photos act=view id=$v['subject']['id']}{/if}">{$v['subject']['name']}</a>
