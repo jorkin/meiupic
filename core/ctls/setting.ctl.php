@@ -128,7 +128,7 @@ class setting_ctl extends pagecore{
         
         $watermark_type = $this->getPost('watermark_type','0');
         $watermark = $this->getPost('watermark');
-        $this->setting->set_conf('watermark.type',$watermark_type);
+        
         if(!isset($watermark['water_mark_pos'])){
             $watermark['water_mark_pos'] = 5;
         }
@@ -170,6 +170,8 @@ class setting_ctl extends pagecore{
             $this->setting->set_conf('watermark.water_mark_opacity',$watermark['water_mark_opacity']);
             $this->setting->set_conf('watermark.water_mark_pos',$watermark['water_mark_pos']);
         }
+        $this->setting->set_conf('watermark.type',$watermark_type);
+        
         form_ajax_success('box',lang('save_setting_success'),null,0.5,$_SERVER['HTTP_REFERER']);
     }
     
