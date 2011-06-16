@@ -382,6 +382,7 @@ textarea.inputstyle{
 form .field{
     clear:both;
     padding:0 0 10px;
+    _height:1%;
 }
 form .field .label{width:110px;float:left;text-align:left;}
 form .field .ipts{float:left;}
@@ -699,7 +700,9 @@ td.comment_content p{
     overflow-y:auto;
     margin-bottom:10px;
 }
-
+.innerconetent{
+    _height:1%;
+}
 .subsubsub{
     padding: 0 0 10px 0;
 }
