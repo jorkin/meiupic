@@ -234,6 +234,7 @@ function meiu_bootstrap(){
     $output =& loader::lib('output');
     $output->set('base_path',$base_path);
     $output->set('statics_path',$base_path.'statics/');
+    $output->set('site_logo',$setting_mdl->get_conf('site.logo',''));
     $output->set('site_name',$setting_mdl->get_conf('site.title',lang('myalbum')));
     $user =& loader::model('user');
     $output->set('loggedin',$user->loggedin());

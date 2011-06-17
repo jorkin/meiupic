@@ -51,6 +51,7 @@ class setting_ctl extends pagecore{
         $this->setting->set_conf('site.description',$site['description']);
         $this->setting->set_conf('site.footer',safe_convert($site['footer'],true));
         $this->setting->set_conf('system.gravatar_url',$gravatar_url);
+        $this->setting->set_conf('site.logo',$site['logo']);
         
         if($this->getPost('enable_comment')){
             $this->setting->set_conf('system.enable_comment',true);
@@ -187,6 +188,9 @@ class setting_ctl extends pagecore{
         $upaction = $this->getPost('upaction');
         if($upaction == 'watermark'){
             $path_dir = 'data/watermark';
+            $file_type = array('png','jpg','gif');
+        }elseif($upaction == 'logo'){
+            $path_dir = 'data/logo';
             $file_type = array('png','jpg','gif');
         }
         

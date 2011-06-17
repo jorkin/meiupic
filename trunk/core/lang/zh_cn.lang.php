@@ -537,6 +537,8 @@ $language   =   array(
 'site_url_tips'         =>  '图片地址时及超链接的前缀，请保留最后的"/"',
 'site_keywords_label'   =>  '你的相册默认关键字',
 'site_keywords_tips'    =>  '便于搜索引擎抓取，meta keywords',
+'site_logo_label'       =>  '相册LOGO',
+'site_logo_tips'        =>  '显示于页面左上角，请上传logo或填入logo的相对地址',
 
 'site_description_label'=>  '你的相册描述',
 'site_description_tips' =>  '便于搜索引擎抓取，meta description',
