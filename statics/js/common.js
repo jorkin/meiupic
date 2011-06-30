@@ -255,7 +255,8 @@ Mui.form = {
             }else{
                 m_notice.html(ret);
             }
-            m_notice.css({display:'block'});
+            //m_notice.css({display:'block'});
+            $('#'+formid).parent().find('.meiu_notice_div').hide().fadeIn();
         }else{
             if( m_notice.length > 0 ){
                 m_notice.css({display:'none'});
