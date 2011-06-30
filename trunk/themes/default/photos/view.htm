@@ -124,6 +124,7 @@
    
    $('#photo_body img').load(function(){
        show_pic_ctl();
+       $('#photo_body').css('background','none');
    });
    $(window).resize(function() {
        detect_resize_img();

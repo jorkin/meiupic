@@ -364,6 +364,9 @@ table.layout td.right{
 #photo_body{
     margin:20px 0;
     text-align:center;
+    height: auto !important;
+    height: 50px;
+    min-height:50px;
     background:url(loading.gif) no-repeat center;
 }
 #photo_body div.ctl{
