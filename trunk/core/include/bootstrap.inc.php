@@ -99,7 +99,7 @@ function lang() {
         if(count($vars) != 2) {
             return "!$var!";
         }
-        if(!in_array($vars[0], $GLOBALS['templatelangs']) && empty($templatelang[$vars[0]])) {
+        if(!in_array($vars[0], $GLOBALS['templatelangs']) && empty($templatelangs[$vars[0]])) {
             @include ROOTDIR.'plugins'.DIRECTORY_SEPARATOR.$vars[0].DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.LANGSET.'.lang.php';
             if(isset($language)){
                 $GLOBALS['templatelangs'][$vars[0]] = $language;
