@@ -18,7 +18,7 @@ class template_mdl{
         $str = @file_get_contents ($tplfile);
         $str = $this->template_parse ($str);
         $strlen = file_put_contents ($compiledtplfile, $str );
-        chmod ($compiledtplfile, 0777);
+        @chmod ($compiledtplfile, 0777);
         return $strlen;
     }
 
