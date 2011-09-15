@@ -85,18 +85,18 @@ Class adapter_sqlite{
         $ver = $this->version();
         switch(true)
         {
-            case function_exists("pdo_drivers") && in_array('sqlite',pdo_drivers()) && ($ver==-1 || $ver==3):
-                $this->conn = new PDO("sqlite:".$dbinfo['dbpath']);
-                if($this->conn!=NULL)
-                {
-                    $this->type = "PDO";
-                    break;
-                }
             case class_exists("SQLite3") && ($ver==-1 || $ver==3):
                 $this->conn = new SQLite3($dbinfo['dbpath']);
                 if($this->conn!=NULL)
                 {
                     $this->type = "SQLite3";
+                    break;
+                }
+            case function_exists("pdo_drivers") && in_array('sqlite',pdo_drivers()) && ($ver==-1 || $ver==3):
+                $this->conn = new PDO("sqlite:".$dbinfo['dbpath']);
+                if($this->conn!=NULL)
+                {
+                    $this->type = "PDO";
                     break;
                 }
             case function_exists("sqlite_open") && ($ver==-1 || $ver==2):
@@ -188,13 +188,10 @@ Class adapter_sqlite{
         
         if(strtolower(substr(ltrim($sql),0,5))=='alter') //this query is an ALTER query - call the necessary function
         {
-            //TODO : sqlite Alter Table;
-            
-            /*$queryparts = preg_split("/[\s]+/", $query, 4, PREG_SPLIT_NO_EMPTY);
+            $queryparts = preg_split("/[\s]+/", $sql, 4, PREG_SPLIT_NO_EMPTY);
             $tablename = $queryparts[2];
             $alterdefs = $queryparts[3];
-            $result = $this->alterTable($tablename, $alterdefs);*/
-            exit('Not support for alter!');
+            $result = $this->alterTable($tablename, $alterdefs);
         }else{
             if($this->type=="SQLite2"){
                 $result = sqlite_query($sql, $this->conn);
@@ -202,6 +199,7 @@ Class adapter_sqlite{
                 $result = $this->conn->query($sql);
             }
         }
+
         if(!$result){
             if($this->type=="SQLite2"){
                 $this->lasterr = sqlite_last_error($this->conn);
@@ -229,6 +227,135 @@ Class adapter_sqlite{
         }
         
     }
+
+    public function alterTable($table, $alterdefs)
+    {
+        //TODO PDO_SQLITE 会出现“table is locked” 的 bug。
+        if($alterdefs == '')
+        {
+            return false;
+        }
+
+        $tempQuery = "SELECT sql,name,type FROM sqlite_master WHERE tbl_name = '".$table."' ORDER BY type DESC";
+        $result = $this->query($tempQuery);
+        $row = $this->getRow($tempQuery);
+
+        if(sizeof($row)>0)
+        {
+            $tmpname = 't'.time();
+            $origsql = trim(preg_replace("/[\s]+/", " ", str_replace(",", ", ",preg_replace("/[\(]/", "( ", $row['sql'], 1))));
+            $createtemptableSQL = 'CREATE TEMPORARY '.substr(trim(preg_replace("'".$table."'", $tmpname, $origsql, 1)), 6);
+            $createindexsql = array();
+            $i = 0;
+            $defs = preg_split("/[,]+/",$alterdefs, -1, PREG_SPLIT_NO_EMPTY);
+            $prevword = $table;
+            $oldcols = preg_split("/[,]+/", substr(trim($createtemptableSQL), strpos(trim($createtemptableSQL), '(')+1), -1, PREG_SPLIT_NO_EMPTY);
+            $newcols = array();
+            for($i=0; $i<sizeof($oldcols); $i++)
+            {
+                $colparts = preg_split("/[\s]+/", $oldcols[$i], -1, PREG_SPLIT_NO_EMPTY);
+                $oldcols[$i] = $colparts[0];
+                $newcols[$colparts[0]] = $colparts[0];
+            }
+            $newcolumns = '';
+            $oldcolumns = '';
+            reset($newcols);
+            while(list($key, $val) = each($newcols))
+            {
+                $newcolumns .= ($newcolumns?', ':'').$val;
+                $oldcolumns .= ($oldcolumns?', ':'').$key;
+            }
+            $copytotempsql = 'INSERT INTO '.$tmpname.'('.$newcolumns.') SELECT '.$oldcolumns.' FROM '.$table;
+            $dropoldsql = 'DROP TABLE '.$table;
+            $createtesttableSQL = $createtemptableSQL;
+            foreach($defs as $def)
+            {
+                $defparts = preg_split("/[\s]+/", $def,-1, PREG_SPLIT_NO_EMPTY);
+                $action = strtolower($defparts[0]);
+                switch($action)
+                {
+                    case 'add':
+                        if(sizeof($defparts) <= 2)
+                            return false;
+                        $createtesttableSQL = substr($createtesttableSQL, 0, strlen($createtesttableSQL)-1).',';
+                        for($i=1;$i<sizeof($defparts);$i++)
+                            $createtesttableSQL.=' '.$defparts[$i];
+                        $createtesttableSQL.=')';
+                        break;
+                    case 'change':
+                        if(sizeof($defparts) <= 3)
+                        {
+                            return false;
+                        }
+                        if($severpos = strpos($createtesttableSQL,' '.$defparts[1].' '))
+                        {
+                            if($newcols[$defparts[1]] != $defparts[1])
+                                return false;
+                            $newcols[$defparts[1]] = $defparts[2];
+                            $nextcommapos = strpos($createtesttableSQL,',',$severpos);
+                            $insertval = '';
+                            for($i=2;$i<sizeof($defparts);$i++)
+                                $insertval.=' '.$defparts[$i];
+                            if($nextcommapos)
+                                $createtesttableSQL = substr($createtesttableSQL,0,$severpos).$insertval.substr($createtesttableSQL,$nextcommapos);
+                            else
+                                $createtesttableSQL = substr($createtesttableSQL,0,$severpos-(strpos($createtesttableSQL,',')?0:1)).$insertval.')';
+                        }
+                        else
+                            return false;
+                        break;
+                    case 'drop':
+                        if(sizeof($defparts) < 2)
+                            return false;
+                        if($severpos = strpos($createtesttableSQL,' '.$defparts[1].' '))
+                        {
+                            $nextcommapos = strpos($createtesttableSQL,',',$severpos);
+                            if($nextcommapos)
+                                $createtesttableSQL = substr($createtesttableSQL,0,$severpos).substr($createtesttableSQL,$nextcommapos + 1);
+                            else
+                                $createtesttableSQL = substr($createtesttableSQL,0,$severpos-(strpos($createtesttableSQL,',')?0:1) - 1).')';
+                            unset($newcols[$defparts[1]]);
+                        }
+                        else
+                            return false;
+                        break;
+                    default:
+                        return false;
+                }
+                $prevword = $defparts[sizeof($defparts)-1];
+            }
+            //this block of code generates a test table simply to verify that the columns specifed are valid in an sql statement
+            //this ensures that no reserved words are used as columns, for example
+            $tempResult = $this->query($createtesttableSQL);
+            if(!$tempResult)
+                return false;
+            $droptempsql = 'DROP TABLE '.$tmpname;
+            $tempResult = $this->query($droptempsql);
+            //end block
+
+            
+            $createnewtableSQL = 'CREATE '.substr(trim(preg_replace("'".$tmpname."'", $table, $createtesttableSQL, 1)), 17);
+            $newcolumns = '';
+            $oldcolumns = '';
+            reset($newcols);
+            while(list($key,$val) = each($newcols))
+            {
+                $newcolumns .= ($newcolumns?', ':'').$val;
+                $oldcolumns .= ($oldcolumns?', ':'').$key;
+            }
+            $copytonewsql = 'INSERT INTO '.$table.'('.$newcolumns.') SELECT '.$oldcolumns.' FROM '.$tmpname;
+
+            $this->query($createtemptableSQL); //create temp table
+            $this->query($copytotempsql); //copy to table
+            $this->query($dropoldsql); //drop old table
+
+            $this->query($createnewtableSQL); //recreate original table
+            $this->query($copytonewsql); //copy back to original table
+            $this->query($droptempsql); //drop temp table
+        }
+        return true;
+	}
+
     
     function getAll($sql){
         if (is_resource($sql)) {
@@ -346,7 +473,8 @@ Class adapter_sqlite{
                 $mode = PDO::FETCH_NUM;
             else
                 $mode = PDO::FETCH_BOTH;
-            return $result->fetch($mode);
+            $data = $result->fetch($mode);
+            return $data;
         }
         else if($this->type=="SQLite3")
         {
