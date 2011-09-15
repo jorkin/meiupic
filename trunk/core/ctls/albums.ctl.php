@@ -329,6 +329,7 @@ class albums_ctl extends pagecore{
         $album['priv_pass'] = $this->getPost('priv_pass');
         $album['priv_question'] = safe_convert($this->getPost('priv_question'));
         $album['priv_answer'] = safe_convert($this->getPost('priv_answer'));
+        $id = $this->getGet('id');
         
         if($album['priv_type'] == '1'){
             if($album['priv_pass']==''){
@@ -344,7 +345,7 @@ class albums_ctl extends pagecore{
             }
         }
         
-        if($this->mdl_album->update($this->getGet('id'),$album)){
+        if($this->mdl_album->update($id,$album)){
             $this->plugin->trigger('modified_album_priv',$id);
             form_ajax_success('box',lang('modify_album_priv_success'),null,0.5,$_SERVER['HTTP_REFERER']);
         }else{

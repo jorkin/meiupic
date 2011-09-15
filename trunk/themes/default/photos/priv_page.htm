@@ -42,10 +42,14 @@
 {template block/mini_header}
 <div style="padding-top:60px;">
 <div id="center_box">
+{if $album_info['priv_type'] == 3}
+    <div class="meiu_notice_div">
+        <div class="failed">{lang not_authorized}</div>
+    </div>
+{else}
     <div class="title title_c">{lang album_need_auth|`$album_info['name']`}</div>
     <form id="priv_form" action="{link ctl=photos act=check_priv}" type="post" onsubmit="return false;" style="padding-left:20px;">
         <input type="hidden" name="album_id" value="{$album_info['id']}" />
-        
     {if $album_info['priv_type'] == 1}
         <div class="field">
             <div class="label">{lang pls_input_passwd} *</div>
@@ -70,6 +74,7 @@
         <div class="clear"></div>
     </div>
     </form>
+{/if}
     
     <div class="admin_field mt15 gray">{lang owner_could}<a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=users act=login}',true)">{lang click_to_login}</a>. {lang you_can_also}<a href="{link ctl=default}">{lang back_to_index}</a>.</div>
 </div>

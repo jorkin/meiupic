@@ -97,6 +97,7 @@ Class adapter_sqlite{
                 if($this->conn!=NULL)
                 {
                     $this->type = "PDO";
+                    $this->conn->query('PRAGMA read_uncommitted=1');
                     break;
                 }
             case function_exists("sqlite_open") && ($ver==-1 || $ver==2):
@@ -230,14 +231,12 @@ Class adapter_sqlite{
 
     public function alterTable($table, $alterdefs)
     {
-        //TODO PDO_SQLITE 会出现“table is locked” 的 bug。
         if($alterdefs == '')
         {
             return false;
         }
 
         $tempQuery = "SELECT sql,name,type FROM sqlite_master WHERE tbl_name = '".$table."' ORDER BY type DESC";
-        $result = $this->query($tempQuery);
         $row = $this->getRow($tempQuery);
 
         if(sizeof($row)>0)
@@ -355,7 +354,14 @@ Class adapter_sqlite{
         }
         return true;
 	}
-
+    
+    function _free($result){
+        if($this->type=="PDO"){
+            $result->closeCursor();
+        }elseif($this->type=="SQLite3"){
+            $result->close();
+        }
+    }
     
     function getAll($sql){
         if (is_resource($sql)) {
@@ -368,7 +374,7 @@ Class adapter_sqlite{
         while ($row = $this->fetchArray($res,'assoc')) {
             $data[] = $row;
         }
-           
+        $this->_free($res);
         return $data;
     }
     
@@ -380,7 +386,7 @@ Class adapter_sqlite{
             $res = $this->query($sql);
         }
         $row = $this->fetchArray($res,'num');
-        
+        $this->_free($res);
         return isset($row[0]) ? $row[0] : null;
     }
 
@@ -399,6 +405,8 @@ Class adapter_sqlite{
             $res = $this->query($sql);
         }
         $row = $this->fetchArray($res,'assoc');
+        
+        $this->_free($res);
         return $row;
     }
 
@@ -421,6 +429,7 @@ Class adapter_sqlite{
         while ($row = $this->fetchArray($res,'num')) {
             $data[] = $row[$col];
         }
+        $this->_free($res);
         return $data;
     }
     
@@ -434,6 +443,7 @@ Class adapter_sqlite{
         while ($row = $this->fetchArray($res,'num')) {
             $data[$row[0]] = $row[1];
         }
+        $this->_free($res);
         return $data;
     }
     /**
