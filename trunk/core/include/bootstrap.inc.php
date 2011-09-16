@@ -166,6 +166,13 @@ function init_defines(){
     }else{
         define('IMG_ENGINE','gd');
     }
+
+    if(isset($Config['storage_engine'])){
+        define('STORAGE_ENGINE',$Config['storage_engine']);
+    }else{
+        define('STORAGE_ENGINE','file');
+    }
+    
     
     $setting =& loader::model('setting');
     define('GRAVATAR_URL',$setting->get_conf('system.gravatar_url'));

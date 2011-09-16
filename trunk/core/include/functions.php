@@ -211,18 +211,13 @@ function ajax_box( $content , $title = '', $close_time = 0 , $forward = '' , $di
     if(!$title){
         $title = lang('system_notice');
     }
-    $setting_mdl =& loader::model('setting');
-    $_config = $setting_mdl->get_conf('theme_'.TEMPLATEID,array());
-    ob_start();
-    include template('block/ajax_box');
-    $page_content = ob_get_clean();
-    if($display){
-        //no_cache_header();
-        echo $page_content;
-        exit;
-    }else{
-        return $page_content;
-    }
+    $output=&loader::lib('output');
+    $output->set('content',$content);
+    $output->set('title',$title);
+    $output->set('close_time',$close_time);
+    $output->set('forward',$forward);
+
+    return loader::view('block/ajax_box',$display);
 }
 
 function enum_priv_type($v){
@@ -268,31 +263,6 @@ function get_page_setting($type){
     }
     $str .= '</ul></div>';
     return array($current,$str);
-}
-
-function template($file,$templateid=null,$tpldir=null) {
-    if(strpos($file,':')!==false ) {
-        list($templateid, $file) = explode(':', $file);
-        $tpldir = 'plugins/'.$templateid.'/templates';
-    }
-    $tpldir = $tpldir?$tpldir:TPLDIR;
-    $templateid = $templateid ? $templateid : TEMPLATEID;
-    
-    $tplfile = ROOTDIR.$tpldir.'/'.$file.'.htm';
-    
-    if(TEMPLATEID != 1 && !file_exists($tplfile)) {
-        $tplfile = ROOTDIR.'themes/default/'.$file.'.htm';
-    }
-    if (! file_exists ( $tplfile )) {
-        exit(lang('file_not_exists',$tplfile));
-    }
-    
-    $compiledtplfile = ROOTDIR.'cache/templates/'.$templateid.'_'.str_replace(array('/','\\'),'_',$file).'.tpl.php';
-    if(!file_exists($compiledtplfile) || @filemtime($tplfile) > @filemtime($compiledtplfile)){
-        $template_mdl =& loader::model('template');
-        $template_mdl->template_compile($tplfile,$compiledtplfile);
-    }
-    return $compiledtplfile;
 }
 
 function arr_addslashes($arr){

@@ -25,7 +25,7 @@
                                         <img src="{$base_path}statics/img/lock.gif" />
                                         </a>
                                         <!--{else}-->
-                                        <a href="{link ctl=photos aid=$v['id']}"><!--{if $v['cover_id']}--><img src="{img $v['cover_path']}?{echo rand(1000,9999);}" /><!--{else}--><img src="{$base_path}statics/img/nophoto.gif" /><!--{/if}--></a>
+                                        <a href="{link ctl=photos aid=$v['id']}"><!--{if $v['cover_id']}--><img alt="{$v['name']}" src="{img $v['cover_path']}?{echo rand(1000,9999);}" /><!--{else}--><img src="{$base_path}statics/img/nophoto.gif" /><!--{/if}--></a>
                                         <!--{/if}-->
                                                     
                                                 </td>

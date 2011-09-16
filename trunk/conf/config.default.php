@@ -22,6 +22,7 @@ $CONFIG['database']['default'] = array(
 $CONFIG['cache_engine'] = 'file';
 $CONFIG['cache_policy'] = array('life_time' => 900);
 
+$CONFIG['storage_engine'] = 'file';//file 
 $CONFIG['img_engine'] = 'imagick';//imagick or gd
 
 $CONFIG['cookie_name'] = 'MPIC_AU';

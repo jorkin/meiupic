@@ -21,7 +21,57 @@ class template_mdl{
         @chmod ($compiledtplfile, 0777);
         return $strlen;
     }
+    
+    function fetch($file){
+        global $base_path;
+        $output =& loader::lib('output');
+        $params = $output->getAll();
+        extract($params);
 
+        $style_path = $base_path.TPLDIR.'/';
+        $setting =& loader::model('setting');
+        $_config = $setting->get_conf('theme_'.TEMPLATEID,array());
+        
+        $footer = '<script src="'.$statics_path.'js/common.js" type="text/javascript"></script>';
+        if(isset($loggedin) && $loggedin){
+            $footer .= '<script src="'.$statics_path.'js/admin.js" type="text/javascript"></script>';
+        }
+        $footer .= 'Powered by <a href="http://mei'.'upic.m'.'eiu.cn/" target="_blank">Mei'.'uPic '.MPIC_VERSION.'</a>';
+        $footer .= '&nbsp; Copyright &copy; 2010-2011 <a href="http://www.meiu.cn" target="_blank">Meiu Studio</a> ';
+        $footer .= safe_invert($setting->get_conf('site.footer'),true);
+        
+        $show_process_info = $setting->get_conf('system.show_process_info');
+
+        
+        ob_start();
+        include $this->template($file);
+        $content = ob_get_clean();
+        return $content;
+    }
+
+    function template($file,$templateid=null,$tpldir=null) {
+        if(strpos($file,':')!==false ) {
+            list($templateid, $file) = explode(':', $file);
+            $tpldir = 'plugins/'.$templateid.'/templates';
+        }
+        $tpldir = $tpldir?$tpldir:TPLDIR;
+        $templateid = $templateid ? $templateid : TEMPLATEID;
+        
+        $tplfile = ROOTDIR.$tpldir.'/'.$file.'.htm';
+        
+        if(TEMPLATEID != 1 && !file_exists($tplfile)) {
+            $tplfile = ROOTDIR.'themes/default/'.$file.'.htm';
+        }
+        if (! file_exists ( $tplfile )) {
+            exit(lang('file_not_exists',$tplfile));
+        }
+        
+        $compiledtplfile = ROOTDIR.'cache/templates/'.$templateid.'_'.str_replace(array('/','\\'),'_',$file).'.tpl.php';
+        if(!file_exists($compiledtplfile) || @filemtime($tplfile) > @filemtime($compiledtplfile)){
+            $this->template_compile($tplfile,$compiledtplfile);
+        }
+        return $compiledtplfile;
+    }
     /**
      * 解析模板
      *
@@ -31,7 +81,7 @@ class template_mdl{
     function template_parse($str) {
         $str = preg_replace("/\<\!\-\-\{(.+?)\}\-\-\>/s", "{\\1}", $str);
         $str = str_replace("{LF}", "<?php echo \"\\n\"; ?>", $str);
-        $str = preg_replace ( "/\{template\s+(.+)\}/", "<?php include template(\"\\1\"); ?>", $str );
+        $str = preg_replace ( "/\{template\s+(.+)\}/", "<?php include \$this->template(\"\\1\"); ?>",$str);
         $str = preg_replace ( "/\{include\s+(.+)\}/", "<?php include \\1; ?>", $str );
         $str = preg_replace ( "/\{php\s+(.+)\}/", "<?php \\1?>", $str );
         $str = preg_replace ( "/\{echo\s+(.+?)\}/", "<?php echo \\1; ?>", $str);

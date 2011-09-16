@@ -124,17 +124,11 @@ class upload_ctl extends pagecore{
             $target_dir = ROOTDIR.'cache'.DIRECTORY_SEPARATOR.'tmp';
             $imglib =& loader::lib('image');
             $exiflib =& loader::lib('exif');
+            $storlib =& loader::lib('storage');
+
             $media_dirname = 'data/'.date('Ymd');
             $thumb_dirname = 'data/thumb/'.date('Ymd');
-            if(!file_exists(ROOTDIR.$media_dirname)){
-                @mkdir(ROOTDIR.$media_dirname);
-            }
-            if(!file_exists(ROOTDIR.'data/thumb')){
-                @mkdir(ROOTDIR.'data/thumb');
-            }
-            if(!file_exists(ROOTDIR.$thumb_dirname)){
-                @mkdir(ROOTDIR.$thumb_dirname);
-            }
+
             $files_count = intval($this->getPost('muilti_uploader_count'));
             for($i=0;$i<$files_count;$i++){
                 $tmpfile = $target_dir . DIRECTORY_SEPARATOR . $this->getPost("muilti_uploader_{$i}_tmpname");
@@ -143,13 +137,12 @@ class upload_ctl extends pagecore{
                 $fileext = file_ext($filename);
                 $key = str_replace('.','',microtime(true));
                 
-                $realpath = ROOTDIR.$media_dirname.'/'.$key.'.'.$fileext;
-                if(file_exists($realpath)){
-                    $key = $key.'_1';
-                    $realpath = ROOTDIR.$media_dirname.'/'.$key.'.'.$fileext;
-                }
+                $filepath = $media_dirname.'/'.$key.'.'.$fileext;
+                $thumbpath = $thumb_dirname.'/'.$key.'.'.$fileext;
+                $realpath = $storlib->getPath($filepath);
+
                 if($status == 'done' && file_exists($tmpfile)){
-                    if(@copy($tmpfile,$realpath)){
+                    if( $storlib->upload($filepath,$tmpfile)){
                         $arr['album_id'] = $album_id;
                         $arr['path'] = $media_dirname.'/'.$key.'.'.$fileext;
                         $arr['thumb'] = $thumb_dirname.'/'.$key.'.'.$fileext;
@@ -163,7 +156,7 @@ class upload_ctl extends pagecore{
                         $arr['width'] = $imglib->getWidth();
                         $arr['height'] = $imglib->getHeight();
                         if( $imglib->getExtension() == 'jpg'){
-                            $exif = $exiflib->get_exif($realpath);
+                            $exif = $exiflib->get_exif($tmpfile);
                             if($exif){
                                 $arr['exif'] = serialize($exif);
                                 $taken_time = strtotime($exif['DateTimeOriginal']);
@@ -190,8 +183,8 @@ class upload_ctl extends pagecore{
                         
                         $imglib->save(ROOTDIR.$arr['thumb']);
                         if(!($photo_id = $this->mdl_photo->save($arr))){
-                            @unlink($realpath);
-                            @unlink(ROOTDIR.$arr['thumb']);
+                            $storlib->delete($filepath);
+                            $storlib->delete($thumbpath);
                         }
                         @unlink($tmpfile);
                         $this->plugin->trigger('uploaded_photo',$photo_id);
@@ -224,18 +217,11 @@ class upload_ctl extends pagecore{
             }
             $imglib =& loader::lib('image');
             $exiflib =& loader::lib('exif');
+            $storlib =& loader::lib('storage');
             $media_dirname = 'data/'.date('Ymd');
             $thumb_dirname = 'data/thumb/'.date('Ymd');
             $supportType = $imglib->supportType();
-            if(!file_exists(ROOTDIR.$media_dirname)){
-                @mkdir(ROOTDIR.$media_dirname);
-            }
-            if(!file_exists(ROOTDIR.'data/thumb')){
-                @mkdir(ROOTDIR.'data/thumb');
-            }
-            if(!file_exists(ROOTDIR.$thumb_dirname)){
-                @mkdir(ROOTDIR.$thumb_dirname);
-            }
+
             $empty_num = 0;
             $error = '';
             $allowsize = allowsize($this->setting->get_conf('upload.allow_size'));
@@ -267,13 +253,16 @@ class upload_ctl extends pagecore{
                     }
                     
                     $key = str_replace('.','',microtime(true));
-                    $realpath = ROOTDIR.$media_dirname.'/'.$key.'.'.$fileext;
+                    /*$realpath = ROOTDIR.$media_dirname.'/'.$key.'.'.$fileext;
                     if(file_exists($realpath)){
                         $key = $key.'_1';
                         $realpath = ROOTDIR.$media_dirname.'/'.$key.'.'.$fileext;
-                    }
+                    }*/
+                    $filepath = $media_dirname.'/'.$key.'.'.$fileext;
+                    $thumbpath = $thumb_dirname.'/'.$key.'.'.$fileext;
+                    $realpath = $storlib->getPath($filepath);
 
-                    if($tmpfile && @move_uploaded_file($tmpfile,$realpath)){
+                    if($tmpfile && $storlib->upload($filepath,$tmpfile)){
                         $arr['album_id'] = $album_id;
                         $arr['path'] = $media_dirname.'/'.$key.'.'.$fileext;
                         $arr['thumb'] = $thumb_dirname.'/'.$key.'.'.$fileext;
@@ -286,7 +275,7 @@ class upload_ctl extends pagecore{
                         $arr['width'] = $imglib->getWidth();
                         $arr['height'] = $imglib->getHeight();
                         if( $imglib->getExtension() == 'jpg'){
-                            $exif = $exiflib->get_exif($realpath);
+                            $exif = $exiflib->get_exif($tmpfile);
                             if($exif){
                                 $arr['exif'] = serialize($exif);
                                 $taken_time = strtotime($exif['DateTimeOriginal']);
