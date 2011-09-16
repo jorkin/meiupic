@@ -11,6 +11,7 @@ $language   =   array(
 'connect_mysql'          =>    '连接至Mysql (%s,%s) 失败!',
 'can_not_use_db'         =>    '不能使用数据库 %s',
 'img_engine_not_exists'  =>   '加载图像引擎错误: %s 不存在！',
+'storage_engine_not_exists'  =>   '存储引擎错误: %s 不存在！',
 'plugin_can_not_call'    =>   '插件 %s 不能执行！',
 'config_file_error'      =>   '配置文件格式错误！',
 'config_file_not_exists' =>   '配置文件不存在！',

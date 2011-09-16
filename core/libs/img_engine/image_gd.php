@@ -77,6 +77,9 @@ class image_gd {
      * return volid
      */
     function save($filename) {
+        $storlib =& loader::lib('storage');
+        $storlib->mkdirs(dirname($filename));
+
         $image_type = $this->image_type;
         if( $image_type == IMAGETYPE_JPEG ) {
             imagejpeg($this->image,$filename,$this->image_quality);
@@ -85,6 +88,7 @@ class image_gd {
         } elseif( $image_type == IMAGETYPE_PNG ) {
             imagepng($this->image,$filename);
         }
+
     }
     
     /**

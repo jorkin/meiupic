@@ -79,31 +79,11 @@ class Loader{
      * 装载视图
      */
     static function view($tplFile,$isDisplay = true){
-        global $base_path;
-        $style_path = $base_path.TPLDIR.'/';
-        $params = loader::lib('output')->getAll();
-        extract($params);
-        
-        $setting =& loader::model('setting');
-        $_config = $setting->get_conf('theme_'.TEMPLATEID,array());
-        
-        $footer = '<script src="'.$statics_path.'js/common.js" type="text/javascript"></script>';
-        if(isset($loggedin) && $loggedin){
-            $footer .= '<script src="'.$statics_path.'js/admin.js" type="text/javascript"></script>';
-        }
-        $footer .= 'Powered by <a href="http://mei'.'upic.m'.'eiu.cn/" target="_blank">Mei'.'uPic '.MPIC_VERSION.'</a>';
-        $footer .= '&nbsp; Copyright &copy; 2010-2011 <a href="http://www.meiu.cn" target="_blank">Meiu Studio</a> ';
-        $footer .= safe_invert($setting->get_conf('site.footer'),true);
-        
-        $show_process_info = $setting->get_conf('system.show_process_info');
-        
-        ob_start();
-        include template($tplFile);
-        $content = ob_get_clean();
+        $tpl =& loader::model('template');
         if($isDisplay){
-            echo $content;
+            echo $tpl->fetch($tplFile);
         }else{
-            return $content;
+            return $tpl->fetch($tplFile);
         }
     }
     /**
