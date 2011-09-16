@@ -358,8 +358,6 @@ Class adapter_sqlite{
     function _free($result){
         if($this->type=="PDO"){
             $result->closeCursor();
-        }elseif($this->type=="SQLite3"){
-            $result->close();
         }
     }
     
