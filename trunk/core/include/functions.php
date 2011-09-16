@@ -216,8 +216,12 @@ function ajax_box( $content , $title = '', $close_time = 0 , $forward = '' , $di
     $output->set('title',$title);
     $output->set('close_time',$close_time);
     $output->set('forward',$forward);
-
-    return loader::view('block/ajax_box',$display);
+    if($display){
+        loader::view('block/ajax_box');
+        exit;
+    }else{
+        return loader::view('block/ajax_box',false);
+    }
 }
 
 function enum_priv_type($v){

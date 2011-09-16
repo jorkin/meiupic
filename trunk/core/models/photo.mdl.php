@@ -86,8 +86,9 @@ class photo_mdl extends modelfactory{
         $mdl_comment =& loader::model('comment');
         $mdl_comment->delete_by_ref(2,$id);
         
-        @unlink(ROOTDIR.$info['thumb']);
-        @unlink(ROOTDIR.$info['path']);
+        $storlib =& loader::lib('storage');
+        $storlib->delete($info['thumb']);
+        $storlib->delete($info['path']);
         return $this->delete($id);
     }
     
