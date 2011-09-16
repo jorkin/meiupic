@@ -269,13 +269,8 @@ class setting_ctl extends pagecore{
             global $language;
             @include($theme_lang_file);
         }
-        
-        $_config =  $this->setting->get_conf('theme_'.$theme);
-        
-        ob_start();
-        include template('_config',$theme,'themes/'.$theme);
-        $setting_config = ob_get_clean();
-        
+        $tpl =& Loader::model('template');
+        $setting_config = $tpl->fetch('_config',$theme,'themes/'.$theme);
         $this->output->set('setting_config',$setting_config);
         $this->render();
     }

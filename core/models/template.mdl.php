@@ -22,15 +22,19 @@ class template_mdl{
         return $strlen;
     }
     
-    function fetch($file){
+    function fetch($file,$templateid=null,$tpldir=null){
         global $base_path;
         $output =& loader::lib('output');
         $params = $output->getAll();
         extract($params);
-
+        
+        if(!$templateid){
+            $templateid = TEMPLATEID;
+        }
+        
         $style_path = $base_path.TPLDIR.'/';
         $setting =& loader::model('setting');
-        $_config = $setting->get_conf('theme_'.TEMPLATEID,array());
+        $_config = $setting->get_conf('theme_'.$templateid,array());
         
         $footer = '<script src="'.$statics_path.'js/common.js" type="text/javascript"></script>';
         if(isset($loggedin) && $loggedin){
@@ -44,7 +48,7 @@ class template_mdl{
 
         
         ob_start();
-        include $this->template($file);
+        include $this->template($file,$templateid,$tpldir);
         $content = ob_get_clean();
         return $content;
     }
