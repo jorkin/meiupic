@@ -8,15 +8,34 @@ class upload_ctl extends pagecore{
     }
     
     function index(){
+
+        $album_id = $this->getRequest('aid');
+        $this->output->set('album_id',$album_id);
+
+        $this->output->set('albums_list',$this->mdl_album->get_kv());
+
+        $page_title = lang('upload_photo').' - '.$this->setting->get_conf('site.title');
+        $page_keywords = $this->setting->get_conf('site.keywords');
+        $page_description = $this->setting->get_conf('site.description');
+        
+        $this->page_init($page_title,$page_keywords,$page_description);
+        $this->render();
+    }
+
+    function multi(){
         need_login('page');
         
-        $album_id = $this->getGet('aid');
+        $album_id = $this->getRequest('aid');
+
+        if(!$album_id){
+            showError(lang('pls_sel_album'));
+        }
         
         $this->output->set('album_id',$album_id);
-        
-        $this->output->set('albums_list',$this->mdl_album->get_kv());
         $this->output->set('upload_setting',$this->setting->get_conf('upload'));
-        
+        $album_info = $this->mdl_album->get_info($album_id);
+        $this->output->set('album_info',$album_info);
+
         $img_lib = & loader::lib('image');
         $supportType =  $img_lib->supportType();
         $this->output->set('support_type',implode(',',$supportType));
@@ -33,9 +52,14 @@ class upload_ctl extends pagecore{
         need_login('page');
         
         $album_id = $this->getGet('aid');
+
+        if(!$album_id){
+            showError(lang('pls_sel_album'));
+        }
+
         $this->output->set('album_id',$album_id);
-        
-        $this->output->set('albums_list',$this->mdl_album->get_kv());
+        $album_info = $this->mdl_album->get_info($album_id);
+        $this->output->set('album_info',$album_info);
         
         $page_title = lang('upload_photo').' - '.$this->setting->get_conf('site.title');
         $page_keywords = $this->setting->get_conf('site.keywords');
@@ -48,63 +72,149 @@ class upload_ctl extends pagecore{
     function process(){
         set_time_limit(0);
         $type = $this->getGet('t');
-        if($type == 'save_tmp'){
-            $json =& loader::lib('json');
-            if(!$this->user->loggedin()){
+
+        $json =& loader::lib('json');
+        if(!$this->user->loggedin()){
+            $return = array(
+                'jsonrpc'=>'2.0',
+                'error'=> array( 
+                    'code'=>100,
+                    'message'=>lang('pls_login_before_upload')
+                 ),
+                 'id'=>'id');
+             echo $json->encode($return);
+             exit;
+        }
+        
+        $album_id = $this->getRequest('aid');
+        $chunk = $this->getRequest('chunk',0);
+        $chunks = $this->getRequest('chunks',0);
+        $filename = $this->getRequest('name','');
+        $target_dir = ROOTDIR.'cache'.DIRECTORY_SEPARATOR.'tmp';
+        
+        $storage_mdl =& loader::model('storage');
+        $status = $storage_mdl->upload_multi($target_dir,
+                                        $chunk,$chunks,$filename,true);
+        switch($status){
+            case 100:
+            $return = array(
+                'jsonrpc'=>'2.0',
+                'error'=> array( 
+                    'code'=>$status,
+                    'message'=>lang('Failed to open temp directory.')
+                 ),
+                 'id'=>'id');
+            break;
+            case 101:
+            $return = array(
+                'jsonrpc'=>'2.0',
+                'error'=>array(
+                     'code'=>$status,
+                     'message'=>lang('Failed to open input stream.')
+                 ),
+                 'id'=>'id');
+            break;
+            case 102:
+            $return = array(
+                'jsonrpc'=>'2.0',
+                'error'=>array(
+                    'code'=>$status,
+                    'message'=>lang('Failed to open output stream.')
+                 ),
+                 'id'=>'id');
+            break;
+            case 0:
+            $return = array('jsonrpc'=>'2.0','result'=>null,'id'=>'id');
+        }
+
+        if($status ==0 && ($chunk+1==$chunks)){
+            if(! $this->_save($album_id,$target_dir.'/'.$filename,$filename)){
                 $return = array(
-                    'jsonrpc'=>'2.0',
-                    'error'=> array( 
-                        'code'=>100,
-                        'message'=>lang('pls_login_before_upload')
-                     ),
-                     'id'=>'id');
-                 echo $json->encode($return);
-                 exit;
+                'jsonrpc'=>'2.0',
+                'error'=>array(
+                    'code'=>$status,
+                    'message'=> lang('Failed to save file.')
+                 ),
+                 'id'=>'id');
             }
+        } 
+        echo $json->encode($return);
+        exit;
+    }
+
+    function _save($album_id,$tmpfile,$filename){
+        $media_dirname = 'data/'.$album_id;//.date('Ymd');
+        $thumb_dirname = 'data/thumb/'.$album_id;//.date('Ymd');
+        
+        $storlib =& loader::lib('storage');
+        $imglib =& loader::lib('image');
+        $exiflib =& loader::lib('exif');
+        $fileext = file_ext($filename);
+        $key = str_replace('.','',microtime(true));
+        
+        $tmpfile_thumb = $tmpfile.'_thumb.'.$fileext;
+
+        $filepath = $media_dirname.'/'.$key.'.'.$fileext;
+        $thumbpath = $thumb_dirname.'/'.$key.'.'.$fileext;
+
+        if(file_exists($tmpfile)){
+            $imglib->load($tmpfile);
             
-            $chunk = $this->getRequest('chunk',0);
-            $chunks = $this->getRequest('chunks',0);
-            $filename = $this->getRequest('name','');
-            $target_dir = ROOTDIR.'cache'.DIRECTORY_SEPARATOR.'tmp';
-            
-            $storage_mdl =& loader::model('storage');
-            $status = $storage_mdl->upload_multi($target_dir,
-                                            $chunk,$chunks,$filename,true);
-            switch($status){
-                case 100:
-                $return = array(
-                    'jsonrpc'=>'2.0',
-                    'error'=> array( 
-                        'code'=>$status,
-                        'message'=>lang('Failed to open temp directory.')
-                     ),
-                     'id'=>'id');
-                break;
-                case 101:
-                $return = array(
-                    'jsonrpc'=>'2.0',
-                    'error'=>array(
-                         'code'=>$status,
-                         'message'=>lang('Failed to open input stream.')
-                     ),
-                     'id'=>'id');
-                break;
-                case 102:
-                $return = array(
-                    'jsonrpc'=>'2.0',
-                    'error'=>array(
-                        'code'=>$status,
-                        'message'=>lang('Failed to open output stream.')
-                     ),
-                     'id'=>'id');
-                break;
-                case 0:
-                $return = array('jsonrpc'=>'2.0','result'=>null,'id'=>'id');
+            $arr['width'] = $imglib->getWidth();
+            $arr['height'] = $imglib->getHeight();
+            if( $imglib->getExtension() == 'jpg'){
+                $exif = $exiflib->get_exif($tmpfile);
+                if($exif){
+                    $arr['exif'] = serialize($exif);
+                    $taken_time = strtotime($exif['DateTimeOriginal']);
+                    $arr['taken_time'] = $taken_time;
+                    $arr['taken_y'] = date('Y',$taken_time);
+                    $arr['taken_m'] = date('n',$taken_time);
+                    $arr['taken_d'] = date('j',$taken_time);
+                }
             }
-            echo $json->encode($return);
-            exit;
-        }elseif($type == 'normal'){
-            //todo: normally save file
+            $water_setting = $this->setting->get_conf('watermark');
+            if($water_setting['type'] == 1){
+                $water_setting['water_mark_type'] = 'image';
+                $imglib->waterMarkSetting($water_setting);
+                $imglib->waterMark();
+                $imglib->save($tmpfile);
+            }elseif($water_setting['type'] == 2){
+                $water_setting['water_mark_type'] = 'font';
+                $water_setting['water_mark_font'] = $water_setting['water_mark_font']?ROOTDIR.'statics/font/'.$water_setting['water_mark_font']:'';
+                $imglib->waterMarkSetting($water_setting);
+                $imglib->waterMark();
+                $imglib->save($tmpfile);
+            }
+            //resize image to thumb: 180*180 
+            $imglib->resizeScale(180,180);
+            $imglib->save($tmpfile_thumb);
+            
+            if( $storlib->upload($filepath,$tmpfile)){
+                $arr['album_id'] = $album_id;
+                $arr['path'] = $media_dirname.'/'.$key.'.'.$fileext;
+                $arr['thumb'] = $thumb_dirname.'/'.$key.'.'.$fileext;
+                $arr['name'] = file_pure_name($filename);
+                $arr['create_time'] = time();
+                $arr['create_y'] = date('Y');
+                $arr['create_m'] = date('n');
+                $arr['create_d'] = date('j');
+                
+                $storlib->upload($thumbpath,$tmpfile_thumb);
+
+                if(!($photo_id = $this->mdl_photo->save($arr))){
+                    $storlib->delete($filepath);
+                    $storlib->delete($thumbpath);
+                }
+                @unlink($tmpfile);
+
+                $this->plugin->trigger('uploaded_photo',$photo_id);
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            return false;
         }
     }
     
@@ -112,83 +222,24 @@ class upload_ctl extends pagecore{
         set_time_limit(0);
         ignore_user_abort(true);
         $type = $this->getGet('t');
-        $album_id = $this->getPost('album_id');
-        
+        $album_id = $this->getRequest('aid');
+
+        if(!$album_id){
+            showError(lang('pls_sel_album'));
+        }
+
         if($type == 'multi'){
             need_login('ajax');
-            
-            if(!$album_id){
-                form_ajax_failed('box',lang('pls_sel_album'));
-            }
-            
-            $target_dir = ROOTDIR.'cache'.DIRECTORY_SEPARATOR.'tmp';
-            $imglib =& loader::lib('image');
-            $exiflib =& loader::lib('exif');
-            $storlib =& loader::lib('storage');
-
-            $media_dirname = 'data/'.date('Ymd');
-            $thumb_dirname = 'data/thumb/'.date('Ymd');
 
             $files_count = intval($this->getPost('muilti_uploader_count'));
             for($i=0;$i<$files_count;$i++){
-                $tmpfile = $target_dir . DIRECTORY_SEPARATOR . $this->getPost("muilti_uploader_{$i}_tmpname");
-                $filename = $this->getPost("muilti_uploader_{$i}_name");
-                $status =  $this->getPost("muilti_uploader_{$i}_status");
-                $fileext = file_ext($filename);
-                $key = str_replace('.','',microtime(true));
-                
-                $filepath = $media_dirname.'/'.$key.'.'.$fileext;
-                $thumbpath = $thumb_dirname.'/'.$key.'.'.$fileext;
-                $realpath = $storlib->getPath($filepath);
-
-                if($status == 'done' && file_exists($tmpfile)){
-                    if( $storlib->upload($filepath,$tmpfile)){
-                        $arr['album_id'] = $album_id;
-                        $arr['path'] = $media_dirname.'/'.$key.'.'.$fileext;
-                        $arr['thumb'] = $thumb_dirname.'/'.$key.'.'.$fileext;
-                        $arr['name'] = file_pure_name($filename);
-                        $arr['create_time'] = time();
-                        $arr['create_y'] = date('Y');
-                        $arr['create_m'] = date('n');
-                        $arr['create_d'] = date('j');
-                        $imglib->load($realpath);
-                        //resize image to thumb: 180*180 
-                        $arr['width'] = $imglib->getWidth();
-                        $arr['height'] = $imglib->getHeight();
-                        if( $imglib->getExtension() == 'jpg'){
-                            $exif = $exiflib->get_exif($tmpfile);
-                            if($exif){
-                                $arr['exif'] = serialize($exif);
-                                $taken_time = strtotime($exif['DateTimeOriginal']);
-                                $arr['taken_time'] = $taken_time;
-                                $arr['taken_y'] = date('Y',$taken_time);
-                                $arr['taken_m'] = date('n',$taken_time);
-                                $arr['taken_d'] = date('j',$taken_time);
-                            }
-                        }
-                        $water_setting = $this->setting->get_conf('watermark');
-                        if($water_setting['type'] == 1){
-                            $water_setting['water_mark_type'] = 'image';
-                            $imglib->waterMarkSetting($water_setting);
-                            $imglib->waterMark();
-                            $imglib->save($realpath);
-                        }elseif($water_setting['type'] == 2){
-                            $water_setting['water_mark_type'] = 'font';
-                            $water_setting['water_mark_font'] = $water_setting['water_mark_font']?ROOTDIR.'statics/font/'.$water_setting['water_mark_font']:'';
-                            $imglib->waterMarkSetting($water_setting);
-                            $imglib->waterMark();
-                            $imglib->save($realpath);
-                        }
-                        $imglib->resizeScale(180,180);
-                        
-                        $imglib->save(ROOTDIR.$arr['thumb']);
-                        if(!($photo_id = $this->mdl_photo->save($arr))){
-                            $storlib->delete($filepath);
-                            $storlib->delete($thumbpath);
-                        }
-                        @unlink($tmpfile);
-                        $this->plugin->trigger('uploaded_photo',$photo_id);
-                    }
+                $filename = $this->getPost("muilti_uploader_{$i}_tmpname");
+                $realname = $this->getPost("muilti_uploader_{$i}_name");
+                $purename = file_pure_name($filename);
+                $purerealname = file_pure_name($realname);
+                $photorow = $this->mdl_photo->get_photo_by_name_aid($album_id,$purename);
+                if($photorow){
+                    $this->mdl_photo->update($photorow['id'],array('name'=>$purerealname));
                 }
             }
             
@@ -201,8 +252,8 @@ class upload_ctl extends pagecore{
             need_login('page');
             
             $this->output->set('album_id',$album_id);
-
-            $this->output->set('albums_list',$this->mdl_album->get_kv());
+            $album_info = $this->mdl_album->get_info($album_id);
+            $this->output->set('album_info',$album_info);
 
             $page_title = lang('upload_photo').' - '.$this->setting->get_conf('site.title');
             $page_keywords = $this->setting->get_conf('site.keywords');
@@ -210,16 +261,7 @@ class upload_ctl extends pagecore{
 
             $this->page_init($page_title,$page_keywords,$page_description);
             
-            if(!$album_id){
-                $this->output->set('msginfo',lang('pls_sel_album'));
-                loader::view('upload/normal');
-                return;
-            }
             $imglib =& loader::lib('image');
-            $exiflib =& loader::lib('exif');
-            $storlib =& loader::lib('storage');
-            $media_dirname = 'data/'.date('Ymd');
-            $thumb_dirname = 'data/thumb/'.date('Ymd');
             $supportType = $imglib->supportType();
 
             $empty_num = 0;
@@ -252,61 +294,8 @@ class upload_ctl extends pagecore{
                         continue;
                     }
                     
-                    $key = str_replace('.','',microtime(true));
-                    /*$realpath = ROOTDIR.$media_dirname.'/'.$key.'.'.$fileext;
-                    if(file_exists($realpath)){
-                        $key = $key.'_1';
-                        $realpath = ROOTDIR.$media_dirname.'/'.$key.'.'.$fileext;
-                    }*/
-                    $filepath = $media_dirname.'/'.$key.'.'.$fileext;
-                    $thumbpath = $thumb_dirname.'/'.$key.'.'.$fileext;
-                    $realpath = $storlib->getPath($filepath);
 
-                    if($tmpfile && $storlib->upload($filepath,$tmpfile)){
-                        $arr['album_id'] = $album_id;
-                        $arr['path'] = $media_dirname.'/'.$key.'.'.$fileext;
-                        $arr['thumb'] = $thumb_dirname.'/'.$key.'.'.$fileext;
-                        $arr['name'] = file_pure_name($filename);
-                        $arr['create_time'] = time();
-                        $arr['create_y'] = date('Y');
-                        $arr['create_m'] = date('n');
-                        $arr['create_d'] = date('j');
-                        $imglib->load($realpath);
-                        $arr['width'] = $imglib->getWidth();
-                        $arr['height'] = $imglib->getHeight();
-                        if( $imglib->getExtension() == 'jpg'){
-                            $exif = $exiflib->get_exif($tmpfile);
-                            if($exif){
-                                $arr['exif'] = serialize($exif);
-                                $taken_time = strtotime($exif['DateTimeOriginal']);
-                                $arr['taken_time'] = $taken_time;
-                                $arr['taken_y'] = date('Y',$taken_time);
-                                $arr['taken_m'] = date('n',$taken_time);
-                                $arr['taken_d'] = date('j',$taken_time);
-                            }
-                        }
-                        
-                        $water_setting = $this->setting->get_conf('watermark');
-                        if($water_setting['type'] == 1){
-                            $water_setting['water_mark_type'] = 'image';
-                            $imglib->waterMarkSetting($water_setting);
-                            $imglib->waterMark();
-                            $imglib->save($realpath);
-                        }elseif($water_setting['type'] == 2){
-                            $water_setting['water_mark_type'] = 'font';
-                            $water_setting['water_mark_font'] = $water_setting['water_mark_font']?ROOTDIR.'statics/font/'.$water_setting['water_mark_font']:'';
-                            $imglib->waterMarkSetting($water_setting);
-                            $imglib->waterMark();
-                            $imglib->save($realpath);
-                        }
-                        //resize image to thumb: 180*180 
-                        $imglib->resizeScale(180,180);
-                        
-                        $imglib->save(ROOTDIR.$arr['thumb']);
-                        
-                        $photo_id = $this->mdl_photo->save($arr);
-                        $this->plugin->trigger('uploaded_photo',$photo_id);
-                    }else{
+                    if(! $this->_save($album_id,$tmpfile,$filename)){
                         $error .= lang('file_upload_failed',$filename).'<br />';
                     }
                 }else{
