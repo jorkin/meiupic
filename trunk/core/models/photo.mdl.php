@@ -194,4 +194,9 @@ class photo_mdl extends modelfactory{
         $arr['comments_num'] = $this->db->getOne();
         return $this->update($id,$arr);
     }
+
+    function get_photo_by_name_aid($aid,$name){
+        $this->db->select('#@photos','*','album_id='.intval($aid).' and name='.$this->db->q_str($name));
+        return $this->db->getRow();
+    }
 }

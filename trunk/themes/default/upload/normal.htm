@@ -9,42 +9,22 @@
                         <h1 class="f_left">{lang upload_photo}</h1>
                         <h4 class="f_left"></h4>
                         <div class="rmenu f_right">
-                           {lang switch_upload_type}: <a href="{link ctl=upload act=index}">{lang expert_mode}</a> | <a href="{if $album_id}{link ctl=upload act=normal aid=$album_id}{else}{link ctl=upload act=normal}{/if}" class="current">{lang normal_mode}</a>
+                           {lang switch_upload_type}: <a href="{link ctl=upload act=index aid=$album_id}">{lang expert_mode}</a> | <a href="{link ctl=upload act=normal aid=$album_id}" class="current">{lang normal_mode}</a>
                         </div>
                     </div>
                     <div class="innercol grid">
-<!--{if count($albums_list) > 0}-->
-<script>
-function reload_albums_options(je){
-    $.get('{link ctl=albums act=ajaxlist t=all}',{},function(data){
-        setTimeout(function(){
-            Mui.box.close();
-        },1000);
-        if(data.ret){
-            $(je).empty();
-            for(v in data.list){
-                $(je).addOption(data.list[v],v);
-            }
-        }
-    },'json');
-}
-</script>
+
                         <div id="upload_field">
                             {if isset($msginfo) && $msginfo}
                                 <div class="meiu_notice_div">{$msginfo}</div>
                             {/if}
                             
-                            <form id="upload_photos_form" method="post" enctype="multipart/form-data" action="{link ctl=upload act=save t=normal}">
+                            <form id="upload_photos_form" method="post" enctype="multipart/form-data" action="{link ctl=upload act=save t=normal aid=$album_id}">
                                 <div class="field">
-                                    <div class="label">{lang select_album}:</div>
-                                    <div class="ipts">
-                                        <select id="album_id" name="album_id">
-                                            <!--{loop $albums_list $k $v}-->
-                                                <option value="{$k}" {if $album_id==$k}selected="selected"{/if}>{$v}</option>
-                                            <!--{/loop}-->
-                                        </select> <a  href="javascript:void(0)" onclick="Mui.box.show('{link ctl=albums act=create}',true);Mui.box.callback = function(){ reload_albums_options('#album_id'); }" class="ml10">{lang new_album}</a></div>
-                                    <div class="clear"></div>
-                                </div>
+                                    <div class="label">您选择了相册:</div>
+                                    <div class="ipts"><strong>{$album_info['name']}</strong> <a href="{link ctl=upload act=index aid=$album_id}" class="ml10">返回重选</a></div>
+									<div class="clear"></div>
+								</div>
                                 <div id="normal_uploader">
                                     <ol>
                                         <li>
@@ -67,16 +47,7 @@ function reload_albums_options(je){
                                 <div align="left" style="padding-left:50px"><input type="submit" name="uploadbtn" class="ylbtn" value="{lang upload_immediatly}" /></div>
                             </form>
                         </div>
-                        <!--{else}-->
-                        <div class="no_data_info">
-                            <div class="pic no_album"></div>
-                            <div class="data_msg">
-                                <div>{lang no_album_notice}</div >
-                                <div class="button"><div class="bigbutton"><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=albums act=create}',true);"><span>{lang create_new_album}</span></a></div></div>
-                            </div>
-                            <div class="clear"></div>
-                        </div>
-                        <!--{/if}-->
+                        
                     </div>
                 </div>
             </td>

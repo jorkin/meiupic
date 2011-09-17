@@ -212,7 +212,7 @@
   //   Note that no real action is taken, if the archive does not exist it is not
   //   created. Use create() for that.
   // --------------------------------------------------------------------------------
-  function pclzip_cla($p_zipname)
+  function pclzip_cla()
   {
 
     // ----- Tests the zlib
@@ -222,12 +222,16 @@
     }
 
     // ----- Set the attributes
-    $this->zipname = $p_zipname;
+    //$this->zipname = $p_zipname;
     $this->zip_fd = 0;
     $this->magic_quotes_status = -1;
 
     // ----- Return
     return;
+  }
+
+  function load_file($p_zipname){
+      $this->zipname = $p_zipname;
   }
   // --------------------------------------------------------------------------------
 
