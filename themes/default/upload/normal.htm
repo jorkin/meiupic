@@ -9,7 +9,7 @@
                         <h1 class="f_left">{lang upload_photo}</h1>
                         <h4 class="f_left"></h4>
                         <div class="rmenu f_right">
-                           {lang switch_upload_type}: <a href="{link ctl=upload act=index aid=$album_id}">{lang expert_mode}</a> | <a href="{link ctl=upload act=normal aid=$album_id}" class="current">{lang normal_mode}</a>
+                           {lang switch_upload_type}: <a href="{link ctl=upload act=multi aid=$album_id}">{lang expert_mode}</a> | <a href="{link ctl=upload act=normal aid=$album_id}" class="current">{lang normal_mode}</a>
                         </div>
                     </div>
                     <div class="innercol grid">
@@ -22,7 +22,7 @@
                             <form id="upload_photos_form" method="post" enctype="multipart/form-data" action="{link ctl=upload act=save t=normal aid=$album_id}">
                                 <div class="field">
                                     <div class="label">您选择了相册:</div>
-                                    <div class="ipts"><strong>{$album_info['name']}</strong> <a href="{link ctl=upload act=index aid=$album_id}" class="ml10">返回重选</a></div>
+                                    <div class="ipts"><strong>{$album_info['name']}</strong> <a href="{link ctl=upload act=index aid=$album_id t=normal}" class="ml10">返回重选</a></div>
 									<div class="clear"></div>
 								</div>
                                 <div id="normal_uploader">
