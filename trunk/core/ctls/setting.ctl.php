@@ -410,10 +410,9 @@ class setting_ctl extends pagecore{
         $this->output->set('plugin',$plugin);
 
         $_config = $this->plugin->get_config($plugin);
-        
-        ob_start();
-        include template('_config',$plugin,'plugins/'.$plugin);
-        $plugin_config_fields = ob_get_clean();
+        $this->output->set('_config',$_config);
+        $tpl =& Loader::model('template');
+        $plugin_config_fields = $tpl->fetch('_config',$plugin,'plugins/'.$plugin);
         
         $this->output->set('plugin_config_fields',$plugin_config_fields);
         $this->render();

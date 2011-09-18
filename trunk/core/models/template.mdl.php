@@ -34,7 +34,14 @@ class template_mdl{
         
         $style_path = $base_path.TPLDIR.'/';
         $setting =& loader::model('setting');
-        $_config = $setting->get_conf('theme_'.$templateid,array());
+        $theme_config = $setting->get_conf('theme_'.$templateid,array());
+        if(isset($_config)){
+            if($theme_config){
+                $_config = array_merge($_config,$theme_config);
+            }
+        }else{
+            $_config = $theme_config;
+        }
         
         $footer = '<script src="'.$statics_path.'js/common.js" type="text/javascript"></script>';
         if(isset($loggedin) && $loggedin){
