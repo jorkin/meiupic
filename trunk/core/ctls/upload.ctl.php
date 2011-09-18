@@ -10,6 +10,13 @@ class upload_ctl extends pagecore{
     function index(){
 
         $album_id = $this->getRequest('aid');
+        $act = $this->getGet('t');
+        if($act=='multi'){
+            $act = 'multi';
+        }else{
+            $act = 'normal';
+        }
+        $this->output->set('act',$act);
         $this->output->set('album_id',$album_id);
 
         $this->output->set('albums_list',$this->mdl_album->get_kv());
@@ -51,7 +58,7 @@ class upload_ctl extends pagecore{
     function normal(){
         need_login('page');
         
-        $album_id = $this->getGet('aid');
+        $album_id = $this->getRequest('aid');
 
         if(!$album_id){
             showError(lang('pls_sel_album'));
