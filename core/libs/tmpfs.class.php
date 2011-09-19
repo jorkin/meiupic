@@ -51,8 +51,8 @@ class tmpfs_cla{
         return @unlink($filePath);
     }
 
-    function upload($fileName;,$append=false,$fullPath=false){ 
-        $fileName = preg_replaelse{ce('/[^\w\._]+/', '', $fileName);
+    function upload($fileName,$append=false,$fullPath=false){ 
+        $fileName = preg_replace('/[^\w\._]+/', '', $fileName);
 
         if (!file_exists($this->targetDir))
             @mkdir($this->targetDir);
