@@ -11,10 +11,10 @@ class upload_ctl extends pagecore{
 
         $album_id = $this->getRequest('aid');
         $act = $this->getGet('t');
-        if($act=='multi'){
-            $act = 'multi';
-        }else{
+        if($act=='normal'){
             $act = 'normal';
+        }else{
+            $act = 'multi';
         }
         $this->output->set('act',$act);
         $this->output->set('album_id',$album_id);
@@ -78,6 +78,12 @@ class upload_ctl extends pagecore{
     
     function process(){
         set_time_limit(0);
+        header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+        header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+        header("Cache-Control: no-store, no-cache, must-revalidate");
+        header("Cache-Control: post-check=0, pre-check=0", false);
+        header("Pragma: no-cache");
+
         $type = $this->getGet('t');
 
         $json =& loader::lib('json');
@@ -97,11 +103,9 @@ class upload_ctl extends pagecore{
         $chunk = $this->getRequest('chunk',0);
         $chunks = $this->getRequest('chunks',0);
         $filename = $this->getRequest('name','');
-        $target_dir = ROOTDIR.'cache'.DIRECTORY_SEPARATOR.'tmp';
         
-        $storage_mdl =& loader::model('storage');
-        $status = $storage_mdl->upload_multi($target_dir,
-                                        $chunk,$chunks,$filename,true);
+        $tmpfs_lib =& loader::lib('tmpfs');
+        $status = $tmpfs_lib->upload($filename,$chunk!=0);
         switch($status){
             case 100:
             $return = array(
@@ -135,7 +139,7 @@ class upload_ctl extends pagecore{
         }
 
         if($status ==0 && ($chunk+1==$chunks)){
-            if(! $this->_save($album_id,$target_dir.'/'.$filename,$filename)){
+            if(! $this->_save($album_id,$tmpfs_lib->get_path($filename),$filename)){
                 $return = array(
                 'jsonrpc'=>'2.0',
                 'error'=>array(
@@ -150,8 +154,8 @@ class upload_ctl extends pagecore{
     }
 
     function _save($album_id,$tmpfile,$filename){
-        $media_dirname = 'data/'.$album_id;//.date('Ymd');
-        $thumb_dirname = 'data/thumb/'.$album_id;//.date('Ymd');
+        $media_dirname = 'data/'.$album_id;
+        $thumb_dirname = 'data/t/'.$album_id;
         
         $storlib =& loader::lib('storage');
         $imglib =& loader::lib('image');
@@ -159,6 +163,8 @@ class upload_ctl extends pagecore{
         $fileext = file_ext($filename);
         $key = str_replace('.','',microtime(true));
         
+        $tmpfs_lib =& loader::lib('tmpfs');
+
         $tmpfile_thumb = $tmpfile.'_thumb.'.$fileext;
 
         $filepath = $media_dirname.'/'.$key.'.'.$fileext;
@@ -193,27 +199,31 @@ class upload_ctl extends pagecore{
                 $imglib->waterMark();
                 $imglib->save($tmpfile);
             }
+
             //resize image to thumb: 180*180 
             $imglib->resizeScale(180,180);
             $imglib->save($tmpfile_thumb);
             
             if( $storlib->upload($filepath,$tmpfile)){
                 $arr['album_id'] = $album_id;
-                $arr['path'] = $media_dirname.'/'.$key.'.'.$fileext;
-                $arr['thumb'] = $thumb_dirname.'/'.$key.'.'.$fileext;
+                $arr['path'] = $filepath;
+                $arr['thumb'] = $thumbpath;
                 $arr['name'] = file_pure_name($filename);
                 $arr['create_time'] = time();
                 $arr['create_y'] = date('Y');
                 $arr['create_m'] = date('n');
                 $arr['create_d'] = date('j');
                 
+                //move thumb img
                 $storlib->upload($thumbpath,$tmpfile_thumb);
 
                 if(!($photo_id = $this->mdl_photo->save($arr))){
                     $storlib->delete($filepath);
                     $storlib->delete($thumbpath);
                 }
-                @unlink($tmpfile);
+                //remove tmp files
+                $tmpfs_lib->delete($tmpfile,true);
+                $tmpfs_lib->delete($tmpfile_thumb,true);
 
                 $this->plugin->trigger('uploaded_photo',$photo_id);
                 return true;
