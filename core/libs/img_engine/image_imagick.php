@@ -63,9 +63,6 @@ class image_imagick {
      * return volid
      */
     function save($filename) {
-        $storlib =& loader::lib('storage');
-        $storlib->mkdirs(dirname($filename));
-
         if($this->image_type == 'GIF'){
             $this->image->writeImages($filename,true);
         }else{
@@ -94,7 +91,6 @@ class image_imagick {
             header('Content-type: image/bmp');
             echo $this->image->getImageBlob();
         }
-        
     }
 
     /**

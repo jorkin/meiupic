@@ -218,11 +218,8 @@ class setting_ctl extends pagecore{
                 echo $json->encode(array('error'=>lang('failed_if_file',$filename),'msg'=>''));
                 exit;
             }
-            if(!file_exists(ROOTDIR.$path_dir)){
-                @mkdir(ROOTDIR.$path_dir);
-            }
-            $path = $path_dir.'/'.date('Ymd').'.'.$fileext;
-            if(@move_uploaded_file($_FILES[$fileElementName]['tmp_name'],ROOTDIR.$path)){
+            $storlib =& loader::lib('storage');
+            if( $storlib->upload($path,$_FILES[$fileElementName]['tmp_name']) ){
                 $msg = $path;
             }else{
                 $error = lang('upload_error');
