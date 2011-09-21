@@ -4,7 +4,7 @@ define('FCPATH',__FILE__);
 define('ROOTDIR',dirname(dirname(FCPATH)).DIRECTORY_SEPARATOR);
 define('INSDIR',dirname(FCPATH).DIRECTORY_SEPARATOR);
 
-
+header("Content-type: text/html; charset=utf-8");
 require_once(INSDIR.'include/install_func.php');
 
 define('COREDIR',ROOTDIR.'core'.DIRECTORY_SEPARATOR);
