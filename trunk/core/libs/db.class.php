@@ -219,7 +219,7 @@ class db_cla{
         $row=$this->arr;
         $fieldValuePairs = array();
         foreach ($row as $fieldName => $value) {
-            if(is_a($value,'DB_Expr')){
+            if(_is_obj($value,'DB_Expr')){
                 $fieldValuePairs[] = $this->db->q_field($fieldName).
                     ' = ' . $value->get();
             }else{
@@ -261,7 +261,7 @@ class db_cla{
         $values = array();
         foreach ($row as $fieldName => $value) {
             $fields[] = $this->db->q_field($fieldName);
-            if(is_a($value,'DB_Expr')){
+            if(_is_obj($value,'DB_Expr')){
                 $values[] = $value->get();
             }else{
                 $values[] = $this->db->q_str($value);
@@ -494,5 +494,13 @@ class DB_Expr{
 
     function get(){
         return $this->_expr;
+    }
+}
+
+function _is_obj($v,$class_name){
+    if(PHPVer == 4){
+        return is_a($v,$class_name);
+    }else{
+        return $v instanceof $class_name;
     }
 }
