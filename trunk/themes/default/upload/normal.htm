@@ -21,8 +21,8 @@
                             
                             <form id="upload_photos_form" method="post" enctype="multipart/form-data" action="{link ctl=upload act=save t=normal aid=$album_id}">
                                 <div class="field">
-                                    <div class="label">您选择了相册:</div>
-                                    <div class="ipts"><strong>{$album_info['name']}</strong> <a href="{link ctl=upload act=index aid=$album_id t=normal}" class="ml10">返回重选</a></div>
+                                    <div class="label">{lang you_chose_album}:</div>
+                                    <div class="ipts"><strong>{$album_info['name']}</strong> <a href="{link ctl=upload act=index aid=$album_id t=normal}" class="ml10">{lang back_to_re_select}</a></div>
 									<div class="clear"></div>
 								</div>
                                 <div id="normal_uploader">

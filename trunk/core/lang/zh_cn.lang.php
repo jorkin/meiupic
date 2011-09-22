@@ -644,4 +644,8 @@ $language   =   array(
 'tag_recounter'     =>  '标签数重计',
 'check_update'      =>  '检查更新',
 'connect_to_server_failed'  =>  '连接服务器失败！',
+
+'sel_album_to_upload' => '选择要上传的相册',
+'you_chose_album' => '您选择了相册',
+'back_to_re_select' => '返回重选',
 );

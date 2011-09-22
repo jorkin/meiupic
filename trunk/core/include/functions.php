@@ -366,15 +366,17 @@ flag: 1, new files added
       2, clear trash
 */
 function trash_status($flag){
+    $cache =& loader::lib('cache');
     if($flag == 1){
-        touch_file(ROOTDIR.'cache/data/trash.tmp');
+        $cache->set('trash.tmp',1);
     }else{
-        @unlink(ROOTDIR.'cache/data/trash.tmp');
+        $cache->set('trash.tmp',0);
     }
 }
 
 function has_trash(){
-    if(file_exists(ROOTDIR.'cache/data/trash.tmp')){
+    $cache =& loader::lib('cache');
+    if($cache->get('trash.tmp') == 1){
         return true;
     }
     return false;

@@ -138,7 +138,7 @@ class upload_ctl extends pagecore{
             $return = array('jsonrpc'=>'2.0','result'=>null,'id'=>'id');
         }
 
-        if($status ==0 && ($chunk+1==$chunks)){
+        if($status ==0 && ($chunks == 0||$chunk+1==$chunks)){
             if(! $this->_save($album_id,$tmpfs_lib->get_path($filename),$filename)){
                 $return = array(
                 'jsonrpc'=>'2.0',
@@ -189,9 +189,16 @@ class upload_ctl extends pagecore{
             $water_setting = $this->setting->get_conf('watermark');
             if($water_setting['type'] == 1){
                 $water_setting['water_mark_type'] = 'image';
+                $ws_tmpfile = 'ws_tmp';
+                $ws_file_content = $storlib->read($water_setting['water_mark_image']);
+                if($ws_file_content){
+                    $tmpfs_lib->write($ws_tmpfile,$ws_file_content);
+                    $water_setting['water_mark_image'] = $tmpfs_lib->get_path($ws_tmpfile);
                 $imglib->waterMarkSetting($water_setting);
                 $imglib->waterMark();
                 $imglib->save($tmpfile);
+                    $tmpfs_lib->delete($ws_tmpfile);
+                }
             }elseif($water_setting['type'] == 2){
                 $water_setting['water_mark_type'] = 'font';
                 $water_setting['water_mark_font'] = $water_setting['water_mark_font']?ROOTDIR.'statics/font/'.$water_setting['water_mark_font']:'';

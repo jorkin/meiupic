@@ -135,7 +135,7 @@
                                 
                                 <!--{if $loggedin}-->
                                 <div>{lang no_photo_notice}</div >
-                                <div class="button"><div class="bigbutton"><a href="{link ctl=upload act=index aid=$album_info['id']}"><span>{lang upload_new_photo}</span></a></div></div>
+                                <div class="button"><div class="bigbutton"><a href="{link ctl=upload act=multi aid=$album_info['id']}"><span>{lang upload_new_photo}</span></a></div></div>
                                 <!--{else}-->
                                 <div>{lang no_photo_notice_notlogin}</div >
                                 <div class="button"><a href="{link ctl=albums}">{lang view_all_album}</a></div>
@@ -152,7 +152,7 @@
                 <div class="sidebar">
                     <!--{if $loggedin}-->
                     <div class="mb10">
-                        <div class="bigbutton"><a href="{link ctl=upload act=index aid=$album_info['id']}"><span>{lang upload_new_photo}</span></a></div>
+                        <div class="bigbutton"><a href="{link ctl=upload act=multi aid=$album_info['id']}"><span>{lang upload_new_photo}</span></a></div>
                     </div>
                     <!--{/if}-->
                     <div class="album_info">
