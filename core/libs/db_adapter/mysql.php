@@ -339,7 +339,7 @@ Class adapter_mysql{
      * @return String
      */
     function version() {
-        return mysql_get_server_info();
+        return @mysql_get_server_info();
     }
     /**
      * 获得刚插入数据的ID号

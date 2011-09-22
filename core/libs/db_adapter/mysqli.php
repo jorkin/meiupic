@@ -322,7 +322,7 @@ Class adapter_mysqli{
      * @return String
      */
     function version() {
-        return mysqli_get_server_info($this->conn);
+        return @mysqli_get_server_info($this->conn);
     }
     /**
      * 获得刚插入数据的ID号

@@ -644,4 +644,8 @@ $language = array(
 'tag_recounter' => '標籤數重計',
 'check_update' => '檢查更新',
 'connect_to_server_failed' => '連接服務器失敗！',
+
+'sel_album_to_upload' => '選擇要上傳的相冊',
+'you_chose_album' => '您選擇了相冊',
+'back_to_re_select' => '返回重選',
 );

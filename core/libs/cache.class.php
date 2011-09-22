@@ -65,4 +65,9 @@ class cache_cla{
         unset($this->cache[$id]);
         $this->_cache->remove($id);
     }
+
+    function clean(){
+        $this->cache = array();
+        $this->_cache->clean();
+    }
 }
