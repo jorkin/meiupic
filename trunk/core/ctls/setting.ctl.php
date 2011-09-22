@@ -219,6 +219,7 @@ class setting_ctl extends pagecore{
                 exit;
             }
             $storlib =& loader::lib('storage');
+            $path = $path_dir.'/'.date('Ymd').'.'.$fileext;
             if( $storlib->upload($path,$_FILES[$fileElementName]['tmp_name']) ){
                 $msg = $path;
             }else{

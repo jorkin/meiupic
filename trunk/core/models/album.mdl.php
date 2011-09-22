@@ -168,25 +168,26 @@ class album_mdl extends modelfactory{
     }
     
     function make_cover_img($album_id,$path,& $ext,$old_ext = ''){
+        $storlib =& loader::lib('storage');
+        $tmpfslib =& loader::lib('tmpfs');
         if($old_ext){
-            //remove old cover
-            $old_cover_path = ROOTDIR.get_album_cover($album_id,$old_ext);
-            if(file_exists($old_cover_path)){
-                @unlink($old_cover_path);
-            }
+            $storlib->delete(get_album_cover($album_id,$old_ext));
         }
         
+        $tmpfile = time().rand(1000,9999).file_ext($path);
+        $tmpfslib->write($tmpfile,$storlib->read($path));
+        $tmpfilepath = $tmpfslib->get_path($tmpfile);
+
         $imglib =& loader::lib('image');
-        $imglib->load(ROOTDIR.$path);
+        $imglib->load($tmpfilepath);
         $imglib->square(150);
         $ext = $imglib->getExtension();
-        $cover_dir = ROOTDIR.'data/cover';
-        $cover_path = ROOTDIR.get_album_cover($album_id,$ext);
-        
-        if(!is_dir($cover_dir)){
-            mkdir($cover_dir);
-        }
+        $new_path = get_album_cover($album_id,$ext);
+        $cover_path = $tmpfslib->get_path('album_cover_'.$album_id);
         $imglib->save($cover_path);
+        $storlib->upload($new_path , $cover_path);
+        $tmpfslib->delete('album_cover_'.$album_id);
+        $tmpfslib->delete($tmpfile);
     }
     
     function set_cover($pic_id){
