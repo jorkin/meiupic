@@ -298,8 +298,10 @@ function get_avatar($comment){
 }
 
 function img_path($path){
+    $storlib =& loader::lib('storage');
+    $fullpath = $storlib->getUrl($path);
     $plugin =& loader::lib('plugin');
-    return $plugin->filter('photo_path',$GLOBALS['base_path'].$path,$path);
+    return $plugin->filter('photo_path',$fullpath,$path);
 }
 
 function get_real_ip(){
