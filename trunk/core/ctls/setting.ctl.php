@@ -424,7 +424,7 @@ class setting_ctl extends pagecore{
         $plugin_obj = $this->plugin->get_plugin_obj($plugin);
         
         $config = $this->getPosts();
-        
+        $config = arr_stripslashes($config);
         $plugin_obj && $plugin_obj->save_config($config);
         
         if($this->plugin->save_config($plugin,$config)){
