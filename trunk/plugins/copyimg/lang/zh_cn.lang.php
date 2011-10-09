@@ -14,5 +14,5 @@ $language   =  array(
     'detailurl' => '图片详情页URL',
     'img_name' => '图片名称',
     'custom_tpl' => '自定义代码模板',
-    'split_tpl' => '照片分割代码'
+    'split_tpl' => '照片分隔代码'
 );
