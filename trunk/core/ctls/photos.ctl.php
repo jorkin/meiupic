@@ -418,6 +418,15 @@ class photos_ctl extends pagecore{
         }
     }
 
+    function reupload(){
+        need_login('ajax_page');
+
+        $id = $this->getGet('id');
+        $photo_info = $this->mdl_photo->get_info($id);
+        $this->output->set('info',$photo_info);
+        $this->render();
+    }
+
     function confirm_delete(){
         need_login('ajax_page');
         
