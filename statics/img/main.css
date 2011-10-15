@@ -307,6 +307,11 @@ textarea.inputstyle{
     width:16px;
     padding-top:16px;
 }
+.i_reupload{
+    background-position:-365px -4px;
+    width:16px;
+    padding-top:16px;
+}
 /*selector*/
 .selectlist{
     line-height:24px;
