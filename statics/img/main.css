@@ -302,6 +302,11 @@ textarea.inputstyle{
     width:16px;
     padding-top:16px;
 }
+.i_rotate{
+    background-position:-345px -4px;
+    width:16px;
+    padding-top:16px;
+}
 /*selector*/
 .selectlist{
     line-height:24px;
@@ -739,4 +744,9 @@ td.comment_content p{
     -webkit-transform:rotate(270deg);
     transform:rotate(270deg);
     filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+}
+#photo_rotate table td{
+    text-align:center;
+    vertical-align:middle;
+    vertical-align:top\9;
 }

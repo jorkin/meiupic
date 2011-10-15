@@ -393,6 +393,31 @@ class photos_ctl extends pagecore{
         }
     }
     
+    function rotate(){
+        need_login('ajax_page');
+        $id = $this->getGet('id');
+        $photo_info = $this->mdl_photo->get_info($id);
+        $this->output->set('info',$photo_info);
+        $this->render();
+    }
+    
+    function do_rotate(){
+        need_login('ajax_page');
+        $degree = $this->getPost('degree','0');
+        $id = $this->getGet('id');
+        if($degree == '0'){
+            form_ajax_success('box',lang('do_nothing'),null,0.5,$_SERVER['HTTP_REFERER']);
+        }
+
+        if($this->mdl_photo->rotate_photo($id,$degree)){
+            form_ajax_success('box',lang('rotate_image_success').'<script>setTimeout(function (){
+                window.location.reload();
+                },500);</script>');
+        }else{
+            form_ajax_failed('box',lang('rotate_image_failed'));
+        }
+    }
+
     function confirm_delete(){
         need_login('ajax_page');
         
