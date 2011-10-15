@@ -1,0 +1,44 @@
+<div class="box_title titbg">
+    <div class="closer sprite i_close" onclick="Mui.box.close()"></div>
+    {lang rotate_image} - {$info['name']}
+</div>
+<div class="box_container">
+    <form id="photo_rotate" action="{link ctl=photos act=do_rotate id=$info['id']}" method="post" onsubmit="return false;">
+        <div class="field">
+            <table>
+                <tr>
+                    <td height="180" width="180">
+                        <img src="{img $info['thumb']}" alt="{lang rotate_left_90}" class="rot3" /></div>
+                    </td>
+                    <td width="180">
+                        <img src="{img $info['thumb']}" alt="{lang rotate_right_90}" class="rot1" />
+                    </td>
+                    <td width="180">
+                        <img src="{img $info['thumb']}" alt="{lang rotate_180}" class="rot2" />
+                    </td>
+                    <tr>
+                        <td><input type="radio" name="degree" value="90" id="rotate_left" /> <label for="rotate_left">{lang rotate_left_90}</label></td>
+                        <td><input type="radio" name="degree" value="270" id="rotate_right" /> <label for="rotate_right">{lang rotate_right_90}</label></td>
+                        <td><input type="radio" name="degree" value="180" id="rotate_none" /> <label for="rotate_none">{lang rotate_180}</label></td>
+                    </tr>
+                </tr>
+            </table>
+        </div>
+        <div class="field">
+            <table width="100%">
+                <tr>
+                    <td width="160"></td>
+                    <td width="220"><input type="submit" value="{lang confirm}" class="ylbtn f_left" name="submit" onclick="Mui.form.sendPop('photo_rotate');loading_bar();"> <input type="button" value="{lang cancel}" class="ml10 graybtn f_left" name="cancel" onclick="Mui.box.close()"></td>
+                    <td width="160"></td>
+                </tr>
+            </table>
+        </div>
+    </form>
+</div>
+<script>
+    function loading_bar(){
+        $('#meiu_float_box div.box_container').hide();
+        $('#meiu_float_box').append('<div class="loading">Loading...</div>');
+        Mui.centerMe('#meiu_float_box');
+    }
+</script>

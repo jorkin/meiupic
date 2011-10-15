@@ -185,6 +185,39 @@ class photo_mdl extends modelfactory{
         return true;
     }
     
+    function rotate_photo($id,$degree){
+        $tmpfslib =& loader::lib('tmpfs');
+        $storlib =& loader::lib('storage');
+        $photo_info = $this->get_info($id);
+        
+        $path = $photo_info['path'];
+        //将存储的图片读取到临时文件
+        $tmpfile = time().rand(1000,9999).'.'.file_ext($path);
+        $tmpfslib->write($tmpfile,$storlib->read($path));
+        $tmpfilepath = $tmpfslib->get_path($tmpfile);
+        $thumbtmpfilepath = $tmpfilepath.'.thumb.tmp';
+        
+        $imglib =& loader::lib('image');
+        $imglib->load($tmpfilepath);
+        $imglib->rotate(intval($degree));
+        $imglib->save($tmpfilepath);
+        $data['width'] = $imglib->getWidth();
+        $data['height'] = $imglib->getHeight();
+
+        $imglib->resizeScale(180,180);
+        $imglib->save($thumbtmpfilepath);
+
+        $storlib->upload($photo_info['path'] , $tmpfilepath);
+        $storlib->upload($photo_info['thumb'] , $thumbtmpfilepath);
+
+        $this->update($id,$data);
+
+        $tmpfslib->delete($tmpfilepath);
+        $tmpfslib->delete($thumbtmpfilepath);
+
+        return true;
+    }
+
     function add_hit($id){
         return $this->update($id,array('hits'=>new DB_Expr('hits+1')));
     }
