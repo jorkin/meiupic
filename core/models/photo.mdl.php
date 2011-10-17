@@ -184,6 +184,111 @@ class photo_mdl extends modelfactory{
         $album_mdl->check_repare_cover($album_id);
         return true;
     }
+
+    function save_upload($album_id,$tmpfile,$filename,$new_photo = true,$photo_info = array()){
+        $media_dirname = 'data/'.$album_id;
+        $thumb_dirname = 'data/t/'.$album_id;
+        
+        $storlib =& loader::lib('storage');
+        $imglib =& loader::lib('image');
+        $exiflib =& loader::lib('exif');
+        $fileext = file_ext($filename);
+        $key = str_replace('.','',microtime(true));
+        
+        $tmpfs_lib =& loader::lib('tmpfs');
+
+        $tmpfile_thumb = $tmpfile.'_thumb.'.$fileext;
+    
+        if(!$new_photo){
+            $filepath = $photo_info['path'];
+            $thumbpath = $photo_info['thumb'];
+        } else {
+            $filepath = $media_dirname.'/'.$key.'.'.$fileext;
+            $thumbpath = $thumb_dirname.'/'.$key.'.'.$fileext;
+        }
+        if(file_exists($tmpfile)){
+            $imglib->load($tmpfile);
+            
+            $arr['width'] = $imglib->getWidth();
+            $arr['height'] = $imglib->getHeight();
+            if( $imglib->getExtension() == 'jpg'){
+                $exif = $exiflib->get_exif($tmpfile);
+                if($exif){
+                    $arr['exif'] = serialize($exif);
+                    $taken_time = strtotime($exif['DateTimeOriginal']);
+                    $arr['taken_time'] = $taken_time;
+                    $arr['taken_y'] = date('Y',$taken_time);
+                    $arr['taken_m'] = date('n',$taken_time);
+                    $arr['taken_d'] = date('j',$taken_time);
+                }
+            }
+
+            $setting =& Loader::model('setting');
+
+            $water_setting = $setting->get_conf('watermark');
+            if($water_setting['type'] == 1){
+                $water_setting['water_mark_type'] = 'image';
+                $ws_tmpfile = 'ws_tmp';
+                $ws_file_content = $storlib->read($water_setting['water_mark_image']);
+                if($ws_file_content){
+                    $tmpfs_lib->write($ws_tmpfile,$ws_file_content);
+                    $water_setting['water_mark_image'] = $tmpfs_lib->get_path($ws_tmpfile);
+                $imglib->waterMarkSetting($water_setting);
+                $imglib->waterMark();
+                $imglib->save($tmpfile);
+                    $tmpfs_lib->delete($ws_tmpfile);
+                }
+            }elseif($water_setting['type'] == 2){
+                $water_setting['water_mark_type'] = 'font';
+                $water_setting['water_mark_font'] = $water_setting['water_mark_font']?ROOTDIR.'statics/font/'.$water_setting['water_mark_font']:'';
+                $imglib->waterMarkSetting($water_setting);
+                $imglib->waterMark();
+                $imglib->save($tmpfile);
+            }
+
+            //resize image to thumb: 180*180 
+            $imglib->resizeScale(180,180);
+            $imglib->save($tmpfile_thumb);
+            
+            if( $storlib->upload($filepath,$tmpfile)){
+                $arr['album_id'] = $album_id;
+                $arr['path'] = $filepath;
+                $arr['thumb'] = $thumbpath;
+                if($new_photo){
+                    $arr['name'] = file_pure_name($filename);
+                    $arr['create_time'] = time();
+                    $arr['create_y'] = date('Y');
+                    $arr['create_m'] = date('n');
+                    $arr['create_d'] = date('j');
+                }
+                //move thumb img
+                $storlib->upload($thumbpath,$tmpfile_thumb);
+
+                if($new_photo){
+                    $photo_id = $this->save($arr);
+                    if(!$photo_id){
+                        $storlib->delete($filepath);
+                        $storlib->delete($thumbpath);
+                    }
+                }else{
+                    $photo_id = $photo_info['id'];
+                    $result = $this->update($photo_id,$arr);
+                }
+
+                //remove tmp files
+                $tmpfs_lib->delete($tmpfile,true);
+                $tmpfs_lib->delete($tmpfile_thumb,true);
+                
+                $plugin =& Loader::lib('plugin');
+                $plugin->trigger('uploaded_photo',$photo_id);
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
+    }
     
     function rotate_photo($id,$degree){
         $tmpfslib =& loader::lib('tmpfs');
@@ -214,6 +319,11 @@ class photo_mdl extends modelfactory{
 
         $tmpfslib->delete($tmpfilepath);
         $tmpfslib->delete($thumbtmpfilepath);
+
+        if($photo_info['is_cover']){
+            $mdl_album =& Loader::model('album');
+            $mdl_album->set_cover($id);
+        }
 
         return true;
     }
