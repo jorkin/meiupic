@@ -399,7 +399,7 @@ $language = array(
 'start_upload'                     => '開始上傳',
 'upload_status'                    => '已上傳 %%d/%%d 圖片',
 'drag_file_here'                   => '拖拽文件至此處.',
-
+'Failed to save file.'             => '文件上傳失敗！ ',
 
 //Exif languages
 'exif_Make'                        => '相機品牌',
@@ -655,4 +655,8 @@ $language = array(
 'do_nothing'                       => '您沒有做任何操作！ ',
 'rotate_image_success'             => '旋轉圖片成功！ ',
 'rotate_image_failed'              => '旋轉圖片失敗！ ',
+
+//重新上傳
+'new_photo'                        => '新照片',
+'reupload_photo'                   => '重新上傳照片'
 );

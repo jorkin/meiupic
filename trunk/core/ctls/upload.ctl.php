@@ -139,7 +139,7 @@ class upload_ctl extends pagecore{
         }
 
         if($status ==0 && ($chunks == 0||$chunk+1==$chunks)){
-            if(! $this->_save($album_id,$tmpfs_lib->get_path($filename),$filename)){
+            if(! $this->mdl_photo->save_upload($album_id,$tmpfs_lib->get_path($filename),$filename)){
                 $return = array(
                 'jsonrpc'=>'2.0',
                 'error'=>array(
@@ -153,92 +153,60 @@ class upload_ctl extends pagecore{
         exit;
     }
 
-    function _save($album_id,$tmpfile,$filename){
-        $media_dirname = 'data/'.$album_id;
-        $thumb_dirname = 'data/t/'.$album_id;
+    function reupload(){
+        need_login('page');
+
+        $id = $this->getGet('id');
+        $photo_info = $this->mdl_photo->get_info($id);
         
-        $storlib =& loader::lib('storage');
         $imglib =& loader::lib('image');
-        $exiflib =& loader::lib('exif');
+        $supportType = $imglib->supportType();
+        $filesize = $_FILES['upfile']['size'];
+        $filename = $_FILES['upfile']['name'];
         $fileext = file_ext($filename);
-        $key = str_replace('.','',microtime(true));
+        $allowsize = allowsize($this->setting->get_conf('upload.allow_size'));
+        $error = '';
+
+        if($_FILES['upfile']['error'] == 1){
+            $error .= lang('failed_larger_than_server',$filename).',';
+        }
         
-        $tmpfs_lib =& loader::lib('tmpfs');
+        if($allowsize && $filesize>$allowsize){
+            $error .= lang('failed_larger_than_usetting',$filename).',';
+        }
+        
+        if($filesize == 0){
+            $error .= lang('failed_if_file',$filename).',';
+        }
+        if(!in_array($fileext,$supportType)){
+            $error .= lang('failed_not_support',$filename).',';
+        }
 
-        $tmpfile_thumb = $tmpfile.'_thumb.'.$fileext;
+        if($error){
+            echo '<script>
+                alert("'.lang('Failed to save file.').$error.'");
+                parent.hide_loading_bar();
+            </script>';
+            exit;
+        }
 
-        $filepath = $media_dirname.'/'.$key.'.'.$fileext;
-        $thumbpath = $thumb_dirname.'/'.$key.'.'.$fileext;
-
-        if(file_exists($tmpfile)){
-            $imglib->load($tmpfile);
-            
-            $arr['width'] = $imglib->getWidth();
-            $arr['height'] = $imglib->getHeight();
-            if( $imglib->getExtension() == 'jpg'){
-                $exif = $exiflib->get_exif($tmpfile);
-                if($exif){
-                    $arr['exif'] = serialize($exif);
-                    $taken_time = strtotime($exif['DateTimeOriginal']);
-                    $arr['taken_time'] = $taken_time;
-                    $arr['taken_y'] = date('Y',$taken_time);
-                    $arr['taken_m'] = date('n',$taken_time);
-                    $arr['taken_d'] = date('j',$taken_time);
-                }
-            }
-            $water_setting = $this->setting->get_conf('watermark');
-            if($water_setting['type'] == 1){
-                $water_setting['water_mark_type'] = 'image';
-                $ws_tmpfile = 'ws_tmp';
-                $ws_file_content = $storlib->read($water_setting['water_mark_image']);
-                if($ws_file_content){
-                    $tmpfs_lib->write($ws_tmpfile,$ws_file_content);
-                    $water_setting['water_mark_image'] = $tmpfs_lib->get_path($ws_tmpfile);
-                $imglib->waterMarkSetting($water_setting);
-                $imglib->waterMark();
-                $imglib->save($tmpfile);
-                    $tmpfs_lib->delete($ws_tmpfile);
-                }
-            }elseif($water_setting['type'] == 2){
-                $water_setting['water_mark_type'] = 'font';
-                $water_setting['water_mark_font'] = $water_setting['water_mark_font']?ROOTDIR.'statics/font/'.$water_setting['water_mark_font']:'';
-                $imglib->waterMarkSetting($water_setting);
-                $imglib->waterMark();
-                $imglib->save($tmpfile);
+        if($this->mdl_photo->save_upload($photo_info['album_id'],$_FILES['upfile']['tmp_name'],$filename,false,$photo_info)){
+            if($photo_info['is_cover']){
+                $this->mdl_album->set_cover($id);
             }
 
-            //resize image to thumb: 180*180 
-            $imglib->resizeScale(180,180);
-            $imglib->save($tmpfile_thumb);
-            
-            if( $storlib->upload($filepath,$tmpfile)){
-                $arr['album_id'] = $album_id;
-                $arr['path'] = $filepath;
-                $arr['thumb'] = $thumbpath;
-                $arr['name'] = file_pure_name($filename);
-                $arr['create_time'] = time();
-                $arr['create_y'] = date('Y');
-                $arr['create_m'] = date('n');
-                $arr['create_d'] = date('j');
-                
-                //move thumb img
-                $storlib->upload($thumbpath,$tmpfile_thumb);
+            echo '<script>
+                parent.location.reload();
+            </script>';
 
-                if(!($photo_id = $this->mdl_photo->save($arr))){
-                    $storlib->delete($filepath);
-                    $storlib->delete($thumbpath);
-                }
-                //remove tmp files
-                $tmpfs_lib->delete($tmpfile,true);
-                $tmpfs_lib->delete($tmpfile_thumb,true);
-
-                $this->plugin->trigger('uploaded_photo',$photo_id);
-                return true;
-            }else{
-                return false;
-            }
+            exit;
         }else{
-            return false;
+            echo '<script>
+                alert("'.lang('Failed to save file.').$error.'");
+                parent.$("#meiu_float_box").find("loading").hide();
+                parent.$("#meiu_float_box").find("box_container").show();
+            </script>';
+            exit;
         }
     }
     
@@ -319,7 +287,7 @@ class upload_ctl extends pagecore{
                     }
                     
 
-                    if(! $this->_save($album_id,$tmpfile,$filename)){
+                    if(! $this->mdl_photo->save_upload($album_id,$tmpfile,$filename)){
                         $error .= lang('file_upload_failed',$filename).'<br />';
                     }
                 }else{
