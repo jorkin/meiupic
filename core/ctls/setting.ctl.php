@@ -535,8 +535,7 @@ class setting_ctl extends pagecore{
     function check_update(){
         $software = 'meiupic';
         $version = MPIC_VERSION;
-        $utility_mdl =& loader::model('utility');
-        $revision = $utility_mdl->get_revision();
+        $revision = '';
         $langset = LANGSET;
         $time = time();
         $hash = md5("{$software}{$version}{$revision}{$langset}{$time}");
