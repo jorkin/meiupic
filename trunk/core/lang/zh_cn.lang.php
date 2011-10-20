@@ -90,9 +90,9 @@ $language   =   array(
 'no_photo_search_notice'           => '未能搜索到相关照片，请重新使用其他关键字搜索。',
 'no_script_notice'                 =>    '<h1>程序需要JavaScript支持，您需要改变浏览器设置！</h1>
 <p> 美优相册系统需要 <strong>JavaScript</strong>。 所有现代的浏览器都支持 JavaScript。您只需要修改浏览器的一个设置项就可以打开此功能。</p>
-<p>请看这里: <a href                   ="http://www.google.com/support/bin/answer.py?answer=23852" target="blank">如何开启JavaScript</a>。</p>
+<p>请看这里: <a href="http://www.google.com/support/bin/answer.py?answer=23852" target="blank">如何开启JavaScript</a>。</p>
 <p>如果您安装了屏蔽广告的软件，那么请将该网站设为允许JavaScript。</p>
-<p>一旦你开启了JavaScript, <a href       ="">点击此处重载页面</a>.</p>
+<p>一旦你开启了JavaScript, <a href="">点击此处重载页面</a>.</p>
 <p>谢谢.</p>',
 
 
