@@ -1,5 +1,12 @@
 {template block/header}
 <script src="{$statics_path}js/ajaxfileupload.js" type="text/javascript"></script>
+<link href="{$statics_path}colorpicker/css/colorpicker.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="{$statics_path}colorpicker/js/colorpicker.js"></script>
+<style>
+.colorSelector{
+    position:relative; float:left;width:27px;height:27px;overflow:hidden;display:block;
+}
+</style>
 <div id="bodywrap">
     <table class="layout">
         <tr>
@@ -64,7 +71,10 @@
                                         <div class="label">{lang water_mark_color_label}</div>
                                         <div class="descinfo">{lang water_mark_color_tips}</div>
                                         <div class="input">
-                                            <input type="text" name="watermark[water_mark_color]" class="settinginput iptw1" value="{$watermark['water_mark_color']}" />
+                                            <div id="water_mark_color" class="colorSelector">
+                                                <div style="background-color: {$watermark['water_mark_color']};">&nbsp;</div>
+                                            </div>
+                                            <input type="text" id="water_mark_color_input" name="watermark[water_mark_color]" class="settinginput iptw1" value="{$watermark['water_mark_color']}" />
                                         </div>
                                     </div>
                                     <div class="settingfield">
@@ -171,5 +181,21 @@ function ajaxFileUpload(){
     return false;
     
 }
+
+$('#water_mark_color').ColorPicker({
+        color: "{$watermark['water_mark_color']}",
+        onShow: function (colpkr) {
+            $(colpkr).fadeIn(500);
+            return false;
+        },
+        onHide: function (colpkr) {
+            $(colpkr).fadeOut(500);
+            return false;
+        },
+        onChange: function (hsb, hex, rgb) {
+            $('#water_mark_color div').css('backgroundColor', '#' + hex);
+            $('#water_mark_color_input').val('#' + hex);
+        }
+    });
 </script>
 {template block/footer}
