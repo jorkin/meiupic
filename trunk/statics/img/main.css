@@ -755,3 +755,8 @@ td.comment_content p{
     vertical-align:middle;
     vertical-align:top\9;
 }
+
+/*colorpicker*/
+.colorpicker {
+    display: none;
+}
