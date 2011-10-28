@@ -72,6 +72,13 @@ CREATE TABLE meu_albummeta (
         meta_key varchar(255) NOT NULL,
         meta_value longtext
     );
+CREATE TABLE meu_cate (
+        id integer NOT NULL primary key,
+        par_id int(4) NOT NULL DEFAULT 0,
+        name varchar(100) NOT NULL,
+        cate_path varchar(255) NOT NULL,
+        sort int(4) NOT NULL DEFAULT 0
+    );
 CREATE INDEX um_meta_key on meu_usermeta (meta_key);
 CREATE INDEX um_userid on meu_usermeta (userid);
 CREATE INDEX t_name on meu_tags (name);
@@ -84,3 +91,4 @@ CREATE INDEX cm_meta_key on meu_commentmeta (meta_key);
 CREATE INDEX cm_comment_id on meu_commentmeta (comment_id);
 CREATE INDEX am_meta_key on meu_albummeta (meta_key);
 CREATE INDEX am_album_id on meu_albummeta (album_id);
+CREATE INDEX cg_par_id on meu_cate (par_id);

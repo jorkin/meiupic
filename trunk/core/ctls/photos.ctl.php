@@ -69,7 +69,7 @@ class photos_ctl extends pagecore{
                       '" class="current">'.$album_info['name'].'</a></li>';
         
         //load comments
-        if($this->setting->get_conf('system.enable_comment')){
+        if($this->setting->get_conf('system.enable_comment') && $album_info['enable_comment']==1){
             $cpage = $this->getGet('cpage',1);
             $mdl_comment =& loader::model('comment');
             $album_comments = $mdl_comment->get_all($cpage,array('status'=>1,'pid'=>0,'ref_id'=>$album_id,'type'=>'1'));
@@ -569,7 +569,7 @@ class photos_ctl extends pagecore{
                   $picture[$i] = $v;
             }
         }
-        if($this->setting->get_conf('system.enable_comment')){
+        if($this->setting->get_conf('system.enable_comment') && $album_info['enable_comment']==1){
             $cpage = $this->getGet('cpage',1);
             $mdl_comment =& loader::model('comment');
             $comments = $mdl_comment->get_all($cpage,array('status'=>1,'pid'=>0,'ref_id'=>$id,'type'=>2));

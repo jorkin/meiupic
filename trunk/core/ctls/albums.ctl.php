@@ -78,7 +78,8 @@ class albums_ctl extends pagecore{
     
     function create(){
         need_login('ajax_page');
-        
+
+        $this->output->set('system_enable_comment',$this->setting->get_conf('system.enable_comment'));
         $this->render();
     }
     
@@ -93,7 +94,8 @@ class albums_ctl extends pagecore{
         $album['priv_question'] = safe_convert($this->getPost('priv_question'));
         $album['priv_answer'] = safe_convert($this->getPost('priv_answer'));
         $album['create_time'] = $album['up_time'] = time();
-        
+        $album['enable_comment'] = intval($this->getPost('enable_comment'));
+
         if($album['name'] == ''){
             form_ajax_failed('text',lang('album_name_empty'));
         }
@@ -128,6 +130,7 @@ class albums_ctl extends pagecore{
         $id = $this->getGet('id');
         $info = $this->mdl_album->get_info($id);
         $info['desc'] = safe_invert($info['desc']);
+        $this->output->set('system_enable_comment',$this->setting->get_conf('system.enable_comment'));
         $this->output->set('info',$info);
         $this->render();
     }
@@ -143,6 +146,8 @@ class albums_ctl extends pagecore{
         $album['priv_pass'] = $this->getPost('priv_pass');
         $album['priv_question'] = safe_convert($this->getPost('priv_question'));
         $album['priv_answer'] = safe_convert($this->getPost('priv_answer'));
+        $album['enable_comment'] = intval($this->getPost('enable_comment'));
+        
         if($album['name'] == ''){
             form_ajax_failed('text',lang('album_name_empty'));
         }
