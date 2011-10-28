@@ -168,23 +168,35 @@ class upload_ctl extends pagecore{
         $error = '';
 
         if($_FILES['upfile']['error'] == 1){
-            $error .= lang('failed_larger_than_server',$filename).',';
+            $error = lang('failed_larger_than_server',$filename);
+            echo '<script>
+                alert("'.$error.'");
+                parent.hide_loading_bar();
+            </script>';
+            exit;
         }
         
         if($allowsize && $filesize>$allowsize){
-            $error .= lang('failed_larger_than_usetting',$filename).',';
+            $error = lang('failed_larger_than_usetting',$filename);
+            echo '<script>
+                alert("'.$error.'");
+                parent.hide_loading_bar();
+            </script>';
+            exit;
         }
         
         if($filesize == 0){
-            $error .= lang('failed_if_file',$filename).',';
+            $error = lang('failed_if_file',$filename);
+            echo '<script>
+                alert("'.$error.'");
+                parent.hide_loading_bar();
+            </script>';
+            exit;
         }
         if(!in_array($fileext,$supportType)){
-            $error .= lang('failed_not_support',$filename).',';
-        }
-
-        if($error){
+            $error = lang('failed_not_support',$filename);
             echo '<script>
-                alert("'.lang('Failed to save file.').$error.'");
+                alert("'.$error.'");
                 parent.hide_loading_bar();
             </script>';
             exit;
