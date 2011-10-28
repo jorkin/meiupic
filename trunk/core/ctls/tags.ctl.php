@@ -10,7 +10,7 @@ class tags_ctl extends pagecore{
         $page = $this->getGet('page',1);
         $type = $this->getGet('type');
         
-        $pageurl = site_link('albums','index',array('type'=>$type,'page'=>'[#page#]'));
+        $pageurl = site_link('tags','index',array('type'=>$type,'page'=>'[#page#]'));
         $this->mdl_tag->set_pageset(40);
         
         $par = array();
