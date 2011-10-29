@@ -4,8 +4,8 @@
 </div>
 <div class="box_container">
     <form id="photo_rotate" action="{link ctl=photos act=do_rotate id=$info['id']}" method="post" onsubmit="return false;">
-        <div class="field">
-            <table>
+        <div align="center" class="field">
+            <!--<table>
                 <tr>
                     <td height="180" width="180">
                         <img src="{img $info['thumb']}" alt="{lang rotate_left_90}" class="rot3" /></div>
@@ -21,17 +21,24 @@
                         <td><input type="radio" name="degree" value="270" id="rotate_right" /> <label for="rotate_right">{lang rotate_right_90}</label></td>
                         <td><input type="radio" name="degree" value="180" id="rotate_none" /> <label for="rotate_none">{lang rotate_180}</label></td>
                     </tr>
-                </tr>
+                </tr>-->
+				<table>
+					<tr>
+						<td valign="middle"><a href="#" onclick="$('#rot_img').rotate('ccw');">左转</a></td>
+						<td width="180" height="185" valign="middle"><img id="rot_img" src="{img $info['thumb']}" /></td>
+						<td valign="middle"><a href="#" onclick="$('#rot_img').rotate('cw');">右转</a></td>
+					</tr>
+				</table>
+				
+				<script>
+					//
+				</script>
             </table>
         </div>
         <div class="field">
-            <table width="100%">
-                <tr>
-                    <td width="160"></td>
-                    <td width="220"><input type="submit" value="{lang confirm}" class="ylbtn f_left" name="submit" onclick="Mui.form.sendPop('photo_rotate');loading_bar();"> <input type="button" value="{lang cancel}" class="ml10 graybtn f_left" name="cancel" onclick="Mui.box.close()"></td>
-                    <td width="160"></td>
-                </tr>
-            </table>
+			<div class="label"> &nbsp;</div>
+            <div class="ipts"><input type="submit" value="{lang confirm}" class="ylbtn f_left" name="submit" onclick="Mui.form.sendPop('photo_rotate');loading_bar();"> <input type="button" value="{lang cancel}" class="ml10 graybtn f_left" name="cancel" onclick="Mui.box.close()"></div>
+            <div class="clear"></div>
         </div>
     </form>
 </div>

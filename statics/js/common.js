@@ -1,5 +1,5 @@
 /*!
- * MeiuPic common js v2.0
+ * MeiuPic common js v2.1
  * http://meiu.cn/
  *
  * Copyright 2011, Lingter
@@ -14,7 +14,7 @@ drag:function(v){
  if(M.k == 'd')E.css({left:M.X+v.pageX-M.pX,top:M.Y+v.pageY-M.pY});
  else E.css({width:Math.max(v.pageX-M.pX+M.W,0),height:Math.max(v.pageY-M.pY+M.H,0)});
   return false;},
-stop:function(){E.css('opacity',M.o);$(document).unbind('mousemove',J.drag).unbind('mouseup',J.stop);}
+stop:function(){if(!jQuery.browser.msie){E.css('opacity',M.o);}$(document).unbind('mousemove',J.drag).unbind('mouseup',J.stop);}
 };
 var J=$.jqDnR,M=J.dnr,E=J.e,
 i=function(e,h,k){return e.each(function(){h=(h)?$(h,e):e;
@@ -22,7 +22,7 @@ i=function(e,h,k){return e.each(function(){h=(h)?$(h,e):e;
  // attempt utilization of dimensions plugin to fix IE issues
  if(E.css('position') != 'relative'){try{E.position(p);}catch(e){}}
  M={X:p.left||f('left')||0,Y:p.top||f('top')||0,W:f('width')||E[0].scrollWidth||0,H:f('height')||E[0].scrollHeight||0,pX:v.pageX,pY:v.pageY,k:d.k,o:E.css('opacity')};
- E.css({opacity:0.8});$(document).mousemove($.jqDnR.drag).mouseup($.jqDnR.stop);
+ if(!jQuery.browser.msie){E.css({opacity:0.8});}$(document).mousemove($.jqDnR.drag).mouseup($.jqDnR.stop);
  return false;
  });
 });},
@@ -57,6 +57,77 @@ jQuery.cookie = function (key, value, options) {
     var result, decode = options.raw ? function (s) { return s; } : decodeURIComponent;
     return (result = new RegExp('(?:^|; )' + encodeURIComponent(key) + '=([^;]*)').exec(document.cookie)) ? decode(result[1]) : null;
 };
+/**
+ * rotate plugin
+ * ok!: MSIE 6, 7, 8, Firefox 3.6, chrome 4, Safari 4, Opera 10
+ * @gbook: http://byzuo.com/blog/html5-canvas-rotate
+ * @demo:  http://byzuo.com/demo/jq/rotate
+ *
+ * @example $imgID.rotate('cw')、$imgID.rotate('ccw')
+ * @p = rotate direction clockwise(cw)、anticlockwise(ccw)
+ */
+(function($){
+	$.fn.extend({
+		"rotate":function(p){
+			var $img = $(this);
+			var n = $img.attr('step');
+			if(n== null) n=0;
+			if(p== 'cw'){
+				(n==3)? n=0:n++;
+			}else if(p== 'ccw'){
+				(n==0)? n=3:n--;
+			}
+			$img.attr('step',n);
+			//MSIE
+			if($.browser.msie) {
+				$img.css('filter', 'progid:DXImageTransform.Microsoft.BasicImage(rotation='+ n +')');
+				//MSIE 8.0
+				if($.browser.version == 8.0){
+					if(!$img.parent('div').hasClass('wrapImg')){
+						$img.wrap('<div class="wrapImg"></div>');	
+					}
+					$img.parent('div.wrapImg').height($img.height());
+				}
+			//DOM
+			}else{
+				if(!$img.siblings('canvas').hasClass('imgCanvas')){
+					$img.css({'position':'absolute','visibility':'hidden'})
+						.after('<canvas class="imgCanvas"></canvas>');
+				}
+				var c = $img.siblings('canvas.imgCanvas')[0], img = $img[0];
+				var canvasContext = c.getContext('2d');
+				switch(n) {
+					default :
+					case 0 :
+						c.setAttribute('width', img.width);
+						c.setAttribute('height', img.height);
+						canvasContext.rotate(0 * Math.PI / 180);
+						canvasContext.drawImage(img, 0, 0);
+						break;
+					case 1 :
+						c.setAttribute('width', img.height);
+						c.setAttribute('height', img.width);
+						canvasContext.rotate(90 * Math.PI / 180);
+						canvasContext.drawImage(img, 0, -img.height);
+						break;
+					case 2 :
+						c.setAttribute('width', img.width);
+						c.setAttribute('height', img.height);
+						canvasContext.rotate(180 * Math.PI / 180);
+						canvasContext.drawImage(img, -img.width, -img.height);
+						break;
+					case 3 :
+						c.setAttribute('width', img.height);
+						c.setAttribute('height', img.width);
+						canvasContext.rotate(270 * Math.PI / 180);
+						canvasContext.drawImage(img, -img.width, 0);
+						break;
+				};
+			}
+		}
+	});
+})(jQuery);
+
 
 var Mui = {
     centerMe : function(jel){
