@@ -403,9 +403,16 @@ class photos_ctl extends pagecore{
     
     function do_rotate(){
         need_login('ajax_page');
-        $degree = $this->getPost('degree','0');
+
+        $rot_type = $this->getPost('rot','0');
         $id = $this->getGet('id');
-        if($degree == '0'){
+        if($rot_type == '1'){
+            $degree = '270';
+        }elseif($rot_type == '2'){
+            $degree = '180';
+        }elseif($rot_type == '3'){
+            $degree = '90';
+        }else{
             form_ajax_success('box',lang('do_nothing'),null,0.5,$_SERVER['HTTP_REFERER']);
         }
 

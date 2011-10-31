@@ -5,33 +5,24 @@
 <div class="box_container">
     <form id="photo_rotate" action="{link ctl=photos act=do_rotate id=$info['id']}" method="post" onsubmit="return false;">
         <div align="center" class="field">
-            <!--<table>
-                <tr>
-                    <td height="180" width="180">
-                        <img src="{img $info['thumb']}" alt="{lang rotate_left_90}" class="rot3" /></div>
-                    </td>
-                    <td width="180">
-                        <img src="{img $info['thumb']}" alt="{lang rotate_right_90}" class="rot1" />
-                    </td>
-                    <td width="180">
-                        <img src="{img $info['thumb']}" alt="{lang rotate_180}" class="rot2" />
-                    </td>
-                    <tr>
-                        <td><input type="radio" name="degree" value="90" id="rotate_left" /> <label for="rotate_left">{lang rotate_left_90}</label></td>
-                        <td><input type="radio" name="degree" value="270" id="rotate_right" /> <label for="rotate_right">{lang rotate_right_90}</label></td>
-                        <td><input type="radio" name="degree" value="180" id="rotate_none" /> <label for="rotate_none">{lang rotate_180}</label></td>
-                    </tr>
-                </tr>-->
+				<input type="hidden" id="rot_value" name="rot" value="0" />
 				<table>
 					<tr>
-						<td valign="middle"><a href="#" onclick="$('#rot_img').rotate('ccw');">左转</a></td>
-						<td width="180" height="185" valign="middle"><img id="rot_img" src="{img $info['thumb']}" /></td>
-						<td valign="middle"><a href="#" onclick="$('#rot_img').rotate('cw');">右转</a></td>
+						<td  width="100"><a href="javascript:void(0);" onclick="rotate_left();"><img src="{$statics_path}img/turn_left.png" alt="{lang rotate_left_90}" title="{lang rotate_left_90}" /></a></td>
+						<td width="180" height="185"  style="vertical-align:middle;"><img id="rot_img" src="{img $info['thumb']}" /></td>
+						<td width="100"><a href="javascript:void(0);" onclick="rotate_right();"><img src="{$statics_path}img/turn_right.png" alt="{lang rotate_right_90}" title="{lang rotate_left_90}" /></a></td>
 					</tr>
 				</table>
 				
 				<script>
-					//
+					function rotate_left(){
+						var rot = $('#rot_img').rotate('ccw');
+						$('#rot_value').val(rot);
+					}
+					function rotate_right(){
+						var rot = $('#rot_img').rotate('cw');
+						$('#rot_value').val(rot);
+					}
 				</script>
             </table>
         </div>

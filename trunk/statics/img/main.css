@@ -732,28 +732,9 @@ td.comment_content p{
 }
 
 /*照片旋转*/
-.rot1{
-    -moz-transform:rotate(90deg); 
-    -webkit-transform:rotate(90deg); 
-    transform:rotate(90deg);
-    filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
-}
-.rot2{
-    -moz-transform:rotate(180deg);
-    -webkit-transform:rotate(180deg);
-    transform:rotate(180deg);
-    filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=2);
-}
-.rot3{
-    -moz-transform:rotate(270deg);
-    -webkit-transform:rotate(270deg);
-    transform:rotate(270deg);
-    filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
-}
 #photo_rotate table td{
     text-align:center;
     vertical-align:middle;
-    vertical-align:top\9;
 }
 
 /*colorpicker*/

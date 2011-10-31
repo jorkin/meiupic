@@ -653,7 +653,6 @@ $language   =   array(
 'rotate_image'                     => '旋转图片',
 'rotate_left_90'                   => '向左旋转90°',
 'rotate_right_90'                  => '向右旋转90°',
-'rotate_180'                       => '旋转180°',
 'do_nothing'                       => '您没有做任何操作！',
 'rotate_image_success'             => '旋转图片成功！',
 'rotate_image_failed'              => '旋转图片失败！',
