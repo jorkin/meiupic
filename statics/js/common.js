@@ -124,6 +124,7 @@ jQuery.cookie = function (key, value, options) {
 						break;
 				};
 			}
+			return n;
 		}
 	});
 })(jQuery);
