@@ -222,33 +222,36 @@ class photo_mdl extends modelfactory{
                     $arr['taken_d'] = date('j',$taken_time);
                 }
             }
-
-            $setting =& Loader::model('setting');
-
-            $water_setting = $setting->get_conf('watermark');
-            if($water_setting['type'] == 1){
-                $water_setting['water_mark_type'] = 'image';
-                $ws_tmpfile = 'ws_tmp';
-                $ws_file_content = $storlib->read($water_setting['water_mark_image']);
-                if($ws_file_content){
-                    $tmpfs_lib->write($ws_tmpfile,$ws_file_content);
-                    $water_setting['water_mark_image'] = $tmpfs_lib->get_path($ws_tmpfile);
-                $imglib->waterMarkSetting($water_setting);
-                $imglib->waterMark();
-                $imglib->save($tmpfile);
-                    $tmpfs_lib->delete($ws_tmpfile);
-                }
-            }elseif($water_setting['type'] == 2){
-                $water_setting['water_mark_type'] = 'font';
-                $water_setting['water_mark_font'] = $water_setting['water_mark_font']?ROOTDIR.'statics/font/'.$water_setting['water_mark_font']:'';
-                $imglib->waterMarkSetting($water_setting);
-                $imglib->waterMark();
-                $imglib->save($tmpfile);
-            }
-
-            //resize image to thumb: 180*180 
+            
+            //resize image to thumb: 180*180
+            //更改为设置水印前生成缩略图 
             $imglib->resizeScale(180,180);
             $imglib->save($tmpfile_thumb);
+            
+            $setting =& Loader::model('setting');
+            $water_setting = $setting->get_conf('watermark');
+            if($water_setting['type'] != 0){
+                $imglib->load($tmpfile);
+                if($water_setting['type'] == 1){
+                    $water_setting['water_mark_type'] = 'image';
+                    $ws_tmpfile = 'ws_tmp';
+                    $ws_file_content = $storlib->read($water_setting['water_mark_image']);
+                    if($ws_file_content){
+                        $tmpfs_lib->write($ws_tmpfile,$ws_file_content);
+                        $water_setting['water_mark_image'] = $tmpfs_lib->get_path($ws_tmpfile);
+                    $imglib->waterMarkSetting($water_setting);
+                    $imglib->waterMark();
+                    $imglib->save($tmpfile);
+                        $tmpfs_lib->delete($ws_tmpfile);
+                    }
+                }elseif($water_setting['type'] == 2){
+                    $water_setting['water_mark_type'] = 'font';
+                    $water_setting['water_mark_font'] = $water_setting['water_mark_font']?ROOTDIR.'statics/font/'.$water_setting['water_mark_font']:'';
+                    $imglib->waterMarkSetting($water_setting);
+                    $imglib->waterMark();
+                    $imglib->save($tmpfile);
+                }
+            }
             
             if( $storlib->upload($filepath,$tmpfile)){
                 $arr['album_id'] = $album_id;

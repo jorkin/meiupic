@@ -20,5 +20,6 @@ class update_ctl extends pagecore{
         $url = CHECK_UPDATE_URL.'?act=update&q='.$q;
         $remotepath = get_remote($url,2);
 
+        
     }
 }
