@@ -80,6 +80,10 @@ class albums_ctl extends pagecore{
         need_login('ajax_page');
 
         $this->output->set('system_enable_comment',$this->setting->get_conf('system.enable_comment'));
+        $cate_mdl =& loader::model('category');
+        $cate_list = $cate_mdl->get_flat_category();
+        $this->output->set('cate_list',$cate_list);
+        $this->output->set('fromurl',site_link('albums','create'));
         $this->render();
     }
     
@@ -132,6 +136,10 @@ class albums_ctl extends pagecore{
         $info['desc'] = safe_invert($info['desc']);
         $this->output->set('system_enable_comment',$this->setting->get_conf('system.enable_comment'));
         $this->output->set('info',$info);
+        $cate_mdl =& loader::model('category');
+        $cate_list = $cate_mdl->get_flat_category();
+        $this->output->set('cate_list',$cate_list);
+        $this->output->set('fromurl',site_link('albums','modify',array('id'=>$id)));
         $this->render();
     }
     
@@ -146,6 +154,7 @@ class albums_ctl extends pagecore{
         $album['priv_pass'] = $this->getPost('priv_pass');
         $album['priv_question'] = safe_convert($this->getPost('priv_question'));
         $album['priv_answer'] = safe_convert($this->getPost('priv_answer'));
+        $album['cate_id'] = intval($this->getPost('cate_id'));
         $album['enable_comment'] = intval($this->getPost('enable_comment'));
         
         if($album['name'] == ''){

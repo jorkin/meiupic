@@ -14,6 +14,16 @@
             <div class="ipts"><textarea name="desc" class="inputstyle iptw4 ipth1">{$info['desc']}</textarea></div>
             <div class="clear"></div>
         </div>
+		<div class="field">
+            <div class="label">所属的分类</div>
+            <div class="ipts"><select id="cate_id" name="cate_id">
+				<option value="0">未分类</option>
+                <!--{loop $cate_list $k $v}-->
+                    <option value="{$v['id']}" {if $info['cate_id']==$v['id']}selected="selected"{/if}>{echo str_repeat('--',$v['deep'])}{$v['name']}</option>
+                <!--{/loop}-->
+            </select> <span class="gray"><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=category act=create from=$fromurl}',true)" class="ml10">新建分类</a></span></div>
+            <div class="clear"></div>
+        </div>
         <div class="field">
             <div class="label">{lang priv_setting}</div>
             <div class="ipts"><label><input type="radio" name="priv_type" value="0" onclick="$('#filed_password').hide();$('#filed_question').hide();" {if $info['priv_type']=='0'} checked="checked"{/if} /> {lang type_public}</label> <label><input type="radio" name="priv_type" value="1" onclick="$('#filed_password').show();$('#filed_question').hide();" {if $info['priv_type']=='1'} checked="checked"{/if} /> {lang type_passwd}</label> <label><input type="radio" name="priv_type" value="2" onclick="$('#filed_password').hide();$('#filed_question').show();" {if $info['priv_type']=='2'} checked="checked"{/if} /> {lang type_ques}</label> <label><input type="radio" name="priv_type" value="3" onclick="$('#filed_password').hide();$('#filed_question').hide();" {if $info['priv_type']=='3'} checked="checked"{/if} /> {lang type_private}</label> </div>

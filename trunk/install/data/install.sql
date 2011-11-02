@@ -13,6 +13,7 @@ DROP TABLE IF EXISTS `meu_albums`;
 CREATE TABLE `meu_albums` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
+  `cate_id` bigint(4) unsigned NOT NULL DEFAULT '0',
   `cover_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `cover_ext` varchar(20) DEFAULT NULL,
   `comments_num` int(11) unsigned NOT NULL DEFAULT '0',
