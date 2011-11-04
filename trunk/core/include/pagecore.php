@@ -50,6 +50,8 @@ class pagecore{
             <span class="pipe">|</span>
             <a title="'.lang('profile_title').'" href="'.site_link('users','profile').'">'.lang('profile').'</a>
             <span class="pipe">|</span>
+            <a title="'.lang('sys_setting_title').'" href="'.site_link('setting').'">'.lang('sys_setting').'</a>
+            <span class="pipe">|</span>
             <a title="'.lang('logout_title').'" href="'.site_link('users','logout').'" onclick="Mui.box.show(this.href);return false;">'.lang('logout').'</a>';
         }
         $this->output->set('user_status',$plugin->filter('user_status',$user_status));

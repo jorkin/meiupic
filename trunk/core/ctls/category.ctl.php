@@ -5,6 +5,19 @@ class category_ctl extends pagecore{
         $this->mdl_cate = & loader::model('category');
     }
     
+    function index(){
+        $categorylist = $this->mdl_cate->get_flat_category();
+
+        $this->output->set('categorylist',$categorylist);
+
+        $page_title =  '所有分类 - '.$this->setting->get_conf('site.title');
+        $page_keywords = $this->setting->get_conf('site.keywords');
+        $page_description = $this->setting->get_conf('site.description');
+        $this->page_init($page_title,$page_keywords,$page_description);
+        
+        $this->render();
+    }
+
     function create(){
         need_login('ajax_page');
         $from = $this->getGet('from');
