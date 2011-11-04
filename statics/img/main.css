@@ -312,6 +312,11 @@ textarea.inputstyle{
     width:16px;
     padding-top:16px;
 }
+.i_add{
+    background-position:-387px -4px;
+    width:16px;
+    padding-top:16px;
+}
 /*selector*/
 .selectlist{
     line-height:24px;

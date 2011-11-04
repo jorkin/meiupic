@@ -734,3 +734,15 @@ table.datalist td{
     line-height:30px;
     text-align:right;
 }
+
+
+.category_list li{
+    height:25px;
+    line-height:25px;
+}
+.category_list li a{
+    margin-right:5px;
+}
+.category_list li a.i{
+    background:transparent;
+}
