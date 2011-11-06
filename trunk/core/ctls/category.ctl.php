@@ -44,4 +44,20 @@ class category_ctl extends pagecore{
             form_ajax_failed('text','创建分类失败！');
         }
     }
+
+    function edit(){
+        need_login('ajax_page');
+        $id = $this->getGet('id');
+
+        $info = $this->mdl_cate->get_info($id);
+
+        $this->output->set('info',$info);
+        $cate_list = $this->mdl_cate->get_flat_category();
+        $this->output->set('cate_list',$cate_list);
+        $this->render();        
+    }
+
+    function delete(){
+        
+    }
 }

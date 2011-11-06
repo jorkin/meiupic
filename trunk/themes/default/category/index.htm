@@ -16,11 +16,14 @@
                        <div class="innerconetent">
                             <ul class="category_list">
                             <!--{loop $categorylist $row}-->
-                            <li style="padding-left:{echo $row['deep']*25}px;">
+                            <li>
+                                <!--{for $i=1;$i<=$row['deep'];$i++}-->
+                                    <span class="treebg tree{$i}"></span>
+                                <!--{/for}-->
                                 <a href="{link ctl=albums act=index cate=$row['id']}">{$row['name']}</a> 
-                                <a href="{link ctl=category act=create pid=$row['id']}" class="i ml10" title="添加子分类"><span class="i_add sprite"></span></a>
-                                <a href="{link ctl=category act=edit pid=$row['id']}" class="i" title="编辑"><span class="i_edit sprite"></span></a>
-                                <a href="{link ctl=category act=delete id=$row['id']}" class="i" title="删除"><span class="i_littletrash sprite"></span></a>
+                                <a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=category act=create pid=$row['id']}',true)" class="i ml10" title="添加子分类"><span class="i_add sprite"></span></a>
+                                <a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=category act=edit id=$row['id']}',true)" class="i" title="编辑"><span class="i_edit sprite"></span></a>
+                                <a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=category act=delete id=$row['id']}')" class="i" title="删除"><span class="i_littletrash sprite"></span></a>
                             </li>
                             <!--{/loop}-->
                             </ul>
