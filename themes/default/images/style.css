@@ -746,3 +746,18 @@ table.datalist td{
 .category_list li a.i{
     background:transparent;
 }
+
+.treebg{
+    background:url('treebg.gif') no-repeat;
+    background-position:0 -30px;
+    width:30px;
+    padding: 0;
+    padding-top:25px;
+    height: 0;
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: middle;
+}
+.tree1{
+    background-position:0 0px;
+}
