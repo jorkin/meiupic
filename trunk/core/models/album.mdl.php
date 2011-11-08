@@ -24,6 +24,14 @@ class album_mdl extends modelfactory{
                 $str .= " and 1=0";
             }
         }
+        if(isset($filters['cate_id']) && $filters['cate_id'] != '' && $filters['cate_id'] != 'ANY'){
+            $cate_id = intval($filters['cate_id']);
+            if($cate_id == 0){
+                $str .= " and cate_id=".$cate_id;
+            }else{
+                $str .= " and cate_id in (select id from ".$this->db->stripTpre('#@cate')." where cate_path like '%,".intval($cate_id).",%')";
+            }
+        }
         $user_mdl = loader::model('user');
         if(! $user_mdl->loggedin()){
             $str .= " and priv_type<>3";
@@ -239,5 +247,12 @@ class album_mdl extends modelfactory{
             }
         }
         return false;
+    }
+
+
+    //将某分类相册的分类置为未分类相册
+    function set_default_cate($catid){
+        $this->db->update($this->table_name,'cate_id='.intval($catid),array('cate_id'=>0));
+        return $this->db->query();
     }
 }

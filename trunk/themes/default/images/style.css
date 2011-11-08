@@ -735,7 +735,9 @@ table.datalist td{
     text-align:right;
 }
 
-
+.category_list{
+    padding-left:20px;
+}
 .category_list li{
     height:25px;
     line-height:25px;

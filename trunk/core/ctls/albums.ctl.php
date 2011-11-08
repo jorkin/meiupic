@@ -10,13 +10,17 @@ class albums_ctl extends pagecore{
         //search
         $search['name'] = safe_convert($this->getRequest('sname'));
         $search['tag'] = safe_convert($this->getRequest('tag'));
-        
+        $search['cate_id'] = $this->getGet('cate');
+
         $par['page'] = '[#page#]';
         if($search['name']){
             $par['sname'] = $search['name'];
         }
         if($search['tag']){
             $par['tag'] = $search['tag'];
+        }
+        if($search['cate_id']!=''){
+            $par['cate'] = $search['cate_id'];
         }
         $pageurl = site_link('albums','index',$par);
         

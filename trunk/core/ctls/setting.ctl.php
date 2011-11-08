@@ -49,7 +49,7 @@ class setting_ctl extends pagecore{
         $this->setting->set_conf('site.url',$site['url']);
         $this->setting->set_conf('site.keywords',$site['keywords']);
         $this->setting->set_conf('site.description',$site['description']);
-        $this->setting->set_conf('site.footer',safe_convert($site['footer'],true));
+        $this->setting->set_conf('site.footer',safe_convert($site['footer'],true,true));
         $this->setting->set_conf('system.gravatar_url',$gravatar_url);
         $this->setting->set_conf('site.logo',$site['logo']);
         
