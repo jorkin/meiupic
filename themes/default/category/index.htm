@@ -9,7 +9,7 @@
                         <h1 class="f_left">所有分类</h1>
                         <h4 class="f_left"></h4>
                         <div class="f_right" style="padding:8px 10px;">
-                            <div class="bigbutton"><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=category act=create}',true);"><span>新建分类</span></a></div>
+                            <!--{if $loggedin}--><div class="bigbutton"><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=category act=create}',true);"><span>新建分类</span></a></div><!--{/if}-->
                         </div>
                     </div>
                     <div class="innercol">
@@ -21,11 +21,14 @@
                                     <span class="treebg tree{$i}"></span>
                                 <!--{/for}-->
                                 <a href="{link ctl=albums act=index cate=$row['id']}">{$row['name']}</a> 
+                                <!--{if $loggedin}-->
                                 <a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=category act=create pid=$row['id']}',true)" class="i ml10" title="添加子分类"><span class="i_add sprite"></span></a>
                                 <a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=category act=edit id=$row['id']}',true)" class="i" title="编辑"><span class="i_edit sprite"></span></a>
-                                <a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=category act=delete id=$row['id']}')" class="i" title="删除"><span class="i_littletrash sprite"></span></a>
+                                <a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=category act=confirm_delete id=$row['id']}')" class="i" title="删除"><span class="i_littletrash sprite"></span></a>
+                                <!--{/if}-->
                             </li>
                             <!--{/loop}-->
+                            <li><a href="{link ctl=albums act=index cate=0}">未分类相册</a></li>
                             </ul>
                        </div>
                     </div>

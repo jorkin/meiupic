@@ -277,11 +277,11 @@ function arr_addslashes($arr){
     }
 }
 
-function arr_stripslashes($arr){
+function arr_stripslashes($arr,$filterslash=true){
     if(is_array($arr)){
         return array_map('arr_stripslashes',$arr);
     }else{
-        return stripslashes($arr);
+        return $filterslash?str_replace('\\','',stripslashes($arr)):stripslashes($arr);
     }
 }
 
@@ -333,7 +333,7 @@ function safe_convert($string, $html=false, $filterslash=false) {
         $string=str_replace("&amp;#93;","&#93;",$string);
     } else {
         //$string=addslashes($string);
-        if ($filterslash) $string=str_replace("\\\\", '&#92;', $string);
+        if ($filterslash) $string=str_replace("\\", '&#92;', $string);
     }
     $string=str_replace("\r","",$string);
     $string=str_replace("\n","<br />",$string);
