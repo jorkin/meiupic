@@ -101,6 +101,7 @@ class albums_ctl extends pagecore{
         $album['priv_pass'] = $this->getPost('priv_pass');
         $album['priv_question'] = safe_convert($this->getPost('priv_question'));
         $album['priv_answer'] = safe_convert($this->getPost('priv_answer'));
+        $album['cate_id'] = intval($this->getPost('cate_id'));
         $album['create_time'] = $album['up_time'] = time();
         $album['enable_comment'] = intval($this->getPost('enable_comment'));
 
