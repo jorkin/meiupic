@@ -174,3 +174,12 @@ CREATE TABLE `meu_cate` (
   PRIMARY KEY (`id`),
   KEY `par_id` (`par_id`)
 ) TYPE=MyISAM ;
+
+DROP TABLE IF EXISTS `meu_nav`;
+CREATE TABLE `meu_nav` (
+`id` smallint(4) NOT NULL AUTO_INCREMENT ,
+`name` varchar(50) NOT NULL ,
+`url` varchar(200) NOT NULL ,
+`sort` smallint(4) NOT NULL DEFAULT '100',
+PRIMARY KEY ( `id` )
+) TYPE=MyISAM ;

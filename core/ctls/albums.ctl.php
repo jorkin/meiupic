@@ -59,7 +59,11 @@ class albums_ctl extends pagecore{
         $this->output->set('search',arr_stripslashes($search));
         $this->output->set('show_uptime',($sort=='ut_desc'||$sort=='ut_asc')?true:false);
         $this->output->set('album_sidebar',$this->plugin->filter('album_sidebar',''));
-        
+
+        $crumb = loader::view('block/crumb',false);
+
+        $this->output->set('page_crumb',$crumb);
+
         //page head
         $page_title = $this->setting->get_conf('site.title');
         $page_keywords = $this->setting->get_conf('site.keywords');
