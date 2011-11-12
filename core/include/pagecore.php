@@ -66,6 +66,16 @@ class pagecore{
         $this->output->set('main_menu',$plugin->filter('main_menu',$main_menu,$album_id,$photo_id));
     }
     
+    function page_crumb($nav){
+        $crumb_nav[] = array('name'=>'首页','link'=>site_link('default','index'));
+        $crumb_nav = array_merge($crumb_nav,$nav);
+
+        $this->output->set('crumb_nav',$crumb_nav);
+        $crumb = loader::view('block/crumb',false);
+
+        $this->output->set('page_crumb',$crumb);
+    }
+
     function render($type = 'normal'){
         if($type == 'normal'){
             $tpl = IN_CTL.'/'.IN_ACT;

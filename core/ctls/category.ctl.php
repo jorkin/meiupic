@@ -10,6 +10,12 @@ class category_ctl extends pagecore{
 
         $this->output->set('categorylist',$categorylist);
 
+        //面包屑
+        $crumb_nav = array();
+        $crumb_nav[] = array('name'=>'分类列表');
+
+        $this->page_crumb($crumb_nav);
+
         $page_title =  '所有分类 - '.$this->setting->get_conf('site.title');
         $page_keywords = $this->setting->get_conf('site.keywords');
         $page_description = $this->setting->get_conf('site.description');
