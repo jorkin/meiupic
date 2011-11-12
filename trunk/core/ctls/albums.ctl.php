@@ -4,6 +4,7 @@ class albums_ctl extends pagecore{
     
     function _init(){
         $this->mdl_album = & loader::model('album');
+        $this->mdl_cate = & loader::model('category');
     }
     
     function index(){
@@ -60,9 +61,22 @@ class albums_ctl extends pagecore{
         $this->output->set('show_uptime',($sort=='ut_desc'||$sort=='ut_asc')?true:false);
         $this->output->set('album_sidebar',$this->plugin->filter('album_sidebar',''));
 
-        $crumb = loader::view('block/crumb',false);
 
-        $this->output->set('page_crumb',$crumb);
+        //面包屑
+        $crumb_nav = array();
+        if(!empty($search['cate_id'])){
+            $crumb_nav = $this->mdl_cate->cate_path_link($search['cate_id']);
+        }
+        if($search['name']){
+            $crumb_nav[] = array('name'=>'搜索：'.$search['name']);
+        }elseif($search['tag']){
+            $crumb_nav[] = array('name'=>'标签：'.$search['tag']);
+        }else{
+            $crumb_nav[] = array('name'=>'相册列表');
+        }
+        
+        $this->page_crumb($crumb_nav);
+
 
         //page head
         $page_title = $this->setting->get_conf('site.title');

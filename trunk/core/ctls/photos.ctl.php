@@ -5,6 +5,7 @@ class photos_ctl extends pagecore{
     function _init(){
         $this->mdl_album = & loader::model('album');
         $this->mdl_photo = & loader::model('photo');
+        $this->mdl_cate = & loader::model('category');
     }
     
     function _sort_setting(){
@@ -112,7 +113,17 @@ class photos_ctl extends pagecore{
         $this->output->set('album_nav',$album_nav);
         $this->output->set('show_takentime',($sort=='tt_desc'||$sort=='tt_asc')?true:false);
         
+        //面包屑
+        $crumb_nav = $this->mdl_cate->cate_path_link($album_info['cate_id']);
+        $crumb_nav[] = array('name'=>$album_info['name'],'link'=>site_link('photos','index',array('aid'=>$album_info['id'])));
+        if($search['name']){
+            $crumb_nav[] = array('name'=>'搜索：'.$search['name']);
+        }else{
+            $crumb_nav[] = array('name'=>'照片列表');
+        }
         
+        $this->page_crumb($crumb_nav);
+
         $page_title = $album_info['name'].' - '.$this->setting->get_conf('site.title');
         $page_keywords = ($album_info['tags']?implode(',',$album_info['tags_list']).',':'').$this->setting->get_conf('site.keywords');
         $page_description = $album_info['desc']?strip_tags($album_info['desc']):$this->setting->get_conf('site.description');
