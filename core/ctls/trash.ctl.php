@@ -41,6 +41,13 @@ class trash_ctl extends pagecore{
             $this->output->set('deleted_photos',$deleted_photos);
             $this->output->set('type',$type);
         }
+
+        //面包屑
+        $crumb_nav = array();
+        $crumb_nav[] = array('name'=> lang('recycle'));
+
+        $this->page_crumb($crumb_nav);
+
         $page_title = lang('recycle').' - '.$this->setting->get_conf('site.title');
         $page_keywords = $this->setting->get_conf('site.keywords');
         $page_description = $this->setting->get_conf('site.description');

@@ -117,9 +117,7 @@ class photos_ctl extends pagecore{
         $crumb_nav = $this->mdl_cate->cate_path_link($album_info['cate_id']);
         $crumb_nav[] = array('name'=>$album_info['name'],'link'=>site_link('photos','index',array('aid'=>$album_info['id'])));
         if($search['name']){
-            $crumb_nav[] = array('name'=>'搜索：'.$search['name']);
-        }else{
-            $crumb_nav[] = array('name'=>'照片列表');
+            $crumb_nav[] = array('name'=>lang('search_s',$search['name']));
         }
         
         $this->page_crumb($crumb_nav);
@@ -299,6 +297,18 @@ class photos_ctl extends pagecore{
             $this->output->set('album_nav','<li><a href="'.
                             site_link('photos','search',$par).
                           '" class="current">'.lang('search_result').'</a></li>');
+
+            //面包屑
+            $crumb_nav = array();
+            
+            if($search['name']){
+                $crumb_nav[] = array('name'=>lang('search_s',$search['name']));
+            }elseif($search['tag']){
+                $crumb_nav[] = array('name'=>lang('search_tag',$search['tag']));
+            }
+            
+            $this->page_crumb($crumb_nav);
+        
 
             $page_title = (isset($par['tag'])?$par['tag']:$search['name']).' - '.lang('search_result').' - '.$this->setting->get_conf('site.title');
             $page_keywords = $this->setting->get_conf('site.keywords');
@@ -627,6 +637,13 @@ class photos_ctl extends pagecore{
         $this->output->set('album_info',$album_info);
         $this->output->set('album_nav',$album_nav);
         
+        //面包屑
+        $crumb_nav = $this->mdl_cate->cate_path_link($album_info['cate_id']);
+        $crumb_nav[] = array('name'=>$album_info['name'],'link'=>site_link('photos','index',array('aid'=>$album_info['id'])));
+        $crumb_nav[] = array('name'=>$info['name'],'link'=>site_link('photos','view',array('id'=>$info['id'])));
+        $this->page_crumb($crumb_nav);
+
+
         $page_title = $info['name'].' - '.$album_info['name'].' - '.$this->setting->get_conf('site.title');
         $page_keywords = ($info['tags']?implode(',',$info['tags_list']).',':'').$this->setting->get_conf('site.keywords');
         $page_description = $info['desc']?strip_tags($info['desc']):$this->setting->get_conf('site.description');

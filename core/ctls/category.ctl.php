@@ -12,11 +12,11 @@ class category_ctl extends pagecore{
 
         //面包屑
         $crumb_nav = array();
-        $crumb_nav[] = array('name'=>'分类列表');
+        $crumb_nav[] = array('name'=>lang('category_list'));
 
         $this->page_crumb($crumb_nav);
 
-        $page_title =  '所有分类 - '.$this->setting->get_conf('site.title');
+        $page_title =  lang('all_category').' - '.$this->setting->get_conf('site.title');
         $page_keywords = $this->setting->get_conf('site.keywords');
         $page_description = $this->setting->get_conf('site.description');
         $this->page_init($page_title,$page_keywords,$page_description);
@@ -48,12 +48,12 @@ class category_ctl extends pagecore{
         
         if($this->mdl_cate->save($data)){
             if($from){
-                form_ajax_success('box','创建分类成功!'.'<script>setTimeout(function(){ Mui.box.show("'.$from.'",true); },1000)</script>');
+                form_ajax_success('box',lang('create_category_succ').'<script>setTimeout(function(){ Mui.box.show("'.$from.'",true); },1000)</script>');
             }else{
-                form_ajax_success('box','创建分类成功!',null,0.5,$_SERVER['HTTP_REFERER']);
+                form_ajax_success('box',lang('create_category_succ'),null,0.5,$_SERVER['HTTP_REFERER']);
             }
         }else{
-            form_ajax_failed('text','创建分类失败！');
+            form_ajax_failed('text',lang('create_category_fail'));
         }
     }
 
@@ -77,9 +77,9 @@ class category_ctl extends pagecore{
         $data['sort'] = intval($this->getPost('sort'));
 
         if($this->mdl_cate->update(intval($id),$data)){
-            form_ajax_success('box','编辑分类成功!',null,0.5,$_SERVER['HTTP_REFERER']);
+            form_ajax_success('box',lang('edit_category_succ'),null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
-            form_ajax_failed('text','编辑分类失败,上级分类不能是自己或子分类!');
+            form_ajax_failed('text',lang('edit_category_fail'));
         }
     }
 
@@ -100,9 +100,9 @@ class category_ctl extends pagecore{
         if($this->mdl_cate->delete($id)){
             $mdl_album =& Loader::model('album');
             $mdl_album->set_default_cate($id);
-            ajax_box(lang('delete_cate_success'),null,0.5,$_SERVER['HTTP_REFERER']);
+            ajax_box(lang('delete_cate_succ'),null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
-            ajax_box(lang('delete_cate_failed'));
+            ajax_box(lang('delete_cate_fail'));
         }
     }
 }

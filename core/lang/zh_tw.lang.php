@@ -58,6 +58,7 @@ $language = array(
 'album'                            => '相冊',
 'photo'                            => '照片',
 'using'                            => '啟用中',
+'edit'                             => '編輯',
 
 //head
 'myalbum'                          => '我的相冊',
@@ -251,6 +252,7 @@ $language = array(
 
 //tags
 'tag_list'                         => '標籤列表',
+'search_tag'                       => '標籤：%s',
 //tags html
 'no_tags'                          => '當前沒有標籤！ ',
 //users
@@ -291,6 +293,7 @@ $language = array(
 'search_albums'                    => '搜索相冊',
 'search_photos'                    => '搜索照片',
 'search'                           => '搜索',
+'search_s'                         => '搜索：%s',
 //comments languages
 'comments_num'                     => '%s評論',
 'all_album_comments'               => '對該相冊的評論',
@@ -659,4 +662,22 @@ $language = array(
 //重新上傳
 'new_photo'                        => '新照片',
 'reupload_photo'                   => '重新上傳照片'
+//分类
+'category_list'                    => '分類列表',
+'all_category'                     => '所有分類',
+'create_category_succ'             => '創建分類成功！',
+'create_category_fail'             => '創建分類失敗！',
+'edit_category_succ'               => '編輯分類成功！',
+'edit_category_fail'               => '編輯分類失敗,上級分類不能是自己或子分類!',
+'confirm_delete_category'          => '確定要刪除分類“%s”嗎？分類下的相冊將自動移動到未分類相冊！',
+'create_category'                  => '創建分類',
+'create_sub_category'              => '創建子分類',
+'category_name'                    => '分類名',
+'parent_category'                  => '上級分類',
+'no_parent'                        => '無上級',
+'back_to_manage_album'             => '返回相冊管理',
+'delete_cate_succ'                 => '刪除分類成功！',
+'delete_cate_fail'                 => '刪除分類失敗！',
+'not_cate'                         => '未分類',
+'belong_category'                  => '所屬的分類',
 );

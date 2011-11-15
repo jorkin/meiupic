@@ -68,11 +68,11 @@ class albums_ctl extends pagecore{
             $crumb_nav = $this->mdl_cate->cate_path_link($search['cate_id']);
         }
         if($search['name']){
-            $crumb_nav[] = array('name'=>'搜索：'.$search['name']);
+            $crumb_nav[] = array('name'=>lang('search_s',$search['name']));
         }elseif($search['tag']){
-            $crumb_nav[] = array('name'=>'标签：'.$search['tag']);
+            $crumb_nav[] = array('name'=>lang('search_tag',$search['tag']));
         }else{
-            $crumb_nav[] = array('name'=>'相册列表');
+            $crumb_nav[] = array('name'=>lang('album_list'));
         }
         
         $this->page_crumb($crumb_nav);

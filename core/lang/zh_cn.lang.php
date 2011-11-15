@@ -58,6 +58,7 @@ $language   =   array(
 'album'                            =>  '相册',
 'photo'                            =>  '照片',
 'using'                            =>  '启用中',
+'edit'                             =>  '编辑',
 
 //head
 'myalbum'                          =>  '我的相册',
@@ -251,6 +252,7 @@ $language   =   array(
 
 //tags
 'tag_list'                         =>  '标签列表',
+'search_tag'                       =>  '标签：%s',
 //tags html
 'no_tags'                          =>  '当前没有标签！',
 //users
@@ -291,6 +293,7 @@ $language   =   array(
 'search_albums'                    =>    '搜索相册',
 'search_photos'                    =>    '搜索照片',
 'search'                           =>    '搜索',
+'search_s'                         =>    '搜索：%s',
 //comments languages
 'comments_num'                     =>    '%s评论',
 'all_album_comments'               =>    '对该相册的评论',
@@ -659,5 +662,24 @@ $language   =   array(
 
 //重新上传
 'new_photo'                        => '新照片',
-'reupload_photo'                   => '重新上传照片'
+'reupload_photo'                   => '重新上传照片',
+
+//分类
+'category_list'                    => '分类列表',
+'all_category'                     => '所有分类',
+'create_category_succ'             => '创建分类成功！',
+'create_category_fail'             => '创建分类失败！',
+'edit_category_succ'               => '编辑分类成功！',
+'edit_category_fail'               => '编辑分类失败,上级分类不能是自己或子分类!',
+'confirm_delete_category'          => '确定要删除分类“%s”吗？分类下的相册将自动移动到未分类相册！',
+'create_category'                  => '创建分类',
+'create_sub_category'              => '创建子分类',
+'category_name'                    => '分类名',
+'parent_category'                  => '上级分类',
+'no_parent'                        => '无上级',
+'back_to_manage_album'             => '返回相册管理',
+'delete_cate_succ'                 => '删除分类成功！',
+'delete_cate_fail'                 => '删除分类失败！',
+'not_cate'                         => '未分类',
+'belong_category'                  => '所属的分类',
 );
