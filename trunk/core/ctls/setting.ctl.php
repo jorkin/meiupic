@@ -18,7 +18,12 @@ class setting_ctl extends pagecore{
         $this->output->set('show_process_info',$this->setting->get_conf('system.show_process_info'));
         $this->output->set('gravatar_url',$this->setting->get_conf('system.gravatar_url'));
         
+        //面包屑
+        $crumb_nav = array();
+        $crumb_nav[] = array('name'=>lang('system_setting'),site_link('setting'));
+        $crumb_nav[] = array('name'=>lang('basic_setting'));
         
+        $this->page_crumb($crumb_nav);
         
         $page_title = lang('basic_setting').' - '.lang('system_setting').' - '.$this->setting->get_conf('site.title');
         $page_keywords = $this->setting->get_conf('site.keywords');
@@ -72,6 +77,14 @@ class setting_ctl extends pagecore{
         $upload = $this->setting->get_conf('upload');
         $this->output->set('upload',$upload);
         
+        //面包屑
+        $crumb_nav = array();
+        $crumb_nav[] = array('name'=>lang('system_setting'),site_link('setting'));
+        $crumb_nav[] = array('name'=>lang('upload_setting'));
+        
+        $this->page_crumb($crumb_nav);
+        
+
         $page_title = lang('upload_setting').' - '.lang('system_setting').' - '.$this->setting->get_conf('site.title');
         $page_keywords = $this->setting->get_conf('site.keywords');
         $page_description = $this->setting->get_conf('site.description');
@@ -116,6 +129,15 @@ class setting_ctl extends pagecore{
         $watermark = $this->setting->get_conf('watermark');
         $this->output->set('watermark',$watermark);
         
+
+        //面包屑
+        $crumb_nav = array();
+        $crumb_nav[] = array('name'=>lang('system_setting'),site_link('setting'));
+        $crumb_nav[] = array('name'=>lang('watermark_setting'));
+        
+        $this->page_crumb($crumb_nav);
+
+
         $page_title = lang('watermark_setting').' - '.lang('system_setting').' - '.$this->setting->get_conf('site.title');
         $page_keywords = $this->setting->get_conf('site.keywords');
         $page_description = $this->setting->get_conf('site.description');
@@ -238,6 +260,13 @@ class setting_ctl extends pagecore{
         $themes = $mdl_theme->all_themes();
         $this->output->set('themes',$themes);
 
+        //面包屑
+        $crumb_nav = array();
+        $crumb_nav[] = array('name'=>lang('system_setting'),site_link('setting'));
+        $crumb_nav[] = array('name'=>lang('theme_setting'));
+        
+        $this->page_crumb($crumb_nav);
+
         $page_title = lang('theme_setting').' - '.lang('system_setting').' - '.$this->setting->get_conf('site.title');
         $page_keywords = $this->setting->get_conf('site.keywords');
         $page_description = $this->setting->get_conf('site.description');
@@ -333,6 +362,13 @@ class setting_ctl extends pagecore{
         $plugins = $this->plugin->get_plugins();
         $this->output->set('plugins',$plugins);
         
+        //面包屑
+        $crumb_nav = array();
+        $crumb_nav[] = array('name'=>lang('system_setting'),site_link('setting'));
+        $crumb_nav[] = array('name'=>lang('plugin_setting'));
+        
+        $this->page_crumb($crumb_nav);
+
         $page_title = lang('plugin_setting').' - '.lang('system_setting').' - '.$this->setting->get_conf('site.title');
         $page_keywords = $this->setting->get_conf('site.keywords');
         $page_description = $this->setting->get_conf('site.description');
@@ -442,6 +478,15 @@ class setting_ctl extends pagecore{
         $this->output->set('info',$info);
         $size = dirsize(ROOTDIR.'cache');
         $this->output->set('cache_size',bytes2u($size));
+
+
+        //面包屑
+        $crumb_nav = array();
+        $crumb_nav[] = array('name'=>lang('system_setting'),site_link('setting'));
+        $crumb_nav[] = array('name'=>lang('system_info'));
+        
+        $this->page_crumb($crumb_nav);
+
         $page_title = lang('system_info').' - '.lang('system_setting').' - '.$this->setting->get_conf('site.title');
         $page_keywords = $this->setting->get_conf('site.keywords');
         $page_description = $this->setting->get_conf('site.description');
@@ -476,6 +521,13 @@ class setting_ctl extends pagecore{
         $this->output->set('time_zones',$time_zones);
         $this->output->set('current_lang',$this->setting->get_conf('system.language'));
         $this->output->set('current_timezone',$this->setting->get_conf('system.timezone'));
+        
+        //面包屑
+        $crumb_nav = array();
+        $crumb_nav[] = array('name'=>lang('system_setting'),site_link('setting'));
+        $crumb_nav[] = array('name'=>lang('language_and_locale'));
+        
+        $this->page_crumb($crumb_nav);
         
         $page_title = lang('language_and_locale').' - '.lang('system_setting').' - '.$this->setting->get_conf('site.title');
         $page_keywords = $this->setting->get_conf('site.keywords');

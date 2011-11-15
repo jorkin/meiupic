@@ -6,10 +6,10 @@
             <td class="left">
                 <div class="mainbody">
                     <div class="col titbg">
-                        <h1 class="f_left">所有分类</h1>
+                        <h1 class="f_left">{lang all_category}</h1>
                         <h4 class="f_left"></h4>
                         <div class="f_right" style="padding:8px 10px;">
-                            <!--{if $loggedin}--><div class="bigbutton"><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=category act=create}',true);"><span>新建分类</span></a></div><!--{/if}-->
+                            <!--{if $loggedin}--><div class="bigbutton"><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=category act=create}',true);"><span>{lang create_category}</span></a></div><!--{/if}-->
                         </div>
                     </div>
                     <div class="innercol">
@@ -22,9 +22,9 @@
                                 <!--{/for}-->
                                 <a href="{link ctl=albums act=index cate=$row['id']}">{$row['name']}</a> 
                                 <!--{if $loggedin}-->
-                                <a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=category act=create pid=$row['id']}',true)" class="i ml10" title="添加子分类"><span class="i_add sprite"></span></a>
-                                <a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=category act=edit id=$row['id']}',true)" class="i" title="编辑"><span class="i_edit sprite"></span></a>
-                                <a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=category act=confirm_delete id=$row['id']}')" class="i" title="删除"><span class="i_littletrash sprite"></span></a>
+                                <a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=category act=create pid=$row['id']}',true)" class="i ml10" title="{lang create_sub_category}"><span class="i_add sprite"></span></a>
+                                <a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=category act=edit id=$row['id']}',true)" class="i" title="{lang edit}"><span class="i_edit sprite"></span></a>
+                                <a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=category act=confirm_delete id=$row['id']}')" class="i" title="{lang delete}"><span class="i_littletrash sprite"></span></a>
                                 <!--{/if}-->
                             </li>
                             <!--{/loop}-->

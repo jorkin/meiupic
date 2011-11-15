@@ -21,6 +21,11 @@ class upload_ctl extends pagecore{
 
         $this->output->set('albums_list',$this->mdl_album->get_kv());
 
+        //面包屑
+        $crumb_nav = array();
+        $crumb_nav[] = array('name'=>lang('upload_photo'));        
+        $this->page_crumb($crumb_nav);
+
         $page_title = lang('upload_photo').' - '.$this->setting->get_conf('site.title');
         $page_keywords = $this->setting->get_conf('site.keywords');
         $page_description = $this->setting->get_conf('site.description');
@@ -47,6 +52,12 @@ class upload_ctl extends pagecore{
         $supportType =  $img_lib->supportType();
         $this->output->set('support_type',implode(',',$supportType));
         
+        //面包屑
+        $crumb_nav = array();
+        $crumb_nav[] = array('name'=>lang('upload_photo'),'link'=>site_link('upload'));
+        $crumb_nav[] = array('name'=>lang('expert_mode'));
+        $this->page_crumb($crumb_nav);
+
         $page_title = lang('upload_photo').' - '.$this->setting->get_conf('site.title');
         $page_keywords = $this->setting->get_conf('site.keywords');
         $page_description = $this->setting->get_conf('site.description');
@@ -68,6 +79,12 @@ class upload_ctl extends pagecore{
         $album_info = $this->mdl_album->get_info($album_id);
         $this->output->set('album_info',$album_info);
         
+        //面包屑
+        $crumb_nav = array();
+        $crumb_nav[] = array('name'=>lang('upload_photo'),'link'=>site_link('upload'));
+        $crumb_nav[] = array('name'=>lang('normal_mode'));
+        $this->page_crumb($crumb_nav);
+
         $page_title = lang('upload_photo').' - '.$this->setting->get_conf('site.title');
         $page_keywords = $this->setting->get_conf('site.keywords');
         $page_description = $this->setting->get_conf('site.description');

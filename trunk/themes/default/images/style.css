@@ -740,7 +740,8 @@ table.datalist td{
 }
 .category_list li{
     height:25px;
-    line-height:25px;
+    line-height:30px;
+    font-size:14px;
 }
 .category_list li a{
     margin-right:5px;
@@ -779,7 +780,7 @@ table.datalist td{
     line-height:24px;
     background:url(crumb_bg.png) no-repeat right center;
     padding-right:15px;
-    font-size:14px;
+    font-size:13px;
     color:#666;
 }
 #nav ul li.last{

@@ -5,14 +5,14 @@
 <div class="box_container">
     <form id="category_create" action="{link ctl=category act=update id=$info['id']}" method="post" onsubmit="return false;">
         <div class="field">
-            <div class="label">分类名 *</div>
+            <div class="label">{lang category_name} *</div>
             <div class="ipts"><input type="text" name="cate_name" class="inputstyle iptw1" value="{$info['name']}" /></div>
             <div class="clear"></div>
         </div>
         <div class="field">
-            <div class="label">上级分类</div>
+            <div class="label">{lang parent_category}</div>
             <div class="ipts"><select id="par_id" name="par_id">
-                <option value="0">无上级</option>
+                <option value="0">{lang no_parent}</option>
                 <!--{loop $cate_list $k $v}-->
                     <option value="{$v['id']}" {if $v['id']==$info['par_id']}selected="selected"{/if}>{echo str_repeat('--',$v['deep'])}{$v['name']}</option>
                 <!--{/loop}-->
@@ -20,7 +20,7 @@
             <div class="clear"></div>
         </div>
         <div class="field">
-            <div class="label">排序 </div>
+            <div class="label">{lang sort} </div>
             <div class="ipts"><input type="text" name="sort" class="inputstyle iptw0" value="{$info['sort']}" /></div>
             <div class="clear"></div>
         </div>

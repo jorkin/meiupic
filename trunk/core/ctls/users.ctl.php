@@ -12,6 +12,13 @@ class users_ctl extends pagecore{
             $this->output->set('ajax',true);
         }else{
             $this->output->set('ajax',false);
+
+            //面包屑
+            $crumb_nav = array();
+            $crumb_nav[] = array('name'=>lang('user_login'));
+
+            $this->page_crumb($crumb_nav);
+
             $page_title = lang('user_login').' '.$this->setting->get_conf('site.title');
             $page_keywords = $this->setting->get_conf('site.keywords');
             $page_description = $this->setting->get_conf('site.description');
@@ -53,6 +60,11 @@ class users_ctl extends pagecore{
         
         //$this->output->set('info',$this->user->get_all_field());
         //$this->output->set('extra_info',$this->user->get_extra($this->user->get_field('id')));
+        //面包屑
+        $crumb_nav = array();
+        $crumb_nav[] = array('name'=>lang('modify_profile'));
+
+        $this->page_crumb($crumb_nav);
         
         $page_title = lang('modify_profile').' - '.$this->setting->get_conf('site.title');
         $page_keywords = $this->setting->get_conf('site.keywords');

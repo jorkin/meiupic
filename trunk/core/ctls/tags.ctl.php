@@ -29,6 +29,17 @@ class tags_ctl extends pagecore{
         $this->output->set('tag_list',$tags['ls']);
         $this->output->set('tag_type',$type);
         
+        //面包屑
+        $crumb_nav = array();
+        $crumb_nav[] = array('name'=> lang('tag_list'),'link'=>site_link('tags'));
+        if($type == 1){
+            $crumb_nav[] = array('name'=> lang('album'));
+        }elseif($type == 2){
+            $crumb_nav[] = array('name'=> lang('photo'));
+        }
+
+        $this->page_crumb($crumb_nav);
+
         $page_title = lang('tag_list').' - '.$this->setting->get_conf('site.title');
         $page_keywords = $this->setting->get_conf('site.keywords');
         $page_description = $this->setting->get_conf('site.description');
