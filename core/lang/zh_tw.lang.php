@@ -661,7 +661,7 @@ $language = array(
 
 //重新上傳
 'new_photo'                        => '新照片',
-'reupload_photo'                   => '重新上傳照片'
+'reupload_photo'                   => '重新上傳照片',
 //分类
 'category_list'                    => '分類列表',
 'all_category'                     => '所有分類',
