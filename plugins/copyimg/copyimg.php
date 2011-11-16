@@ -3,7 +3,7 @@
 class plugin_copyimg extends plugin{
     var $name = '拷贝图片地址';
     var $description = '一键拷贝图片地址，支持批量复制！';
-    var $local_ver = '1.0';
+    var $local_ver = '1.1';
     var $author_name = 'Meiu Studio';
     var $author_url = 'http://www.meiu.cn';
     var $author_email = 'lingter@gmail.com';
