@@ -71,8 +71,6 @@ class albums_ctl extends pagecore{
             $crumb_nav[] = array('name'=>lang('search_s',$search['name']));
         }elseif($search['tag']){
             $crumb_nav[] = array('name'=>lang('search_tag',$search['tag']));
-        }else{
-            $crumb_nav[] = array('name'=>lang('album_list'));
         }
         
         $this->page_crumb($crumb_nav);

@@ -64,6 +64,10 @@ class pagecore{
         
         $main_menu = loader::view('block/main_menu',false);
         $this->output->set('main_menu',$plugin->filter('main_menu',$main_menu,$album_id,$photo_id));
+
+        $mdl_nav =& Loader::model('nav');
+        $nav_menu = $mdl_nav->get_all();
+        $this->output->set('nav_menu',$nav_menu);
     }
     
     function page_crumb($nav){

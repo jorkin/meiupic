@@ -65,9 +65,6 @@ class photos_ctl extends pagecore{
         <li><a href="'.site_link('photos','slide',array('aid'=>$album_id)).'">'.lang('slide_mode').'</a></li>
         </ul>
         </div>';
-        $album_nav = '<li><a href="'.
-                        site_link('photos','index',array('aid'=>$album_id)).
-                      '" class="current">'.$album_info['name'].'</a></li>';
         
         //load comments
         if($this->setting->get_conf('system.enable_comment') && $album_info['enable_comment']==1){
@@ -110,7 +107,6 @@ class photos_ctl extends pagecore{
         $this->output->set('pagestr',$page_obj->fetch($photos['total'],$photos['current'],$pageurl));
         $this->output->set('total_num',$photos['count']);
         $this->output->set('album_info',$album_info);
-        $this->output->set('album_nav',$album_nav);
         $this->output->set('show_takentime',($sort=='tt_desc'||$sort=='tt_asc')?true:false);
         
         //面包屑
@@ -293,10 +289,6 @@ class photos_ctl extends pagecore{
             $this->output->set('search',$search);
             $this->output->set('pagestr',$pagestr);
             $this->output->set('total_num',$photos['count']);
-            unset($par['page']);
-            $this->output->set('album_nav','<li><a href="'.
-                            site_link('photos','search',$par).
-                          '" class="current">'.lang('search_result').'</a></li>');
 
             //面包屑
             $crumb_nav = array();
@@ -543,7 +535,6 @@ class photos_ctl extends pagecore{
             exit;
         }
         
-        $album_nav = '<li><a href="'.site_link('photos','index',array('aid'=>$info['album_id'])).'" class="current">'.$album_info['name'].'</a></li>';
         $photo_col_ctl = '';
         
         $this->plugin->trigger('viewed_photo',$id);
@@ -635,7 +626,6 @@ class photos_ctl extends pagecore{
         $this->output->set('current_rank',$nav['current_rank']);
         $this->output->set('current_photo',$nav['current_rank']+1);
         $this->output->set('album_info',$album_info);
-        $this->output->set('album_nav',$album_nav);
         
         //面包屑
         $crumb_nav = $this->mdl_cate->cate_path_link($album_info['cate_id']);

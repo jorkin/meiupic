@@ -20,7 +20,7 @@ class setting_ctl extends pagecore{
         
         //面包屑
         $crumb_nav = array();
-        $crumb_nav[] = array('name'=>lang('system_setting'),site_link('setting'));
+        $crumb_nav[] = array('name'=>lang('system_setting'),'link'=>site_link('setting'));
         $crumb_nav[] = array('name'=>lang('basic_setting'));
         
         $this->page_crumb($crumb_nav);
@@ -79,7 +79,7 @@ class setting_ctl extends pagecore{
         
         //面包屑
         $crumb_nav = array();
-        $crumb_nav[] = array('name'=>lang('system_setting'),site_link('setting'));
+        $crumb_nav[] = array('name'=>lang('system_setting'),'link'=>site_link('setting'));
         $crumb_nav[] = array('name'=>lang('upload_setting'));
         
         $this->page_crumb($crumb_nav);
@@ -132,7 +132,7 @@ class setting_ctl extends pagecore{
 
         //面包屑
         $crumb_nav = array();
-        $crumb_nav[] = array('name'=>lang('system_setting'),site_link('setting'));
+        $crumb_nav[] = array('name'=>lang('system_setting'),'link'=>site_link('setting'));
         $crumb_nav[] = array('name'=>lang('watermark_setting'));
         
         $this->page_crumb($crumb_nav);
@@ -262,7 +262,7 @@ class setting_ctl extends pagecore{
 
         //面包屑
         $crumb_nav = array();
-        $crumb_nav[] = array('name'=>lang('system_setting'),site_link('setting'));
+        $crumb_nav[] = array('name'=>lang('system_setting'),'link'=>site_link('setting'));
         $crumb_nav[] = array('name'=>lang('theme_setting'));
         
         $this->page_crumb($crumb_nav);
@@ -364,7 +364,7 @@ class setting_ctl extends pagecore{
         
         //面包屑
         $crumb_nav = array();
-        $crumb_nav[] = array('name'=>lang('system_setting'),site_link('setting'));
+        $crumb_nav[] = array('name'=>lang('system_setting'),'link'=>site_link('setting'));
         $crumb_nav[] = array('name'=>lang('plugin_setting'));
         
         $this->page_crumb($crumb_nav);
@@ -482,7 +482,7 @@ class setting_ctl extends pagecore{
 
         //面包屑
         $crumb_nav = array();
-        $crumb_nav[] = array('name'=>lang('system_setting'),site_link('setting'));
+        $crumb_nav[] = array('name'=>lang('system_setting'),'link'=>site_link('setting'));
         $crumb_nav[] = array('name'=>lang('system_info'));
         
         $this->page_crumb($crumb_nav);
@@ -524,7 +524,7 @@ class setting_ctl extends pagecore{
         
         //面包屑
         $crumb_nav = array();
-        $crumb_nav[] = array('name'=>lang('system_setting'),site_link('setting'));
+        $crumb_nav[] = array('name'=>lang('system_setting'),'link'=>site_link('setting'));
         $crumb_nav[] = array('name'=>lang('language_and_locale'));
         
         $this->page_crumb($crumb_nav);
