@@ -30,6 +30,6 @@ class json_cla{
             }
             return $this->service_json->decode($str);
         }
-        return json_decode($str);
+        return json_decode($str,true);
     }
 }
