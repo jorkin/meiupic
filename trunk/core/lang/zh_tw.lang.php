@@ -680,4 +680,6 @@ $language = array(
 'delete_cate_fail'                 => '刪除分類失敗！',
 'not_cate'                         => '未分類',
 'belong_category'                  => '所屬的分類',
+//自定義菜單
+'setting_nav'                      => '自定義菜單',
 );

@@ -1,0 +1,53 @@
+{template block/header}
+
+<div id="bodywrap">
+    <table class="layout">
+        <tr>
+            <td class="left">
+                <div class="mainbody">
+                    <div class="col titbg">
+                        {template setting/setting_menu}
+                        <div class="rmenu f_right">
+                        </div>
+                    </div>
+                    <div class="innercol">
+                            <div class="innerconetent">
+                                <form name="navform" method="post" action="{link ctl=setting act=nav}" id="navform" onsubmit="return false;">
+                                <table class="datalist">
+                                <thead>
+                                <tr>
+                                    <th style="width:50px;"><input type="checkbox" name="chkall" id="chkall" class="checkbox" onclick="Madmin.check_all('.checkbox',this.checked)" /><label for="chkall"></th>
+                                    <th style="width:80px;">显示顺序</th>
+                                    <th style="width:210px;">名称</th>
+                                    <th>链接</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <!--{loop $nav_list $v}-->
+                                <tr class="hover">
+                                    <td><input type="checkbox" name="idarray[]" value="{$v['id']}" class="checkbox" /></td>
+                                    <td><input type="text" class="inputstyle iptw0" name="sort[{$v['id']}]" value="{$v['sort']}" /></td>
+                                    <td><input type="text" class="inputstyle iptw1" name="name[{$v['id']}]" value="{$v['name']}" /></td>
+                                    <td><input type="text" class="inputstyle iptw2" name="url[{$v['id']}]" value="{$v['url']}" /></td>
+                                </tr>
+                                <!--{/loop}-->
+                                <tr class="hover">
+                                    <td colspan="2"></td>
+                                    <td colspan="2"><span class="i_add sprite"></span> <a href="javascript:void(0)" onclick="Madmin.addEditNav($(this).parent().parent())">添加菜单</a></td>
+                                </tr>
+                                <tr class="hover tablerow">
+                                    <td><input type="checkbox" name="delete" value="1" /> 删? </td>
+                                    <td colspan="3"><input type="submit" value="提交" class="ylbtn1" onclick="Mui.form.sendAuto('navform')" /></td>
+                                </tr>
+                                </tbody>
+                                </table>
+                                </form>
+                            </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+{template block/footer}

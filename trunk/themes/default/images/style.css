@@ -52,7 +52,7 @@ body{
     padding:5px 15px 6px;
     text-decoration:none;
 }
-#tabs li.trash a:visited,#tabs li.trash a:link{padding:2px 0 0 10px;background:none;}
+#tabs li.trash a:visited,#tabs li.trash a:link,#tabs li.manage a{padding:2px 0 0 10px;background:none;}
 #tabs li.trash a:hover{background:transparent;}
 #tabs li a.current{
     color:#222222;
@@ -703,13 +703,14 @@ table.datalist thead th{
 }
 
 table.datalist td{
-    padding:0 5px;
-    line-height:30px;
-    border-bottom:1px solid #ddd;
+    padding:8px;
+    border-bottom:1px dotted #ddd;
     display: table-cell;
     overflow: hidden;
 }
-
+table.datalist tr.hover:hover td{
+    background:#feffe3;
+}
 .sysinfo .section{
     height:30px;
     line-height:30px;

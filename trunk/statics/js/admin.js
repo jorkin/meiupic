@@ -112,6 +112,13 @@ Madmin.inline_edit = function(je,url){
     },'html');
 }
 
+Madmin.addEditNav = function(o){
+    o.before('<tr class="hover">\
+        <td></td>\
+        <td><input type="text" class="inputstyle iptw0" name="sortnew[]" value="" /></td>\
+        <td><input type="text" class="inputstyle iptw1" name="namenew[]" value="" /></td>\
+        <td><input type="text" class="inputstyle iptw2" name="urlnew[]" value="" /></td></tr>');
+}
 
 function admin_reply_comment(je,url){
     var btn = $(je);

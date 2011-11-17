@@ -599,4 +599,24 @@ class setting_ctl extends pagecore{
         }
         ajax_box($data,lang('check_update'));
     }
+    //自定义菜单
+    function nav(){
+
+        $mdl_nav =& Loader::model('nav');
+        $nav_list = $mdl_nav->get_all();
+        $this->output->set('nav_list',$nav_list);
+
+        //面包屑
+        $crumb_nav = array();
+        $crumb_nav[] = array('name'=>lang('system_setting'),'link'=>site_link('setting'));
+        $crumb_nav[] = array('name'=>lang('setting_nav'));
+        
+        $this->page_crumb($crumb_nav);
+
+        $page_title = lang('setting_nav').' - '.lang('system_setting').' - '.$this->setting->get_conf('site.title');
+        $page_keywords = $this->setting->get_conf('site.keywords');
+        $page_description = $this->setting->get_conf('site.description');
+        $this->page_init($page_title,$page_keywords,$page_description);
+        $this->render();
+    }
 }
