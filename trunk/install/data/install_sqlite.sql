@@ -98,9 +98,11 @@ CREATE TABLE meu_cate (
     
 CREATE TABLE `meu_nav` (
         id integer NOT NULL primary key ,
+        type tinyint(1) NOT NULL DEFAULT 1,
         name varchar(50) NOT NULL ,
         url varchar(200) NOT NULL ,
-        sort smallint( 4 ) NOT NULL  DEFAULT 100,
+        sort smallint(4) NOT NULL  DEFAULT 100,
+        enable tinyint(1) NOT NULL DEFAULT 1
     );
 
 CREATE INDEX um_meta_key on meu_usermeta (meta_key);

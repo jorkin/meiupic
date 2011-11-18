@@ -117,7 +117,8 @@ Madmin.addEditNav = function(o){
         <td></td>\
         <td><input type="text" class="inputstyle iptw0" name="sortnew[]" value="" /></td>\
         <td><input type="text" class="inputstyle iptw1" name="namenew[]" value="" /></td>\
-        <td><input type="text" class="inputstyle iptw2" name="urlnew[]" value="" /></td></tr>');
+        <td><input type="text" class="inputstyle iptw2" name="urlnew[]" value="" /></td>\
+        <td colspan="2"></td></tr>');
 }
 
 function admin_reply_comment(je,url){

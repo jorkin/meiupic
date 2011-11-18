@@ -634,9 +634,7 @@ class setting_ctl extends pagecore{
         $urls = $this->getPost('url');
         $sorts = $this->getPost('sort');
         $dels = $this->getPost('del');
-        
-        $delete = $this->getPost('delete');
-        
+        $enables = $this->getPost('enable');        
 
         $flag = true;
         //编辑及删除
@@ -644,20 +642,26 @@ class setting_ctl extends pagecore{
             foreach($names as $key=>$name){
                 $key = intval($key);
                 $name = trim($name);
-                $urls[$key] = trim($urls[$key]);
-                if(isset($dels[$key]) && $delete){
+                $urls[$key] = isset($urls[$key])?trim($urls[$key]):'';
+                if(isset($dels[$key])){
                     //delete 记录
                     $mdl_nav->delete($key);
                 }else{
-                    if($name == '' || $urls[$key] == ''){
-                        $flag = false;
-                        continue;
+                    $data = array();
+                    if($name){
+                        $data['name'] = $name;
                     }
-                    $data = array(
-                        'name' => $name,
-                        'url' => $urls[$key],
-                        'sort' => $sorts[$key]?intval($sorts[$key]):100
-                    );
+                    if($urls[$key]){
+                        $data['url'] = $urls[$key];
+                    }
+                    if($sorts[$key]){
+                        $data['sort'] = intval($sorts[$key]);
+                    }
+                    if(isset($enables[$key])){
+                        $data['enable'] = 1;
+                    }else{
+                        $data['enable'] = 0;
+                    }
                     if(!$mdl_nav->update($key,$data)){
                         $flag = false;
                     }
@@ -679,10 +683,12 @@ class setting_ctl extends pagecore{
                     $flag = false;
                     continue;
                 }
+
                 $data = array(
                             'name' => $newname,
                             'url' => $newurls[$key],
-                            'sort' => $newsorts[$key]?intval($newsorts[$key]):100
+                            'sort' => $newsorts[$key]?intval($newsorts[$key]):100,
+                            'enable' => 1
                         );
                 if(!$mdl_nav->save($data)){
                     $flag = false;

@@ -41,11 +41,11 @@ a:hover,#settings_person a:hover {
 #settings_person,#settings_person a{
     color:{$_config['settingtxt']};
 }
-#tabs a:link, #tabs a:visited {
+#tabs a{
     background-color:{$_config['tablinkbg']};
     color:{$_config['tablink']};
 }
-#tabs ul a.current:link,#tabs ul a.current:visited {
+#tabs ul a.current{
    color: {$_config['tablinkcurrent']};
 }
 
@@ -94,8 +94,12 @@ a:hover,#settings_person a:hover {
         <ul id="album_tabs">
             <!--{if $nav_menu}-->
             <!--{loop $nav_menu $k $v}-->
-                <!--{if $k<=8}-->
-                <li><a href="{$v['url']}">{$v['name']}</a></li>
+                <!--{if $k+1<=10}-->
+                    <!--{if $v['type']==0}-->
+                        <li><a href="{link ctl=$v[url]}" <!--{if $v['url']==IN_CTL}-->class="current"<!--{/if}-->>{$v['name']}</a></li>
+                    <!--{else}-->
+                        <li><a href="{$v['url']}">{$v['name']}</a></li>
+                    <!--{/if}-->
                 <!--{/if}-->
             <!--{/loop}-->
             <!--{/if}-->
@@ -103,8 +107,10 @@ a:hover,#settings_person a:hover {
             <li class="manage"><a href="{link ctl=setting act=nav}" title="{lang setting_nav}"><span class="i_setting sprite"></span></a></li>
 			<!--{/if}-->
         </ul>
-        <ul id="main_tabs">
-           {$main_menu}
+        <ul id="menu_icons">
+            <!--{if $loggedin}-->
+                <li class="trash"><a href="{link ctl=trash}" title="{lang trash_title}"><span class="{if $trash_status}i_trash_full{else}i_trash{/if} sprite">{lang trash}</span></a></li>
+            <!--{/if}-->
         </ul>
         <div class="clear"></div>
     </div>

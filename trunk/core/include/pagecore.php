@@ -50,6 +50,8 @@ class pagecore{
             <span class="pipe">|</span>
             <a title="'.lang('profile_title').'" href="'.site_link('users','profile').'">'.lang('profile').'</a>
             <span class="pipe">|</span>
+            <a title="'.lang('upload_photo').'" href="'.site_link('upload').'">'.lang('upload_photo').'</a>
+            <span class="pipe">|</span>
             <a title="'.lang('sys_setting_title').'" href="'.site_link('setting').'">'.lang('sys_setting').'</a>
             <span class="pipe">|</span>
             <a title="'.lang('logout_title').'" href="'.site_link('users','logout').'" onclick="Mui.box.show(this.href);return false;">'.lang('logout').'</a>';
@@ -61,17 +63,15 @@ class pagecore{
         $this->output->set('page_head',$page_head);
         $this->output->set('page_foot',$page_foot);
         $this->output->set('trash_status',has_trash());
-        
-        $main_menu = loader::view('block/main_menu',false);
-        $this->output->set('main_menu',$plugin->filter('main_menu',$main_menu,$album_id,$photo_id));
 
         $mdl_nav =& Loader::model('nav');
-        $nav_menu = $mdl_nav->get_all();
+        $nav_menu = $mdl_nav->get_enabled_navs();
         $this->output->set('nav_menu',$nav_menu);
+        //$plugin->filter('main_menu',$nav_menu,$album_id,$photo_id);
     }
     
     function page_crumb($nav){
-        $crumb_nav[] = array('name'=>'首页','link'=>site_link('default','index'));
+        $crumb_nav[] = array('name'=>lang('album_index'),'link'=>site_link('default','index'));
         $crumb_nav = array_merge($crumb_nav,$nav);
 
         $this->output->set('crumb_nav',$crumb_nav);

@@ -27,6 +27,9 @@ class category_ctl extends pagecore{
     function create(){
         need_login('ajax_page');
         $from = $this->getGet('from');
+        if($from){
+            $from = base64_decode($from);
+        }
         $this->output->set('pid',$this->getGet('pid'));
         $this->output->set('from',$from);
         
