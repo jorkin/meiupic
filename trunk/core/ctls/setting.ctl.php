@@ -496,6 +496,8 @@ class setting_ctl extends pagecore{
     }
     
     function clear_cache(){
+        need_login('ajax_page');
+
         dir_clear(ROOTDIR.'cache/data');
         dir_clear(ROOTDIR.'cache/templates');
         dir_clear(ROOTDIR.'cache/tmp');
@@ -555,6 +557,8 @@ class setting_ctl extends pagecore{
     }
     //重计数量
     function counter(){
+        need_login('ajax_box');
+
         $counter = $this->getPost('counter');
         if(!$counter){
             form_ajax_failed('box',lang('nothing_to_do'),null,2);
@@ -601,6 +605,7 @@ class setting_ctl extends pagecore{
     }
     //自定义菜单
     function nav(){
+        need_login('page');
 
         $mdl_nav =& Loader::model('nav');
         $nav_list = $mdl_nav->get_all();
@@ -618,5 +623,76 @@ class setting_ctl extends pagecore{
         $page_description = $this->setting->get_conf('site.description');
         $this->page_init($page_title,$page_keywords,$page_description);
         $this->render();
+    }
+    //保存自定义菜单
+    function save_nav(){
+        need_login('ajax_box');
+        
+        $mdl_nav =& Loader::model('nav');
+
+        $names = $this->getPost('name');
+        $urls = $this->getPost('url');
+        $sorts = $this->getPost('sort');
+        $dels = $this->getPost('del');
+        
+        $delete = $this->getPost('delete');
+        
+
+        $flag = true;
+        //编辑及删除
+        if($names){
+            foreach($names as $key=>$name){
+                $key = intval($key);
+                $name = trim($name);
+                $urls[$key] = trim($urls[$key]);
+                if(isset($dels[$key]) && $delete){
+                    //delete 记录
+                    $mdl_nav->delete($key);
+                }else{
+                    if($name == '' || $urls[$key] == ''){
+                        $flag = false;
+                        continue;
+                    }
+                    $data = array(
+                        'name' => $name,
+                        'url' => $urls[$key],
+                        'sort' => $sorts[$key]?intval($sorts[$key]):100
+                    );
+                    if(!$mdl_nav->update($key,$data)){
+                        $flag = false;
+                    }
+                }
+            }
+        }
+        //新增
+        $newnames = $this->getPost('namenew');
+        $newurls = $this->getPost('urlnew');
+        $newsorts = $this->getPost('sortnew');
+        if($newnames){
+            foreach($newnames as $key=>$newname){
+                $newname = trim($newname);
+                $newurls[$key] = trim($newurls[$key]);
+                if($newname == ''){
+                    continue;
+                }
+                if($newurls[$key] == ''){
+                    $flag = false;
+                    continue;
+                }
+                $data = array(
+                            'name' => $newname,
+                            'url' => $newurls[$key],
+                            'sort' => $newsorts[$key]?intval($newsorts[$key]):100
+                        );
+                if(!$mdl_nav->save($data)){
+                    $flag = false;
+                }
+            }
+        }
+        if($flag){
+            form_ajax_success('box',lang('nav_save_succ'),null,0.5,$_SERVER['HTTP_REFERER']);
+        }else{
+            form_ajax_failed('box',lang('nav_save_fail'),null,2,$_SERVER['HTTP_REFERER']);
+        }
     }
 }

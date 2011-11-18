@@ -12,20 +12,20 @@
                     </div>
                     <div class="innercol">
                             <div class="innerconetent">
-                                <form name="navform" method="post" action="{link ctl=setting act=nav}" id="navform" onsubmit="return false;">
+                                <form name="navform" method="post" action="{link ctl=setting act=save_nav}" id="navform" onsubmit="return false;">
                                 <table class="datalist">
                                 <thead>
                                 <tr>
                                     <th style="width:50px;"><input type="checkbox" name="chkall" id="chkall" class="checkbox" onclick="Madmin.check_all('.checkbox',this.checked)" /><label for="chkall"></th>
-                                    <th style="width:80px;">显示顺序</th>
-                                    <th style="width:210px;">名称</th>
-                                    <th>链接</th>
+                                    <th style="width:80px;">{lang nav_sort}</th>
+                                    <th style="width:210px;">{lang nav_name}</th>
+                                    <th>{lang nav_url}</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <!--{loop $nav_list $v}-->
                                 <tr class="hover">
-                                    <td><input type="checkbox" name="idarray[]" value="{$v['id']}" class="checkbox" /></td>
+                                    <td><input type="checkbox" name="del[{$v['id']}]" value="1" class="checkbox" /></td>
                                     <td><input type="text" class="inputstyle iptw0" name="sort[{$v['id']}]" value="{$v['sort']}" /></td>
                                     <td><input type="text" class="inputstyle iptw1" name="name[{$v['id']}]" value="{$v['name']}" /></td>
                                     <td><input type="text" class="inputstyle iptw2" name="url[{$v['id']}]" value="{$v['url']}" /></td>
@@ -33,11 +33,11 @@
                                 <!--{/loop}-->
                                 <tr class="hover">
                                     <td colspan="2"></td>
-                                    <td colspan="2"><span class="i_add sprite"></span> <a href="javascript:void(0)" onclick="Madmin.addEditNav($(this).parent().parent())">添加菜单</a></td>
+                                    <td colspan="2"><span class="i_add sprite"></span> <a href="javascript:void(0)" onclick="Madmin.addEditNav($(this).parent().parent())">{lang add_menu}</a></td>
                                 </tr>
                                 <tr class="hover tablerow">
-                                    <td><input type="checkbox" name="delete" value="1" /> 删? </td>
-                                    <td colspan="3"><input type="submit" value="提交" class="ylbtn1" onclick="Mui.form.sendAuto('navform')" /></td>
+                                    <td><input type="checkbox" name="delete" value="1" /> {lang delete?} </td>
+                                    <td colspan="3"><input type="submit" value="{lang submit}" class="ylbtn1" onclick="Mui.form.sendPop('navform')" /></td>
                                 </tr>
                                 </tbody>
                                 </table>

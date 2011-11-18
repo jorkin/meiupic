@@ -99,7 +99,9 @@ a:hover,#settings_person a:hover {
                 <!--{/if}-->
             <!--{/loop}-->
             <!--{/if}-->
+			<!--{if $loggedin}-->
             <li class="manage"><a href="{link ctl=setting act=nav}" title="{lang setting_nav}"><span class="i_setting sprite"></span></a></li>
+			<!--{/if}-->
         </ul>
         <ul id="main_tabs">
            {$main_menu}
