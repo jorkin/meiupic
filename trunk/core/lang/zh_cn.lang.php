@@ -683,6 +683,7 @@ $language   =   array(
 'delete_cate_fail'                 => '删除分类失败！',
 'not_cate'                         => '未分类',
 'belong_category'                  => '所属的分类',
+'add_to_nav'                       => '添加到菜单',
 //自定义菜单
 'setting_nav'                      => '自定义菜单',
 'delete?'                          => '删?',

@@ -138,13 +138,12 @@ class category_mdl extends modelfactory {
         $this->db->select($this->table_name,'cate_path','id = '.$arr['par_id']);
         $row = $this->db->getRow();
         
-        $this->db->startTrans();
+        //$this->db->startTrans();
         $this->db->insert($this->table_name,$arr);
-        
         if(!$this->db->query()){
-            $this->db->rollback();
             return false;
         }
+
         $id = $this->db->insertId();
         
         if($arr['par_id'] != 0){
@@ -154,12 +153,9 @@ class category_mdl extends modelfactory {
         }
 
         $this->db->update($this->table_name,'id='.$id,$uparr);
-        if(!$this->db->query()){
-            $this->db->rollback();
-            return false;
-        }
-        $this->db->commit();
-        return true;
+        $this->db->query();
+
+        return $id;
     }
     //获取某个分类的路径及超链接
     function cate_path_link($cate_id){
