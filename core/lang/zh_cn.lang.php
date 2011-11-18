@@ -684,4 +684,11 @@ $language   =   array(
 'belong_category'                  => '所属的分类',
 //自定义菜单
 'setting_nav'                      => '自定义菜单',
+'delete?'                          => '删?',
+'add_menu'                         => '添加菜单',
+'nav_sort'                         => '排序',
+'nav_name'                         => '名称',
+'nav_url'                          => '链接',
+'nav_save_succ'                    => '保存成功！',
+'nav_save_fail'                    => '部分内容保存失败，请确认是否内容都填写正确了！',
 );

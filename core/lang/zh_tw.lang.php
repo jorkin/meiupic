@@ -682,4 +682,11 @@ $language = array(
 'belong_category'                  => '所屬的分類',
 //自定義菜單
 'setting_nav'                      => '自定義菜單',
+'delete?'                          => '刪?',
+'add_menu'                         => '添加菜單',
+'nav_sort'                         => '排序',
+'nav_name'                         => '名稱',
+'nav_url'                          => '鏈接',
+'nav_save_succ'                    => '保存成功！ ',
+'nav_save_fail'                    => '部分內容保存失敗，請確認是否內容都填寫正確了！ ',
 );
