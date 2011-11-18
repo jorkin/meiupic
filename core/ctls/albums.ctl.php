@@ -103,7 +103,7 @@ class albums_ctl extends pagecore{
         $cate_mdl =& loader::model('category');
         $cate_list = $cate_mdl->get_flat_category();
         $this->output->set('cate_list',$cate_list);
-        $this->output->set('fromurl',site_link('albums','create'));
+        $this->output->set('fromurl',base64_encode(site_link('albums','create')));
         $this->render();
     }
     
@@ -160,7 +160,7 @@ class albums_ctl extends pagecore{
         $cate_mdl =& loader::model('category');
         $cate_list = $cate_mdl->get_flat_category();
         $this->output->set('cate_list',$cate_list);
-        $this->output->set('fromurl',site_link('albums','modify',array('id'=>$id)));
+        $this->output->set('fromurl',base64_encode(site_link('albums','modify',array('id'=>$id))));
         $this->render();
     }
     

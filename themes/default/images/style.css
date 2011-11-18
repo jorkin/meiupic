@@ -36,7 +36,7 @@ body{
 	float:left;
 }
 
-#tabs #main_tabs{
+#tabs #menu_icons{
     float:right;
     padding-right:15px;
 }
@@ -52,8 +52,10 @@ body{
     padding:5px 15px 6px;
     text-decoration:none;
 }
-#tabs li.trash a:visited,#tabs li.trash a:link,#tabs li.manage a{padding:2px 0 0 10px;background:none;}
-#tabs li.trash a:hover{background:transparent;}
+#menu_icons li a,#tabs li.manage a{padding:2px 0 0 10px;background:none;}
+#menu_icons li a:hover{
+    background:none;
+}
 #tabs li a.current{
     color:#222222;
     margin:0 1px;

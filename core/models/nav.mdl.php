@@ -9,6 +9,10 @@
 
 class nav_mdl extends modelfactory{
     var $table_name = '#@nav';
-    var $default_order = 'sort desc';
+    var $default_order = 'sort asc';
 
+    function get_enabled_navs(){
+        $this->db->select($this->table_name,$this->default_cols,'enable=1',$this->default_order);
+        return $this->db->getAll();
+    }
 }

@@ -26,6 +26,7 @@ $language   =   array(
 'no_records'                       =>    '没有记录！',
 
 //公共
+'type'                             =>  '类型',
 'no_limit'                         =>  '无限制',
 'config'                           =>  '配置',
 'enable'                           =>  '启用',
@@ -62,7 +63,7 @@ $language   =   array(
 
 //head
 'myalbum'                          =>  '我的相册',
-'album_index'                      =>  '相册首页',
+'album_index'                      =>  '首页',
 'tags_title'                       =>  '查看所有标签列表，快速找到照片',
 'tags'                             =>  '标签',
 'upload_photo'                     =>  '上传照片',
@@ -689,6 +690,8 @@ $language   =   array(
 'nav_sort'                         => '排序',
 'nav_name'                         => '名称',
 'nav_url'                          => '链接',
+'nav_inside'                       => '内置',
+'nav_custom'                       => '自定义',
 'nav_save_succ'                    => '保存成功！',
 'nav_save_fail'                    => '部分内容保存失败，请确认是否内容都填写正确了！',
 );

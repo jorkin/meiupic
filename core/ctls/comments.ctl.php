@@ -163,7 +163,10 @@ class comments_ctl extends pagecore{
     
     function manage(){
         need_login('page');
-        
+        //系统设置菜单
+        $setting_menu = $this->plugin->filter('setting_menu','');
+        $this->output->set('setting_menu',$setting_menu);
+
         $page = $this->getGet('page',1);
         $status = $this->getGet('status','all');
         
@@ -185,13 +188,15 @@ class comments_ctl extends pagecore{
         $this->output->set('comments',$data['ls']);
         $this->output->set('status',$status);
         $this->output->set('status_nums',$status_nums);
-        
+
         //面包屑
         $crumb_nav = array();
+        $crumb_nav[] = array('name'=>lang('system_setting'),'link'=>site_link('setting'));
         $crumb_nav[] = array('name'=>lang('comments_manage'));
+        
         $this->page_crumb($crumb_nav);
-
-        $page_title = lang('comments_manage').' - '.$this->setting->get_conf('site.title');
+        
+        $page_title = lang('comments_manage').' - '.lang('system_setting').' - '.$this->setting->get_conf('site.title');
         $page_keywords = $this->setting->get_conf('site.keywords');
         $page_description = $this->setting->get_conf('site.description');
         $this->page_init($page_title,$page_keywords,$page_description);
