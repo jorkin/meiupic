@@ -49,7 +49,18 @@ class category_ctl extends pagecore{
             form_ajax_failed('text',lang('category_name_empty'));
         }
         
-        if($this->mdl_cate->save($data)){
+        if(($id = $this->mdl_cate->save($data)) == true ){
+            if($this->getPost('add_nav')){
+                $nav_data['type'] = 1;
+                $nav_data['name'] = $data['name'];
+                $nav_data['url'] = site_link('albums','index',array('cate'=>$id));
+                $nav_data['sort'] = 100;
+                $nav_data['enable'] = 1;
+
+                $mdl_nav =& loader::model('nav');
+                $mdl_nav->save($nav_data);
+            }
+
             if($from){
                 form_ajax_success('box',lang('create_category_succ').'<script>setTimeout(function(){ Mui.box.show("'.$from.'",true); },1000)</script>');
             }else{
