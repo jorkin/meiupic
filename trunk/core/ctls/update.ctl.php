@@ -49,6 +49,8 @@ class update_ctl extends pagecore{
             $zip->load_file($tmpfile);
             $zip->extract('./');
             echo '解压文件成功！<br />';
+            echo '删除临时文件！<br />';
+            unlink($tmpfile);
         }
         //get_remote
     }
