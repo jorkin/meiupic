@@ -92,7 +92,7 @@ CREATE TABLE meu_cate (
         id integer NOT NULL primary key,
         par_id int(4) NOT NULL DEFAULT 0,
         name varchar(100) NOT NULL,
-        cate_path varchar(255) NOT NULL,
+        cate_path varchar(255) DEFAULT NULL,
         sort int(4) NOT NULL DEFAULT 0
     );
     

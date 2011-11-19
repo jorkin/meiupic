@@ -169,7 +169,7 @@ CREATE TABLE `meu_cate` (
   `id` int(4) NOT NULL AUTO_INCREMENT,
   `par_id` int(4) NOT NULL DEFAULT '0',
   `name` varchar(100) NOT NULL,
-  `cate_path` varchar(255) NOT NULL,
+  `cate_path` varchar(255) DEFAULT NULL,
   `sort` int(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `par_id` (`par_id`)
