@@ -19,7 +19,7 @@
             <div class="ipts"><select id="cate_id" name="cate_id">
 				<option value="0">{lang not_cate}</option>
                 <!--{loop $cate_list $k $v}-->
-                    <option value="{$v['id']}">{echo str_repeat('--',$v['deep'])}{$v['name']}</option>
+                    <option value="{$v['id']}" {if $cate_id==$v['id']}selected="selected"{/if}>{echo str_repeat('--',$v['deep'])}{$v['name']}</option>
                 <!--{/loop}-->
             </select> <span class="gray"><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=category act=create from=$fromurl}',true)" class="ml10">{lang create_category}</a></span></div>
             <div class="clear"></div>

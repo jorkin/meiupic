@@ -161,7 +161,7 @@ class category_mdl extends modelfactory {
     function cate_path_link($cate_id){
         $data = array();
         if($cate_id == 0){
-            $data[] = array('name'=>'未分类相册','link'=>site_link('albums','index',array('cate'=>'0')));
+            $data[] = array('name'=>lang('no_cate_album'),'link'=>site_link('albums','index',array('cate'=>'0')));
         }else{
             $row = $this->get_info(intval($cate_id),'cate_path');
             $cates = explode(',',trim($row['cate_path'],','));
