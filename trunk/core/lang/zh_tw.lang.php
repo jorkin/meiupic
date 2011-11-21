@@ -84,10 +84,10 @@ $language = array(
 'back_to_index'                    => '返回首頁',
 
 //notices
-'no_album_notice'                  => '您當前沒有任何相冊，點擊“創建新相冊”建立您自己的相冊吧。 ',
-'no_album_notice_notlogin'         => '系統中目前還沒有任何相冊。 ',
-'no_photo_notice'                  => '當前相冊內沒有任何照片，點擊“上傳新照片”充實你的相冊吧。 ',
-'no_photo_notice_notlogin'         => '當前相冊內沒有任何照片。 ',
+'no_album_notice'                  => '當前沒有任何相冊，點擊“創建新相冊”建立您自己的相冊吧。',
+'no_cate_album_notice'             => '當前分類沒有相冊，點擊“創建新相冊”按鈕創建相冊。',
+'no_cate_album_notice_notlogin'    => '當前分類還沒有相冊！',
+'no_album_notice_notlogin'         => '系統中目前還沒有任何相冊。',
 'no_album_search_notice'           => '未能搜索到相冊，請重新使用其他關鍵字搜索。 ',
 'no_photo_search_notice'           => '未能搜索到相關照片，請重新使用其他關鍵字搜索。 ',
 'no_script_notice'                 => '<h1>程序需要JavaScript支持，您需要改變瀏覽器設置！ </h1>
@@ -693,4 +693,5 @@ $language = array(
 'nav_custom'                       => '自定義',
 'nav_save_succ'                    => '保存成功！ ',
 'nav_save_fail'                    => '部分內容保存失敗，請確認是否內容都填寫正確了！ ',
+'no_cate_album'                    => '未分類相冊',
 );

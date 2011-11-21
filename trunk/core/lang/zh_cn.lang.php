@@ -84,7 +84,9 @@ $language   =   array(
 'back_to_index'                    =>  '返回首页',
 
 //notices
-'no_album_notice'                  =>    '您当前没有任何相册，点击“创建新相册”建立您自己的相册吧。',
+'no_album_notice'                  =>    '当前没有任何相册，点击“创建新相册”建立您自己的相册吧。',
+'no_cate_album_notice'             => '当前分类没有相册，点击“创建新相册”按钮创建相册。',
+'no_cate_album_notice_notlogin'    => '当前分类还没有相册！',
 'no_album_notice_notlogin'         => '系统中目前还没有任何相册。',
 'no_photo_notice'                  =>    '当前相册内没有任何照片，点击“上传新照片”充实你的相册吧。',
 'no_photo_notice_notlogin'         => '当前相册内没有任何照片。',
@@ -695,4 +697,5 @@ $language   =   array(
 'nav_custom'                       => '自定义',
 'nav_save_succ'                    => '保存成功！',
 'nav_save_fail'                    => '部分内容保存失败，请确认是否内容都填写正确了！',
+'no_cate_album'                    => '未分类相册',
 );

@@ -64,7 +64,7 @@ class albums_ctl extends pagecore{
 
         //面包屑
         $crumb_nav = array();
-        if(!empty($search['cate_id'])){
+        if($search['cate_id'] != ''){
             $crumb_nav = $this->mdl_cate->cate_path_link($search['cate_id']);
         }
         if($search['name']){
@@ -98,6 +98,8 @@ class albums_ctl extends pagecore{
     
     function create(){
         need_login('ajax_page');
+        $cate_id = $this->getGet('cate');
+        $this->output->set('cate_id',$cate_id);
 
         $this->output->set('system_enable_comment',$this->setting->get_conf('system.enable_comment'));
         $cate_mdl =& loader::model('category');
