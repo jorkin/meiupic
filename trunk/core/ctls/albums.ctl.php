@@ -61,11 +61,14 @@ class albums_ctl extends pagecore{
         $this->output->set('show_uptime',($sort=='ut_desc'||$sort=='ut_asc')?true:false);
         $this->output->set('album_sidebar',$this->plugin->filter('album_sidebar',''));
 
-
+        $title = '';
         //面包屑
         $crumb_nav = array();
         if($search['cate_id'] != ''){
             $crumb_nav = $this->mdl_cate->cate_path_link($search['cate_id']);
+            foreach($crumb_nav as $b){
+                $title = $b['name'].' &lt; '.$title;
+            }
         }
         if($search['name']){
             $crumb_nav[] = array('name'=>lang('search_s',$search['name']));
@@ -77,7 +80,7 @@ class albums_ctl extends pagecore{
 
 
         //page head
-        $page_title = $this->setting->get_conf('site.title');
+        $page_title = $title.$this->setting->get_conf('site.title');
         $page_keywords = $this->setting->get_conf('site.keywords');
         $page_description = $this->setting->get_conf('site.description');
         
