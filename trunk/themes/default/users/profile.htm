@@ -44,6 +44,19 @@
                                       <div class="ipts"><input type="password" name="new_pass_again" class="inputstyle iptw3" value="" /></div>
                                       <div class="clear"></div>
                                   </div>
+                                <div class="field">
+                                      <div class="label">{lang user_theme}</div>
+                                      <div class="ipts">
+                                        
+                                        <select name="extra[theme]">
+                                        <option value="">{lang not_set}</option>
+                                        <!--{loop $themes $k $v}-->
+                                            <option value="{$v['dir']}" {if isset($u_extrainfo['theme']) && $u_extrainfo['theme']==$v['dir']}selected="selected"{/if}>{$v['name']}</option>
+                                        <!--{/loop}-->
+                                        </select>
+                                      </div>
+                                      <div class="clear"></div>
+                                  </div>
                                   <div class="field">
                                       <div class="label"> &nbsp;</div>
                                       <div class="ipts"><input type="submit" value="{lang save}" class="ylbtn f_left" name="submit" onclick="Mui.form.sendAuto('user_profile')"></div>
