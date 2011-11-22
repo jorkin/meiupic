@@ -57,14 +57,15 @@ class photos_ctl extends pagecore{
             }
         }
         
-        $view_type = '<div class="f_right selectlist viewtype">
+        $view_type = '<div class="dropmenu f_right viewtype">
         <span class="label">'.lang('view_type').':</span>
+        <div class="selectlist">
         <div class="selected"></div>
         <ul class="optlist">
-        <li class="current"><a href="'.site_link('photos','index',array('aid'=>$album_id)).'">'.lang('flat_mode').'</a></li>
-        <li><a href="'.site_link('photos','slide',array('aid'=>$album_id)).'">'.lang('slide_mode').'</a></li>
+        <li class="current"><a href="'.site_link('photos','index',array('aid'=>$album_id)).'"><span>'.lang('flat_mode').'</span></a></li>
+        <li><a href="'.site_link('photos','slide',array('aid'=>$album_id)).'"><span>'.lang('slide_mode').'</span></a></li>
         </ul>
-        </div>';
+        </div></div>';
         
         //load comments
         if($this->setting->get_conf('system.enable_comment') && $album_info['enable_comment']==1){
