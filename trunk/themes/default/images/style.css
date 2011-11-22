@@ -121,13 +121,12 @@ table.layout td.right{
 .mainbody .innerconetent{
     padding:20px;
 }
-.pset .selected,.pset .optlist{
-    width:50px;
+.pset .selectlist,.pset .selectlist .optlist{
+    _width:50px;
 }
-.viewtype .selected,.viewtype .optlist{
-    width:100px;
+.viewtype .selectlist,.listorder .selectlist,.viewtype .selectlist .optlist,.listorder .selectlist .optlist{
+    _width:100px;
 }
-
 /*图片列表*/
 .gallary_wrap{
     padding:20px 4px 10px 35px;

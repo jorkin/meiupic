@@ -344,6 +344,13 @@ function drop_select(je){
             $(je).find('.selected').prepend('<div class="arrow sprite"></div>');
         }
     });
+    var optlist = $(je).find('.optlist');
+    optlist.show();
+    var width = optlist.width();
+    optlist.hide();
+    $(je).find('.selectlist').width(width);
+    optlist.width(width);
+
     $(je).hover(function(){
         $(je).find('.optlist').show();
         $(je).css('zIndex','200');
