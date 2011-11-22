@@ -60,6 +60,7 @@ $language = array(
 'photo'                            => '照片',
 'using'                            => '啟用中',
 'edit'                             => '編輯',
+'not_set'                          => '未指定',
 
 //head
 'myalbum'                          => '我的相冊',
@@ -523,6 +524,7 @@ $language = array(
 'theme_is_using'                   => '此主題正在使用中，無法刪除！ ',
 'delete_theme_success'             => '成功刪除主題！ ',
 'delete_theme_failed'              => '刪除主題失敗！ ',
+'user_theme'                       => '用戶主題',
 'plugin_setting'                   => '插件管理',
 'install_plugin_success'           => '安裝插件成功！ ',
 'install_plugin_failed'            => '安裝插件失敗！ ',

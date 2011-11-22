@@ -184,7 +184,7 @@ function init_defines(){
     timezone_set(TIMEZONE);
 }
 
-function init_template(){
+function init_template($user_theme){
     global $language;
     
     if(isset($_GET['tem'])){
@@ -193,16 +193,17 @@ function init_template(){
     }else{
         $meu_theme = isset($_COOKIE['MPIC_THEME'])?$_COOKIE['MPIC_THEME']:'';
     }
-    
-    if($meu_theme && file_exists('themes/'.$meu_theme)){
+
+    if($user_theme && file_exists('themes/'.$meu_theme)){
+        define('TEMPLATEID', $user_theme);
+    }elseif($meu_theme && file_exists('themes/'.$meu_theme)){
         define('TEMPLATEID', $meu_theme);
-        define('TPLDIR','themes/'.TEMPLATEID);
     }else{
         $setting_mdl =& loader::model('setting');
         $current_theme = $setting_mdl->get_conf('system.current_theme','default');
         define('TEMPLATEID', $current_theme);
-        define('TPLDIR','themes/'.TEMPLATEID);
     }
+    define('TPLDIR','themes/'.TEMPLATEID);
     if(file_exists(ROOTDIR.TPLDIR.'/lang/'.LANGSET.'.lang.php')){
         include_once(ROOTDIR.TPLDIR.'/lang/'.LANGSET.'.lang.php');
     }
@@ -222,33 +223,41 @@ function meiu_bootstrap(){
         require_once(COREDIR.'lang'.DIRECTORY_SEPARATOR.LANGSET.'.lang.php');
     }
     boot_init();
-    init_template();
-    $templatelangs=array();
-    
+
     $plugin =& loader::lib('plugin');
     
     $Config =& loader::config();
     if(!$Config['safemode']){
         $plugin->init_plugins();
     }
-    
     $plugin->trigger('boot_init');
+
+    //输出对象
+    $output =& loader::lib('output');
+    //载入当前用户信息
+    $user =& loader::model('user');
+    $output->set('loggedin',$user->loggedin());
+    if($user->loggedin()){
+        $output->set('u_info',$user->get_all_field());
+        $user_extrainfo = $user->get_extra($user->get_field('id'));
+        $output->set('u_extrainfo',$user_extrainfo);
+        $user_theme = isset($user_extrainfo['theme'])?$user_extrainfo['theme']:'';
+    }else{
+        $user_theme = null;
+    }
+
+    init_template($user_theme);
+    $templatelangs=array();
     
     $uri =& loader::lib('uri');
     $uriinfo = $uri->parse_uri();
     
     $setting_mdl =& loader::model('setting');
-    $output =& loader::lib('output');
+    
     $output->set('base_path',$base_path);
     $output->set('statics_path',$base_path.'statics/');
     $output->set('site_logo',$setting_mdl->get_conf('site.logo',''));
     $output->set('site_name',$setting_mdl->get_conf('site.title',lang('myalbum')));
-    $user =& loader::model('user');
-    $output->set('loggedin',$user->loggedin());
-    if($user->loggedin()){
-        $output->set('u_info',$user->get_all_field());
-        $output->set('u_extrainfo',$user->get_extra($user->get_field('id')));
-    }
     
     define('IN_CTL',$uriinfo['ctl']);
     define('IN_ACT',$uriinfo['act']);

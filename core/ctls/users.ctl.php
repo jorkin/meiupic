@@ -60,6 +60,10 @@ class users_ctl extends pagecore{
         
         //$this->output->set('info',$this->user->get_all_field());
         //$this->output->set('extra_info',$this->user->get_extra($this->user->get_field('id')));
+        $mdl_theme =& loader::model('theme');
+        $themes = $mdl_theme->all_themes();
+        $this->output->set('themes',$themes);
+        
         //面包屑
         $crumb_nav = array();
         $crumb_nav[] = array('name'=>lang('modify_profile'));
