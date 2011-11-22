@@ -238,9 +238,9 @@ function enum_priv_type($v){
 }
 
 function get_sort_list($setting,$type,$default){
-    $str = '<div class="listorder f_right selectlist">
-    <span class="label">'.lang('sort').':</span>';
-    $str .= '<div class="selected"></div><ul class="optlist">';
+    $str = '<div class="dropmenu f_right listorder">
+            <span class="label">'.lang('sort').':</span>';
+    $str .= '<div class="selectlist"><div class="selected"></div><ul class="optlist">';
     $sort = isset($_COOKIE['Mpic_sortset_'.$type])?$_COOKIE['Mpic_sortset_'.$type]:$default;
     foreach($setting as $k=>$v){
         if($v.'_asc' == $sort){
@@ -251,7 +251,7 @@ function get_sort_list($setting,$type,$default){
             $str .= '<li><a href="javascript:void(0);" onclick="sort_setting(\''.$type.'\',\''.$v.'_asc\');" class="list_asc"><span>'.$k.'</span></a>';
         }
     }
-    $str = $str.'</ul></div>';
+    $str = $str.'</ul></div></div>';
     return array($sort,$str);
 }
 
@@ -259,13 +259,13 @@ function get_page_setting($type){
     $arr = array(12,30,56);
     $current = isset($_COOKIE['Mpic_pageset_'.$type])?$_COOKIE['Mpic_pageset_'.$type]:'12';
     
-    $str = '<div class="pset f_right selectlist">
+    $str = '<div class="dropmenu pset f_right">
         <span class="label">'.lang('show_nums_per_page').':</span>';
-    $str .= '<div class="selected"></div><ul class="optlist">';
+    $str .= '<div class="selectlist"><div class="selected"></div><ul class="optlist">';
     foreach($arr as $v){
-        $str .= '<li '.($current==$v?'class="current"':'').'><a href="javascript:void(0);" onclick="page_setting(\''.$type.'\','.$v.');">'.$v.'</a></li>';
+        $str .= '<li '.($current==$v?'class="current"':'').'><a href="javascript:void(0);" onclick="page_setting(\''.$type.'\','.$v.');"><span>'.$v.'</span></a></li>';
     }
-    $str .= '</ul></div>';
+    $str .= '</ul></div></div>';
     return array($current,$str);
 }
 

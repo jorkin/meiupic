@@ -326,20 +326,25 @@ textarea.inputstyle{
     padding-top:24px;
 }
 /*selector*/
-.selectlist{
-    line-height:24px;
+.dropmenu{
     margin:15px 10px 0 0;
+    line-height:24px;
     position:relative;
     z-index:100;
 }
-.selectlist span.label{
+.dropmenu span.label{
     float:left;
     line-height:17px;
     padding:0 4px;
     color:#777;
 }
-.selectlist .selected{
+.selectlist{
     float:left;
+    position:relative;
+    z-index:100;
+    padding:0;
+}
+.selectlist .selected{
     position:relative;
 }
 .selectlist .selected div.arrow{
@@ -355,11 +360,11 @@ textarea.inputstyle{
 .selectlist .optlist{
     display:none;
     position:absolute;
-    top:19px;
-    right:0;
     z-index:100;
 }
-
+.selectlist .optlist li{
+    overflow:hidden;
+}
 .selectlist .selected a{
     background:#fff url(list_order.gif) repeat-x;
 }
@@ -382,12 +387,12 @@ textarea.inputstyle{
 .selectlist li a:hover,.selectlist li.current a{
     background:#E9E9E9;
 }
+.selectlist a span{display:block;padding-right:20px;word-break:keep-all;white-space:nowrap;}
 
 .listorder a span{
     background:url("list_order.gif") no-repeat left -47px transparent;
     display:block;
-    margin-right:2px;
-    padding:0 0 0 14px;
+    padding:0 20px 0 14px;
 }
 .listorder .list_desc span{
     background-position:left -97px;
@@ -397,9 +402,6 @@ textarea.inputstyle{
 }
 .listorder .list_asc_on span, .listorder .list_asc:hover span{
     background-position:left -147px;
-}
-.listorder .selected,.listorder .optlist{
-    width:100px;
 }
 /*表单*/
 form .field{
