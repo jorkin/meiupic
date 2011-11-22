@@ -91,6 +91,17 @@ class category_ctl extends pagecore{
         $data['sort'] = intval($this->getPost('sort'));
 
         if($this->mdl_cate->update(intval($id),$data)){
+            if($this->getPost('add_nav')){
+                $nav_data['type'] = 1;
+                $nav_data['name'] = $data['name'];
+                $nav_data['url'] = site_link('albums','index',array('cate'=>$id));
+                $nav_data['sort'] = 100;
+                $nav_data['enable'] = 1;
+
+                $mdl_nav =& loader::model('nav');
+                $mdl_nav->save($nav_data);
+            }
+            
             form_ajax_success('box',lang('edit_category_succ'),null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
             form_ajax_failed('text',lang('edit_category_fail'));
