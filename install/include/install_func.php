@@ -161,72 +161,6 @@ function lang($str,$force=false){
     }
 }
 
-function mfopen($url, $limit = 0, $post = '', $cookie = '', $bysocket = FALSE, $ip = '', $timeout = 15, $block = TRUE) {
-    $return = '';
-    $matches = parse_url($url);
-    $host = $matches['host'];
-    $path = $matches['path'] ? $matches['path'].(isset($matches['query']) && $matches['query'] ? '?'.$matches['query'] : '') : '/';
-    $port = !empty($matches['port']) ? $matches['port'] : 80;
-
-    if($post) {
-        $out = "POST $path HTTP/1.0\r\n";
-        $out .= "Accept: */*\r\n";
-        $out .= "Accept-Language: zh-cn\r\n";
-        $out .= "Content-Type: application/x-www-form-urlencoded\r\n";
-        $out .= "User-Agent: $_SERVER[HTTP_USER_AGENT]\r\n";
-        $out .= "Host: $host\r\n";
-        $out .= 'Content-Length: '.strlen($post)."\r\n";
-        $out .= "Connection: Close\r\n";
-        $out .= "Cache-Control: no-cache\r\n";
-        $out .= "Cookie: $cookie\r\n\r\n";
-        $out .= $post;
-    } else {
-        $out = "GET $path HTTP/1.0\r\n";
-        $out .= "Accept: */*\r\n";
-        $out .= "Accept-Language: zh-cn\r\n";
-        $out .= "User-Agent: $_SERVER[HTTP_USER_AGENT]\r\n";
-        $out .= "Host: $host\r\n";
-        $out .= "Connection: Close\r\n";
-        $out .= "Cookie: $cookie\r\n\r\n";
-    }
-
-    if(function_exists('fsockopen')) {
-        $fp = @fsockopen(($ip ? $ip : $host), $port, $errno, $errstr, $timeout);
-    } elseif (function_exists('pfsockopen')) {
-        $fp = @pfsockopen(($ip ? $ip : $host), $port, $errno, $errstr, $timeout);
-    } else {
-        $fp = false;
-    }
-
-    if(!$fp) {
-        return '';
-    } else {
-        stream_set_blocking($fp, $block);
-        stream_set_timeout($fp, $timeout);
-        @fwrite($fp, $out);
-        $status = stream_get_meta_data($fp);
-        if(!$status['timed_out']) {
-            while (!feof($fp)) {
-                if(($header = @fgets($fp)) && ($header == "\r\n" ||  $header == "\n")) {
-                    break;
-                }
-            }
-
-            $stop = false;
-            while(!feof($fp) && !$stop) {
-                $data = fread($fp, ($limit == 0 || $limit > 8192 ? 8192 : $limit));
-                $return .= $data;
-                if($limit) {
-                    $limit -= strlen($data);
-                    $stop = $limit <= 0;
-                }
-            }
-        }
-        @fclose($fp);
-        return $return;
-    }
-}
-
 function showjsmessage($message) {
     echo '<script type="text/javascript">showmessage(\''.addslashes($message).' \');</script>'."\r\n";
     flush();
@@ -378,104 +312,13 @@ function getstatinfo() {
     $hash = md5("{$url}{$version}{$onlineip}");
     $q = "url=$url&version=$version&ip=$onlineip&time=".time()."&hash=$hash";
     $q=rawurlencode(base64_encode($q));
-    mfopen($funcurl."?action=newinstall&q=$q");
-}
-function save_config_file($filename, $config, $default) {
-    $config = setdefault($config, $default);
-    $date = gmdate("Y-m-d H:i:s", time() + 3600 * 8);
-    $content = <<<EOT
-<?php
-
-
-\$CONFIG = array();
-
-EOT;
-    $content .= getvars(array('CONFIG' => $config));
-    $content .= "\r\n// ".str_pad('  THE END  ', 50, '-', STR_PAD_BOTH)." //\r\n\r\n?>";
-    
-    file_put_contents($filename, $content);
-}
-function setdefault($var, $default) {
-    foreach ($default as $k => $v) {
-        if(!isset($var[$k])) {
-            $var[$k] = $default[$k];
-        } elseif(is_array($v)) {
-            $var[$k] = setdefault($var[$k], $default[$k]);
-        }
-    }
-    return $var;
-}
-function getvars($data, $type = 'VAR') {
-    $evaluate = '';
-    foreach($data as $key => $val) {
-        if(!preg_match("/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/", $key)) {
-            continue;
-        }
-        if(is_array($val)) {
-            $evaluate .= buildarray($val, 0, "\${$key}")."\r\n";
-        } else {
-            $val = addcslashes($val, '\'\\');
-            $evaluate .= $type == 'VAR' ? "\$$key = '$val';\n" : "define('".strtoupper($key)."', '$val');\n";
-        }
-    }
-    return $evaluate;
+    get_remote($funcurl."?action=newinstall&q=$q",5);
 }
 
-function buildarray($array, $level = 0, $pre = '$CONFIG') {
-    static $ks;
-    $return = '';
-    if($level == 0) {
-        $ks = array();
-    }
-
-    foreach ($array as $key => $val) {
-        if($level == 0) {
-            $newline = str_pad('  CONFIG '.strtoupper($key).'  ', 70, '-', STR_PAD_BOTH);
-            $return .= "\r\n// $newline //\r\n";
-        }
-        
-        $ks_par = isset($ks[$level - 1])?$ks[$level - 1]:'';
-        $ks[$level] = $ks_par."['$key']";
-        if(is_array($val)) {
-            $return .= buildarray($val, $level + 1, $pre);
-        } else {
-            $val =  is_string($val) || strlen($val) > 12 || !preg_match("/^\-?[1-9]\d*$/", $val) ? '\''.addcslashes($val, '\'\\').'\'' : $val;
-            $return .= $pre.$ks_par."['$key']"." = $val;\r\n";
-        }
-    }
-    return $return;
-}
-
-function dir_writeable($dir) {
-    $writeable = 0;
-    if(!is_dir($dir)) {
-        @mkdir($dir, 0777);
-    }
-    if(is_dir($dir)) {
-        if($fp = @fopen("$dir/test.txt", 'w')) {
-            @fclose($fp);
-            @unlink("$dir/test.txt");
-            $writeable = 1;
-        } else {
-            $writeable = 0;
-        }
-    }
-    return $writeable;
-}
-
-function dir_clear($dir) {
+function cleardir($dir) {
     global $lang;
     showjsmessage(lang('clear_dir').' '.str_replace(ROOTDIR, '', $dir));
-    if($directory = @dir($dir)) {
-        while($entry = $directory->read()) {
-            $filename = $dir.'/'.$entry;
-            if(is_file($filename)) {
-                @unlink($filename);
-            }
-        }
-        $directory->close();
-        @touch($dir.'/index.htm');
-    }
+    dir_clear($dir);
 }
 
 function get_languages(){

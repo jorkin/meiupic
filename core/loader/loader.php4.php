@@ -107,4 +107,18 @@ class loader{
         }
         return $GLOBALS[SP_LOADER]['CONFIGS'][$name];
     }
+
+    /**
+     * 
+     * 装载辅助小部件
+     * @param 名字 $name
+     */
+    static function helper($name){
+        $path = COREDIR.'helper/'.strtolower($name).'.php';
+        if(file_exists($path)){
+            require_once($path);
+        }else{
+            exit('Load helper error：file (helper/'.strtolower($name).'.php) is not exists！');
+        }
+    }
 }
