@@ -22,6 +22,7 @@ if (floor(PHP_VERSION) < 5){
 }
 require_once(COREDIR.'loader.php');
 require_once(INCDIR.'plugin.php');
+require_once(INCDIR.'functions.php');
 require_once(INSDIR.'include/install_var.php');
 
 if(r('lang')){
@@ -248,9 +249,9 @@ if($method == 'license'){
         runquery($datasql);
         showjsmessage(lang('install_data_sql').lang('succeed'));
         
-        dir_clear(ROOTDIR.'cache/data');
-        dir_clear(ROOTDIR.'cache/templates');
-        dir_clear(ROOTDIR.'cache/tmp');
+        cleardir(ROOTDIR.'cache/data');
+        cleardir(ROOTDIR.'cache/templates');
+        cleardir(ROOTDIR.'cache/tmp');
         
         $db->insert('#@users',array('user_name'=>$username,'user_nicename'=>$username,'user_pass'=>md5($password),'create_time'=>time()));
         if($db->query()){
