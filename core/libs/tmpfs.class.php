@@ -58,24 +58,53 @@ class tmpfs_cla{
             @mkdir($this->targetDir);
             
         if($fullPath){
-             $filePath = $fileName;
+            $filePath = $fileName;
         }else{
             $filePath = $this->targetDir . DIRECTORY_SEPARATOR . $fileName;
         }
 
-        $out = @fopen($filePath, !$append ? "wb" : "ab");
-        if ($out) {
-            $in = @fopen("php://input", "rb");
-            if ($in) {
-                while ($buff = fread($in, 4096))
-                    fwrite($out, $buff);
+        // Look for the content type header
+        if (isset($_SERVER["HTTP_CONTENT_TYPE"]))
+            $contentType = $_SERVER["HTTP_CONTENT_TYPE"];
+
+        if (isset($_SERVER["CONTENT_TYPE"]))
+            $contentType = $_SERVER["CONTENT_TYPE"];
+        
+        // Handle non multipart uploads older WebKit versions didn't support multipart in HTML5
+        if (strpos($contentType, "multipart") !== false) {
+            if (isset($_FILES['file']['tmp_name']) && is_uploaded_file($_FILES['file']['tmp_name'])) {
+                // Open temp file
+                $out = fopen($filePath, !$append ? "wb" : "ab");
+                if ($out) {
+                    $in = fopen($_FILES['file']['tmp_name'], "rb");
+
+                    if ($in) {
+                        while ($buff = fread($in, 4096))
+                            fwrite($out, $buff);
+                    } else
+                        return 101;
+                    fclose($in);
+                    fclose($out);
+                    @unlink($_FILES['file']['tmp_name']);
+                } else
+                    return 102;
             } else
-                return 101;
-            fclose($in);
-            fclose($out);
-        } else{
-            return 102;
+                return 0;
+        }else{
+            $out = @fopen($filePath, !$append ? "wb" : "ab");
+            if ($out) {
+                $in = @fopen("php://input", "rb");
+                if ($in) {
+                    while ($buff = fread($in, 4096))
+                        fwrite($out, $buff);
+                } else
+                    return 101;
+                fclose($in);
+                fclose($out);
+            } else{
+                return 102;
+            }
+            return 0;
         }
-        return 0;
     }
 }
