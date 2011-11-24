@@ -4,14 +4,14 @@
         <tr>
             <td class="left">
                 <div class="mainbody">
-                    <div class="col titbg">
+                    <!--<div class="col titbg">
                         <h1 class="f_left">{lang view_photo}</h1>
                         <h4 class="f_left">{lang photo_nav_title|$current_photo|`$album_info['photos_num']`}</h4>
                         {$photo_col_ctl}
-                    </div>
+                    </div>-->
                     <div class="innercol grid">
                         <div id="pic_block" class="tbmu">
-                            <span class="f_left"><a href="{link ctl=photos act=index aid=$info['album_id']}">{lang back_to_photo_list}</a></span>
+                            <span class="f_left">{lang photo_nav_title|$current_photo|`$album_info['photos_num']`}</span>
                             <div class="f_right">
                                 {$view_nav}
                             </div>
@@ -23,16 +23,7 @@
                             <div class="ctl"><div class="prev"><span>{lang prev_photo}</span></div><div class="next"><span>{lang next_photo}</span></div></div>
                         </div>
                         <div id="photo_infos">
-                            <div class="photo_others">
-                                <p>{lang in_upload_time}: {echo date('Y-m-d',$info['create_time'])}</p>
-                                <!--{if $info['taken_time']}-->
-                                <p>{lang in_taken_time}: {echo date('Y-m-d',$info['taken_time'])}</p>
-                                <!--{/if}-->
-                                <p>{lang image_size}: {$info['width']}×{$info['height']}</p>
-                                <!--{if $info['exif']}--><p><!--{if isset($info['exif']['Model'])}-->{lang taken_width|`$info['exif']['Model']`} <!--{/if}--><a href="{link ctl=photos act=meta id=$info['id']}">{lang more_exif}</a></p><!--{/if}-->
-                                <p>{lang viewed_nums|`$info['hits']`}</p>
-                                <p><a href="{img $info['path']}" target="_blank">{lang view_orgi_photo}</a></p>
-                            </div>
+                            
                             <div class="photo_main">
                                 <h1>
                                     <!--{if $loggedin}-->
@@ -77,27 +68,32 @@
                         </div>
 <script>
    function detect_resize_img(){
-       var max_width = $('body').width()-350;
-       var img_width = orgi_width = parseInt('{$info['width']}');
-       var img_height = parseInt('{$info['height']}');
-       if(isNaN(img_width) || img_width == 0){
-           img_width = 600;
-       }
-       if(img_width > max_width){
-           img_width = max_width;
-       }
-       if(orgi_width){
-           img_height = img_width/orgi_width*img_height;
-           $('#photo_body img.photo').attr('height',img_height)
-       }
-       $('#photo_body img.photo').attr('width',img_width);
+
+    var x = 750; //填入目标图片最大宽度
+    var y = 750; //填入目标图片最大高度
+
+    var w=parseInt('{$info['width']}'), h=parseInt('{$info['height']}');
+    if(isNaN(w) || w == 0 || isNaN(h) || h == 0){
+        return ; //如果丢失图片尺寸的话，直接返回
+    }
+    var w_original=w, h_original=h;
+    if (w > x) {
+      h = h * (x / w);
+      w = x;
+    }
+    if (h > y) {
+        w = w_original * (y / h_original);
+        h = y;
+    }
+    $('#photo_body img.photo').attr({width:w,height:h});
    }
+
    function show_pic_ctl(){
        var photo_obj = $('#photo_body img.photo');
        var pos = photo_obj.offset();
        var i_height = photo_obj.outerHeight();
        var i_width = photo_obj.outerWidth();
-       var w = i_width/2;
+       var w = i_width/3;
        var ctl_obj = $('#photo_body div.ctl');
        ctl_obj.css({ left:pos.left,top:pos.top, width:i_width, height:i_height });
        {if $picture['previous']}
@@ -127,7 +123,7 @@
        $('#photo_body').css('background','none');
    });
    $(window).resize(function() {
-       detect_resize_img();
+       //detect_resize_img();
        show_pic_ctl();
    });
    $(document).bind('keydown',
@@ -204,7 +200,44 @@
             <td class="right">
                 <div class="sidebar">
                     <div class="pic_nav">
-                        <div class="title"><a href="{link ctl=photos act=index aid=$info['album_id']}">{$album_info['name']}</a></div>
+                        <h2>{$album_info['name']} </h2>
+                        <div class="pic_nav_body">
+                        <ul>
+                          <li>
+                          <a href="{link ctl=photos act=view id=$picture['previous']['id']}#pic_block">
+                            <span class="thumbnail_mask">
+                              <span class="thumbnail_container">
+                                <img src="{img $picture['previous']['thumb']}" style="{php echo detect_thumb($picture['previous']['width'],$picture['previous']['height'],58)}" />
+                              </span>
+                            </span>
+                            </a>
+                          </li>
+                          <li><a class="current" href="#">
+                            <span class="thumbnail_mask">
+                              <span class="thumbnail_container">
+                                <img src="{img $info['thumb']}" style="{php echo detect_thumb($info['width'],$info['height'],58)}" />
+                              </span>
+                            </span>
+                            </a>
+                          </li>
+                          <li><a href="{link ctl=photos act=view id=$picture['next']['id']}#pic_block">
+                            <span class="thumbnail_mask">
+                              <span class="thumbnail_container">
+                                <img src="{img $picture['next']['thumb']}" style="{php echo detect_thumb($picture['next']['width'],$picture['next']['height'],58)}" />
+                              </span>
+                            </span>
+                            </a>
+                          </li>
+                        </ul>
+                        <div class="nav_ctl">
+                          <span class="nav_ctl_prev"><a href="javascript:void(0)">{lang prev_photo}</a></span>
+                          <span class="slideshow"><span class="i_slideshow sprite"></span> <a href="{link ctl=photos act=slide aid=$info['album_id']}">{lang slideshow_view}</a></span>
+                          <span class="nav_ctl_next"><a href="javascript:void(0)">{lang next_photo}</a></span>
+                          <div class="clear"></div>
+                        </div>
+                        </div>
+                    </div>
+                        <!--<div class="title"><a href="{link ctl=photos act=index aid=$info['album_id']}">{$album_info['name']}</a></div>
                         <div class="body">
                             <div>
                                 <a href="{if $picture['previous']}{link ctl=photos act=view id=$picture['previous']['id']}#pic_block{else}javascript:void(0){/if}" class="turn_page_up">{lang prev_photo}</a>
@@ -229,6 +262,21 @@
                             </div>
                         </div>
                     </div>
+                    -->
+                    <!-- todo -->
+                    <div class="mb10 mt15 tinfo">
+                                <p>{lang in_upload_time}: {echo date('Y-m-d',$info['create_time'])}</p>
+                                <!--{if $info['taken_time']}-->
+                                <p>{lang in_taken_time}: {echo date('Y-m-d',$info['taken_time'])}</p>
+                                <!--{/if}-->
+                                <p>{lang image_size}: {$info['width']}×{$info['height']}</p>
+                                <!--{if $info['exif']}--><p><!--{if isset($info['exif']['Model'])}-->{lang taken_width|`$info['exif']['Model']`} <!--{/if}--><a href="{link ctl=photos act=meta id=$info['id']}">{lang more_exif}</a></p><!--{/if}-->
+                                <p>{lang viewed_nums|`$info['hits']`}</p>
+                                <p><a href="{img $info['path']}" target="_blank">{lang view_orgi_photo}</a></p>
+                            </div>
+
+
+
                     {$photo_view_sidebar}
                 </div>
             </td>

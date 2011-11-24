@@ -5,5 +5,3 @@
 {if $picture['next']}<a href="{link ctl=photos act=view id=$picture['next']['id']}#pic_block" class="btnnext">{lang next_photo}</a>{else}{lang next_photo}{/if}
  <span class="pipe">|</span>
 {if $picture['last']}<a href="{link ctl=photos act=view id=$picture['last']['id']}#pic_block">{lang last_photo}</a>{elseif $picture['next']}<a href="{link ctl=photos act=view id=$picture['next']['id']}#pic_block" class="btnnext">{lang last_photo}</a>{else}{lang last_photo}{/if}
- <span class="pipe">|</span>
-<span class="i_slideshow sprite"></span> <a href="{link ctl=photos act=slide aid=$info['album_id']}">{lang slideshow_view}</a>
