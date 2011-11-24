@@ -443,14 +443,6 @@ table.layout td.right{
     line-height:1.6;
     color:#666;
 }
-.photo_main{
-    margin-right:210px;
-    border-right:1px solid #ccc;
-    padding-right:10px;
-    height:auto !important;
-    height:120px;
-    min-height:120px;
-}
 .photo_main .desc{
     line-height:1.6;
     color:#444;
@@ -462,6 +454,92 @@ table.layout td.right{
     height:18px;
     line-height:18px;
 }
+
+.thumbnail_mask {
+    display: block;
+    height: 54px;
+    overflow: hidden;
+    width: 54px;
+}
+.thumbnail_container {
+    position:relative;
+    height: 54px;
+    overflow: hidden;
+    text-align: center;
+    width: 54px;
+}
+.thumbnail_container img {
+    position:absolute;
+    border: 0 none;
+    vertical-align: middle;
+}
+.pic_nav h2{
+    border-width:1px 1px 0 1px;
+    border-style:solid;
+    border-color:#ddd;
+    background:#fff;
+    padding:4px 5px;
+    font-size:14px;
+    color:#888;
+    margin-right:10px;
+    overflow:hidden;
+    -moz-box-shadow:3px 3px 4px #BBB;
+    -webkit-box-shadow:3px 3px 4px #BBB;
+    box-shadow:3px 3px 4px #BBB;
+}
+.pic_nav .pic_nav_body{
+    background:#fff;
+    border:1px solid #ddd;
+    padding:8px 0 8px 10px;
+    -moz-box-shadow:3px 3px 4px #BBB;
+    -webkit-box-shadow:3px 3px 4px #BBB;
+    box-shadow:3px 3px 4px #BBB;
+}
+.pic_nav ul li{
+    float:left;
+    margin:0 11px 10px 0;
+}
+.pic_nav ul li a{
+    background:#eee;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #ccc;
+    display: block;
+    font-size: 11px;
+    height: 54px;
+    line-height: 0;
+    margin: 1px;
+    overflow: hidden;
+    padding: 1px;
+    width: 54px;
+}
+.pic_nav ul li a.current{
+    border-color:#6ba025;
+}
+.pic_nav ul li a:hover{
+    border-color:#6ba025;
+    margin:0;
+    border-width:2px;
+}
+.pic_nav .nav_ctl{
+    clear:both;
+}
+.pic_nav .nav_ctl .nav_ctl_prev{
+    float:left;
+    width:62px;
+    text-align:center;
+}
+.pic_nav .nav_ctl .slideshow{
+    float:left;
+    width:80px;
+    text-align:center;
+}
+.pic_nav .nav_ctl .nav_ctl_next{
+    float:left;
+    width:62px;
+    text-align:center;
+}
+
 .pic_nav .title{
     padding-left:10px;
     font-size:14px;

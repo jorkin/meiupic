@@ -211,3 +211,18 @@ function buildarray($array, $level = 0, $pre = '$CONFIG') {
     }
     return $return;
 }
+
+
+function detect_thumb($w,$h,$square){
+    if($w>$h){
+        $height = $square;
+        $width = $w * $square/$h;
+        $left = ($width-$height)/2;
+        return 'height:'.intval($height).'px;left:-'.intval($left).'px';
+    }else{
+        $width = $square;
+        $height = $h * $square/$w;
+        $top = ($height-$width)/2;
+        return 'height:'.intval($height).'px;top:-'.intval($top).'px';
+    }
+}

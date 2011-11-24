@@ -525,7 +525,7 @@ class photos_ctl extends pagecore{
         }
         
         if($info['exif']){
-            $info['exif'] = unserialize($info['exif']);
+            $info['exif'] = @unserialize($info['exif']);
         }
         
         $info['tags_list'] = parse_tag($info['tags']);
