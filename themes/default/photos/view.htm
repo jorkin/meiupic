@@ -1,4 +1,12 @@
 {template block/header}
+<style type="text/css">
+  span.pre_cur{
+      cursor: url("{$style_path}images/pre.cur"), auto;
+  }
+  span.next_cur{
+      cursor: url("{$style_path}images/next.cur"), auto;
+  }
+</style>
 <div id="bodywrap">
     <table class="layout">
         <tr>
@@ -19,8 +27,10 @@
                         
                         <div id="photo_body">
                             {$photo_body_append}
-                            <img class="photo" alt="{$info['name']}" src="{img $info['path']}" />
-                            <div class="ctl"><div class="prev"><span>{lang prev_photo}</span></div><div class="next"><span>{lang next_photo}</span></div></div>
+                            <span id="imgarea">
+                                <img class="photo" alt="{$info['name']}" src="{img $info['path']}" />
+                            </span>
+                            <!--<div class="ctl"><div class="prev"><span>{lang prev_photo}</span></div><div class="next"><span>{lang next_photo}</span></div></div>-->
                         </div>
                         <div id="photo_infos">
                             
@@ -68,64 +78,54 @@
                         </div>
 <script>
    function detect_resize_img(){
+      var x = 750; //填入目标图片最大宽度
+      var y = 750; //填入目标图片最大高度
 
-    var x = 750; //填入目标图片最大宽度
-    var y = 750; //填入目标图片最大高度
-
-    var w=parseInt('{$info['width']}'), h=parseInt('{$info['height']}');
-    if(isNaN(w) || w == 0 || isNaN(h) || h == 0){
-        return ; //如果丢失图片尺寸的话，直接返回
-    }
-    var w_original=w, h_original=h;
-    if (w > x) {
-      h = h * (x / w);
-      w = x;
-    }
-    if (h > y) {
-        w = w_original * (y / h_original);
-        h = y;
-    }
-    $('#photo_body img.photo').attr({width:w,height:h});
+      var w=parseInt('{$info['width']}'), h=parseInt('{$info['height']}');
+      if(isNaN(w) || w == 0 || isNaN(h) || h == 0){
+          return ; //如果丢失图片尺寸的话，直接返回
+      }
+      var w_original=w, h_original=h;
+      if (w > x) {
+        h = h * (x / w);
+        w = x;
+      }
+      if (h > y) {
+          w = w_original * (y / h_original);
+          h = y;
+      }
+      $('#photo_body img.photo').attr({width:w,height:h});
    }
 
-   function show_pic_ctl(){
-       var photo_obj = $('#photo_body img.photo');
-       var pos = photo_obj.offset();
-       var i_height = photo_obj.outerHeight();
-       var i_width = photo_obj.outerWidth();
-       var w = i_width/3;
-       var ctl_obj = $('#photo_body div.ctl');
-       ctl_obj.css({ left:pos.left,top:pos.top, width:i_width, height:i_height });
-       {if $picture['previous']}
-       ctl_obj.find('div.prev').css({ height:i_height,width:w }).show().hover(function(){
-           $(this).find('span').css('display','block');
-       },function(){
-           $(this).find('span').css('display','none');
-       }).click(function(){
-           window.location.href = $('#pic_block a.btnprev').attr('href');
-       });
-       {/if}
-       {if $picture['next']}
-       ctl_obj.find('div.next').css({ height:i_height,width:w }).show().hover(function(){
-          $(this).find('span').css('display','block');
-       },function(){
-          $(this).find('span').css('display','none');
-       }).click(function(){
-           window.location.href = $('#pic_block a.btnnext').attr('href');
-       });
-       {/if}
-   }
-   
-   detect_resize_img();
-   
+    detect_resize_img();
+    var imgareaObj = $('#imgarea');
+        
+    imgareaObj.mousemove(function(e){
+        var ps = imgareaObj.offset();
+        var ps_width = imgareaObj.width();
+        var nxt = e.clientX > (ps.left+ps_width/2);
+        var curClass = nxt ? 'next_cur' : 'pre_cur';
+        imgareaObj.attr('class',curClass);
+        $('#imgarea img').attr('title',(nxt ? '{lang next_photo}' : '{lang prev_photo}'));
+    });
+    
+    imgareaObj.click(function(e){
+        var ps = imgareaObj.offset();
+        var ps_width = imgareaObj.width();
+        var nxt = e.clientX > (ps.left+ps_width/2);
+        if(nxt){
+          if($('#pic_block a.btnnext').length > 0)
+            window.location.href = $('#pic_block a.btnnext').attr('href');
+        }else{
+          if($('#pic_block a.btnprev').length > 0)
+            window.location.href = $('#pic_block a.btnprev').attr('href');
+        }
+    });
+
    $('#photo_body img').load(function(){
-       show_pic_ctl();
        $('#photo_body').css('background','none');
    });
-   $(window).resize(function() {
-       //detect_resize_img();
-       show_pic_ctl();
-   });
+
    $(document).bind('keydown',
        function(e){
            if (e.altKey) return true;
@@ -145,6 +145,27 @@
            }
        }
    );
+
+   function show_exif(o){
+    var pos = $(o).offset();
+    $('#meta_detail').css({'left':pos.left,'top':pos.top+$(o).height()});
+    $('#meta_detail').show();
+    $(document).bind("mousedown",function(e){
+      var popup = $('#meta_detail').get(0);
+      var e = e || window.event;
+      var target = e.target || e.srcElement;
+      while (target != document && target != popup) {
+      target = target.parentNode;
+      }
+      if (target == document) {
+      close_exif();
+      }
+    });
+  }
+  function close_exif(){
+    $('#meta_detail').hide();
+    $(document).unbind("mousedown");
+  } 
 </script>
                     {if $enable_comment}
                         <div class="col titbg">
@@ -200,10 +221,11 @@
             <td class="right">
                 <div class="sidebar">
                     <div class="pic_nav">
-                        <h2>{$album_info['name']} </h2>
+                        <h2 class="titbg">{$album_info['name']} </h2>
                         <div class="pic_nav_body">
                         <ul>
                           <li>
+                          <!--{if $picture['previous']}-->
                           <a href="{link ctl=photos act=view id=$picture['previous']['id']}#pic_block">
                             <span class="thumbnail_mask">
                               <span class="thumbnail_container">
@@ -211,6 +233,15 @@
                               </span>
                             </span>
                             </a>
+                          <!--{else}-->
+                          <a href="javascript:void(0)" class="non">
+                          <span class="thumbnail_mask">
+                              <span class="thumbnail_container">
+                                {lang this_first_photo}
+                              </span>
+                            </span>
+                          </a>
+                          <!--{/if}-->
                           </li>
                           <li><a class="current" href="#">
                             <span class="thumbnail_mask">
@@ -220,13 +251,24 @@
                             </span>
                             </a>
                           </li>
-                          <li><a href="{link ctl=photos act=view id=$picture['next']['id']}#pic_block">
+                          <li>
+                          <!--{if $picture['next']}-->
+                            <a href="{link ctl=photos act=view id=$picture['next']['id']}#pic_block">
                             <span class="thumbnail_mask">
                               <span class="thumbnail_container">
                                 <img src="{img $picture['next']['thumb']}" style="{php echo detect_thumb($picture['next']['width'],$picture['next']['height'],58)}" />
                               </span>
                             </span>
                             </a>
+                          <!--{else}-->
+                            <a href="javascript:void(0)" class="non">
+                            <span class="thumbnail_mask">
+                                <span class="thumbnail_container">
+                                  {lang this_last_photo}
+                                </span>
+                              </span>
+                            </a>
+                          <!--{/if}-->
                           </li>
                         </ul>
                         <div class="nav_ctl">
@@ -237,46 +279,26 @@
                         </div>
                         </div>
                     </div>
-                        <!--<div class="title"><a href="{link ctl=photos act=index aid=$info['album_id']}">{$album_info['name']}</a></div>
-                        <div class="body">
-                            <div>
-                                <a href="{if $picture['previous']}{link ctl=photos act=view id=$picture['previous']['id']}#pic_block{else}javascript:void(0){/if}" class="turn_page_up">{lang prev_photo}</a>
-                            </div>
-                            <div class="navlist">
-                            <ul>
-                                {if $picture['previous']}
-                                <li id="pic_{echo $current_rank-1}" class="navitem"><a href="{link ctl=photos act=view id=$picture['previous']['id']}#pic_block" style="background:url('{img $picture['previous']['thumb']}') center no-repeat;"></a></li>
-                                {else}
-                                <li id="pic_first" class="navitem"><a href="javascript:void(0);">{lang this_first_photo}</a></li>
-                                {/if}
-                                <li id="pic_{$current_rank}" class="current navitem"><a href="{link ctl=photos act=view id=$info['id']}#pic_block" style="background:url('{img $info['thumb']}') center no-repeat;"></a></li>
-                                {if $picture['next']}
-                                <li id="pic_{echo $current_rank+1}" class="navitem"><a href="{link ctl=photos act=view id=$picture['next']['id']}#pic_block" style="background:url('{img $picture['next']['thumb']}') center no-repeat;"></a></li>
-                                {else}
-                                <li id="pic_last" class="navitem"><a href="javascript:void(0);">{lang this_last_photo}</a></li>
-                                {/if}
-                            </ul>
-                            </div>
-                            <div>
-                                <a href="{if $picture['next']}{link ctl=photos act=view id=$picture['next']['id']}#pic_block{else}javascript:void(0){/if}" class="turn_page_down">{lang next_photo}</a>
-                            </div>
-                        </div>
-                    </div>
-                    -->
                     <!-- todo -->
                     <div class="mb10 mt15 tinfo">
-                                <p>{lang in_upload_time}: {echo date('Y-m-d',$info['create_time'])}</p>
-                                <!--{if $info['taken_time']}-->
-                                <p>{lang in_taken_time}: {echo date('Y-m-d',$info['taken_time'])}</p>
-                                <!--{/if}-->
-                                <p>{lang image_size}: {$info['width']}×{$info['height']}</p>
-                                <!--{if $info['exif']}--><p><!--{if isset($info['exif']['Model'])}-->{lang taken_width|`$info['exif']['Model']`} <!--{/if}--><a href="{link ctl=photos act=meta id=$info['id']}">{lang more_exif}</a></p><!--{/if}-->
-                                <p>{lang viewed_nums|`$info['hits']`}</p>
-                                <p><a href="{img $info['path']}" target="_blank">{lang view_orgi_photo}</a></p>
-                            </div>
-
-
-
+                        <p>{lang in_upload_time}: {echo date('Y-m-d',$info['create_time'])}</p>
+                        <!--{if $info['taken_time']}-->
+                        <p>{lang in_taken_time}: {echo date('Y-m-d',$info['taken_time'])}</p>
+                        <!--{/if}-->
+                        <p>{lang image_size}: {$info['width']}×{$info['height']} <a href="{img $info['path']}" target="_blank">{lang view_orgi_photo}</a></p>
+                        <p>{lang viewed_nums|`$info['hits']`}</p>
+                        <!--{if $info['exif'] && isset($metas)}-->
+                        <p><a href="javascript:void(0)" onclick="show_exif(this)">{lang view_exif}</a></p>
+                        <div id="meta_detail" style="display:none;"> 
+                          <table>
+                          <!--{loop $metas $m}-->
+                          <tr><td>{$m['cname']}</td><td>{$m['value']}</td></tr>
+                          <!--{/loop}-->
+                          </table>
+                          <p class="t_right"><a href="{link ctl=photos act=meta id=$info['id']}">{lang more_exif}</a></p>
+                        </div>
+                        <!--{/if}-->
+                    </div>
                     {$photo_view_sidebar}
                 </div>
             </td>

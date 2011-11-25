@@ -368,64 +368,13 @@ table.layout td.right{
 }
 
 #photo_body{
+    padding:0 10px;
     margin:20px 0;
     text-align:center;
     height: auto !important;
     height: 50px;
     min-height:50px;
     background:url(loading.gif) no-repeat center;
-}
-#photo_body div.ctl{
-    position:absolute;
-    z-index:1
-}
-#photo_body div.ctl div.prev{
-    position:absolute;
-    left:0;
-    top:0;
-    z-index:2;
-    cursor:pointer;
-    display:none;
-}
-#photo_body div.ctl div.prev span{
-    display:none;
-    width:80px;
-    height:35px;
-    background:#fff;
-    line-height:35px;
-    position:absolute;
-    left:0;
-    top:30%;
-    -moz-border-radius:0 5px 5px 0;
-    -webkit-border-radius:0 5px 5px 0;
-    border-radius:0 5px 5px 0;
-    -webkit-box-shadow:4px 2px 3px rgba(0, 0, 0, 0.25);
-    -moz-box-shadow:4px 2px 3px rgba(0, 0, 0, 0.25);
-    box-shadow:4px 2px 3px rgba(0, 0, 0, 0.25);
-}
-#photo_body div.ctl div.next{
-    position:absolute;
-    right:0;
-    top:0;
-    z-index:2;
-    cursor:pointer;
-    display:none;
-}
-#photo_body div.ctl div.next span{
-    display:none;
-    width:80px;
-    height:35px;
-    background:#fff;
-    line-height:35px;
-    position:absolute;
-    right:0;
-    top:30%;
-    -moz-border-radius:5px 0 0 5px;
-    -webkit-border-radius:5px 0 0 5px;
-    border-radius:5px 0 0 5px;
-    -webkit-box-shadow:-4px 2px 3px rgba(0, 0, 0, 0.25);
-    -moz-box-shadow:-4px 2px 3px rgba(0, 0, 0, 0.25);
-    box-shadow:-4px 2px 3px rgba(0, 0, 0, 0.25);
 }
 #photo_infos{
     padding:0 20px 20px;
@@ -436,12 +385,6 @@ table.layout td.right{
     font-size:16px;
     color:#666;
     padding-bottom:10px;
-}
-.photo_others{
-    float:right;
-    width:200px;
-    line-height:1.6;
-    color:#666;
 }
 .photo_main .desc{
     line-height:1.6;
@@ -473,15 +416,15 @@ table.layout td.right{
     border: 0 none;
     vertical-align: middle;
 }
+.pic_nav{
+    width:230px;
+}
 .pic_nav h2{
     border-width:1px 1px 0 1px;
     border-style:solid;
     border-color:#ddd;
-    background:#fff;
     padding:4px 5px;
     font-size:14px;
-    color:#888;
-    margin-right:10px;
     overflow:hidden;
     -moz-box-shadow:3px 3px 4px #BBB;
     -webkit-box-shadow:3px 3px 4px #BBB;
@@ -507,11 +450,16 @@ table.layout td.right{
     display: block;
     font-size: 11px;
     height: 54px;
-    line-height: 0;
+    line-height: 50px;
     margin: 1px;
     overflow: hidden;
     padding: 1px;
     width: 54px;
+}
+.pic_nav ul li a.non{
+    text-align:center;
+    color:#888;
+    text-decoration:none;
 }
 .pic_nav ul li a.current{
     border-color:#6ba025;
@@ -538,68 +486,6 @@ table.layout td.right{
     float:left;
     width:62px;
     text-align:center;
-}
-
-.pic_nav .title{
-    padding-left:10px;
-    font-size:14px;
-    line-height:50px;
-    border-bottom:1px dashed #ccc;
-    color:#999;
-}
-.pic_nav .body{
-    text-align:center;
-}
-.pic_nav .body .navlist{
-    height:416px;
-    overflow:hidden;
-}
-.pic_nav .body ul{
-    margin-top:0px;
-}
-.pic_nav .body li{
-    border:1px solid #ccc;
-    padding:5px;
-    background:#fff;
-    width:120px;
-    height:120px;
-    overflow:hidden;
-    margin: 0 auto 10px;
-}
-.pic_nav .body li#pic_last{
-    margin: 0 auto;
-}
-.pic_nav .body li:hover{
-    border:1px solid #444;
-}
-.pic_nav .body li.current{
-    border:1px solid #444;
-    padding:5px;
-}
-.pic_nav .body li a{
-    display:block;
-    width:120px;
-    height:120px;
-    line-height:120px;
-    background-color:#eee;
-    color:#888;
-    text-decoration:none;
-}
-
-.pic_nav .turn_page_up,.pic_nav .turn_page_down{
-    display:block;
-    background:url('bg_turn_page.png') no-repeat;
-    width:132px;
-    margin:10px auto;
-    height:17px;
-    text-indent:-1000px;
-    overflow:hidden;
-}
-.pic_nav .turn_page_up{
-    background-position:center top;
-}
-.pic_nav .turn_page_down{
-    background-position:center bottom;
 }
 /*tabs*/
 .data_tab{padding-left:20px;height:26px;margin-bottom:10px;background:url(1pxdot.gif) repeat-x bottom;}
@@ -875,4 +761,13 @@ table.datalist tr.hover:hover td{
 }
 #nav ul li a:hover{
     color:green;
+}
+
+
+#meta_detail{
+    position:absolute;
+    z-index:3;
+    background:#fff;
+    border:1px solid #ccc;
+    padding:5px;
 }
