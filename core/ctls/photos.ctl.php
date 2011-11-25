@@ -569,23 +569,36 @@ class photos_ctl extends pagecore{
         $nav['last_rank']    = count($nav['items']) - 1;
         $nav['current_item'] = $id;
         $nav['current_rank'] = $nav['rank_of'][$id];
+
+        $nav['first_item'] = $nav['items'][ $nav['first_rank'] ];
+        $nav['last_item'] = $nav['items'][ $nav['last_rank'] ];
+
         if($nav['current_rank'] != $nav['first_rank']){
-          $nav['previous_item'] = $nav['items'][ $nav['current_rank'] - 1 ];
-          $nav['first_item'] = $nav['items'][ $nav['first_rank'] ];
+            $nav['previous_item'] = $nav['items'][ $nav['current_rank'] - 1 ];
+        }else{
+            if($nav['last_rank']>0){
+                $nav['previous_item'] = $nav['last_item'];
+            }
         }
         if($nav['current_rank'] != $nav['last_rank']){
-          $nav['next_item'] = $nav['items'][ $nav['current_rank'] + 1 ];
-          $nav['last_item'] = $nav['items'][ $nav['last_rank'] ];
+            $nav['next_item'] = $nav['items'][ $nav['current_rank'] + 1 ];
+        }else{
+            if($nav['last_rank']>0){
+                $nav['next_item'] = $nav['first_item'];
+            }
         }
         $ids = array();
+        array_push($ids, $nav['first_item']);
+        array_push($ids, $nav['last_item']);
+
         if (isset($nav['previous_item'])) {
           array_push($ids, $nav['previous_item']);
-          array_push($ids, $nav['first_item']);
         }
         if (isset($nav['next_item'])) {
           array_push($ids, $nav['next_item']);
-          array_push($ids, $nav['last_item']);
         }
+
+        $ids = array_unique($ids);
         $p_result = $this->mdl_photo->get_info($ids);
         $picture = array(
             'previous' =>false,
@@ -597,14 +610,20 @@ class photos_ctl extends pagecore{
             foreach($p_result as $v){
                   if (isset($nav['previous_item']) and $v['id'] == $nav['previous_item']){
                     $i = 'previous';
-                  }else if (isset($nav['next_item']) and $v['id'] == $nav['next_item']){
-                    $i = 'next';
-                  }else if (isset($nav['first_item']) and $v['id'] == $nav['first_item']){
-                    $i = 'first';
-                  }else if (isset($nav['last_item']) and $v['id'] == $nav['last_item']){
-                    $i = 'last';
+                    $picture[$i] = $v;
                   }
-                  $picture[$i] = $v;
+                  if (isset($nav['next_item']) and $v['id'] == $nav['next_item']){
+                    $i = 'next';
+                    $picture[$i] = $v;
+                  }
+                  if (isset($nav['first_item']) and $v['id'] == $nav['first_item']){
+                    $i = 'first';
+                    $picture[$i] = $v;
+                  }
+                  if (isset($nav['last_item']) and $v['id'] == $nav['last_item']){
+                    $i = 'last';
+                    $picture[$i] = $v;
+                  }
             }
         }
         if($this->setting->get_conf('system.enable_comment') && $album_info['enable_comment']==1){
@@ -643,6 +662,7 @@ class photos_ctl extends pagecore{
         $this->output->set('photo_view_sidebar',$this->plugin->filter('photo_view_sidebar','',$album_info['id'],$id));
         
         $this->output->set('current_rank',$nav['current_rank']);
+        $this->output->set('last_rank',$nav['last_rank']);
         $this->output->set('current_photo',$nav['current_rank']+1);
         $this->output->set('album_info',$album_info);
         
@@ -661,6 +681,56 @@ class photos_ctl extends pagecore{
         $this->render();
     }
     
+    function nav(){
+        $get = $this->getGet('get');
+        $rank = intval($this->getPost('rank'));
+        $album_id = $this->getPost('album_id');
+        $sort_setting = $this->_sort_setting();
+        list($sort,$sort_list) =  get_sort_list($sort_setting,'photo','tu_desc');
+        $items = $this->mdl_photo->get_items(array('album_id'=>$album_id),$sort);
+
+        /*$nav['rank_of'] = array_flip($nav['items']);
+        $nav['first_rank']   = 0;
+        $nav['last_rank']    = count($nav['items']) - 1;*/
+        $current_item = $items[$rank];
+        $current_rank = $rank;;
+        
+        /*$nav['first_item'] = $nav['items'][ $nav['first_rank'] ];
+        $nav['last_item'] = $nav['items'][ $nav['last_rank'] ];
+
+        if($nav['current_rank'] != $nav['first_rank']){
+            $nav['previous_item'] = $nav['items'][ $nav['current_rank'] - 1 ];
+        }else{
+            if($nav['last_rank']>0){
+                $nav['previous_item'] = $nav['last_item'];
+            }
+        }
+        if($nav['current_rank'] != $nav['last_rank']){
+            $nav['next_item'] = $nav['items'][ $nav['current_rank'] + 1 ];
+        }else{
+            if($nav['last_rank']>0){
+                $nav['next_item'] = $nav['first_item'];
+            }
+        }
+
+        if($get == 'prev'){
+            $data = $this->mdl_photo->get_info($nav['previous_item']);
+        }else{
+            $data = $this->mdl_photo->get_info($nav['next_item']);
+        }*/
+        $data = $this->mdl_photo->get_info($current_item);
+        $data = array(
+                'id'=>$data['id'],
+                'name'=>$data['name'],
+                'thumb'=>img_path($data['thumb']),
+                'url'=>site_link('photos','view',array('id'=>$data['id'])),
+                'style'=>detect_thumb($data['width'],$data['height'],58)
+            );
+        $json =& loader::lib('json');
+        echo $json->encode($data);
+        exit;
+    }
+
     function meta(){
         $id = $this->getGet('id');
         $info = $this->mdl_photo->get_info($id);

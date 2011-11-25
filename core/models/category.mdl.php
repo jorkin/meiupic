@@ -165,10 +165,12 @@ class category_mdl extends modelfactory {
         }else{
             $row = $this->get_info(intval($cate_id),'cate_path');
             $cates = explode(',',trim($row['cate_path'],','));
+            $cate_infos = $this->get_info($cates,'id,name');
             foreach($cates as $cate){
-                $cate_info = $this->get_info(intval($cate),'name');
-                if($cate_info){
-                    $data[] = array('name'=>$cate_info['name'],'link'=>site_link('albums','index',array('cate'=>$cate)));
+                foreach($cate_infos as $info){
+                    if($info['id'] == $cate){
+                        $data[] = array('name'=>$info['name'],'link'=>site_link('albums','index',array('cate'=>$cate)));
+                    }
                 }
             }
         }

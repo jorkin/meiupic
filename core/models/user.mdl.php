@@ -140,12 +140,21 @@ class user_mdl extends modelfactory{
                 }
                 $this->db->query();
             }
+            $cache =& loader::lib('cache');
+            $cache->remove('user_extra_'.$id);
         }
     }
     
     function get_extra($id){
+        $cache =& loader::lib('cache');
+        $value = $cache->get('user_extra_'.$id);
+        if($value){
+            return $value;
+        }
         $this->db->select('#@usermeta','meta_key,meta_value','userid='.intval($id));
-        return $this->db->getAssoc();
+        $value = $this->db->getAssoc();
+        $cache->set('user_extra_'.$id,$value);
+        return $value;
     }
     /**
      * 认证加密

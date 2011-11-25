@@ -695,6 +695,9 @@ class setting_ctl extends pagecore{
                 }
             }
         }
+        //清除菜单缓存
+        $mdl_nav->clear_nav_cache();
+
         if($flag){
             form_ajax_success('box',lang('nav_save_succ'),null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
