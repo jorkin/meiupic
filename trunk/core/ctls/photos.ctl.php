@@ -526,6 +526,24 @@ class photos_ctl extends pagecore{
         
         if($info['exif']){
             $info['exif'] = @unserialize($info['exif']);
+            $exif_obj =& loader::lib('exif');
+            $exif = $exif_obj->parse_exif($info['exif']);
+            //Chief Exif
+            $chief_exif = array('Model','ApertureFNumber','ExposureTime',
+                                'Flash','FocalLength','ISOSpeedRatings','WhiteBalance',
+                                'ExposureBiasValue','DateTimeOriginal','FocusDistance');
+
+            foreach($exif as $k=>$v){
+                if(in_array($k,$chief_exif)){
+                    $metas[] = array(
+                        'key' =>$k,
+                        'value' =>$v,
+                        'cname' => lang('exif_'.$k)
+                    );
+                }
+            }
+            if(isset($metas))
+                $this->output->set('metas',$metas);
         }
         
         $info['tags_list'] = parse_tag($info['tags']);
@@ -670,7 +688,13 @@ class photos_ctl extends pagecore{
         }
         $this->output->set('metas',$metas);
         $this->output->set('info',$info);
-                
+        $album_info = $this->mdl_album->get_info($info['album_id']);
+        //面包屑
+        $crumb_nav = $this->mdl_cate->cate_path_link($album_info['cate_id']);
+        $crumb_nav[] = array('name'=>$album_info['name'],'link'=>site_link('photos','index',array('aid'=>$album_info['id'])));
+        $crumb_nav[] = array('name'=>lang('view_photo_exif',$info['name']),'link'=>site_link('photos','view',array('id'=>$info['id'])));
+        $this->page_crumb($crumb_nav);
+
         $page_title = lang('view_photo_exif',$info['name']).' - '.$this->setting->get_conf('site.title');
         $page_keywords = $this->setting->get_conf('site.keywords');
         $page_description = $this->setting->get_conf('site.description');
