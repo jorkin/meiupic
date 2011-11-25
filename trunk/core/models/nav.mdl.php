@@ -12,7 +12,19 @@ class nav_mdl extends modelfactory{
     var $default_order = 'sort asc';
 
     function get_enabled_navs(){
+        $cache =& loader::lib('cache');
+        $value = $cache->get('enabled_navs');
+        if($value){
+            return $value;
+        }
         $this->db->select($this->table_name,$this->default_cols,'enable=1',$this->default_order);
-        return $this->db->getAll();
+        $value = $this->db->getAll();
+        $cache->set('enabled_navs',$value);
+        return $value;
+    }
+
+    function clear_nav_cache(){
+        $cache =& loader::lib('cache');
+        $cache->remove('enabled_navs');
     }
 }

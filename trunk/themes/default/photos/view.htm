@@ -99,8 +99,8 @@
 
     detect_resize_img();
     var imgareaObj = $('#imgarea');
-        
-    imgareaObj.mousemove(function(e){
+    
+    imgareaObj.bind('mousemove mouseover',function(e){
         var ps = imgareaObj.offset();
         var ps_width = imgareaObj.width();
         var nxt = e.clientX > (ps.left+ps_width/2);
@@ -114,11 +114,11 @@
         var ps_width = imgareaObj.width();
         var nxt = e.clientX > (ps.left+ps_width/2);
         if(nxt){
-          if($('#pic_block a.btnnext').length > 0)
-            window.location.href = $('#pic_block a.btnnext').attr('href');
+          if(ShowPic.next)
+            window.location.href = ShowPic.next;
         }else{
-          if($('#pic_block a.btnprev').length > 0)
-            window.location.href = $('#pic_block a.btnprev').attr('href');
+          if(ShowPic.prev)
+            window.location.href = ShowPic.prev;
         }
     });
 
@@ -133,20 +133,18 @@
            if (target && target.type) return true;
            switch(e.keyCode) {
                case 63235: case 39: 
-               if ($("#pic_block").find("a.btnnext").length > 0){
-                    window.location=$('#pic_block a.btnnext').attr('href');
-                    return false; 
-               } break;
+                if(ShowPic.next)
+                  window.location.href = ShowPic.next;
+                break;
                case 63234: case 37:
-               if ($("#pic_block").find("a.btnprev").length > 0){
-                   window.location=$('#pic_block a.btnprev').attr('href');
-                   return false; 
-               } break;
+                if(ShowPic.prev)
+                  window.location.href = ShowPic.prev;
+                break;
            }
        }
    );
 
-   function show_exif(o){
+  function show_exif(o){
     var pos = $(o).offset();
     $('#meta_detail').css({'left':pos.left,'top':pos.top+$(o).height()});
     $('#meta_detail').show();
@@ -162,10 +160,86 @@
       }
     });
   }
+
   function close_exif(){
     $('#meta_detail').hide();
     $(document).unbind("mousedown");
-  } 
+  }
+
+  var ShowPic = {
+    photos : new Array(),
+    last_rank: parseInt('{$last_rank}'),
+    current_rank: parseInt('{$current_rank}'),
+    album : '{$info['album_id']}',
+    prev : <!--{if $picture['previous']}-->"{link ctl=photos act=view id=$picture['previous']['id']}#pic_block"<!--{else}-->null<!--{/if}-->,
+    next : <!--{if $picture['next']}-->"{link ctl=photos act=view id=$picture['next']['id']}#pic_block"<!--{else}-->null<!--{/if}-->,
+    nav_prev: function(){
+      if(!ShowPic.prev){
+        return ;
+      }
+      if(ShowPic.current_rank == 1){
+        var prev_rank = ShowPic.last_rank;
+        ShowPic.current_rank = 0;
+      }else if(ShowPic.current_rank == 0){
+        var prev_rank = ShowPic.last_rank-1;
+        ShowPic.current_rank = ShowPic.last_rank;
+      }else{
+        var prev_rank = ShowPic.current_rank-2;
+        ShowPic.current_rank = ShowPic.current_rank-1;
+      }
+      
+      if(ShowPic.photos[prev_rank]){
+        ShowPic.prev_append(ShowPic.photos[prev_rank]);
+      }else{
+        $.post('{link ctl=photos act=nav}',{'rank':prev_rank,'album_id':ShowPic.album},function(data){
+            ShowPic.photos[prev_rank] = data;
+            ShowPic.prev_append(ShowPic.photos[prev_rank]);
+        },'json');
+      }
+    },
+    prev_append: function(d){
+        $('.pic_nav .pic_nav_body ul').prepend(ShowPic.get_html(d));
+        $('.pic_nav .pic_nav_body ul li:last').remove();
+    },
+    get_html: function(d){
+        return '<li><a href="'+d.url+'">\
+                <span class="thumbnail_mask">\
+                  <span class="thumbnail_container">\
+                    <img style="'+d.style+'" src="'+d.thumb+'">\
+                  </span>\
+                </span>\
+                </a>\
+                </li>';
+    },
+    nav_next: function(){
+      if(!ShowPic.next){
+        return ;
+      }
+      if(ShowPic.current_rank == ShowPic.last_rank-1){
+        var next_rank = 0;
+        ShowPic.current_rank = ShowPic.last_rank;
+      }else if(ShowPic.current_rank == ShowPic.last_rank){
+        var next_rank = 1;
+        ShowPic.current_rank = 0;
+      }else{
+        var next_rank = ShowPic.current_rank+2;
+        ShowPic.current_rank = ShowPic.current_rank+1;
+      }
+      
+      if(ShowPic.photos[next_rank]){
+        ShowPic.next_append(ShowPic.photos[next_rank]);
+      }else{
+        $.post('{link ctl=photos act=nav}',{'rank':next_rank,'album_id':ShowPic.album},function(data){
+            ShowPic.photos[next_rank] = data;
+            ShowPic.next_append(ShowPic.photos[next_rank]);
+        },'json');
+      }
+    },
+    next_append: function(d){
+      $('.pic_nav .pic_nav_body ul').append(ShowPic.get_html(d));
+      $('.pic_nav .pic_nav_body ul li:first').remove();
+    }
+  };
 </script>
                     {if $enable_comment}
                         <div class="col titbg">
@@ -272,9 +346,9 @@
                           </li>
                         </ul>
                         <div class="nav_ctl">
-                          <span class="nav_ctl_prev"><a href="javascript:void(0)">{lang prev_photo}</a></span>
+                          <span class="nav_ctl_prev"><a href="javascript:void(0)" onclick="ShowPic.nav_prev()">{lang prev_photo}</a></span>
                           <span class="slideshow"><span class="i_slideshow sprite"></span> <a href="{link ctl=photos act=slide aid=$info['album_id']}">{lang slideshow_view}</a></span>
-                          <span class="nav_ctl_next"><a href="javascript:void(0)">{lang next_photo}</a></span>
+                          <span class="nav_ctl_next"><a href="javascript:void(0)" onclick="ShowPic.nav_next()">{lang next_photo}</a></span>
                           <div class="clear"></div>
                         </div>
                         </div>

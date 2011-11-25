@@ -372,8 +372,8 @@ table.layout td.right{
     margin:20px 0;
     text-align:center;
     height: auto !important;
-    height: 50px;
-    min-height:50px;
+    height: 200px;
+    min-height:200px;
     background:url(loading.gif) no-repeat center;
 }
 #photo_infos{
@@ -437,6 +437,12 @@ table.layout td.right{
     -moz-box-shadow:3px 3px 4px #BBB;
     -webkit-box-shadow:3px 3px 4px #BBB;
     box-shadow:3px 3px 4px #BBB;
+}
+.pic_nav ul{
+    position: relative;
+    overflow: hidden;
+    height:70px;
+    width:213px;
 }
 .pic_nav ul li{
     float:left;
