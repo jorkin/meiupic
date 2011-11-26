@@ -777,3 +777,19 @@ table.datalist tr.hover:hover td{
     border:1px solid #ccc;
     padding:5px;
 }
+#photo_modify_icons li{
+    float:left;
+    margin-right:5px;
+}
+#photo_modify_icons li a{
+    text-decoration:none;
+    color:#888;
+    background:none;
+    padding:2px;
+}
+#photo_modify_icons li a:hover{
+    color:#333;
+    border-width:1px;
+    border-color:#eee #888 #888 #eee;
+    border-style:solid;
+}

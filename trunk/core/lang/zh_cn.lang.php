@@ -151,6 +151,7 @@ $language   =   array(
 'tags_tips'                        =>    '用空格或,分割',
 'modify_album'                     =>  '修改相册',
 'move_to_trash'                    => '移动到回收站',
+'move_to_trash_short'              => '删除',
 'click_to_rename'                  => '点击重命名',
 'photos_num'                       =>  '%s张照片',
 'delete_selected'                  => '删除选中项',
@@ -228,6 +229,7 @@ $language   =   array(
 'photo_desc'                       =>  '照片描述',
 'photo_tags'                       =>  '照片标签',
 'move_photo'                       =>  '移动照片',
+'move_photo_short'                 =>  '至相册',
 'move_photo_to'                    =>  '移动照片到',
 'move_photo_batch'                 =>  '批量移动照片',
 'album_need_auth'                  =>  '相册“%s”需要认证',
@@ -660,6 +662,7 @@ $language   =   array(
 
 //翻转图片
 'rotate_image'                     => '旋转图片',
+'rotate_image_short'               => '旋转',
 'rotate_left_90'                   => '向左旋转90°',
 'rotate_right_90'                  => '向右旋转90°',
 'do_nothing'                       => '您没有做任何操作！',
@@ -669,6 +672,7 @@ $language   =   array(
 //重新上传
 'new_photo'                        => '新照片',
 'reupload_photo'                   => '重新上传照片',
+'reupload_photo_short'             => '重新上传',
 
 //分类
 'category_list'                    => '分类列表',

@@ -1,7 +1,0 @@
-{if $picture['first']}<a href="{link ctl=photos act=view id=$picture['first']['id']}#pic_block">{lang first_photo}</a>{elseif $picture['previous']}<a href="{link ctl=photos act=view id=$picture['previous']['id']}#pic_block" class="btnprev">{lang first_photo}</a>{else}{lang first_photo}{/if}
- <span class="pipe">|</span>
-{if $picture['previous']}<a href="{link ctl=photos act=view id=$picture['previous']['id']}#pic_block" class="btnprev">{lang prev_photo}</a>{else}{lang prev_photo}{/if}
- <span class="pipe">|</span>
-{if $picture['next']}<a href="{link ctl=photos act=view id=$picture['next']['id']}#pic_block" class="btnnext">{lang next_photo}</a>{else}{lang next_photo}{/if}
- <span class="pipe">|</span>
-{if $picture['last']}<a href="{link ctl=photos act=view id=$picture['last']['id']}#pic_block">{lang last_photo}</a>{elseif $picture['next']}<a href="{link ctl=photos act=view id=$picture['next']['id']}#pic_block" class="btnnext">{lang last_photo}</a>{else}{lang last_photo}{/if}

@@ -12,16 +12,27 @@
         <tr>
             <td class="left">
                 <div class="mainbody">
-                    <!--<div class="col titbg">
-                        <h1 class="f_left">{lang view_photo}</h1>
-                        <h4 class="f_left">{lang photo_nav_title|$current_photo|`$album_info['photos_num']`}</h4>
-                        {$photo_col_ctl}
-                    </div>-->
                     <div class="innercol grid">
                         <div id="pic_block" class="tbmu">
-                            <span class="f_left">{lang photo_nav_title|$current_photo|`$album_info['photos_num']`}</span>
+                            <div class="f_left">
+                              <ul id="photo_modify_icons">
+                              <!--{if $loggedin}-->
+                              <li><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=photos act=confirm_delete id=$info['id']}',true);" title="{lang move_to_trash}"><span class="i_littletrash sprite"></span> {lang move_to_trash_short}</a></li>
+                              <li><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=albums act=update_cover pic_id=$info['id']}');" title="{lang set_cover}"><span class="i_cover sprite"></span> {lang set_cover}</a></li>
+                              <li><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=photos act=rotate id=$info['id']}',true);" title="{lang rotate_image}"><span class="i_rotate sprite"></span> {lang rotate_image_short}</a></li>
+                              <li><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=photos act=move id=$info['id']}',true);" title="{lang move_photo}"><span class="i_moveto sprite"></span> {lang move_photo_short}</a></li>
+                              <li><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=photos act=reupload id=$info['id']}',true);" title="{lang reupload_photo}"><span class="i_reupload sprite"></span> {lang reupload_photo_short}</a></li>
+                              {$photo_col_ctl}
+                              <!--{/if}-->
+                              </ul>
+                            </div>
                             <div class="f_right">
-                                {$view_nav}
+                                {if $picture['previous']}<a href="{link ctl=photos act=view id=$picture['previous']['id']}#pic_block" class="btnprev">{lang prev_photo}</a>{else}{lang prev_photo}{/if}
+                                 <span class="pipe">|</span>
+                                {if $picture['next']}<a href="{link ctl=photos act=view id=$picture['next']['id']}#pic_block" class="btnnext">{lang next_photo}</a>{else}{lang next_photo}{/if}
+                                <span class="gray">
+                                ({lang photo_nav_title|$current_photo|`$album_info['photos_num']`})
+                                </span>
                             </div>
                         </div>
                         
@@ -30,7 +41,6 @@
                             <span id="imgarea">
                                 <img class="photo" alt="{$info['name']}" src="{img $info['path']}" />
                             </span>
-                            <!--<div class="ctl"><div class="prev"><span>{lang prev_photo}</span></div><div class="next"><span>{lang next_photo}</span></div></div>-->
                         </div>
                         <div id="photo_infos">
                             
@@ -76,170 +86,25 @@
                             </div>
                             <div class="clear"></div>
                         </div>
-<script>
-   function detect_resize_img(){
-      var x = 750; //填入目标图片最大宽度
-      var y = 750; //填入目标图片最大高度
-
-      var w=parseInt('{$info['width']}'), h=parseInt('{$info['height']}');
-      if(isNaN(w) || w == 0 || isNaN(h) || h == 0){
-          return ; //如果丢失图片尺寸的话，直接返回
-      }
-      var w_original=w, h_original=h;
-      if (w > x) {
-        h = h * (x / w);
-        w = x;
-      }
-      if (h > y) {
-          w = w_original * (y / h_original);
-          h = y;
-      }
-      $('#photo_body img.photo').attr({width:w,height:h});
-   }
-
-    detect_resize_img();
-    var imgareaObj = $('#imgarea');
-    
-    imgareaObj.bind('mousemove mouseover',function(e){
-        var ps = imgareaObj.offset();
-        var ps_width = imgareaObj.width();
-        var nxt = e.clientX > (ps.left+ps_width/2);
-        var curClass = nxt ? 'next_cur' : 'pre_cur';
-        imgareaObj.attr('class',curClass);
-        $('#imgarea img').attr('title',(nxt ? '{lang next_photo}' : '{lang prev_photo}'));
-    });
-    
-    imgareaObj.click(function(e){
-        var ps = imgareaObj.offset();
-        var ps_width = imgareaObj.width();
-        var nxt = e.clientX > (ps.left+ps_width/2);
-        if(nxt){
-          if(ShowPic.next)
-            window.location.href = ShowPic.next;
-        }else{
-          if(ShowPic.prev)
-            window.location.href = ShowPic.prev;
-        }
-    });
-
-   $('#photo_body img').load(function(){
-       $('#photo_body').css('background','none');
-   });
-
-   $(document).bind('keydown',
-       function(e){
-           if (e.altKey) return true;
-           var target = e.target;
-           if (target && target.type) return true;
-           switch(e.keyCode) {
-               case 63235: case 39: 
-                if(ShowPic.next)
-                  window.location.href = ShowPic.next;
-                break;
-               case 63234: case 37:
-                if(ShowPic.prev)
-                  window.location.href = ShowPic.prev;
-                break;
-           }
-       }
-   );
-
-  function show_exif(o){
-    var pos = $(o).offset();
-    $('#meta_detail').css({'left':pos.left,'top':pos.top+$(o).height()});
-    $('#meta_detail').show();
-    $(document).bind("mousedown",function(e){
-      var popup = $('#meta_detail').get(0);
-      var e = e || window.event;
-      var target = e.target || e.srcElement;
-      while (target != document && target != popup) {
-      target = target.parentNode;
-      }
-      if (target == document) {
-      close_exif();
-      }
-    });
-  }
-
-  function close_exif(){
-    $('#meta_detail').hide();
-    $(document).unbind("mousedown");
-  }
-
-  var ShowPic = {
-    photos : new Array(),
-    last_rank: parseInt('{$last_rank}'),
-    current_rank: parseInt('{$current_rank}'),
-    album : '{$info['album_id']}',
-    prev : <!--{if $picture['previous']}-->"{link ctl=photos act=view id=$picture['previous']['id']}#pic_block"<!--{else}-->null<!--{/if}-->,
-    next : <!--{if $picture['next']}-->"{link ctl=photos act=view id=$picture['next']['id']}#pic_block"<!--{else}-->null<!--{/if}-->,
-    nav_prev: function(){
-      if(!ShowPic.prev){
-        return ;
-      }
-      if(ShowPic.current_rank == 1){
-        var prev_rank = ShowPic.last_rank;
-        ShowPic.current_rank = 0;
-      }else if(ShowPic.current_rank == 0){
-        var prev_rank = ShowPic.last_rank-1;
-        ShowPic.current_rank = ShowPic.last_rank;
-      }else{
-        var prev_rank = ShowPic.current_rank-2;
-        ShowPic.current_rank = ShowPic.current_rank-1;
-      }
-      
-      if(ShowPic.photos[prev_rank]){
-        ShowPic.prev_append(ShowPic.photos[prev_rank]);
-      }else{
-        $.post('{link ctl=photos act=nav}',{'rank':prev_rank,'album_id':ShowPic.album},function(data){
-            ShowPic.photos[prev_rank] = data;
-            ShowPic.prev_append(ShowPic.photos[prev_rank]);
-        },'json');
-      }
-    },
-    prev_append: function(d){
-        $('.pic_nav .pic_nav_body ul').prepend(ShowPic.get_html(d));
-        $('.pic_nav .pic_nav_body ul li:last').remove();
-    },
-    get_html: function(d){
-        return '<li><a href="'+d.url+'">\
-                <span class="thumbnail_mask">\
-                  <span class="thumbnail_container">\
-                    <img style="'+d.style+'" src="'+d.thumb+'">\
-                  </span>\
-                </span>\
-                </a>\
-                </li>';
-    },
-    nav_next: function(){
-      if(!ShowPic.next){
-        return ;
-      }
-      if(ShowPic.current_rank == ShowPic.last_rank-1){
-        var next_rank = 0;
-        ShowPic.current_rank = ShowPic.last_rank;
-      }else if(ShowPic.current_rank == ShowPic.last_rank){
-        var next_rank = 1;
-        ShowPic.current_rank = 0;
-      }else{
-        var next_rank = ShowPic.current_rank+2;
-        ShowPic.current_rank = ShowPic.current_rank+1;
-      }
-      
-      if(ShowPic.photos[next_rank]){
-        ShowPic.next_append(ShowPic.photos[next_rank]);
-      }else{
-        $.post('{link ctl=photos act=nav}',{'rank':next_rank,'album_id':ShowPic.album},function(data){
-            ShowPic.photos[next_rank] = data;
-            ShowPic.next_append(ShowPic.photos[next_rank]);
-        },'json');
-      }
-    },
-    next_append: function(d){
-      $('.pic_nav .pic_nav_body ul').append(ShowPic.get_html(d));
-      $('.pic_nav .pic_nav_body ul li:first').remove();
-    }
-  };
+<script type="text/javascript" src="{$style_path}photo.js"></script>
+<script type="text/javascript">
+    ImgContol.lang = {
+      next_photo:'{lang next_photo}',
+      prev_photo:'{lang prev_photo}'
+    };
+    ImgContol.ajax = '{link ctl=photos act=nav}';
+<!--{if $picture['previous']}-->
+    ImgContol.prev = "{link ctl=photos act=view id=$picture['previous']['id']}#pic_block";
+<!--{/if}-->
+<!--{if $picture['next']}-->
+    ImgContol.next = "{link ctl=photos act=view id=$picture['next']['id']}#pic_block";
+<!--{/if}-->
+    ImgContol.album_id = '{$info['album_id']}';
+    ImgContol.last_rank = parseInt('{$last_rank}');
+    ImgContol.current_rank = parseInt('{$current_rank}');
+    //调整图片，填入目标图片原始宽度，原始高度，最大宽度和最大高度
+    ImgContol.resize_img(parseInt('{$info['width']}'),parseInt('{$info['height']}'),750,750);
+    ImgContol.init();
 </script>
                     {if $enable_comment}
                         <div class="col titbg">
@@ -346,9 +211,9 @@
                           </li>
                         </ul>
                         <div class="nav_ctl">
-                          <span class="nav_ctl_prev"><a href="javascript:void(0)" onclick="ShowPic.nav_prev()">{lang prev_photo}</a></span>
+                          <span class="nav_ctl_prev"><a href="javascript:void(0)" onclick="ImgContol.nav_prev()">{lang prev_photo}</a></span>
                           <span class="slideshow"><span class="i_slideshow sprite"></span> <a href="{link ctl=photos act=slide aid=$info['album_id']}">{lang slideshow_view}</a></span>
-                          <span class="nav_ctl_next"><a href="javascript:void(0)" onclick="ShowPic.nav_next()">{lang next_photo}</a></span>
+                          <span class="nav_ctl_next"><a href="javascript:void(0)" onclick="ImgContol.nav_next()">{lang next_photo}</a></span>
                           <div class="clear"></div>
                         </div>
                         </div>

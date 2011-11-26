@@ -149,6 +149,7 @@ $language = array(
 'tags_tips'                        => '用空格或,分割',
 'modify_album'                     => '修改相冊',
 'move_to_trash'                    => '移動到回收站',
+'move_to_trash_short'              => '刪除',
 'click_to_rename'                  => '點擊重命名',
 'photos_num'                       => '%s張照片',
 'delete_selected'                  => '刪除選中項',
@@ -227,6 +228,7 @@ $language = array(
 'photo_tags'                       => '照片標籤',
 'move_photo'                       => '移動照片',
 'move_photo_to'                    => '移動照片到',
+'move_photo_short'                 => '至相冊',
 'move_photo_batch'                 => '批量移動照片',
 'album_need_auth'                  => '相冊“%s”需要認證',
 'pls_input_passwd'                 => '請輸入訪問密碼',
@@ -666,6 +668,7 @@ $language = array(
 //重新上傳
 'new_photo'                        => '新照片',
 'reupload_photo'                   => '重新上傳照片',
+'reupload_photo_short'             => '重新上傳',
 //分类
 'category_list'                    => '分類列表',
 'all_category'                     => '所有分類',

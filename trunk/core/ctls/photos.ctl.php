@@ -554,8 +554,6 @@ class photos_ctl extends pagecore{
             exit;
         }
         
-        $photo_col_ctl = '';
-        
         $this->plugin->trigger('viewed_photo',$id);
         
         $this->mdl_photo->add_hit($id);
@@ -656,9 +654,7 @@ class photos_ctl extends pagecore{
         $info['desc'] = $this->plugin->filter('photo_desc',$info['desc'],$album_info['id'],$id);
         $this->output->set('picture',$picture);
         $this->output->set('info',$info);
-        $this->output->set('photo_col_ctl',$this->plugin->filter('photo_col_ctl',$photo_col_ctl,$id));
-        $view_nav = loader::view('photos/view_nav',false);
-        $this->output->set('view_nav',$this->plugin->filter('photo_view_nav',$view_nav,$album_info['id'],$id));
+        $this->output->set('photo_col_ctl',$this->plugin->filter('photo_col_ctl','',$id));
         $this->output->set('photo_view_sidebar',$this->plugin->filter('photo_view_sidebar','',$album_info['id'],$id));
         
         $this->output->set('current_rank',$nav['current_rank']);
