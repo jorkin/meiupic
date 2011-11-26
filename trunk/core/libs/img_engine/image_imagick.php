@@ -208,6 +208,7 @@ class image_imagick {
     }
     
     function rotate($d){
+        $d =$d * -1;
         $color_transparent = new ImagickPixel("transparent"); //透明色
         if($this->image_type == 'GIF'){
             $dest = new Imagick();
