@@ -132,6 +132,19 @@
                                 <input type="submit" name="submit" class="ylbtn1 ml5" value="{lang search}" />
                             </form>
                     </div>
+                    
+                    <!--<ul class="category_tree">
+                        <!--{loop $categorylist $row}-->
+                        <li>
+                            <!--{for $i=1;$i<=$row['deep'];$i++}-->
+                                <span class="treebg tree{$i}"></span>
+                            <!--{/for}-->
+                            <a href="{link ctl=albums act=index cate=$row['id']}">{$row['name']}</a> 
+                        </li>
+                        <!--{/loop}-->
+                        <li><a href="{link ctl=albums act=index cate=0}">{lang no_cate_album}</a></li>
+                    </ul>-->
+
                     {$album_sidebar}
                 </div>
             </td>

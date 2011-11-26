@@ -78,6 +78,9 @@ class albums_ctl extends pagecore{
         
         $this->page_crumb($crumb_nav);
 
+        //显示分类
+        $categorylist = $this->mdl_cate->get_categorys_width_cache();
+        $this->output->set('categorylist',$categorylist);
 
         //page head
         $page_title = $title.$this->setting->get_conf('site.title');

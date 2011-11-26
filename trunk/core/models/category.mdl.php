@@ -9,6 +9,16 @@
 class category_mdl extends modelfactory {
     var $table_name = '#@cate';
 
+    function get_categorys_width_cache(){
+        $cache =& loader::lib('cache');
+        $cateArr = $cache->get('flat_category');
+        if($cateArr){
+            return $cateArr;
+        }
+        $cateArr = $this->get_flat_category();
+        $cache->set('flat_category',$cateArr);
+        return $cateArr;
+    }
     /**
      * 获取树状分类 tree
      * 带参数标示取出分类及子分类的树状结构
@@ -95,7 +105,13 @@ class category_mdl extends modelfactory {
 
         $this->db->delete($this->table_name,'id = '.$id);
 
-        return $this->db->query();
+        if($this->db->query()){
+            $cache =& loader::lib('cache');
+            $cache->remove('flat_category');
+            return true;
+        }else{
+            return false;
+        }
     }
 
     //编辑分类
@@ -131,7 +147,10 @@ class category_mdl extends modelfactory {
         }
 
         $this->db->update($this->table_name,'id='.$id,$arr);
-        return $this->db->query();
+        $ret = $this->db->query();
+        $cache =& loader::lib('cache');
+        $cache->remove('flat_category');
+        return $ret;
     }
     //添加分类
     function save($arr){
@@ -154,6 +173,9 @@ class category_mdl extends modelfactory {
 
         $this->db->update($this->table_name,'id='.$id,$uparr);
         $this->db->query();
+
+        $cache =& loader::lib('cache');
+        $cache->remove('flat_category');
 
         return $id;
     }

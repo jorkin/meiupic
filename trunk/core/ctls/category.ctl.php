@@ -7,7 +7,6 @@ class category_ctl extends pagecore{
     
     function index(){
         $categorylist = $this->mdl_cate->get_flat_category();
-
         $this->output->set('categorylist',$categorylist);
 
         //面包屑
