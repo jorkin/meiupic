@@ -36,7 +36,7 @@ class category_mdl extends modelfactory {
     }
     //平面化分类
     function get_flat_category($catid=0){
-        $oarr = $this->get_categorys($catid=0);
+        $oarr = $this->get_categorys($catid);
         $arr = array();
         if(is_array($oarr)){
             $this->_deep($arr,$oarr,0);

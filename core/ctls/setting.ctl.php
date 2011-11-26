@@ -410,6 +410,8 @@ class setting_ctl extends pagecore{
     }
     
     function plugin_disable(){
+        need_login('ajax_page');
+        
         $plugin = $this->getGet('plugin');
         
         $plugin_obj = $this->plugin->get_plugin_obj($plugin);
