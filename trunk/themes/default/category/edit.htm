@@ -3,7 +3,7 @@
     编辑分类
 </div>
 <div class="box_container">
-    <form id="category_create" action="{link ctl=category act=update id=$info['id']}" method="post" onsubmit="return false;">
+    <form id="category_modify" action="{link ctl=category act=update id=$info['id']}" method="post" onsubmit="return false;">
         <div class="field">
             <div class="label">{lang category_name} *</div>
             <div class="ipts"><input type="text" name="cate_name" class="inputstyle iptw1" value="{$info['name']}" /></div>
@@ -36,3 +36,6 @@
         </div>
     </form>
 </div>
+<script>
+$('#category_modify').find('input[name=cate_name]').focus();
+</script>
