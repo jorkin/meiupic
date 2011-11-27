@@ -186,8 +186,11 @@ class photo_mdl extends modelfactory{
     }
 
     function save_upload($album_id,$tmpfile,$filename,$new_photo = true,$photo_info = array()){
-        $media_dirname = 'data/'.$album_id;
-        $thumb_dirname = 'data/t/'.$album_id;
+        $apath = str_pad($album_id,6,'0',STR_PAD_LEFT);
+        $apath = substr($apath,0,4).'/'.substr($apath,4,2);
+
+        $media_dirname = 'data/'.$apath;
+        $thumb_dirname = 'data/t/'.$apath;
         
         $storlib =& loader::lib('storage');
         $imglib =& loader::lib('image');
