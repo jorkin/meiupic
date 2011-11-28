@@ -705,4 +705,10 @@ $language   =   array(
 'nav_save_succ'                    => '保存成功！',
 'nav_save_fail'                    => '部分内容保存失败，请确认是否内容都填写正确了！',
 'no_cate_album'                    => '未分类相册',
+
+//分享按钮提示设置
+'share_title_label'                => '自定义分享内容设置',
+'share_title_tips'                 => '{name}为照片名',
+
+'side_category'                    => '按分类筛选相册',
 );

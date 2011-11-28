@@ -71,6 +71,11 @@ class category_mdl extends modelfactory {
             $v['deep'] = $deep;
             $tmp = $v['sub'];
             unset($v['sub']);
+            if(!$tmp){
+                $v['last'] = true;
+            }else{
+                $v['last'] = false;
+            }
             $arr[] = $v;
             if($tmp){
                 $this->_deep($arr,$tmp,$deep+1);

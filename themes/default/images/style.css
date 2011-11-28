@@ -289,6 +289,11 @@ table.layout td.right{
     color:#7f7f7f;
     padding:5px 0 10px;
 }
+.side_category h2{
+    font-size:1.2em;
+    color:#7f7f7f;
+    padding:5px 0 10px;
+}
 .album_info{
     border-bottom:1px solid #e1e1e1;
 }
@@ -792,4 +797,46 @@ table.datalist tr.hover:hover td{
     border-width:1px;
     border-color:#eee #888 #888 #eee;
     border-style:solid;
+}
+#photo_modify_icons li.share{
+    margin-right:10px;
+}
+#photo_modify_icons li.share a{
+    padding:0;
+}
+#photo_modify_icons li.share a:hover{
+    border:none;
+}
+.category_tree span.closed{
+    background:url(iconclosed.gif) no-repeat;
+    width:9px;
+    border:none;
+    display:inline-block;
+    height:0;
+    overflow:hidden;
+    padding:0;
+    text-decoration:none !important;
+    vertical-align:middle;
+    padding-top:9px;
+    margin-right:5px;
+    cursor:pointer;
+}
+.category_tree span.opened,.category_tree strong.opened{
+    background:url(iconopened.gif) no-repeat;
+    width:9px;
+    border:none;
+    display:inline-block;
+    height:0;
+    overflow:hidden;
+    padding:0;
+    text-decoration:none !important;
+    vertical-align:middle;
+    padding-top:9px;
+    margin-right:5px;
+}
+.category_tree span.opened{
+    cursor:pointer;
+}
+.category_tree li{
+    height:20px;
 }

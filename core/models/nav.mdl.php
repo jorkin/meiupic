@@ -17,7 +17,7 @@ class nav_mdl extends modelfactory{
         if($value){
             return $value;
         }
-        $this->db->select($this->table_name,$this->default_cols,'enable=1',$this->default_order);
+        $this->db->select($this->table_name,$this->default_cols,'enable=1',$this->default_order.',id asc');
         $value = $this->db->getAll();
         $cache->set('enabled_navs',$value);
         return $value;

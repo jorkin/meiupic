@@ -41,6 +41,7 @@ class setting_ctl extends pagecore{
         $site['url'] = safe_convert($site['url']);
         $site['keywords'] = safe_convert($site['keywords']);
         $site['description'] = safe_convert($site['description']);
+        $site['share_title'] = safe_convert($site['share_title']);
         
         $gravatar_url = safe_convert($this->getPost('gravatar_url'));
         
@@ -55,6 +56,7 @@ class setting_ctl extends pagecore{
         $this->setting->set_conf('site.keywords',$site['keywords']);
         $this->setting->set_conf('site.description',$site['description']);
         $this->setting->set_conf('site.footer',safe_convert($site['footer'],true,true));
+        $this->setting->set_conf('site.share_title',$site['share_title']);
         $this->setting->set_conf('system.gravatar_url',$gravatar_url);
         $this->setting->set_conf('site.logo',$site['logo']);
         

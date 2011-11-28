@@ -109,7 +109,7 @@ class albums_ctl extends pagecore{
 
         $this->output->set('system_enable_comment',$this->setting->get_conf('system.enable_comment'));
         $cate_mdl =& loader::model('category');
-        $cate_list = $cate_mdl->get_flat_category();
+        $cate_list = $cate_mdl->get_categorys_width_cache();
         $this->output->set('cate_list',$cate_list);
         $this->output->set('fromurl',base64_encode(site_link('albums','create')));
         $this->render();
@@ -166,7 +166,7 @@ class albums_ctl extends pagecore{
         $this->output->set('system_enable_comment',$this->setting->get_conf('system.enable_comment'));
         $this->output->set('info',$info);
         $cate_mdl =& loader::model('category');
-        $cate_list = $cate_mdl->get_flat_category();
+        $cate_list = $cate_mdl->get_categorys_width_cache();
         $this->output->set('cate_list',$cate_list);
         $this->output->set('fromurl',base64_encode(site_link('albums','modify',array('id'=>$id))));
         $this->render();
