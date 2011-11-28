@@ -214,6 +214,17 @@
                                 <input type="submit" name="submit" class="ylbtn1 ml5" value="{lang search}" />
                             </form>
                     </div>
+                    <div class="side_category">
+                        <h2>{lang side_category}</h2>
+                        <ul class="category_tree">
+                            <!--{loop $categorylist $row}-->
+                            <li class="deep-{$row['deep']}" deep="{$row['deep']}" style="padding-left:{echo 15*$row['deep']}px;{if $row['deep']>0}display:none;{/if}">
+                                {if $row['last']}<strong class="opened"></strong>{else}<span class="closed" onclick="toggle_tree(this)"></span>{/if}<a href="{link ctl=albums act=index cate=$row['id']}">{$row['name']}</a> 
+                            </li>
+                            <!--{/loop}-->
+                            <li><strong class="opened"></strong><a href="{link ctl=albums act=index cate=0}">{lang no_cate_album}</a></li>
+                        </ul>
+                    </div>
                     {$photo_sidebar}
                 </div>
             </td>

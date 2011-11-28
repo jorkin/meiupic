@@ -119,6 +119,10 @@ class photos_ctl extends pagecore{
         
         $this->page_crumb($crumb_nav);
 
+        //显示分类
+        $categorylist = $this->mdl_cate->get_categorys_width_cache();
+        $this->output->set('categorylist',$categorylist);
+        
         $page_title = $album_info['name'].' - '.$this->setting->get_conf('site.title');
         $page_keywords = ($album_info['tags']?implode(',',$album_info['tags_list']).',':'').$this->setting->get_conf('site.keywords');
         $page_description = $album_info['desc']?strip_tags($album_info['desc']):$this->setting->get_conf('site.description');
