@@ -2,13 +2,12 @@
 class update_ctl extends pagecore{
     
     function _init(){
-        //$this->mdl_album = & loader::model('album');
+        
     }
     
     function core(){
         need_login('page');
         $newversion = $this->getRequest('version');
-        
         
         $software = 'meiupic';
         $version = MPIC_VERSION;
@@ -33,7 +32,7 @@ class update_ctl extends pagecore{
             $tmpfile = ROOTDIR.'cache/tmp/update.zip';
 
             if(file_exists($tmpfile) && md5_file($tmpfile)==$result['md5']){
-                echo '文件已存在！<br />';
+                echo '文件已下载！<br />';
             }else{
                 $content = get_remote($result['package']);
                 file_put_contents($tmpfile,$content);
@@ -51,7 +50,25 @@ class update_ctl extends pagecore{
             echo '解压文件成功！<br />';
             echo '删除临时文件！<br />';
             unlink($tmpfile);
+            echo '跳转后执行升级脚本！<br />';
+            redirect(site_link('update','script'),1);
         }
-        //get_remote
+    }
+
+    function script(){
+        $prev_version = $this->setting->get_conf('system.version');
+        $current_version = MPIC_VERSION;
+
+        if(version_compare($current_version,$prev_version,'<')){
+            echo '脚本无法执行降级操作！';
+            exit;
+        }
+
+        if($prev_version == '' || version_compare($prev_version,'2.0','<=') ){
+            echo '对不起,2.0以前版本无法自动升级！';
+            exit;
+        }
+
+        
     }
 }
