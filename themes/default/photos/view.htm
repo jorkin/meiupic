@@ -18,16 +18,8 @@
                               <ul id="photo_modify_icons">
                               <li class="share"><!-- JiaThis Button BEGIN -->
 <div id="ckepop">
-<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt" target="_blank"><img src="http://v2.jiathis.com/code_mini/images/btn/v1/jiathis1.gif" border="0" /></a>
+<a href="javascript:void(0)" class="jiathis jiathis_txt" target="_blank"><img src="http://v2.jiathis.com/code_mini/images/btn/v1/jiathis1.gif" border="0" /></a>
 </div>
-<script type="text/javascript" >
-var jiathis_config={
-  title:"{$sharetitle}",
-  pic:"{img $info['path']}",
-  hideMore:false
-}
-</script>
-<script type="text/javascript" src="http://v2.jiathis.com/code_mini/jia.js" charset="utf-8"></script>
 <!-- JiaThis Button END -->
 </li>
                               <!--{if $loggedin}-->
@@ -108,10 +100,10 @@ var jiathis_config={
     };
     ImgContol.ajax = '{link ctl=photos act=nav}';
 <!--{if $picture['previous']}-->
-    ImgContol.prev = "{link ctl=photos act=view id=$picture['previous']['id']}#pic_block";
+    ImgContol.prev = "{link ctl=photos act=view id=$picture['previous']['id']}";
 <!--{/if}-->
 <!--{if $picture['next']}-->
-    ImgContol.next = "{link ctl=photos act=view id=$picture['next']['id']}#pic_block";
+    ImgContol.next = "{link ctl=photos act=view id=$picture['next']['id']}";
 <!--{/if}-->
     ImgContol.album_id = '{$info['album_id']}';
     ImgContol.last_rank = parseInt('{$last_rank}');
@@ -258,4 +250,14 @@ var jiathis_config={
         </tr>
     </table>
 </div>
+<!-- JiaThis JS BEGIN -->
+<script type="text/javascript" >
+var jiathis_config={
+  title:"{$sharetitle}",
+  pic:"{img $info['path']}",
+  hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v2.jiathis.com/code_mini/jia.js" charset="utf-8"></script>
+<!-- JiaThis JS END -->
 {template block/footer}

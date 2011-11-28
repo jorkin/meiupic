@@ -807,8 +807,8 @@ table.datalist tr.hover:hover td{
 #photo_modify_icons li.share a:hover{
     border:none;
 }
-.category_tree span.closed{
-    background:url(iconclosed.gif) no-repeat;
+.category_tree span.closed,.category_tree span.opened,.category_tree strong.nochild{
+    background:url(tree.gif) no-repeat center top;
     width:9px;
     border:none;
     display:inline-block;
@@ -821,21 +821,15 @@ table.datalist tr.hover:hover td{
     margin-right:5px;
     cursor:pointer;
 }
-.category_tree span.opened,.category_tree strong.opened{
-    background:url(iconopened.gif) no-repeat;
-    width:9px;
-    border:none;
-    display:inline-block;
-    height:0;
-    overflow:hidden;
-    padding:0;
-    text-decoration:none !important;
-    vertical-align:middle;
-    padding-top:9px;
-    margin-right:5px;
+.category_tree span.closed{
+    background-position: center top;
 }
 .category_tree span.opened{
+    background-position: center;
     cursor:pointer;
+}
+.category_tree strong.nochild{
+    background-position: center bottom;
 }
 .category_tree li{
     height:20px;
