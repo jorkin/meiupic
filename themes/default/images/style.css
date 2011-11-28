@@ -819,10 +819,10 @@ table.datalist tr.hover:hover td{
     vertical-align:middle;
     padding-top:9px;
     margin-right:5px;
-    cursor:pointer;
 }
 .category_tree span.closed{
     background-position: center top;
+    cursor:pointer;
 }
 .category_tree span.opened{
     background-position: center;
