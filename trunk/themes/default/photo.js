@@ -50,10 +50,10 @@ var ImgContol = {
         var nxt = e.clientX > (ps.left+ps_width/2);
         if(nxt){
           if(ImgContol.next)
-            window.location.href = ImgContol.next;
+            window.location.href = ImgContol.next+'#pic_block';
         }else{
           if(ImgContol.prev)
-            window.location.href = ImgContol.prev;
+            window.location.href = ImgContol.prev+'#pic_block';
         }
     });
 
@@ -69,11 +69,11 @@ var ImgContol = {
              switch(e.keyCode) {
                  case 63235: case 39: 
                   if(ImgContol.next)
-                    window.location.href = ImgContol.next;
+                    window.location.href = ImgContol.next+'#pic_block';
                   break;
                  case 63234: case 37:
                   if(ImgContol.prev)
-                    window.location.href = ImgContol.prev;
+                    window.location.href = ImgContol.prev+'#pic_block';
                   break;
              }
          }
@@ -123,7 +123,7 @@ var ImgContol = {
       $('.pic_nav .pic_nav_body ul li:last').remove();
   },
   get_html: function(d){
-      return '<li><a href="'+d.url+'">\
+      return '<li><a href="'+d.url+'#pic_block'+'">\
               <span class="thumbnail_mask">\
                 <span class="thumbnail_container">\
                   <img style="'+d.style+'" src="'+d.thumb+'">\

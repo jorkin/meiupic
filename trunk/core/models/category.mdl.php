@@ -17,6 +17,7 @@ class category_mdl extends modelfactory {
         }
         $cateArr = $this->get_flat_category();
         $cache->set('flat_category',$cateArr);
+       
         return $cateArr;
     }
     /**

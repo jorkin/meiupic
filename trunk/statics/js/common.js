@@ -467,12 +467,15 @@ function switch_div(o,d){
 function toggle_tree(o){
     var li=$(o).parent();
     var deep=li.attr('deep');
-    var nextDeep = parseInt(deep)+1;
+    var nextObjs = li.nextUntil('li[deep='+deep+']');
     if($(o).hasClass('closed')){
-        li.nextUntil(':not(li[deep='+nextDeep+'])').show();
+        nextObjs.each(function(i){
+            if( $(this).attr('deep') == parseInt(deep)+1 ){
+                $(this).show();
+            }
+        });
         $(o).removeClass('closed').addClass('opened');
     }else{
-        var nextObjs = li.nextUntil('li[deep='+deep+']');
         nextObjs.each(function(i){
             if( $(this).attr('deep') > deep ){
                 $(this).hide();
