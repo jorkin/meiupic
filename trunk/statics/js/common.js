@@ -464,6 +464,25 @@ function switch_div(o,d){
     }
 }
 
+function toggle_tree(o){
+    var li=$(o).parent();
+    var deep=li.attr('deep');
+    var nextDeep = parseInt(deep)+1;
+    if($(o).hasClass('closed')){
+        li.nextUntil(':not(li[deep='+nextDeep+'])').show();
+        $(o).removeClass('closed').addClass('opened');
+    }else{
+        var nextObjs = li.nextUntil('li[deep='+deep+']');
+        nextObjs.each(function(i){
+            if( $(this).attr('deep') > deep ){
+                $(this).hide();
+                $(this).find('span').removeClass('opened').addClass('closed');
+            }
+        });
+        $(o).removeClass('opened').addClass('closed');
+    }
+}
+
 $(function(){
     //press esc to close float div
     $(document).bind('keypress',

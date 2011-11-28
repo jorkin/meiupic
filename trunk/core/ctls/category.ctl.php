@@ -32,7 +32,7 @@ class category_ctl extends pagecore{
         $this->output->set('pid',$this->getGet('pid'));
         $this->output->set('from',$from);
         
-        $cate_list = $this->mdl_cate->get_flat_category();
+        $cate_list = $this->mdl_cate->get_categorys_width_cache();
         $this->output->set('cate_list',$cate_list);
         $this->render();
     }
@@ -77,7 +77,7 @@ class category_ctl extends pagecore{
         $info = $this->mdl_cate->get_info($id);
 
         $this->output->set('info',$info);
-        $cate_list = $this->mdl_cate->get_flat_category();
+        $cate_list = $this->mdl_cate->get_categorys_width_cache();
         $this->output->set('cate_list',$cate_list);
         $this->render();        
     }

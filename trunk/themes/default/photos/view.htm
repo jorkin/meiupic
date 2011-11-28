@@ -16,6 +16,20 @@
                         <div id="pic_block" class="tbmu">
                             <div class="f_left">
                               <ul id="photo_modify_icons">
+                              <li class="share"><!-- JiaThis Button BEGIN -->
+<div id="ckepop">
+<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt" target="_blank"><img src="http://v2.jiathis.com/code_mini/images/btn/v1/jiathis1.gif" border="0" /></a>
+</div>
+<script type="text/javascript" >
+var jiathis_config={
+  title:"{$sharetitle}",
+  pic:"{img $info['path']}",
+  hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v2.jiathis.com/code_mini/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+</li>
                               <!--{if $loggedin}-->
                               <li><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=photos act=confirm_delete id=$info['id']}',true);" title="{lang move_to_trash}"><span class="i_littletrash sprite"></span> {lang move_to_trash_short}</a></li>
                               <li><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=albums act=update_cover pic_id=$info['id']}');" title="{lang set_cover}"><span class="i_cover sprite"></span> {lang set_cover}</a></li>

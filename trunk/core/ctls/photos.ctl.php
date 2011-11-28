@@ -657,6 +657,11 @@ class photos_ctl extends pagecore{
         $this->output->set('photo_col_ctl',$this->plugin->filter('photo_col_ctl','',$id));
         $this->output->set('photo_view_sidebar',$this->plugin->filter('photo_view_sidebar','',$album_info['id'],$id));
         
+        //share
+        
+        $sharetitle = $this->setting->get_conf('site.share_title');
+        $this->output->set('sharetitle',str_replace('{name}',$info['name'],$sharetitle));
+
         $this->output->set('current_rank',$nav['current_rank']);
         $this->output->set('last_rank',$nav['last_rank']);
         $this->output->set('current_photo',$nav['current_rank']+1);

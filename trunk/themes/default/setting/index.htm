@@ -78,6 +78,14 @@
                                             <input type="text" name="gravatar_url" class="settinginput iptw6" value="{$gravatar_url}" />
                                         </div>
                                     </div>
+                                    <div class="settingfield">
+                                        <div class="label">{lang share_title_label}</div>
+                                        <div class="descinfo">{lang share_title_tips}</div>
+                                        <div class="input">
+                                            <input type="text" name="site[share_title]" class="settinginput iptw6" value="{$site['share_title']}" />
+                                        </div>
+                                    </div>
+                                    
                                     <div class="ctl_button">
                                         <input type="submit" name="submit" class="ylbtn" value="{lang save_setting}" onclick="Mui.form.sendPop('setting_basic_form')" />
                                     </div>

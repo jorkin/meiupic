@@ -658,6 +658,7 @@ $language = array(
 'you_chose_album'                  => '您選擇了相冊',
 'back_to_re_select'                => '返回重選',
 'rotate_image'                     => '旋轉圖片',
+'rotate_image_short'               => '旋轉',
 'rotate_left_90'                   => '向左旋轉90°',
 'rotate_right_90'                  => '向右旋轉90°',
 
@@ -700,4 +701,9 @@ $language = array(
 'nav_save_succ'                    => '保存成功！ ',
 'nav_save_fail'                    => '部分內容保存失敗，請確認是否內容都填寫正確了！ ',
 'no_cate_album'                    => '未分類相冊',
+
+//分享按鈕提示設置
+'share_title_label'                => '自定義分享內容設置',
+'share_title_tips'                 => '{name}為照片名',
+'side_category'                    => '按分類篩選相冊',
 );
