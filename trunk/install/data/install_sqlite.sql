@@ -15,7 +15,29 @@ CREATE TABLE meu_albums (
     priv_answer varchar(255) DEFAULT NULL, 
     desc longtext, deleted tinyint(1) NOT NULL DEFAULT 0 , 
     enable_comment tinyint(1) default 1);
-CREATE TABLE meu_photos ( id integer NOT NULL primary key, album_id int(11) NOT NULL, name varchar(100) NOT NULL, thumb varchar(255) NOT NULL, path varchar(255) NOT NULL, width int(11) NOT NULL DEFAULT 0, height int(11) NOT NULL DEFAULT 0, hits int(11) NOT NULL DEFAULT 0, comments_num int(11) NOT NULL DEFAULT 0, create_time int(11) NOT NULL DEFAULT 0, taken_time int(11) NOT NULL DEFAULT 0, taken_y int(4) NOT NULL DEFAULT 0, taken_m int(2) NOT NULL DEFAULT 0, taken_d int(2) NOT NULL DEFAULT 0, create_y int(4) NOT NULL DEFAULT 0, create_m int(2) NOT NULL DEFAULT 0, create_d int(2) NOT NULL DEFAULT 0, desc longtext, exif text, tags varchar(255) DEFAULT NULL, is_cover tinyint(1) NOT NULL DEFAULT 0, deleted tinyint(1) NOT NULL DEFAULT 0 , type tinyint(1) default 0);
+CREATE TABLE meu_photos ( 
+    id integer NOT NULL primary key, 
+    album_id int(11) NOT NULL, 
+    name varchar(100) NOT NULL, 
+    thumb varchar(255) NOT NULL, 
+    path varchar(255) NOT NULL, 
+    width int(11) NOT NULL DEFAULT 0, 
+    height int(11) NOT NULL DEFAULT 0, 
+    hits int(11) NOT NULL DEFAULT 0, 
+    comments_num int(11) NOT NULL DEFAULT 0, 
+    create_time int(11) NOT NULL DEFAULT 0, 
+    taken_time int(11) NOT NULL DEFAULT 0, 
+    taken_y int(4) NOT NULL DEFAULT 0, 
+    taken_m int(2) NOT NULL DEFAULT 0, 
+    taken_d int(2) NOT NULL DEFAULT 0, 
+    create_y int(4) NOT NULL DEFAULT 0, 
+    create_m int(2) NOT NULL DEFAULT 0, 
+    create_d int(2) NOT NULL DEFAULT 0, 
+    desc longtext, exif text, 
+    tags varchar(255) DEFAULT NULL, 
+    is_cover tinyint(1) NOT NULL DEFAULT 0, 
+    deleted tinyint(1) NOT NULL DEFAULT 0 , 
+    type tinyint(1) default 0);
 CREATE TABLE meu_users (
       id integer NOT NULL primary key,
       user_name varchar(50) NOT NULL,
@@ -96,7 +118,7 @@ CREATE TABLE meu_cate (
         sort int(4) NOT NULL DEFAULT 0
     );
     
-CREATE TABLE `meu_nav` (
+CREATE TABLE meu_nav (
         id integer NOT NULL primary key ,
         type tinyint(1) NOT NULL DEFAULT 1,
         name varchar(50) NOT NULL ,
@@ -118,3 +140,5 @@ CREATE INDEX cm_comment_id on meu_commentmeta (comment_id);
 CREATE INDEX am_meta_key on meu_albummeta (meta_key);
 CREATE INDEX am_album_id on meu_albummeta (album_id);
 CREATE INDEX cg_par_id on meu_cate (par_id);
+CREATE INDEX a_cate_id on meu_albums (cate_id);
+CREATE INDEX p_album_id on meu_photos (album_id);
