@@ -708,4 +708,22 @@ $language = array(
 'share_title_tips'                 => '{name}為照片名',
 'side_category'                    => '按分類篩選相冊',
 'share_title'                      => '分享張很讚的照片:{name}',
+
+//自動升級
+'no_need_to_update'                => '無需升級！',
+'version_can_not_be_empty'         => '版本號不能為空！',
+'dir_not_writable'                 => '目錄：%s 不可寫！',
+'fil​​e_not_writable'                => '文件：%s 不可寫！',
+'fil​​e_has_been_downloaded'         => '文件已下載！',
+'download_package_failed'          => '下載升級包失敗！',
+'download_package_succ'            => '下載文件成功！',
+'unzip_package_succ'               => '解壓文件成功！',
+'delete_tmp_download_file'         => '刪除下載的臨時文件！',
+'upgrade_after_jump'               => '跳轉後執行升級腳本！',
+'get_update_fail'                  => '獲取更新失敗！',
+'have_been_updated'                => '已經升級過了！',
+'could_not_degrade'                => '腳本無法執行降級操作！',
+'too_old_to_update'                => '對不起, 您的版本太舊！無法自動升級！',
+'upgrade_success'                  => '升級成功，跳轉至首頁！',
+'click_to_jump'                    => '點擊此處跳轉',
 );

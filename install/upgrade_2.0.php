@@ -59,3 +59,5 @@ $config =& loader::config();
 $default_config =& loader::config('config.default');
 
 save_config_file(ROOTDIR.'conf/config.php', $config, $default_config);
+
+//require_once(ROOTDIR.'install/upgrade_2.1.0.php');
