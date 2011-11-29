@@ -23,15 +23,15 @@ class update_ctl extends pagecore{
             if($entry == '..' || $entry == '.'){
                 continue;
             }
-            $filename = $dir.'/'.$entry;
+            $filename = ROOTDIR.$entry;
             if(is_dir($filename) && !dir_writeable($filename)){
                 exit('目录：'.$filename.' 不可写！');
-            }elseif(is_file($filename) && is_writable($filename)){
+            }elseif(is_file($filename) && !is_writable($filename)){
                 exit('文件：'.$filename.' 不可写！');
             }
         }
         $directory->close();
-        
+
 
         $langset = LANGSET;
         $time = time();
@@ -113,7 +113,7 @@ class update_ctl extends pagecore{
 
         echo '升级成功，跳转至首页!<br />';
 
-        redirect(site_link('default','index'),1);
+        echo '<a href="'.site_link('default','index').'">点击跳转至首页</a>';
     }
 
     function _createtable($sql) {
