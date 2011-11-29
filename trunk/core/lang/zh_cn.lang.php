@@ -713,4 +713,22 @@ $language   =   array(
 
 'side_category'                    => '按分类筛选相册',
 'share_title'                      => '分享张很赞的照片:{name}',
+
+//自动升级
+'no_need_to_update'                => '无需升级！',
+'version_can_not_be_empty'         => '版本号不能为空！',
+'dir_not_writable'                 => '目录：%s 不可写！',
+'file_not_writable'                => '文件：%s 不可写！',
+'file_has_been_downloaded'         => '文件已下载！',
+'download_package_failed'          => '下载升级包失败！',
+'download_package_succ'            => '下载文件成功！',
+'unzip_package_succ'               => '解压文件成功！',
+'delete_tmp_download_file'         => '删除下载的临时文件！',
+'upgrade_after_jump'               => '跳转后执行升级脚本！',
+'get_update_fail'                  => '获取更新失败！',
+'have_been_updated'                => '已经升级过了！',
+'could_not_degrade'                => '脚本无法执行降级操作！',
+'too_old_to_update'                => '对不起, 您的版本太旧！无法自动升级！',
+'upgrade_success'                  => '升级成功，跳转至首页！',
+'click_to_jump'                    => '点击此处跳转',
 );

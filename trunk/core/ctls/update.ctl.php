@@ -12,10 +12,10 @@ class update_ctl extends pagecore{
         $software = 'meiupic';
         $version = MPIC_VERSION;
         if($newversion == $version){
-            exit('No need to update!');
+            exit(lang('no_need_to_update'));
         }
         if(!$newversion){
-            exit('新的版本号不能为空！');
+            exit(lang('version_can_not_be_empty'));
         }
         //检查目录是否可以读写
         $directory = @dir(ROOTDIR);
@@ -25,9 +25,9 @@ class update_ctl extends pagecore{
             }
             $filename = ROOTDIR.$entry;
             if(is_dir($filename) && !dir_writeable($filename)){
-                exit('目录：'.$filename.' 不可写！');
+                exit(lang('dir_not_writable',$filename));
             }elseif(is_file($filename) && !is_writable($filename)){
-                exit('文件：'.$filename.' 不可写！');
+                exit(lang('file_not_writable',$filename));
             }
         }
         $directory->close();
@@ -42,7 +42,7 @@ class update_ctl extends pagecore{
         
         $response = get_remote($url,2);
         if(!$response){
-            exit('远程服务器未相应！');
+            exit(lang('connect_to_server_failed'));
         }
 
         $json =& loader::lib('json');
@@ -52,29 +52,29 @@ class update_ctl extends pagecore{
             $tmpfile = ROOTDIR.'cache/tmp/update.zip';
 
             if(file_exists($tmpfile) && md5_file($tmpfile)==$result['md5']){
-                echo '文件已下载！<br />';
+                echo lang('file_has_been_downloaded').'<br />';
             }else{
                 $content = get_remote($result['package']);
                 file_put_contents($tmpfile,$content);
 
                 $file_md5 = md5_file($tmpfile);
                 if($file_md5 != $result['md5']){
-                    echo '下载更新文件失败！<br />';
+                    echo lang('download_package_failed').'<br />';
                     exit;
                 }
-                echo '下载文件成功！<br />';
+                echo lang('download_package_succ').'<br />';
             }
             $zip =& loader::lib('zip');
             $zip->load_file($tmpfile);
             $zip->extract('./');
-            echo '解压文件成功！<br />';
-            echo '删除临时文件！<br />';
+            echo lang('unzip_package_succ').'<br />';
+            echo lang('delete_tmp_download_file').'<br />';
             unlink($tmpfile);
-            echo '跳转后执行升级脚本！<br />';
+            echo lang('upgrade_after_jump').'<br />';
 
             redirect(site_link('update','script'),1);
         }else{
-            exit('获取更新失败！');
+            exit(lang('get_update_fail'));
         }
     }
 
@@ -84,17 +84,17 @@ class update_ctl extends pagecore{
         $prev_version = $this->setting->get_conf('system.version');
         $current_version = MPIC_VERSION;
         if($current_version == $prev_version){
-            echo '已经升级过了！<br />';
+            echo lang('have_been_updated').'<br />';
             exit;
         }
 
         if(version_compare($current_version,$prev_version,'<')){
-            echo '脚本无法执行降级操作！<br />';
+            echo lang('could_not_degrade').'<br />';
             exit;
         }
 
         if($prev_version == '' || version_compare($prev_version,'2.0','<') ){
-            echo '对不起,2.0以前版本无法自动升级！<br />';
+            echo lang('too_old_to_update').'<br />';
             exit;
         }
         
@@ -111,9 +111,7 @@ class update_ctl extends pagecore{
         dir_clear(ROOTDIR.'cache/templates');
         dir_clear(ROOTDIR.'cache/tmp');
 
-        echo '升级成功，跳转至首页!<br />';
-
-        echo '<a href="'.site_link('default','index').'">点击跳转至首页</a>';
+        echo lang('upgrade_success').'<a href="'.site_link('default','index').'">'.lang('click_to_jump').'</a>';
     }
 
     function _createtable($sql) {

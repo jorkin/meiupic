@@ -253,7 +253,14 @@ function meiu_bootstrap(){
     $uriinfo = $uri->parse_uri();
     
     $setting_mdl =& loader::model('setting');
-    
+
+    //如果数据库中的版本和程序版本不一致则跳转到执行自动升级脚本
+    $version = $setting_mdl->get_conf('system.version');
+    if($version != MPIC_VERSION && $uriinfo['ctl']!='update' && $uriinfo['act']!='script'){
+        redirect(site_link('update','script'));
+        exit;
+    }
+
     $output->set('base_path',$base_path);
     $output->set('statics_path',$base_path.'statics/');
     $output->set('site_logo',$setting_mdl->get_conf('site.logo',''));
