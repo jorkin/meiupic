@@ -124,11 +124,9 @@ var ImgContol = {
   },
   get_html: function(d){
       return '<li><a href="'+d.url+'#pic_block'+'">\
-              <span class="thumbnail_mask">\
                 <span class="thumbnail_container">\
                   <img style="'+d.style+'" src="'+d.thumb+'">\
                 </span>\
-              </span>\
               </a>\
               </li>';
   },

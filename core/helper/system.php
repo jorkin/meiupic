@@ -223,6 +223,6 @@ function detect_thumb($w,$h,$square){
         $width = $square;
         $height = $h * $square/$w;
         $top = ($height-$width)/2;
-        return 'height:'.intval($height).'px;top:-'.intval($top).'px';
+        return 'width:'.intval($width).'px;top:-'.intval($top).'px';
     }
 }
