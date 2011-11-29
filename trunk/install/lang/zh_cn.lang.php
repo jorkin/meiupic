@@ -198,4 +198,12 @@ $lang = array(
     'install_default_theme'  =>     '安装默认模版',
     'miss_default_theme'     =>    '缺失默认模版',
     'install_default_plugins' => '安装默认插件',
+
+
+    'home'              =>  '首页',
+    'tags'              =>  '标签',
+    'category'          =>  '分类',
+    'share_title'       =>  '分享张很赞的照片:{name}',
+    'site_keywords'     =>  '相册,我的相册,分享,快乐',
+    'site_desc'         =>  '我的相册是使用美优相册管理系统架设的网络相册！相册开源免费！',
 );

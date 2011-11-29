@@ -675,6 +675,7 @@ $language   =   array(
 'reupload_photo_short'             => '重新上传',
 
 //分类
+'category'                         => '分类',
 'category_list'                    => '分类列表',
 'all_category'                     => '所有分类',
 'create_category_succ'             => '创建分类成功！',
@@ -711,4 +712,5 @@ $language   =   array(
 'share_title_tips'                 => '{name}为照片名',
 
 'side_category'                    => '按分类筛选相册',
+'share_title'                      => '分享张很赞的照片:{name}',
 );

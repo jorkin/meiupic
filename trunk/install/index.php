@@ -247,6 +247,14 @@ if($method == 'license'){
         }
         $datasql = file_get_contents($datasqlfile);
         runquery($datasql);
+
+        $sql = $db->insert('#@nav',array('type'=>0,'name'=>lang('home'),'url' =>'default','sort'=>'100'));
+        $db->query($sql);
+        $sql = $db->insert('#@nav',array('type'=>0,'name'=>lang('tags'),'url' =>'tags','sort'=>'100'));
+        $db->query($sql);
+        $sql = $db->insert('#@nav',array('type'=>0,'name'=>lang('category'),'url' =>'category','sort'=>'100'));
+        $db->query($sql);
+
         showjsmessage(lang('install_data_sql').lang('succeed'));
         
         cleardir(ROOTDIR.'cache/data');
@@ -276,6 +284,9 @@ if($method == 'license'){
         $mdl_setting->set_conf('site.url',$siteurl);
         $mdl_setting->set_conf('site.footer','');
         $mdl_setting->set_conf('site.email',$email);
+        $mdl_setting->set_conf('site.share_title',lang('share_title'));
+        $mdl_setting->set_conf('site.keywords',lang('site_keywords'));
+        $mdl_setting->set_conf('site.description',lang('site_desc'));
         
         showjsmessage(lang('update_user_setting'));
         
