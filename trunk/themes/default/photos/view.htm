@@ -172,46 +172,36 @@
                           <li>
                           <!--{if $picture['previous']}-->
                           <a href="{link ctl=photos act=view id=$picture['previous']['id']}#pic_block">
-                            <span class="thumbnail_mask">
                               <span class="thumbnail_container">
                                 <img src="{img $picture['previous']['thumb']}" style="{php echo detect_thumb($picture['previous']['width'],$picture['previous']['height'],58)}" />
                               </span>
-                            </span>
                             </a>
                           <!--{else}-->
                           <a href="javascript:void(0)" class="non">
-                          <span class="thumbnail_mask">
                               <span class="thumbnail_container">
                                 {lang this_first_photo}
                               </span>
-                            </span>
                           </a>
                           <!--{/if}-->
                           </li>
-                          <li><a class="current" href="#">
-                            <span class="thumbnail_mask">
+                          <li><a class="current" href="{link ctl=photos act=view id=$info['id']}#pic_block">
                               <span class="thumbnail_container">
                                 <img src="{img $info['thumb']}" style="{php echo detect_thumb($info['width'],$info['height'],58)}" />
                               </span>
-                            </span>
                             </a>
                           </li>
                           <li>
                           <!--{if $picture['next']}-->
                             <a href="{link ctl=photos act=view id=$picture['next']['id']}#pic_block">
-                            <span class="thumbnail_mask">
                               <span class="thumbnail_container">
                                 <img src="{img $picture['next']['thumb']}" style="{php echo detect_thumb($picture['next']['width'],$picture['next']['height'],58)}" />
                               </span>
-                            </span>
                             </a>
                           <!--{else}-->
                             <a href="javascript:void(0)" class="non">
-                            <span class="thumbnail_mask">
                                 <span class="thumbnail_container">
                                   {lang this_last_photo}
                                 </span>
-                              </span>
                             </a>
                           <!--{/if}-->
                           </li>

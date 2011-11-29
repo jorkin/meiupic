@@ -403,22 +403,12 @@ table.layout td.right{
     line-height:18px;
 }
 
-.thumbnail_mask {
-    display: block;
-    height: 54px;
-    overflow: hidden;
-    width: 54px;
-}
-.thumbnail_container {
-    position:relative;
-    height: 54px;
-    overflow: hidden;
-    text-align: center;
-    width: 54px;
-}
 .thumbnail_container img {
+    top:0;
+    left:0;
     position:absolute;
-    border: 0 none;
+    z-index:1;
+    border:none;
     vertical-align: middle;
 }
 .pic_nav{
@@ -464,8 +454,9 @@ table.layout td.right{
     line-height: 50px;
     margin: 1px;
     overflow: hidden;
-    padding: 1px;
     width: 54px;
+    padding:1px;
+    position:relative;
 }
 .pic_nav ul li a.non{
     text-align:center;
@@ -821,15 +812,15 @@ table.datalist tr.hover:hover td{
     margin-right:5px;
 }
 .category_tree span.closed{
-    background-position: center top;
+    background-position: 0 0;
     cursor:pointer;
 }
 .category_tree span.opened{
-    background-position: center;
+    background-position: 0 -9px;
     cursor:pointer;
 }
 .category_tree strong.nochild{
-    background-position: center bottom;
+    background-position: 0 -18px;
 }
 .category_tree li{
     height:20px;
