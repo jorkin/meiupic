@@ -17,6 +17,21 @@ class update_ctl extends pagecore{
         if(!$newversion){
             exit('新的版本号不能为空！');
         }
+        //检查目录是否可以读写
+        $directory = @dir(ROOTDIR);
+        while($entry = $directory->read()) {
+            if($entry == '..' || $entry == '.'){
+                continue;
+            }
+            $filename = $dir.'/'.$entry;
+            if(is_dir($filename) && !dir_writeable($filename)){
+                exit('目录：'.$filename.' 不可写！');
+            }elseif(is_file($filename) && is_writable($filename)){
+                exit('文件：'.$filename.' 不可写！');
+            }
+        }
+        $directory->close();
+        
 
         $langset = LANGSET;
         $time = time();
@@ -24,9 +39,14 @@ class update_ctl extends pagecore{
         $q = base64_encode("newversion=$newversion&software=$software&version=$version&langset=$langset&time=$time&hash=$hash");
 
         $url = CHECK_UPDATE_URL.'?act=update&q='.$q;
+        
+        $response = get_remote($url,2);
+        if(!$response){
+            exit('远程服务器未相应！');
+        }
 
         $json =& loader::lib('json');
-        $result = $json->decode(get_remote($url,2));
+        $result = $json->decode($response);
         
         if($result['return']){
             $tmpfile = ROOTDIR.'cache/tmp/update.zip';
@@ -51,7 +71,10 @@ class update_ctl extends pagecore{
             echo '删除临时文件！<br />';
             unlink($tmpfile);
             echo '跳转后执行升级脚本！<br />';
+
             redirect(site_link('update','script'),1);
+        }else{
+            exit('获取更新失败！');
         }
     }
 
@@ -74,79 +97,23 @@ class update_ctl extends pagecore{
             echo '对不起,2.0以前版本无法自动升级！<br />';
             exit;
         }
-        $func_name = '__'.str_replace('.','_',$prev_version).'to'.str_replace('.','_',$current_version);
         
-        if(method_exists($this,$func_name)){
-            call_user_func_array(array($this,$func_name),array());
+        $script_file = ROOTDIR.'install/upgrade_'.$prev_version.'.php';
+        if(file_exists($script_file)){
+            require_once($script_file);
         }
+
         $this->setting->set_conf('system.version',MPIC_VERSION);
+
+        //清除缓存
+        //Todo 需要统一清除缓存的功能，使其兼容memcache等
+        dir_clear(ROOTDIR.'cache/data');
+        dir_clear(ROOTDIR.'cache/templates');
+        dir_clear(ROOTDIR.'cache/tmp');
+
         echo '升级成功，跳转至首页!<br />';
-        redirect(site_link('default','index'),3);
-    }
 
-    function __2_0to2_1_0(){
-        if($this->db->adapter == 'sqlite'){
-            $this->db->query('CREATE TABLE #@cate (
-                id integer NOT NULL primary key,
-                par_id int(4) NOT NULL DEFAULT 0,
-                name varchar(100) NOT NULL,
-                cate_path varchar(255) DEFAULT NULL,
-                sort int(4) NOT NULL DEFAULT 0)');
-            $this->db->query('CREATE TABLE #@nav (
-                id integer NOT NULL primary key ,
-                type tinyint(1) NOT NULL DEFAULT 1,
-                name varchar(50) NOT NULL ,
-                url varchar(200) NOT NULL ,
-                sort smallint(4) NOT NULL  DEFAULT 100,
-                enable tinyint(1) NOT NULL DEFAULT 1)');
-            $this->db->query('ALTER TABLE #@albums ADD cate_id int(4) NOT NULL DEFAULT 0');
-            $this->db->query('CREATE INDEX cg_par_id on #@cate (par_id)');
-            $this->db->query('CREATE INDEX a_cate_id on #@albums (cate_id)');
-            $this->db->query('CREATE INDEX p_album_id on #@photos (album_id)');
-        }else{
-            $this->db->query($this->_createtable("CREATE TABLE `#@cate` (
-                  `id` int(4) NOT NULL AUTO_INCREMENT,
-                  `par_id` int(4) NOT NULL DEFAULT '0',
-                  `name` varchar(100) NOT NULL,
-                  `cate_path` varchar(255) DEFAULT NULL,
-                  `sort` int(4) NOT NULL DEFAULT '0',
-                  PRIMARY KEY (`id`),
-                  KEY `par_id` (`par_id`)
-                ) TYPE=MyISAM ;"));
-            $this->db->query($this->_createtable("CREATE TABLE `#@nav` (
-                `id` smallint(4) NOT NULL AUTO_INCREMENT ,
-                `type` tinyint(1) NOT NULL DEFAULT '1',
-                `name` varchar(50) NOT NULL ,
-                `url` varchar(200) NOT NULL ,
-                `sort` smallint(4) NOT NULL DEFAULT '100',
-                `enable` tinyint(1) NOT NULL DEFAULT '1',
-                PRIMARY KEY ( `id` )
-                ) TYPE=MyISAM ;"));
-            $this->db->query('ALTER TABLE `#@albums` ADD `cate_id` int(4) NOT NULL DEFAULT 0 , ADD INDEX `cate_id` (`cate_id`)');
-
-        }
-        $this->setting->set_conf('site.share_title','分享张很赞的照片:{name}');
-        $this->db->insert('#@nav',array(
-            'type'=>0,
-            'name'=>'首页',
-            'url' =>'default',
-            'sort'=>'100'
-        ));
-        $this->db->query();
-        $this->db->insert('#@nav',array(
-            'type'=>0,
-            'name'=>'标签',
-            'url' =>'tags',
-            'sort'=>'100'
-        ));
-        $this->db->query();
-        $this->db->insert('#@nav',array(
-            'type'=>0,
-            'name'=>'分类',
-            'url' =>'category',
-            'sort'=>'100'
-        ));
-        $this->db->query();
+        redirect(site_link('default','index'),1);
     }
 
     function _createtable($sql) {

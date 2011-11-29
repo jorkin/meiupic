@@ -198,4 +198,11 @@ $lang = array(
     'install_default_theme' => '安裝默認模版',
     'miss_default_theme' => '缺失默認模版',
     'install_default_plugins' => '安裝默認插件',
+
+    'home' => '首頁',
+    'tags' => '標籤',
+    'category' => '分類',
+    'share_title' => '分享張很讚的照片:{name}',
+    'site_keywords' => '相冊,我的相冊,分享,快樂',
+    'site_desc' => '我的相冊是使用美優相冊管理系統架設的網絡相冊！相冊開源免費！',
 );

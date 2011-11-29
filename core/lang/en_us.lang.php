@@ -675,6 +675,7 @@ $language   =   array(
 'reupload_photo_short'             => '重新上传',
 
 //分类
+'category'                         => '分类',
 'category_list'                    => '分类列表',
 'all_category'                     => '所有分类',
 'create_category_succ'             => '创建分类成功！',
