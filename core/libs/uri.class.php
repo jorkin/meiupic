@@ -65,6 +65,9 @@ class uri_cla{
     function parse_uri(){
         $arg['ctl'] = isset($_GET['ctl'])?$_GET['ctl']:'default';
         $arg['act'] = isset($_GET['act'])?$_GET['act']:'index';
+        //过滤私有的方法
+        $arg['act'] = ltrim($arg['act'],'_');
+
         unset($_GET['ctl']);
         unset($_GET['act']);
         $arg['pars'] = $_GET;
