@@ -524,7 +524,7 @@ class photos_ctl extends pagecore{
         $id = $this->getGet('id');
         $info = $this->mdl_photo->get_info($id);
         
-        if(!$info){
+        if(!$info || $info['deleted']=='1'){
             showError(lang('photo_not_exists'));
         }
         

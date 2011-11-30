@@ -55,10 +55,7 @@
                                        <tfoot>
                                            <tr>
                                                <td><input type="checkbox" class="selitem" onclick="Madmin.check_all('.selitem',this.checked)" value="1" /></td>
-                                               <td><a href="javascript:void(0)" onclick="Madmin.checked_action('.selitem','{link ctl=comments act=confirm_delete_batch}');">{lang delete_selected}</a> <a href="javascript:void(0)" onclick="Madmin.checked_action('.selitem','{link ctl=comments act=confirm_block_batch}');">{lang block_selected}</a> <a href="javascript:void(0)" onclick="Madmin.checked_action('.selitem','{link ctl=comments act=confirm_approve_batch}');">{lang approve_selected}</a></td>
-                                               <td></td>
-                                               <td></td>
-                                               <td></td>
+                                               <td colspan="4"><a href="javascript:void(0)" onclick="Madmin.checked_action('.selitem','{link ctl=comments act=confirm_delete_batch}');">{lang delete_selected}</a> | <a href="javascript:void(0)" onclick="Madmin.checked_action('.selitem','{link ctl=comments act=confirm_block_batch}');">{lang block_selected}</a> | <a href="javascript:void(0)" onclick="Madmin.checked_action('.selitem','{link ctl=comments act=confirm_approve_batch}');">{lang approve_selected}</a></td>
                                            </tr>
                                        </tfoot>
                                        </tbody>
