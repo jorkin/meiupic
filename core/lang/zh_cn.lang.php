@@ -715,6 +715,9 @@ $language   =   array(
 'share_title'                      => '分享张很赞的照片:{name}',
 
 //自动升级
+'your_system_is_up_to_date'        => '您的系统是最新的！',
+'new_update_available'             => '检测到新的版本：<span class="alertcolor">%s</span> ,发布日期：<span class="alertcolor">%s</span> ！',
+'update_immediately'               => '立刻升级',
 'no_need_to_update'                => '无需升级！',
 'version_can_not_be_empty'         => '版本号不能为空！',
 'dir_not_writable'                 => '目录：%s 不可写！',

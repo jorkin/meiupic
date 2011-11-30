@@ -13,6 +13,7 @@ class setting_ctl extends pagecore{
         $site = $this->setting->get_conf('site');
         $site['description'] = safe_invert($site['description']);
         $site['footer'] = safe_invert($site['footer'],true);
+        $site['share_title'] = safe_invert($site['share_title']);
         $this->output->set('site',$site);
         $this->output->set('enable_comment',$this->setting->get_conf('system.enable_comment'));
         $this->output->set('show_process_info',$this->setting->get_conf('system.show_process_info'));
@@ -593,17 +594,19 @@ class setting_ctl extends pagecore{
     }
     //检查更新
     function check_update(){
-        $software = 'meiupic';
-        $version = MPIC_VERSION;
-        $revision = '';
-        $langset = LANGSET;
-        $time = time();
-        $hash = md5("{$software}{$version}{$revision}{$langset}{$time}");
-        $q = base64_encode("software=$software&version=$version&revision=$revision&langset=$langset&time=$time&hash=$hash");
-        $url = CHECK_UPDATE_URL.'?q='.$q;
-        $data = get_remote($url,2);
-        if(!$data){
+        $response = check_update();
+        if(!$response){
             $data = lang('connect_to_server_failed');
+        }else{
+            if($response['return'] == 'lastest'){
+                $data = lang('your_system_is_up_to_date');
+            }elseif($response['return'] == 'new'){
+                $newversion = $response['version'];
+                $publish_date = $response['pubdate'];
+                $data = lang('new_update_available',$newversion,$publish_date).'<a href="'.site_link('update','core',array('version'=>$newversion)).'">'.lang('update_immediately').'</a>';
+            }else{
+                $data = lang('connect_to_server_failed');
+            }
         }
         ajax_box($data,lang('check_update'));
     }

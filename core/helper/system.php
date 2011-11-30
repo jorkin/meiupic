@@ -226,3 +226,23 @@ function detect_thumb($w,$h,$square){
         return 'width:'.intval($width).'px;top:-'.intval($top).'px';
     }
 }
+
+
+function check_update(){
+    $software = 'meiupic';
+    $version = MPIC_VERSION;
+    $langset = LANGSET;
+    $time = time();
+    $hash = md5("{$software}{$version}{$langset}{$time}");
+    $q = base64_encode("software=$software&version=$version&langset=$langset&time=$time&hash=$hash");
+
+    $url = CHECK_UPDATE_URL.'?act=check&q='.$q;
+    $response = get_remote($url,2);
+    if(!$response){
+        return false;
+    }else{
+        $json =& loader::lib('json');
+        $result = $json->decode($response);
+        return $result;
+    }
+}

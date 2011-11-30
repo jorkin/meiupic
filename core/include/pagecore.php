@@ -55,6 +55,9 @@ class pagecore{
             <a title="'.lang('sys_setting_title').'" href="'.site_link('setting').'">'.lang('sys_setting').'</a>
             <span class="pipe">|</span>
             <a title="'.lang('logout_title').'" href="'.site_link('users','logout').'" onclick="Mui.box.show(this.href);return false;">'.lang('logout').'</a>';
+
+            //更新提示
+            $this->output->set('update_info',$this->setting->get_conf('update'));
         }
         $this->output->set('user_status',$plugin->filter('user_status',$user_status));
         $page_head = $plugin->filter('page_head','',$album_id,$photo_id);
@@ -63,10 +66,12 @@ class pagecore{
         $this->output->set('page_head',$page_head);
         $this->output->set('page_foot',$page_foot);
         $this->output->set('trash_status',has_trash());
-
+        
         $mdl_nav =& Loader::model('nav');
         $nav_menu = $mdl_nav->get_enabled_navs();
         $this->output->set('nav_menu',$nav_menu);
+
+        
         //$plugin->filter('main_menu',$nav_menu,$album_id,$photo_id);
     }
     

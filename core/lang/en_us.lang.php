@@ -41,7 +41,7 @@ $language   =   array(
 'delete'                           =>  'Delete',
 'cancel'                           =>  'Cancel',
 'copy'                             =>  'Copy',
-'not_authorized'                   =>  'You\'re not authorized, please log in！',   
+'not_authorized'                   =>  'You\'re not authorized, please log in!',   
 'sort'                             =>  'Sort by',
 'show_nums_per_page'               =>  'Items per page',
 '404_not_found'                    =>  '404! Pages not found!',
@@ -85,14 +85,14 @@ $language   =   array(
 'back_to_index'                    =>  'Return to the homepage',
 
 //notices
-'no_album_notice'                  =>    'There\'s no album. Click “Create an album” to get your own album!',
-'no_cate_album_notice'             => 'There\'s no album at this category, click “Create an album” to get one!',
+'no_album_notice'                  =>    'There\'s no album. Click "Create an album" to get your own album!',
+'no_cate_album_notice'             => 'There\'s no album at this category, click "Create an album" to get one!',
 'no_cate_album_notice_notlogin'    => 'There\'s no album at this category!',
 'no_album_notice_notlogin'         => 'No albums.',
-'no_photo_notice'                  =>    'No photo in this album, click “Upload new photo” to make up your album.',
+'no_photo_notice'                  =>    'No photo in this album, click "Upload new photo" to make up your album.',
 'no_photo_notice_notlogin'         => 'No photos in this album!',
-'no_album_search_notice'           => 'No results，pls. search with other keywords.',
-'no_photo_search_notice'           => 'No results，pls. search with other keywords.',
+'no_album_search_notice'           => 'No results, pls. search with other keywords.',
+'no_photo_search_notice'           => 'No results, pls. search with other keywords.',
 'no_script_notice'                 =>    '<h1>No JavaScript supported, pls. change your browser setting!</h1>
 <p> MeiuPic needs <strong>JavaScript</strong>. Currently all browsers can support JavaScript. You only need to change one of your browser setting to turn on this function. </p>
 <p>Find it here: <a href="http://www.google.com/support/bin/answer.py?answer=23852" target="blank">How to turn on the JavaScript</a>.</p>
@@ -131,7 +131,7 @@ $language   =   array(
 'album_list'                       =>    'Album list',
 'create_new_album'                 =>    'Create new album',
 'notice_title'                     =>  'Notice',
-'confirm_delete_album'             => 'Are you sure to delete the “%s”? The album and photos can be restored in the Trash after deleted!',
+'confirm_delete_album'             => 'Are you sure to delete the "%s"? The album and photos can be restored in the Trash after deleted!',
 'confirm_delete_album_batch'       => 'Are you sure to delete these albums? The albums can be restored in the Trash after deleted!',
 'create_album'                     =>  'Create album',
 'album_name'                       =>  'Album name',
@@ -712,4 +712,26 @@ $language   =   array(
 'share_title_tips'                 => '{name}为照片名',
 
 'side_category'                    => '按分类筛选相册',
+'share_title'                      => '分享张很赞的照片:{name}',
+
+//自动升级
+'your_system_is_up_to_date'        => '您的系统是最新的！',
+'new_update_available'             => '检测到新的版本：<span class="alertcolor">%s</span> ,发布日期：<span class="alertcolor">%s</span> ！',
+'update_immediately'               => '立刻升级',
+'no_need_to_update'                => '无需升级！',
+'version_can_not_be_empty'         => '版本号不能为空！',
+'dir_not_writable'                 => '目录：%s 不可写！',
+'file_not_writable'                => '文件：%s 不可写！',
+'file_has_been_downloaded'         => '文件已下载！',
+'download_package_failed'          => '下载升级包失败！',
+'download_package_succ'            => '下载文件成功！',
+'unzip_package_succ'               => '解压文件成功！',
+'delete_tmp_download_file'         => '删除下载的临时文件！',
+'upgrade_after_jump'               => '跳转后执行升级脚本！',
+'get_update_fail'                  => '获取更新失败！',
+'have_been_updated'                => '已经升级过了！',
+'could_not_degrade'                => '脚本无法执行降级操作！',
+'too_old_to_update'                => '对不起, 您的版本太旧！无法自动升级！',
+'upgrade_success'                  => '升级成功，跳转至首页！',
+'click_to_jump'                    => '点击此处跳转',
 );

@@ -26,6 +26,14 @@ body{
 #header #settings_person a,#header #settings_person span.name{
     
 }
+
+#head_notify {
+    left: 30%;
+	margin: 7px 0 0;
+    padding: 0 20px;
+    position: absolute;
+    top: 0;
+}
 /*header tabs*/
 #tabs{
 	height:auto  !important;

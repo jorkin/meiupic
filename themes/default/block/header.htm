@@ -38,7 +38,7 @@ a:hover,#settings_person a:hover {
 
 #header{ background-color:{$_config['header_bg']};}
 #header h1{ color:{$_config['header_h1']}; }
-#settings_person,#settings_person a{
+#settings_person,#settings_person a,#head_notify,#head_notify a{
     color:{$_config['settingtxt']};
 }
 #tabs a{
@@ -90,6 +90,16 @@ a:hover,#settings_person a:hover {
     <div id="settings_person">
         {$user_status}
     </div>
+	<!--{if isset($update_info) && $update_info}-->
+	<div id="head_notify">
+		{if $update_info['return'] == 'lastest'}
+			{lang your_system_is_up_to_date}
+		{elseif $update_info['return'] == 'new'}
+			{lang new_update_available|`$update_info['version']`|`$update_info['pubdate']`} 
+			<a href="{link ctl=update act=core version=$update_info['version']}">{lang update_immediately}</a>
+		{/if}
+	</div>
+	<!--{/if}-->
     <div id="tabs">
         <ul id="album_tabs">
             <!--{if $nav_menu}-->

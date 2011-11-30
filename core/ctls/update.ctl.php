@@ -7,6 +7,8 @@ class update_ctl extends pagecore{
     
     function core(){
         need_login('page');
+        $this->setting->set_conf('update',array());
+
         $newversion = $this->getRequest('version');
         
         $software = 'meiupic';
