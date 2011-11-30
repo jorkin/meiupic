@@ -92,9 +92,7 @@ a:hover,#settings_person a:hover {
     </div>
 	<!--{if isset($update_info) && $update_info}-->
 	<div id="head_notify">
-		{if $update_info['return'] == 'lastest'}
-			{lang your_system_is_up_to_date}
-		{elseif $update_info['return'] == 'new'}
+		{if $update_info['return'] == 'new'}
 			{lang new_update_available|`$update_info['version']`|`$update_info['pubdate']`} 
 			<a href="{link ctl=update act=core version=$update_info['version']}">{lang update_immediately}</a>
 		{/if}

@@ -412,7 +412,7 @@ form .field{
     padding:0 0 10px;
     _height:1%;
 }
-form .field .label{width:110px;float:left;text-align:left;}
+form .field .label{width:140px;float:left;text-align:left;}
 form .field .ipts{float:left;}
 form .field .clear{
     height:1px;
@@ -547,7 +547,7 @@ div.modaldiv{
      height: expression(document.body.scrollHeight > document.body.offsetHeight ? document.body.scrollHeight : document.body.offsetHeight + 'px');
 }
 #meiu_float_box{
-    width:500px;
+    width:550px;
     background:#fff;
     position:fixed !important;
     position:absolute;

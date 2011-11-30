@@ -81,8 +81,6 @@ class update_ctl extends pagecore{
     }
 
     function script(){
-        need_login('page');
-
         $prev_version = $this->setting->get_conf('system.version');
         $current_version = MPIC_VERSION;
         if($current_version == $prev_version){

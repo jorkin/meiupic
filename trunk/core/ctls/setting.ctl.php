@@ -603,7 +603,7 @@ class setting_ctl extends pagecore{
             }elseif($response['return'] == 'new'){
                 $newversion = $response['version'];
                 $publish_date = $response['pubdate'];
-                $data = lang('new_update_available',$newversion,$publish_date).'<a href="'.site_link('update','core',array('version'=>$newversion)).'">'.lang('update_immediately').'</a>';
+                $data = lang('new_update_available',$newversion,$publish_date).'<a href="'.site_link('update','core',array('version'=>$newversion)).'">'.lang('update_immediately').'</a> '.lang('or').' <a href="'.$response['package'].'">'.lang('update_manually').'</a>';
             }else{
                 $data = lang('connect_to_server_failed');
             }
