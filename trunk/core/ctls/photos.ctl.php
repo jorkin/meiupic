@@ -694,35 +694,9 @@ class photos_ctl extends pagecore{
         list($sort,$sort_list) =  get_sort_list($sort_setting,'photo','tu_desc');
         $items = $this->mdl_photo->get_items(array('album_id'=>$album_id),$sort);
 
-        /*$nav['rank_of'] = array_flip($nav['items']);
-        $nav['first_rank']   = 0;
-        $nav['last_rank']    = count($nav['items']) - 1;*/
         $current_item = $items[$rank];
         $current_rank = $rank;;
         
-        /*$nav['first_item'] = $nav['items'][ $nav['first_rank'] ];
-        $nav['last_item'] = $nav['items'][ $nav['last_rank'] ];
-
-        if($nav['current_rank'] != $nav['first_rank']){
-            $nav['previous_item'] = $nav['items'][ $nav['current_rank'] - 1 ];
-        }else{
-            if($nav['last_rank']>0){
-                $nav['previous_item'] = $nav['last_item'];
-            }
-        }
-        if($nav['current_rank'] != $nav['last_rank']){
-            $nav['next_item'] = $nav['items'][ $nav['current_rank'] + 1 ];
-        }else{
-            if($nav['last_rank']>0){
-                $nav['next_item'] = $nav['first_item'];
-            }
-        }
-
-        if($get == 'prev'){
-            $data = $this->mdl_photo->get_info($nav['previous_item']);
-        }else{
-            $data = $this->mdl_photo->get_info($nav['next_item']);
-        }*/
         $data = $this->mdl_photo->get_info($current_item);
         $data = array(
                 'id'=>$data['id'],

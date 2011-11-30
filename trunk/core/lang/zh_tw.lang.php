@@ -710,11 +710,14 @@ $language = array(
 'share_title'                      => '分享張很讚的照片:{name}',
 
 //自動升級
+'your_system_is_up_to_date'        => '您的系統是最新的！ ',
+'new_update_available'             => '檢測到新的版本：<span class="alertcolor">%s</span> ,發布日期：<span class="alertcolor">%s</span> ！ ',
+'update_immediately'               => '立刻升級',
 'no_need_to_update'                => '無需升級！',
 'version_can_not_be_empty'         => '版本號不能為空！',
 'dir_not_writable'                 => '目錄：%s 不可寫！',
-'fil​​e_not_writable'                => '文件：%s 不可寫！',
-'fil​​e_has_been_downloaded'         => '文件已下載！',
+'file_not_writable'                => '文件：%s 不可寫！',
+'file_has_been_downloaded'         => '文件已下載！',
 'download_package_failed'          => '下載升級包失敗！',
 'download_package_succ'            => '下載文件成功！',
 'unzip_package_succ'               => '解壓文件成功！',

@@ -47,7 +47,13 @@ class users_ctl extends pagecore{
         if($this->user->set_login($login_name,md5($login_pass),$expire_time)){
             $this->plugin->trigger('user_loged_in',$login_name);
             
-            form_ajax_success('box',lang('login_success'),null,0.5,$go_url);
+            //登录时检查更新
+            $checkupdate = check_update();
+            if($checkupdate){
+                $this->setting->set_conf('update',$checkupdate);
+            }
+
+            form_ajax_success('box',lang('login_success'),null,0.5,$go_url);            
         }else{
             form_ajax_failed('text',lang('username_pass_error'));
         }
