@@ -1,6 +1,6 @@
 <?php
 
-define('SOFT_NAME', 'MeiuPic');
+define('SOFT_NAME', 'meiupic');
 define('MPIC_VERSION','2.1.0');
 
 $sqlfile = INSDIR.'data/install.sql';

@@ -43,7 +43,7 @@ function ajax_box( $content , $title = '', $close_time = 0 , $forward = '' , $di
 //排序下拉菜单
 function get_sort_list($setting,$type,$default){
     $str = '<div class="dropmenu f_right listorder">
-            <span class="label">'.lang('sort').':</span>';
+            <span class="label">'.lang('sort_by').':</span>';
     $str .= '<div class="selectlist"><div class="selected"></div><ul class="optlist">';
     $sort = isset($_COOKIE['Mpic_sortset_'.$type])?$_COOKIE['Mpic_sortset_'.$type]:$default;
     foreach($setting as $k=>$v){

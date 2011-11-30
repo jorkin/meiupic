@@ -43,6 +43,7 @@ $language   =   array(
 'copy'                             =>  '复制',
 'not_authorized'                   =>  '您没有权限，需要登录！',   
 'sort'                             =>  '排序',
+'sort_by'                          =>  '排序',
 'show_nums_per_page'               =>  '显示数',
 '404_not_found'                    =>  '404 页面不存在!',
 'others'                           =>  '其他',
@@ -305,7 +306,7 @@ $language   =   array(
 'comments_num'                     =>    '%s评论',
 'all_album_comments'               =>    '对该相册的评论',
 'all_photo_comments'               =>    '对该照片的评论',
-'comments_num'                     =>    '共%s个评论',
+'t_comments_num'                   =>    '共%s个评论',
 'email'                            =>    'Email',
 'comment_user'                     =>    '评论者',
 'comment_content'                  =>    '评论内容',
@@ -716,7 +717,7 @@ $language   =   array(
 
 //自动升级
 'your_system_is_up_to_date'        => '您的系统是最新的！',
-'new_update_available'             => '检测到新的版本：<span class="alertcolor">%s</span> ,发布日期：<span class="alertcolor">%s</span> ！',
+'new_update_available'             => '检测到新的版本：<strong>%s</strong> ,发布日期：<strong>%s</strong> ！',
 'update_immediately'               => '立刻升级',
 'no_need_to_update'                => '无需升级！',
 'version_can_not_be_empty'         => '版本号不能为空！',
@@ -734,4 +735,6 @@ $language   =   array(
 'too_old_to_update'                => '对不起, 您的版本太旧！无法自动升级！',
 'upgrade_success'                  => '升级成功，跳转至首页！',
 'click_to_jump'                    => '点击此处跳转',
+'update_manually'                  => '下载手动安装',
+'or'                               => '或',
 );

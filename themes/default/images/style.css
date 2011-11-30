@@ -566,6 +566,9 @@ table.layout td.right{
 .innerconetent form .field {
     padding: 0 0 15px;
 }
+.innerconetent form .field div.label{
+    width:170px;
+}
 
 #center_box{
     width:500px;
