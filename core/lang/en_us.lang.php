@@ -264,7 +264,7 @@ $language   =   array(
 //tags html
 'no_tags'                          =>  'No tags currently!',
 //users
-'modify_profile'                   =>  'Modify your profile!',
+'modify_profile'                   =>  'Modify your profile',
 'username_empty'                   =>  'Pls. input your username!',
 'userpass_empty'                   =>  'Pls. input the password!',
 'login_success'                    =>  'Login sucessfully!',
