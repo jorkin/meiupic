@@ -291,20 +291,8 @@ function runquery($sql) {
 
 
 function getstatinfo() {
-    /*if($siteid && $key) {
-        return;
-    }*/
     $version = MPIC_VERSION;
-    $onlineip = '';
-    if(getenv('HTTP_CLIENT_IP') && strcasecmp(getenv('HTTP_CLIENT_IP'), 'unknown')) {
-        $onlineip = getenv('HTTP_CLIENT_IP');
-    } elseif(getenv('HTTP_X_FORWARDED_FOR') && strcasecmp(getenv('HTTP_X_FORWARDED_FOR'), 'unknown')) {
-        $onlineip = getenv('HTTP_X_FORWARDED_FOR');
-    } elseif(getenv('REMOTE_ADDR') && strcasecmp(getenv('REMOTE_ADDR'), 'unknown')) {
-        $onlineip = getenv('REMOTE_ADDR');
-    } elseif(isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] && strcasecmp($_SERVER['REMOTE_ADDR'], 'unknown')) {
-        $onlineip = $_SERVER['REMOTE_ADDR'];
-    }
+    $onlineip = get_real_ip();
     $funcurl = 'http://meiupic'.'.mei'.'u'.'.c'.'n/stats_in.php';
     $PHP_SELF = htmlspecialchars($_SERVER['PHP_SELF'] ? $_SERVER['PHP_SELF'] : $_SERVER['SCRIPT_NAME']);
     $url = htmlspecialchars('http://'.$_SERVER['HTTP_HOST'].preg_replace("/\/+(api|archiver|wap)?\/*$/i", '', substr($PHP_SELF, 0, strrpos($PHP_SELF, '/'))));
