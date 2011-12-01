@@ -6,6 +6,7 @@ $language = array(
     'html_code' => 'html代碼',
     'copy_success' => '拷貝成功！ ',
     'copy_sel_img_url' => '拷貝圖片地址',
+    'copy_all_urls' => '拷貝所有圖片地址',
     'pls_sel_photo_want_to_copy' => '請選擇需要拷貝地址的圖片！ ',
     'copy_all_to_clipboard'=> '拷貝相冊中所有圖片地址到剪貼板',
     'available_tags' => '可用的標籤',
