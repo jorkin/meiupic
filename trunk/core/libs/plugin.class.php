@@ -297,7 +297,7 @@ class plugin_cla{
         $arr['plugin_name'] = isset($plugin_obj->name)?$plugin_obj->name:null;
         $arr['description'] = isset($plugin_obj->description)?$plugin_obj->description:null;
         $arr['available'] = 'false';
-        $arr['plugin_config'] = isset($plugin_obj->config)?serialize($plugin_obj->config):null;
+        $arr['plugin_config'] = isset($plugin_obj->config)?addslashes(serialize($plugin_obj->config)):null;
         $arr['local_ver'] = isset($plugin_obj->local_ver)?$plugin_obj->local_ver:0;
         $arr['author_name'] = isset($plugin_obj->author_name)?$plugin_obj->author_name:null;
         $arr['author_url'] = isset($plugin_obj->author_url)?$plugin_obj->author_url:null;
@@ -376,7 +376,7 @@ class plugin_cla{
     }
     
     function save_config($plugin,$config){
-        $this->db->update('#@plugins','plugin_id='.$this->db->q_str($plugin),array('plugin_config'=>serialize($config)));
+        $this->db->update('#@plugins','plugin_id='.$this->db->q_str($plugin),array('plugin_config'=>addslashes(serialize($config))));
         if($this->db->query()){
             $cache =& loader::lib('cache');
             $cache->remove('plugins');

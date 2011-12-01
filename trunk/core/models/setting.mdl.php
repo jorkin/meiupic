@@ -97,10 +97,10 @@ class setting_mdl extends modelfactory {
                 }else{
                     $keyvalue = $values;
                 }
-                $this->db->update('#@setting','name="'.$k.'"',array('value'=>serialize($keyvalue)));
+                $this->db->update('#@setting','name="'.$k.'"',array('value'=>addslashes(serialize($keyvalue))));
                 $this->db->query();
             }else{
-                $this->db->insert('#@setting',array('name'=>$k,'value'=>serialize($values)));
+                $this->db->insert('#@setting',array('name'=>$k,'value'=>addslashes(serialize($values))));
                 $this->db->query();
             }
             $cache->remove('setting_'.$k);
