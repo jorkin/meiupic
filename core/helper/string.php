@@ -23,11 +23,11 @@ function arr_addslashes($arr){
     }
 }
 //数组中的字符串去除 "\"
-function arr_stripslashes($arr,$filterslash=true){
+function arr_stripslashes($arr){
     if(is_array($arr)){
         return array_map('arr_stripslashes',$arr);
     }else{
-        return $filterslash?str_replace('\\','',stripslashes($arr)):stripslashes($arr);
+        return stripslashes($arr);
     }
 }
 //标签处理，用空格或,分割返回数组
