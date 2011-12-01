@@ -142,7 +142,6 @@ $lang = array(
 	'admin_password_invalid' => '密码和上面不一致，请重新输入',
 	'admin_email_invalid' => 'Email 地址错误，此邮件地址已经被使用或者格式无效，请更换为其他地址',
 	'admin_invalid' => '您的信息管理员信息没有填写完整，请仔细填写每个项目',
-	'admin_exist_password_error' => '该用户已经存在，如果您要设置此用户为论坛的管理员，请正确输入该用户的密码，或者请更换论坛管理员的名字',
 	
 	'tips_siteinfo' => '填写网站信息',
 	
@@ -156,11 +155,6 @@ $lang = array(
 	'database_errno_1044' => '无法创建新的数据库，请检查数据库名称填写是否正确',
 	'database_errno_1045' => '无法连接数据库，请检查数据库用户名或者密码是否正确',
 	'database_connect_error' => '数据库连接错误',
-	
-	'admininfo_invalid' => '管理员信息不完整，请检查管理员账号，密码，邮箱',
-	'admin_username_invalid' => '非法用户名，用户名长度不应当超过 15 个英文字符，且不能包含特殊字符，一般是中文，字母或者数字',
-	'admin_password_invalid' => '密码和上面不一致，请重新输入',
-	'admin_email_invalid' => 'Email 地址错误，此邮件地址已经被使用或者格式无效，请更换为其他地址',
 	
 	'install_in_processed' => '正在安装...',
 	'create_table' => '创建数据库表',

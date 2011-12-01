@@ -142,7 +142,6 @@ $lang = array(
 'admin_password_invalid' => '密碼和上面不一致，請重新輸入',
 'admin_email_invalid' => 'Email 地址錯誤，此郵件地址已經被使用或者格式無效，請更換為其他地址',
 'admin_invalid' => '您的信息管理員信息沒有填寫完整，請仔細填寫每個項目',
-'admin_exist_password_error' => '該用戶已經存在，如果您要設置此用戶為論壇的管理員，請正確輸入該用戶的密碼，或者請更換論壇管理員的名字',
 
 'tips_siteinfo' => '填寫網站信息',
 
@@ -156,11 +155,6 @@ $lang = array(
 'database_errno_1044' => '無法創建新的數據庫，請檢查數據庫名稱填寫是否正確',
 'database_errno_1045' => '無法連接數據庫，請檢查數據庫用戶名或者密碼是否正確',
 'database_connect_error' => '數據庫連接錯誤',
-
-'admininfo_invalid' => '管理員信息不完整，請檢查管理員賬號，密碼，郵箱',
-'admin_username_invalid' => '非法用戶名，用戶名長度不應當超過15 個英文字符，且不能包含特殊字符，一般是中文，字母或者數字',
-'admin_password_invalid' => '密碼和上面不一致，請重新輸入',
-'admin_email_invalid' => 'Email 地址錯誤，此郵件地址已經被使用或者格式無效，請更換為其他地址',
 
 'install_in_processed' => '正在安裝...',
 'create_table' => '創建數據庫表',
