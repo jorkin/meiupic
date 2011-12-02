@@ -1,5 +1,5 @@
 <?php
-$theme_name = '默认风格';
+$theme_name = 'Default';
 $theme_copyright = 'Designed by <a href="http://www.meiu.cn/" target="_blank">Meiu Studio</a>';
 $theme_config = array(
     'style'     =>  'blue',
