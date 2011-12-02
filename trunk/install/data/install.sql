@@ -30,7 +30,7 @@ CREATE TABLE `meu_albums` (
   `enable_comment` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `cover_id` (`cover_id`),
-  KEY `cate_id` (`cate_id`),
+  KEY `cate_id` (`cate_id`)
 ) TYPE=MyISAM ;
 
 DROP TABLE IF EXISTS `meu_commentmeta`;
