@@ -104,7 +104,7 @@ class update_ctl extends pagecore{
         }
 
         $this->setting->set_conf('system.version',MPIC_VERSION);
-
+        $this->setting->set_conf('update',array());
         //清除缓存
         //Todo 需要统一清除缓存的功能，使其兼容memcache等
         dir_clear(ROOTDIR.'cache/data');
