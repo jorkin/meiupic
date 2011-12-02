@@ -68,7 +68,7 @@ class update_ctl extends pagecore{
             }
             $zip =& loader::lib('zip');
             $zip->load_file($tmpfile);
-            $zip->extract('./');
+            $zip->extract(PCLZIP_OPT_PATH, './', PCLZIP_OPT_REPLACE_NEWER);
             echo lang('unzip_package_succ').'<br />';
             echo lang('delete_tmp_download_file').'<br />';
             unlink($tmpfile);
