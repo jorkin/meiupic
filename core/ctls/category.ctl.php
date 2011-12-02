@@ -58,6 +58,8 @@ class category_ctl extends pagecore{
 
                 $mdl_nav =& loader::model('nav');
                 $mdl_nav->save($nav_data);
+                //清除菜单缓存
+                $mdl_nav->clear_nav_cache();
             }
 
             if($from){
@@ -99,6 +101,8 @@ class category_ctl extends pagecore{
 
                 $mdl_nav =& loader::model('nav');
                 $mdl_nav->save($nav_data);
+                //清除菜单缓存
+                $mdl_nav->clear_nav_cache();
             }
             
             form_ajax_success('box',lang('edit_category_succ'),null,0.5,$_SERVER['HTTP_REFERER']);
