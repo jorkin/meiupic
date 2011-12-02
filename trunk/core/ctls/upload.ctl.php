@@ -288,42 +288,46 @@ class upload_ctl extends pagecore{
             $empty_num = 0;
             $error = '';
             $allowsize = allowsize($this->setting->get_conf('upload.allow_size'));
-            foreach($_FILES['imgs']['name'] as $k=>$upfile){
-                
-                if (!empty($upfile)) {
-                    $filesize = $_FILES['imgs']['size'][$k];
-                    $tmpfile = $_FILES['imgs']['tmp_name'][$k];
-                    $filename = $upfile;
-                    $fileext = file_ext($filename);
+            if(isset($_FILES['imgs'])){
+                foreach($_FILES['imgs']['name'] as $k=>$upfile){
                     
-                    if($_FILES['imgs']['error'][$k] == 1){
-                        $error .= lang('failed_larger_than_server',$filename).'<br />';
-                        continue;
-                    }
-                    
-                    if($allowsize && $filesize>$allowsize){
-                        $error .= lang('failed_larger_than_usetting',$filename).'<br />';
-                        continue;
-                    }
-                    
-                    if($filesize == 0){
-                        $error .= lang('failed_if_file',$filename).'<br />';
-                        continue;
-                    }
-                    if(!in_array($fileext,$supportType)){
-                        $error .= lang('failed_not_support',$filename).'<br />';
-                        continue;
-                    }
-                    
+                    if (!empty($upfile)) {
+                        $filesize = $_FILES['imgs']['size'][$k];
+                        $tmpfile = $_FILES['imgs']['tmp_name'][$k];
+                        $filename = $upfile;
+                        $fileext = file_ext($filename);
+                        
+                        if($_FILES['imgs']['error'][$k] == 1){
+                            $error .= lang('failed_larger_than_server',$filename).'<br />';
+                            continue;
+                        }
+                        
+                        if($allowsize && $filesize>$allowsize){
+                            $error .= lang('failed_larger_than_usetting',$filename).'<br />';
+                            continue;
+                        }
+                        
+                        if($filesize == 0){
+                            $error .= lang('failed_if_file',$filename).'<br />';
+                            continue;
+                        }
+                        if(!in_array($fileext,$supportType)){
+                            $error .= lang('failed_not_support',$filename).'<br />';
+                            continue;
+                        }
+                        
 
-                    if(! $this->mdl_photo->save_upload($album_id,$tmpfile,$filename)){
-                        $error .= lang('file_upload_failed',$filename).'<br />';
+                        if(! $this->mdl_photo->save_upload($album_id,$tmpfile,$filename)){
+                            $error .= lang('file_upload_failed',$filename).'<br />';
+                        }
+                    }else{
+                        $empty_num++;
                     }
-                }else{
-                    $empty_num++;
                 }
+            }else{
+                $error = lang('need_sel_upload_file');
             }
-            if($empty_num == count($_FILES['imgs']['name'])){
+            if(isset($_FILES['imgs']) && $empty_num == count($_FILES['imgs']['name'])){
                 $this->output->set('msginfo','<div class="failed">'.lang('need_sel_upload_file').'</div>');
             }else{
                 $this->mdl_album->update_photos_num($album_id);
@@ -336,6 +340,10 @@ class upload_ctl extends pagecore{
                 }
             }
             
+            $crumb_nav = array();
+            $crumb_nav[] = array('name'=>lang('upload_photo'));        
+            $this->page_crumb($crumb_nav);
+
             loader::view('upload/normal');
         }
         
