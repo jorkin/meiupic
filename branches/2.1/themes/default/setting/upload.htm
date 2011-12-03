@@ -1,0 +1,79 @@
+{template block/header}
+
+<div id="bodywrap">
+    <table class="layout">
+        <tr>
+            <td class="left">
+                <div class="mainbody">
+                    <div class="col titbg">
+                        {template setting/setting_menu}
+                        <div class="rmenu f_right">
+                        </div>
+                    </div>
+                    <div class="innercol">
+                            <div class="innerconetent">
+                                <form id="setting_upload_form" action="{link ctl=setting act=save_upload}" method="post" onsubmit="return false;">
+                                    <div class="settingfield">
+                                        <div class="label">{lang enable_pre_resize_label}</div>
+                                        <div class="descinfo">{lang enable_pre_resize_tips}</div>
+                                        <div class="input">
+                                            <label><input type="checkbox" id="enable_pre_resize" name="enable_pre_resize" value="1" onclick="switch_div(this,'pre_resize')" {if $upload['enable_pre_resize']}checked="checked"{/if} /> {lang enable}</label>
+                                        </div>
+                                    </div>
+                                    <div id="pre_resize">
+                                    <div class="settingfield">
+                                        <div class="label">{lang upload_resize_width_label}</div>
+                                        <div class="descinfo">{lang upload_resize_width_tips}</div>
+                                        <div class="input">
+                                            <input type="text" name="upload[resize_width]" class="settinginput iptw1" value="{$upload['resize_width']}" />
+                                        </div>
+                                    </div>
+                                    <div class="settingfield">
+                                        <div class="label">{lang upload_resize_height_label}</div>
+                                        <div class="descinfo">{lang upload_resize_height_tips}</div>
+                                        <div class="input">
+                                            <input type="text" name="upload[resize_height]" class="settinginput iptw1" value="{$upload['resize_height']}" />
+                                        </div>
+                                    </div>
+                                    <div class="settingfield">
+                                        <div class="label">{lang upload_resize_quality_label}</div>
+                                        <div class="descinfo">{lang upload_resize_quality_tips}</div>
+                                        <div class="input">
+                                            <input type="text" name="upload[resize_quality]" class="settinginput iptw1" value="{$upload['resize_quality']}" />
+                                        </div>
+                                    </div>
+                                    </div>
+                                    <script>
+                                        if($('#enable_pre_resize').get(0).checked){
+                                            $("#pre_resize").show();
+                                        }else{
+                                            $("#pre_resize").hide();
+                                        }
+                                    </script>
+                                    <div class="settingfield">
+                                        <div class="label">{lang upload_allow_size_label}</div>
+                                        <div class="descinfo">{lang upload_allow_size_tips}</div>
+                                        <div class="input">
+                                             <select name="upload[allow_size]">
+                                                 <option value="512K" {if $upload['allow_size']=='512K'}selected="selected"{/if}>512K</option>
+                                                 <option value="1M" {if $upload['allow_size']=='1M'}selected="selected"{/if}>1M</option>
+                                                 <option value="2M" {if $upload['allow_size']=='2M'}selected="selected"{/if}>2M</option>
+                                                 <option value="5M" {if $upload['allow_size']=='5M'}selected="selected"{/if}>5M</option>
+                                                 <option value="0"  {if $upload['allow_size']=='0'}selected="selected"{/if}>{lang no_limit}</option>
+                                             </select>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="ctl_button">
+                                        <input type="submit" name="submit" class="ylbtn" value="{lang save_setting}" onclick="Mui.form.sendPop('setting_upload_form')" />
+                                    </div>
+                                </form>
+                            </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+{template block/footer}
