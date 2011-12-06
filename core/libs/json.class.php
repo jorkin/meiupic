@@ -26,7 +26,7 @@ class json_cla{
         if(!function_exists('json_decode')){
             if(!$this->service_json){
                 include_once('Services_JSON.php');
-                $this->service_json = new Services_JSON();
+                $this->service_json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
             }
             return $this->service_json->decode($str);
         }
