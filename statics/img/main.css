@@ -179,7 +179,7 @@ textarea.inputstyle{
 .graybtn:hover{
     background-position:0 -105px;
 }
-.btnloading{
+.btnloading,.btnloading:hover{
     text-indent:-1000px;
     overflow:hidden;
     background:url('btn_loading.gif') no-repeat center;
