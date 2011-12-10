@@ -7,6 +7,9 @@ class update_ctl extends pagecore{
     
     function core(){
         need_login('page');
+        @set_time_limit(0);
+        @ignore_user_abort(true);
+
         $this->setting->set_conf('update',array());
 
         $newversion = $this->getRequest('version');
@@ -81,6 +84,9 @@ class update_ctl extends pagecore{
     }
 
     function script(){
+        @set_time_limit(0);
+        @ignore_user_abort(true);
+
         $prev_version = $this->setting->get_conf('system.version');
         $current_version = MPIC_VERSION;
         if($current_version == $prev_version){

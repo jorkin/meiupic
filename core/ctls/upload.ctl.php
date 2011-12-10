@@ -94,7 +94,7 @@ class upload_ctl extends pagecore{
     }
     
     function process(){
-        set_time_limit(0);
+        @set_time_limit(0);
         header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
         header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
         header("Cache-Control: no-store, no-cache, must-revalidate");
@@ -240,8 +240,8 @@ class upload_ctl extends pagecore{
     }
     
     function save(){
-        set_time_limit(0);
-        ignore_user_abort(true);
+        @set_time_limit(0);
+        @ignore_user_abort(true);
         $type = $this->getGet('t');
         $album_id = $this->getRequest('aid');
 
