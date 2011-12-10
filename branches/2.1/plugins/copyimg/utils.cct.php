@@ -7,7 +7,8 @@ class utils_cct extends pagecore{
         global $base_root;
         
         $id = $this->getGet('id');
-        $photo_info = loader::model('photo')->get_info($id);
+        $photo_mdl =& loader::model('photo');
+        $photo_info = $photo_mdl->get_info($id);
         $photo_info['path'] = img_path($photo_info['path']);
         
         $this->output->set('photo_info',$photo_info);
@@ -31,7 +32,8 @@ class utils_cct extends pagecore{
         $album_id = $this->getGet('aid');
         
         list($sort,$sort_list) =  get_sort_list(array(),'photo','tu_desc');
-        $pictures = loader::model('photo')->get_all(NULL,array('album_id'=>$album_id),$sort);
+        $photo_mdl =& loader::model('photo');
+        $pictures = $photo_mdl->get_all(NULL,array('album_id'=>$album_id),$sort);
         $html = '';
         $urls = '';
         $ubb = '';
