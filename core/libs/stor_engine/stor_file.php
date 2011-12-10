@@ -12,7 +12,7 @@ class stor_file{
         $tofile = $this->getPath($id);
         $this->mkdirs(dirname($tofile));
         
-        if(is_uploaded_file($src){
+        if(is_uploaded_file($src)){
             return @move_uploaded_file($src,$tofile);
         }
 
