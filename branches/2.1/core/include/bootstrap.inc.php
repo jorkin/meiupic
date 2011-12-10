@@ -273,7 +273,7 @@ function meiu_bootstrap(){
     
     require_once(INCDIR.'pagecore.php');
 
-    if($plugin->has_trigger('custom_page.'.IN_CTL.'.'.IN_ACT) || $plugin->has_trigger('custom_page.'.IN_CTL,IN_ACT)){
+    if($plugin->has_trigger('custom_page.'.IN_CTL.'.'.IN_ACT) || $plugin->has_trigger('custom_page.'.IN_CTL)){
         $plugin->trigger('custom_page.'.IN_CTL.'.'.IN_ACT) || $plugin->trigger('custom_page.'.IN_CTL,IN_ACT);
     }else{
         if(file_exists(CTLDIR.$uriinfo['ctl'].'.ctl.php')){
