@@ -195,7 +195,7 @@ class photo_mdl extends modelfactory{
         $storlib =& loader::lib('storage');
         $imglib =& loader::lib('image');
         $exiflib =& loader::lib('exif');
-        $fileext = file_ext($filename);
+        $fileext = $imglib->getExtension();//file_ext($filename);
         $key = str_replace('.','',microtime(true));
         
         $tmpfs_lib =& loader::lib('tmpfs');
@@ -214,7 +214,7 @@ class photo_mdl extends modelfactory{
             
             $arr['width'] = $imglib->getWidth();
             $arr['height'] = $imglib->getHeight();
-            if( $imglib->getExtension() == 'jpg'){
+            if( $fileext == 'jpg'){
                 $exif = $exiflib->get_exif($tmpfile);
                 if($exif){
                     $arr['exif'] = serialize($exif);
@@ -267,6 +267,8 @@ class photo_mdl extends modelfactory{
                     $arr['create_m'] = date('n');
                     $arr['create_d'] = date('j');
                 }
+
+                $arr = array_merge($arr,$photo_info);
                 //move thumb img
                 $storlib->upload($thumbpath,$tmpfile_thumb);
 
@@ -287,7 +289,7 @@ class photo_mdl extends modelfactory{
                 
                 $plugin =& Loader::lib('plugin');
                 $plugin->trigger('uploaded_photo',$photo_id);
-                return true;
+                return $photo_id;
             }else{
                 return false;
             }
