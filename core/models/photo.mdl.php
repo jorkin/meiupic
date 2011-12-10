@@ -195,23 +195,25 @@ class photo_mdl extends modelfactory{
         $storlib =& loader::lib('storage');
         $imglib =& loader::lib('image');
         $exiflib =& loader::lib('exif');
-        $fileext = $imglib->getExtension();//file_ext($filename);
+        $fileext = file_ext($filename);
         $key = str_replace('.','',microtime(true));
         
         $tmpfs_lib =& loader::lib('tmpfs');
-
         $tmpfile_thumb = $tmpfile.'_thumb.'.$fileext;
     
-        if(!$new_photo){
-            $filepath = $photo_info['path'];
-            $thumbpath = $photo_info['thumb'];
-        } else {
-            $filepath = $media_dirname.'/'.$key.'.'.$fileext;
-            $thumbpath = $thumb_dirname.'/'.$key.'.'.$fileext;
-        }
+        
         if(file_exists($tmpfile)){
             $imglib->load($tmpfile);
+            $fileext = $imglib->getExtension();
             
+            if(!$new_photo){
+                $filepath = $photo_info['path'];
+                $thumbpath = $photo_info['thumb'];
+            } else {
+                $filepath = $media_dirname.'/'.$key.'.'.$fileext;
+                $thumbpath = $thumb_dirname.'/'.$key.'.'.$fileext;
+            }
+
             $arr['width'] = $imglib->getWidth();
             $arr['height'] = $imglib->getHeight();
             if( $fileext == 'jpg'){
@@ -255,7 +257,7 @@ class photo_mdl extends modelfactory{
                     $imglib->save($tmpfile);
                 }
             }
-            
+
             if( $storlib->upload($filepath,$tmpfile)){
                 $arr['album_id'] = $album_id;
                 $arr['path'] = $filepath;
