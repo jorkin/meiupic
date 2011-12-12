@@ -478,6 +478,9 @@ class db_cla{
         return $this->db->version();
     }
     
+    function show_tables(){
+        return $this->db->show_tables();
+    }
 }
 
 class DB_Expr{

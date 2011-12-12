@@ -8,7 +8,7 @@
  */
 define('IN_MEIU',true);
 
-define('MPIC_VERSION','2.1.0');
+define('MPIC_VERSION','2.1.1');
 
 header("Content-type: text/html; charset=utf-8");
 
@@ -256,9 +256,11 @@ function meiu_bootstrap(){
 
     //如果数据库中的版本和程序版本不一致则跳转到执行自动升级脚本
     $version = $setting_mdl->get_conf('system.version');
-    if($version != MPIC_VERSION && $uriinfo['ctl']!='update' && $uriinfo['act']!='script'){
-        redirect(site_link('update','script'));
-        exit;
+    if($version != MPIC_VERSION){
+        if(file_exists(ROOTDIR.'install/upgrade.php')){
+            include(ROOTDIR.'install/upgrade.php');
+            exit;
+        }
     }
 
     $output->set('base_path',$base_path);

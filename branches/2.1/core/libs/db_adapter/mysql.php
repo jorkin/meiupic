@@ -341,6 +341,10 @@ Class adapter_mysql{
     function version() {
         return @mysql_get_server_info();
     }
+    
+    function show_tables(){
+        return $this->getCol('show tables');
+    }
     /**
      * 获得刚插入数据的ID号
      *

@@ -658,7 +658,7 @@ $language   =   array(
 'connect_to_server_failed'         =>  'Fail to connectto server!',
 
 'sel_album_to_upload'              => 'Pls. select the album you want to upload!',
-'you_chose_album'                  => 'You selected the album:',
+'you_chose_album'                  => 'Selected album',
 'back_to_re_select'                => 'Back to reselect ',
 
 
@@ -738,4 +738,6 @@ $language   =   array(
 'click_to_jump'                    => 'Click here to jump',
 'update_manually'                  => 'Download package',
 'or'                               => ' or ',
+'upgrade_title'                    => 'MeiuPic Upgrade - Upgrade to %s',
+'upgrade_need_login'               => 'Only administrator can upgrade: please login. ',
 );
