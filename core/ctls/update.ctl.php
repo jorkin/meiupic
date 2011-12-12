@@ -10,7 +10,7 @@ class update_ctl extends pagecore{
         @set_time_limit(0);
         @ignore_user_abort(true);
 
-        $this->setting->set_conf('update',array());
+        $this->setting->set_conf('update.return','lastest');
 
         $newversion = $this->getRequest('version');
         
@@ -81,49 +81,5 @@ class update_ctl extends pagecore{
         }else{
             exit(lang('get_update_fail'));
         }
-    }
-
-    function script(){
-        @set_time_limit(0);
-        @ignore_user_abort(true);
-
-        $prev_version = $this->setting->get_conf('system.version');
-        $current_version = MPIC_VERSION;
-        if($current_version == $prev_version){
-            echo lang('have_been_updated').'<br />';
-            exit;
-        }
-
-        if(version_compare($current_version,$prev_version,'<')){
-            echo lang('could_not_degrade').'<br />';
-            exit;
-        }
-
-        if($prev_version == '' || version_compare($prev_version,'2.0','<') ){
-            echo lang('too_old_to_update').'<br />';
-            exit;
-        }
-        
-        $script_file = ROOTDIR.'install/upgrade_'.$prev_version.'.php';
-        if(file_exists($script_file)){
-            require_once($script_file);
-        }
-
-        $this->setting->set_conf('system.version',MPIC_VERSION);
-        $this->setting->set_conf('update',array());
-        //清除缓存
-        //Todo 需要统一清除缓存的功能，使其兼容memcache等
-        dir_clear(ROOTDIR.'cache/data');
-        dir_clear(ROOTDIR.'cache/templates');
-        dir_clear(ROOTDIR.'cache/tmp');
-
-        echo lang('upgrade_success').'<a href="'.site_link('default','index').'">'.lang('click_to_jump').'</a>';
-    }
-
-    function _createtable($sql) {
-        $type = strtoupper(preg_replace("/^\s*CREATE TABLE\s+.+\s+\(.+?\).*(ENGINE|TYPE)\s*=\s*([a-z]+?).*$/isU", "\\2", $sql));
-        $type = in_array($type, array('MYISAM', 'HEAP', 'MEMORY')) ? $type : 'MYISAM';
-        return preg_replace("/^\s*(CREATE TABLE\s+.+\s+\(.+?\)).*$/isU", "\\1", $sql).
-        ($this->db->version() > '4.1' ? " ENGINE=$type DEFAULT CHARSET=utf8" : " TYPE=$type");
     }
 }

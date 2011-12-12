@@ -732,4 +732,6 @@ $language = array(
 'click_to_jump'                    => '點擊此處跳轉',
 'update_manually'                  => '下載手動安裝',
 'or'                               => '或',
+'upgrade_title'                    => 'MeiuPic 版本升級- 升級到%s',
+'upgrade_need_login'               => '只有管理員才能進行升級操作：請先登錄。',
 );

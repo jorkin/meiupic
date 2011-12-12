@@ -243,6 +243,23 @@ function check_update(){
     }else{
         $json =& loader::lib('json');
         $result = $json->decode($response);
+        $setting_mdl =& loader::model('setting');
+        if(isset($result['return'])){
+            $setting_mdl->set_conf('update.return',$result['return']);
+        }
+        if(isset($result['package'])){
+            $setting_mdl->set_conf('update.package',$result['package']);
+        }
+        if(isset($result['version'])){
+            $setting_mdl->set_conf('update.version',$result['version']);
+        }
+        if(isset($result['pubdate'])){
+            $setting_mdl->set_conf('update.pubdate',$result['pubdate']);
+        }
         return $result;
+    }
+    
+    if($checkupdate){
+        $this->setting->set_conf('update',$checkupdate);
     }
 }
