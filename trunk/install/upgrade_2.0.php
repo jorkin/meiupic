@@ -2,7 +2,7 @@
 if(!defined('IN_MEIU')) exit('Access Denied');
 
 $sqls = array();
-if($this->db->adapter == 'sqlite'){
+if($db->adapter == 'sqlite'){
     $sqls[] = 'CREATE TABLE #@cate (
         id integer NOT NULL primary key,
         par_id int(4) NOT NULL DEFAULT 0,
@@ -21,7 +21,7 @@ if($this->db->adapter == 'sqlite'){
     $sqls[] = "CREATE INDEX a_cate_id on #@albums (cate_id)";
     $sqls[] = "CREATE INDEX p_album_id on #@photos (album_id)";
 }else{
-    $sqls[] = $this->_createtable("CREATE TABLE `#@cate` (
+    $sqls[] = _createtable("CREATE TABLE `#@cate` (
           `id` int(4) NOT NULL AUTO_INCREMENT,
           `par_id` int(4) NOT NULL DEFAULT '0',
           `name` varchar(100) NOT NULL,
@@ -30,7 +30,7 @@ if($this->db->adapter == 'sqlite'){
           PRIMARY KEY (`id`),
           KEY `par_id` (`par_id`)
         ) TYPE=MyISAM ;");
-    $sqls[] = $this->_createtable("CREATE TABLE `#@nav` (
+    $sqls[] = _createtable("CREATE TABLE `#@nav` (
         `id` smallint(4) NOT NULL AUTO_INCREMENT ,
         `type` tinyint(1) NOT NULL DEFAULT '1',
         `name` varchar(50) NOT NULL ,
@@ -42,18 +42,19 @@ if($this->db->adapter == 'sqlite'){
     $sqls[] = 'ALTER TABLE `#@albums` ADD `cate_id` int(4) NOT NULL DEFAULT 0 , ADD INDEX `cate_id` (`cate_id`)';
 }
 
-$sqls[] = $this->db->insert('#@nav',array('type'=>0,'name'=>lang('album_index'),'url' =>'default','sort'=>'100'));
-$sqls[] = $this->db->insert('#@nav',array('type'=>0,'name'=>lang('tags'),'url' =>'tags','sort'=>'100'));
-$sqls[] = $this->db->insert('#@nav',array('type'=>0,'name'=>lang('category'),'url' =>'category','sort'=>'100'));
+$sqls[] = $db->insert('#@nav',array('type'=>0,'name'=>lang('album_index'),'url' =>'default','sort'=>'100'));
+$sqls[] = $db->insert('#@nav',array('type'=>0,'name'=>lang('tags'),'url' =>'tags','sort'=>'100'));
+$sqls[] = $db->insert('#@nav',array('type'=>0,'name'=>lang('category'),'url' =>'category','sort'=>'100'));
 
 foreach($sqls as $sql){
-    $this->db->query($sql);
+    $db->query($sql);
 }
-$this->setting->set_conf('site.share_title',lang('share_title'));
+$setting_mdl->set_conf('site.share_title',lang('share_title'));
 //重新设置
-$this->plugin->remove_plugin('copyimg');
-$this->plugin->install_plugin('copyimg');
-$this->plugin->enable_plugin('copyimg');
+
+$plugin->remove_plugin('copyimg');
+$plugin->install_plugin('copyimg');
+$plugin->enable_plugin('copyimg');
 
 $config =& loader::config();
 $default_config =& loader::config('config.default');

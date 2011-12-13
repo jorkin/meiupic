@@ -568,7 +568,7 @@ class setting_ctl extends pagecore{
         if(!$counter){
             form_ajax_failed('box',lang('nothing_to_do'),null,2);
         }
-        set_time_limit(0);
+        @set_time_limit(0);
         
         if(isset($counter['comments'])){
             $comment_mdl =& loader::model('comment');

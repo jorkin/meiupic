@@ -95,66 +95,31 @@ class pagecore{
     }
     
     function isPost(){
-        if(strtolower($_SERVER['REQUEST_METHOD']) == 'post'){
-            return true;
-        }
-        return false;
+        return isPost();
     }
 
     function getGet($key,$default=''){
-        if(isset($_GET[$key])){
-            if(!MAGIC_GPC)
-            {
-                return arr_addslashes($_GET[$key]);
-            }
-            return $_GET[$key];
-        }
-        return $default;
+        return getGet($key,$default);
     }
-    
+
     function getPost($key,$default=''){
-        if(isset($_POST[$key])){
-            if(!MAGIC_GPC)
-            {
-                return arr_addslashes($_POST[$key]);
-            }
-            return $_POST[$key];
-        }
-        return $default;
+        return  getPost($key,$default);
     }
 
     function getRequest($key,$default=''){
-        if(isset($_REQUEST[$key])){
-            if(!MAGIC_GPC)
-            {
-                return arr_addslashes($_REQUEST[$key]);
-            }
-            return $_REQUEST[$key];
-        }
-        return $default;
-    }
-    
-    function getPosts(){
-        if(!MAGIC_GPC)
-        {
-            return arr_addslashes($_POST);
-        }
-        return $_POST;
-    }
-    
-    function getRequests(){
-        if(!MAGIC_GPC)
-        {
-            return arr_addslashes($_REQUEST);
-        }
-        return $_REQUEST;
+        return getRequest($key,$default);
     }
     
     function getGets(){
-        if(!MAGIC_GPC)
-        {
-            return arr_addslashes($_GET);
-        }
-        return $_GET;
+        return getGets();
     }
+    
+    function getPosts(){
+        return getPosts();
+    }
+
+    function getRequests(){
+        return getRequests();
+    }
+
 }

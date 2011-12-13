@@ -279,6 +279,8 @@ Mui.bubble = {
 Mui.form = {
     send : function(formid){
         $('#'+formid).unbind('submit').submit(function(){
+            var subbtn = $('#'+formid).find('input[type=submit]');
+            subbtn.attr('disabled','disabled').addClass('btnloading');
             $.post($('#'+formid).attr('action'),$('#'+formid).serializeArray(),function(data) {
                 if(data.ret){
                     resulthtml = '<div class="success">'+data.html+'</div>';
@@ -286,11 +288,14 @@ Mui.form = {
                     resulthtml = '<div class="failed">'+data.html+'</div>';
                 }
                 Mui.form.showResult(resulthtml,formid);
+                subbtn.removeAttr('disabled').removeClass('btnloading');
             },'json');
         });
     },
     sendPop : function(formid){
         $('#'+formid).unbind('submit').submit(function(){
+            var subbtn = $('#'+formid).find('input[type=submit]');
+            subbtn.attr('disabled','disabled').addClass('btnloading');
             $.post($('#'+formid).attr('action'),$('#'+formid).serializeArray(),function(data) {
                 Mui.box.setData(data.html);
                 if(data.ret){
@@ -298,16 +303,19 @@ Mui.form = {
                 }else{
                     $('#meiu_float_box .box_container').addClass('failed');
                 }
+                subbtn.removeAttr('disabled').removeClass('btnloading');
             },'json');
         });
     },
     sendAuto : function(formid){
         $('#'+formid).unbind('submit').submit(function(){
+            var subbtn = $('#'+formid).find('input[type=submit]');
+            subbtn.attr('disabled','disabled').addClass('btnloading');
             $.post($('#'+formid).attr('action'),$('#'+formid).serializeArray(),function(data) {
                 if(data.ret){
                     $('#'+formid).parent().find('.meiu_notice_div').remove();
                     if(Mui.box.callback){
-                        Mui.box.setData(data.html.replace(/<script(.|\s)*?\/script(\s)*>/gi,"") );
+                        Mui.box.setData(data.html.replace(/<script(.|\s)*?\/script(\s)*>/gi,""));
                         Mui.box.callback();
                     }else{
                         Mui.box.setData(data.html);
@@ -316,6 +324,7 @@ Mui.form = {
                 }else{
                     Mui.form.showResult('<div class="failed">'+data.html+'</div>',formid);
                 }
+                subbtn.removeAttr('disabled').removeClass('btnloading');
             },'json');
         });
     },

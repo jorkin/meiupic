@@ -547,6 +547,10 @@ Class adapter_sqlite{
         }
         return $rows;
     }
+    
+    function show_tables(){
+        return $this->getCol('select name from sqlite_master where type=\'table\' order by name');
+    }
     /**
      * 获取当前Sqlite库的版本号
      *

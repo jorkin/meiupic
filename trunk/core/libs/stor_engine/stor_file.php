@@ -11,6 +11,10 @@ class stor_file{
     function upload($id,$src){
         $tofile = $this->getPath($id);
         $this->mkdirs(dirname($tofile));
+        
+        if(is_uploaded_file($src)){
+            return @move_uploaded_file($src,$tofile);
+        }
 
         if( @copy($src,$tofile) ){
             @unlink($src);
