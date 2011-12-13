@@ -74,10 +74,10 @@ class update_ctl extends pagecore{
             $zip->extract(PCLZIP_OPT_PATH, './', PCLZIP_OPT_REPLACE_NEWER);
             echo lang('unzip_package_succ').'<br />';
             echo lang('delete_tmp_download_file').'<br />';
-            unlink($tmpfile);
+            @unlink($tmpfile);
             echo lang('upgrade_after_jump').'<br />';
 
-            redirect(site_link('update','script'),1);
+            redirect(site_link('default'),1);
         }else{
             exit(lang('get_update_fail'));
         }
