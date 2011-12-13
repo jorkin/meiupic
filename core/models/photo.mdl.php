@@ -199,22 +199,26 @@ class photo_mdl extends modelfactory{
         $key = str_replace('.','',microtime(true));
         
         $tmpfs_lib =& loader::lib('tmpfs');
-
         $tmpfile_thumb = $tmpfile.'_thumb.'.$fileext;
     
-        if(!$new_photo){
-            $filepath = $photo_info['path'];
-            $thumbpath = $photo_info['thumb'];
-        } else {
-            $filepath = $media_dirname.'/'.$key.'.'.$fileext;
-            $thumbpath = $thumb_dirname.'/'.$key.'.'.$fileext;
-        }
+        
         if(file_exists($tmpfile)){
             $imglib->load($tmpfile);
+            if(!in_array($fileext,array('jpg','png','jpeg','gif','bmp')) ){
+                $fileext = $imglib->getExtension();
+            }
             
+            if(!$new_photo){
+                $filepath = $photo_info['path'];
+                $thumbpath = $photo_info['thumb'];
+            } else {
+                $filepath = $media_dirname.'/'.$key.'.'.$fileext;
+                $thumbpath = $thumb_dirname.'/'.$key.'.'.$fileext;
+            }
+
             $arr['width'] = $imglib->getWidth();
             $arr['height'] = $imglib->getHeight();
-            if( $imglib->getExtension() == 'jpg'){
+            if( $fileext == 'jpg'){
                 $exif = $exiflib->get_exif($tmpfile);
                 if($exif){
                     $arr['exif'] = serialize($exif);
@@ -255,7 +259,7 @@ class photo_mdl extends modelfactory{
                     $imglib->save($tmpfile);
                 }
             }
-            
+
             if( $storlib->upload($filepath,$tmpfile)){
                 $arr['album_id'] = $album_id;
                 $arr['path'] = $filepath;
@@ -267,6 +271,8 @@ class photo_mdl extends modelfactory{
                     $arr['create_m'] = date('n');
                     $arr['create_d'] = date('j');
                 }
+
+                $arr = array_merge($arr,$photo_info);
                 //move thumb img
                 $storlib->upload($thumbpath,$tmpfile_thumb);
 
@@ -287,7 +293,7 @@ class photo_mdl extends modelfactory{
                 
                 $plugin =& Loader::lib('plugin');
                 $plugin->trigger('uploaded_photo',$photo_id);
-                return true;
+                return $photo_id;
             }else{
                 return false;
             }
@@ -347,5 +353,30 @@ class photo_mdl extends modelfactory{
     function get_photo_by_name_aid($aid,$name){
         $this->db->select('#@photos','*','album_id='.intval($aid).' and name='.$this->db->q_str($name));
         return $this->db->getRow();
+    }
+    
+    
+    function save_extra($id,$extra){
+        if(is_array($extra)){
+            foreach($extra as $k => $v){
+                $this->db->select('#@photometa','meta_value','photo_id='.intval($id).' and meta_key='.$this->db->q_str($k));
+                $row = $this->db->getRow();
+                if($row){
+                    $this->db->update('#@photometa','photo_id='.intval($id).' and meta_key='.$this->db->q_str($k),array('meta_value'=>$v));
+                }else{
+                    $this->db->insert('#@photometa',array('photo_id'=>intval($id),'meta_key'=>$k,'meta_value'=>$v));
+                }
+                $this->db->query();
+            }
+        }
+    }
+    
+    function get_extra($id){
+        if($value){
+            return $value;
+        }
+        $this->db->select('#@photometa','meta_key,meta_value','photo_id='.intval($id));
+        $value = $this->db->getAssoc();
+        return $value;
     }
 }

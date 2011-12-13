@@ -22,8 +22,8 @@ class plugin_copyimg extends plugin{
         $this->plugin_mgr->add_trigger('custom_page.utils.copyallurl',array('copyimg','copyallurl_act'),1);
         $this->plugin_mgr->add_trigger('custom_page.utils.copyselectedurl',array('copyimg','copyselectedurl_act'),1);
         
-        
-        $this->loggedin = loader::model('user')->loggedin();
+        $usr_mdl =& loader::model('user');
+        $this->loggedin = $usr_mdl->loggedin();
     }
     
     function photo_multi_opt($str,$album_id){

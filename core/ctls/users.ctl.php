@@ -48,10 +48,7 @@ class users_ctl extends pagecore{
             $this->plugin->trigger('user_loged_in',$login_name);
             
             //登录时检查更新
-            $checkupdate = check_update();
-            if($checkupdate){
-                $this->setting->set_conf('update',$checkupdate);
-            }
+            check_update();
 
             form_ajax_success('box',lang('login_success'),null,0.5,$go_url);            
         }else{
@@ -64,8 +61,6 @@ class users_ctl extends pagecore{
             redirect(site_link('users','login'));
         }
         
-        //$this->output->set('info',$this->user->get_all_field());
-        //$this->output->set('extra_info',$this->user->get_extra($this->user->get_field('id')));
         $mdl_theme =& loader::model('theme');
         $themes = $mdl_theme->all_themes();
         $this->output->set('themes',$themes);

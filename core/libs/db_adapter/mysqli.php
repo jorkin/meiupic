@@ -324,6 +324,10 @@ Class adapter_mysqli{
     function version() {
         return @mysqli_get_server_info($this->conn);
     }
+    
+    function show_tables(){
+        return $this->getCol('show tables');
+    }
     /**
      * 获得刚插入数据的ID号
      *
