@@ -100,7 +100,7 @@ if(!$user->loggedin()){
     }
     
     $setting_mdl->set_conf('system.version',MPIC_VERSION);
-    $setting_mdl->set_conf('update',array());
+    $setting_mdl->set_conf('update.return','lastest');
     //清除缓存
     //Todo 需要统一清除缓存的功能，使其兼容memcache等
     dir_clear(ROOTDIR.'cache/data');
