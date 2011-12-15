@@ -10,8 +10,6 @@ class update_ctl extends pagecore{
         @set_time_limit(0);
         @ignore_user_abort(true);
 
-        $this->setting->set_conf('update.return','lastest');
-
         $newversion = $this->getRequest('version');
         
         $software = 'meiupic';
