@@ -29,7 +29,7 @@ class category_ctl extends pagecore{
         if($from){
             $from = base64_decode($from);
         }
-        $this->output->set('pid',$this->getGet('pid'));
+        $this->output->set('pid',intval($this->getGet('pid')));
         $this->output->set('from',$from);
         
         $cate_list = $this->mdl_cate->get_categorys_width_cache();
@@ -74,7 +74,7 @@ class category_ctl extends pagecore{
 
     function edit(){
         need_login('ajax_page');
-        $id = $this->getGet('id');
+        $id = intval($this->getGet('id'));
 
         $info = $this->mdl_cate->get_info($id);
 
@@ -86,7 +86,7 @@ class category_ctl extends pagecore{
 
     function update(){
         need_login('ajax');
-        $id = $this->getGet('id');
+        $id = intval($this->getGet('id'));
         $data['par_id'] = $this->getPost('par_id') > 0 ? $this->getPost('par_id'):0;
         $data['name'] = $this->getPost('cate_name');
         $data['sort'] = intval($this->getPost('sort'));
@@ -114,7 +114,7 @@ class category_ctl extends pagecore{
     function confirm_delete(){
         need_login('ajax_page');
 
-        $id = $this->getGet('id');
+        $id = intval($this->getGet('id'));
         $this->output->set('id',$id);
         $data = $this->mdl_cate->get_info($id);
         $this->output->set('cate_name',$data['name']);
@@ -123,7 +123,7 @@ class category_ctl extends pagecore{
 
     function delete(){
         need_login('ajax_page');
-        $id = $this->getGet('id');
+        $id = intval($this->getGet('id'));
         
         if($this->mdl_cate->delete($id)){
             $mdl_album =& Loader::model('album');

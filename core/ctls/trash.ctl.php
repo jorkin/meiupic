@@ -10,8 +10,8 @@ class trash_ctl extends pagecore{
     function index(){
         need_login('page');
         
-        $type = $this->getGet('type','1');
-        $page = $this->getGet('page',1);
+        $type = intval($this->getGet('type','1'));
+        $page = intval($this->getGet('page',1));
         
         $deleted_albums = $this->mdl_album->get_trash_count();
         $deleted_photos = $this->mdl_photo->get_trash_count();
@@ -59,13 +59,13 @@ class trash_ctl extends pagecore{
     function confirm_delete(){
         need_login('ajax_page');
         
-        $id = $this->getGet('id');
-        $type = $this->getGet('type');
+        $id = intval($this->getGet('id'));
+        $type = intval($this->getGet('type'));
         $this->output->set('id',$id);
         $this->output->set('type',$type);
         if($type == 1){
             $info = $this->mdl_album->get_info($id);
-        }else{
+        }elseif($type == 2){
             $info = $this->mdl_photo->get_info($id);
         }
         $this->output->set('name',$info['name']);
@@ -75,11 +75,11 @@ class trash_ctl extends pagecore{
     function delete(){
         need_login('ajax_page');
         
-        $id = $this->getGet('id');
-        $type = $this->getGet('type');
+        $id = intval($this->getGet('id'));
+        $type = intval($this->getGet('type'));
         if($type == 1){
             $ret = $this->mdl_album->real_delete($id);
-        }else{
+        }elseif($type == 2){
             $ret = $this->mdl_photo->real_delete($id);
         }
         if($ret){
@@ -93,7 +93,7 @@ class trash_ctl extends pagecore{
         need_login('ajax_page');
         
         $ids = $this->getPost('sel_id');
-        $type = $this->getGet('type');
+        $type = intval($this->getGet('type'));
         $this->output->set('type',$type);
         if(!$ids || count($ids) == 0){
             ajax_box(lang('pls_sel_photo_album_del'));
@@ -105,13 +105,14 @@ class trash_ctl extends pagecore{
     function delete_batch(){
         need_login('ajax_page');
         
-        $type = $this->getGet('type');
+        $type = intval($this->getGet('type'));
         $ids = $this->getPost('sel_id');
         if(is_array($ids)){
             foreach($ids as $id => $v){
+                $id = intval($id);
                 if($type == 1){
                     $ret = $this->mdl_album->real_delete($id);
-                }else{
+                }elseif($type == 2){
                     $ret = $this->mdl_photo->real_delete($id);
                 }
             }
@@ -122,11 +123,11 @@ class trash_ctl extends pagecore{
     function restore(){
         need_login('ajax_page');
         
-        $id = $this->getGet('id');
+        $id = intval($this->getGet('id'));
         $type = $this->getGet('type');
         if($type == 1){
             $ret = $this->mdl_album->restore($id);
-        }else{
+        }elseif($type == 2){
             $ret = $this->mdl_photo->restore($id);
         }
         if($ret){
@@ -155,9 +156,10 @@ class trash_ctl extends pagecore{
         $ids = $this->getPost('sel_id');
         if(is_array($ids)){
             foreach($ids as $id => $v){
+                $id = intval($id);
                 if($type == 1){
                     $ret = $this->mdl_album->restore($id);
-                }else{
+                }elseif($type == 2){
                     $ret = $this->mdl_photo->restore($id);
                 }
             }

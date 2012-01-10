@@ -18,7 +18,7 @@ class photos_ctl extends pagecore{
     
     function normal(){
         $search['name'] = $this->getRequest('sname');
-        $search['album_id'] = $album_id = $this->getGet('aid');
+        $search['album_id'] = $album_id = intval($this->getGet('aid'));
         
         $album_info = $this->mdl_album->get_info($album_id);
         if(!$album_info){
@@ -69,7 +69,7 @@ class photos_ctl extends pagecore{
         
         //load comments
         if($this->setting->get_conf('system.enable_comment') && $album_info['enable_comment']==1){
-            $cpage = $this->getGet('cpage',1);
+            $cpage = intval($this->getGet('cpage',1));
             $mdl_comment =& loader::model('comment');
             $album_comments = $mdl_comment->get_all($cpage,array('status'=>1,'pid'=>0,'ref_id'=>$album_id,'type'=>'1'));
             if($album_comments['ls']){
@@ -157,7 +157,7 @@ class photos_ctl extends pagecore{
     }
     
     function auth_priv(){
-        $aid = $this->getGet('aid');
+        $aid = intval($this->getGet('aid'));
         $this->_priv_page($aid);
     }
     
@@ -185,7 +185,7 @@ class photos_ctl extends pagecore{
     }
     
     function slide(){
-        $album_id = $this->getGet('aid');
+        $album_id = intval($this->getGet('aid'));
         $album_info = $this->mdl_album->get_info($album_id);
         $refer = isset($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:site_link('photos','index',array('aid'=>$album_id));
         
@@ -200,7 +200,7 @@ class photos_ctl extends pagecore{
     }
     
     function gallery(){
-        $album_id = $this->getGet('aid');
+        $album_id = intval($this->getGet('aid'));
         $info = $this->mdl_album->get_info($album_id);
         
         if(!$this->mdl_album->check_album_priv($album_id,$info)){
@@ -261,7 +261,7 @@ class photos_ctl extends pagecore{
             header('Location: '.$url);
             exit;
         }else{
-            $page = $this->getGet('page',1);
+            $page = intval($this->getGet('page',1));
             $search['tag'] = safe_convert($this->getRequest('tag'));
             $par['page'] = '[#page#]';
             if($search['name']){
@@ -319,7 +319,7 @@ class photos_ctl extends pagecore{
     function modify(){
         need_login('ajax_page');
         
-        $info = $this->mdl_photo->get_info($this->getGet('id'));
+        $info = $this->mdl_photo->get_info(intval($this->getGet('id')));
         $info['desc'] = safe_invert($info['desc']);
         $this->output->set('info',$info);
         $this->render();
@@ -328,7 +328,7 @@ class photos_ctl extends pagecore{
     function update(){
         need_login('ajax');
         
-        $id = $this->getGet('id');
+        $id = intval($this->getGet('id'));
         
         $album['name'] = safe_convert($this->getPost('photo_name'));
         $album['desc'] = safe_convert($this->getPost('desc'));
@@ -352,7 +352,7 @@ class photos_ctl extends pagecore{
     function move(){
         need_login('ajax_page');
         
-        $id = $this->getGet('id');
+        $id = intval($this->getGet('id'));
         $this->output->set('id',$id);
         $photo_info = $this->mdl_photo->get_info($id);
         $this->output->set('albums_list',$this->mdl_album->get_kv($photo_info['album_id']));
@@ -363,7 +363,7 @@ class photos_ctl extends pagecore{
     function do_move(){
         need_login('ajax');
         $album_id = $this->getPost('album_id');
-        $id = $this->getGet('id');
+        $id = intval($this->getGet('id'));
         if(!$album_id || $album_id==''){
             form_ajax_failed('box',lang('havnt_sel_album'));
         }
@@ -413,7 +413,7 @@ class photos_ctl extends pagecore{
     
     function rotate(){
         need_login('ajax_page');
-        $id = $this->getGet('id');
+        $id = intval($this->getGet('id'));
         $photo_info = $this->mdl_photo->get_info($id);
         $this->output->set('info',$photo_info);
         $this->render();
@@ -423,7 +423,7 @@ class photos_ctl extends pagecore{
         need_login('ajax_page');
 
         $rot_type = $this->getPost('rot','0');
-        $id = $this->getGet('id');
+        $id = intval($this->getGet('id'));
         if($rot_type == '1'){
             $degree = '270';
         }elseif($rot_type == '2'){
@@ -446,7 +446,7 @@ class photos_ctl extends pagecore{
     function reupload(){
         need_login('ajax_page');
 
-        $id = $this->getGet('id');
+        $id = intval($this->getGet('id'));
         $photo_info = $this->mdl_photo->get_info($id);
         $this->output->set('info',$photo_info);
         $this->render();
@@ -455,7 +455,7 @@ class photos_ctl extends pagecore{
     function confirm_delete(){
         need_login('ajax_page');
         
-        $id = $this->getGet('id');
+        $id = intval($this->getGet('id'));
         $this->output->set('id',$id);
         $photo_info = $this->mdl_photo->get_info($id);
         $this->output->set('picture_name',$photo_info['name']);
@@ -464,7 +464,7 @@ class photos_ctl extends pagecore{
     
     function delete(){
         need_login('ajax_page');
-        $id = $this->getGet('id');
+        $id = intval($this->getGet('id'));
         if($this->mdl_photo->trash($id)){
             $this->plugin->trigger('trashed_photo',$id);
             
@@ -504,7 +504,7 @@ class photos_ctl extends pagecore{
     function rename(){
         need_login('ajax');
         
-        $id = $this->getGet('id');
+        $id = intval($this->getGet('id'));
         $arr['name'] = safe_convert($this->getPost('name'));
         if($arr['name'] == ''){
             form_ajax_failed('text',lang('photo_name_empty'));
@@ -521,7 +521,7 @@ class photos_ctl extends pagecore{
     
     
     function view(){
-        $id = $this->getGet('id');
+        $id = intval($this->getGet('id'));
         $info = $this->mdl_photo->get_info($id);
         
         if(!$info || $info['deleted']=='1'){
@@ -629,7 +629,7 @@ class photos_ctl extends pagecore{
             }
         }
         if($this->setting->get_conf('system.enable_comment') && $album_info['enable_comment']==1){
-            $cpage = $this->getGet('cpage',1);
+            $cpage = intval($this->getGet('cpage',1));
             $mdl_comment =& loader::model('comment');
             $comments = $mdl_comment->get_all($cpage,array('status'=>1,'pid'=>0,'ref_id'=>$id,'type'=>2));
             if($comments['ls']){
@@ -687,7 +687,6 @@ class photos_ctl extends pagecore{
     }
     
     function nav(){
-        $get = $this->getGet('get');
         $rank = intval($this->getPost('rank'));
         $album_id = $this->getPost('album_id');
         $sort_setting = $this->_sort_setting();
@@ -711,7 +710,7 @@ class photos_ctl extends pagecore{
     }
 
     function meta(){
-        $id = $this->getGet('id');
+        $id = intval($this->getGet('id'));
         $info = $this->mdl_photo->get_info($id);
         
         if(!$info){
@@ -755,7 +754,7 @@ class photos_ctl extends pagecore{
     function modify_name_inline(){
         need_login('ajax_inline');
         
-        $id = $this->getGet('id');
+        $id = intval($this->getGet('id'));
         $photo_info = $this->mdl_photo->get_info($id);
         $this->output->set('info',$photo_info);
         $this->render();
@@ -764,7 +763,7 @@ class photos_ctl extends pagecore{
     function modify_tags_inline(){
         need_login('ajax_inline');
         
-        $id = $this->getGet('id');
+        $id = intval($this->getGet('id'));
         $photo_info = $this->mdl_photo->get_info($id);
         $this->output->set('info',$photo_info);
         $this->render();
@@ -772,7 +771,7 @@ class photos_ctl extends pagecore{
     function save_tags(){
         need_login('ajax');
         
-        $id = $this->getGet('id');
+        $id = intval($this->getGet('id'));
         $tags = safe_convert($this->getPost('tags'));
         
         if( $this->mdl_photo->update($id,array('tags'=>$tags)) ){
@@ -789,7 +788,7 @@ class photos_ctl extends pagecore{
     function modify_desc_inline(){
         need_login('ajax_inline');
         
-        $id = $this->getGet('id');
+        $id = intval($this->getGet('id'));
         $info = $this->mdl_photo->get_info($id);
         $info['desc'] = safe_invert($info['desc']);
         $this->output->set('info',$info);
@@ -799,7 +798,7 @@ class photos_ctl extends pagecore{
     function save_desc(){
         need_login('ajax');
         
-        $id = $this->getGet('id');
+        $id = intval($this->getGet('id'));
         $desc = safe_convert($this->getPost('desc'));
         if($desc == ''){
             form_ajax_failed('text',lang('empty_photo_desc'));

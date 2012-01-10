@@ -11,7 +11,7 @@ class albums_ctl extends pagecore{
         //search
         $search['name'] = safe_convert($this->getRequest('sname'));
         $search['tag'] = safe_convert($this->getRequest('tag'));
-        $search['cate_id'] = $this->getGet('cate');
+        $search['cate_id'] = intval($this->getGet('cate'));
 
         $par['page'] = '[#page#]';
         if($search['name']){
@@ -37,7 +37,7 @@ class albums_ctl extends pagecore{
         $sort_setting = array(lang('create_time') => 'ct',lang('upload_time') => 'ut',lang('photo_nums') => 'p');
         list($sort,$sort_list) =  get_sort_list($sort_setting,'album','ct_desc');
         
-        $page = $this->getGet('page','1');
+        $page = intval($this->getGet('page','1'));
         $this->mdl_album->set_pageset($pageset);
         $albums = $this->mdl_album->get_all($page,$search,$sort);
         
@@ -104,7 +104,7 @@ class albums_ctl extends pagecore{
     
     function create(){
         need_login('ajax_page');
-        $cate_id = $this->getGet('cate');
+        $cate_id = intval($this->getGet('cate'));
         $this->output->set('cate_id',$cate_id);
 
         $this->output->set('system_enable_comment',$this->setting->get_conf('system.enable_comment'));
@@ -160,7 +160,7 @@ class albums_ctl extends pagecore{
     function modify(){
         need_login('ajax_page');
         
-        $id = $this->getGet('id');
+        $id = intval($this->getGet('id'));
         $info = $this->mdl_album->get_info($id);
         $info['desc'] = safe_invert($info['desc']);
         $this->output->set('system_enable_comment',$this->setting->get_conf('system.enable_comment'));
@@ -175,7 +175,7 @@ class albums_ctl extends pagecore{
     function update(){
         need_login('ajax');
         
-        $album_id = $this->getGet('id');
+        $album_id = intval($this->getGet('id'));
         $album['name'] = safe_convert($this->getPost('album_name'));
         $album['desc'] = safe_convert($this->getPost('desc'));
         $album['priv_type'] = $this->getPost('priv_type','0');
@@ -217,7 +217,7 @@ class albums_ctl extends pagecore{
     function update_cover(){
         need_login('ajax_page');
         
-        $pic_id = $this->getGet('pic_id');
+        $pic_id = intval($this->getGet('pic_id'));
         
         if($this->mdl_album->set_cover($pic_id)){
             ajax_box(lang('set_cover_success'),null,0.5,$_SERVER['HTTP_REFERER']);
@@ -229,7 +229,7 @@ class albums_ctl extends pagecore{
     function confirm_delete(){
         need_login('ajax_page');
         
-        $id = $this->getGet('id');
+        $id = intval($this->getGet('id'));
         $this->output->set('id',$id);
         $album_info = $this->mdl_album->get_info($id);
         $this->output->set('album_name',$album_info['name']);
@@ -238,7 +238,7 @@ class albums_ctl extends pagecore{
     
     function delete(){
         need_login('ajax_page');
-        $album_id = $this->getGet('id');
+        $album_id = intval($this->getGet('id'));
         
         if($this->mdl_album->trash($album_id)){
             $this->plugin->trigger('trashed_album',$album_id);
@@ -279,7 +279,7 @@ class albums_ctl extends pagecore{
     function modify_name_inline(){
         need_login('ajax_inline');
         
-        $id = $this->getGet('id');
+        $id = intval($this->getGet('id'));
         $album_info = $this->mdl_album->get_info($id);
         $this->output->set('info',$album_info);
         $this->render();
@@ -288,7 +288,7 @@ class albums_ctl extends pagecore{
     function rename(){
         need_login('ajax');
         
-        $id = $this->getGet('id');
+        $id = intval($this->getGet('id'));
         $arr['name'] = safe_convert($this->getPost('name'));
         if($arr['name'] == ''){
             form_ajax_failed('text',lang('album_name_empty'));
@@ -306,7 +306,7 @@ class albums_ctl extends pagecore{
     function modify_tags_inline(){
         need_login('ajax_inline');
         
-        $id = $this->getGet('id');
+        $id = intval($this->getGet('id'));
         $album_info = $this->mdl_album->get_info($id);
         $this->output->set('info',$album_info);
         $this->render();
@@ -314,7 +314,7 @@ class albums_ctl extends pagecore{
     function save_tags(){
         need_login('ajax');
         
-        $id = $this->getGet('id');
+        $id = intval($this->getGet('id'));
         $tags = safe_convert($this->getPost('tags'));
         
         if( $this->mdl_album->update($id,array('tags'=>$tags)) ){
@@ -331,7 +331,7 @@ class albums_ctl extends pagecore{
     function modify_desc_inline(){
         need_login('ajax_inline');
         
-        $id = $this->getGet('id');
+        $id = intval($this->getGet('id'));
         $album_info = $this->mdl_album->get_info($id);
         $album_info['desc'] = safe_invert($album_info['desc']);
         $this->output->set('info',$album_info);
@@ -341,7 +341,7 @@ class albums_ctl extends pagecore{
     function save_desc(){
         need_login('ajax');
         
-        $id = $this->getGet('id');
+        $id = intval($this->getGet('id'));
         $desc = safe_convert($this->getPost('desc'));
         if($desc == ''){
             form_ajax_failed('text',lang('empty_album_desc'));
@@ -359,7 +359,7 @@ class albums_ctl extends pagecore{
     function modify_priv(){
         need_login('ajax_page');
         
-        $id = $this->getGet('id');
+        $id = intval($this->getGet('id'));
         $album_info = $this->mdl_album->get_info($id);
         $this->output->set('info',$album_info);
         $this->render();
@@ -372,7 +372,7 @@ class albums_ctl extends pagecore{
         $album['priv_pass'] = $this->getPost('priv_pass');
         $album['priv_question'] = safe_convert($this->getPost('priv_question'));
         $album['priv_answer'] = safe_convert($this->getPost('priv_answer'));
-        $id = $this->getGet('id');
+        $id = intval($this->getGet('id'));
         
         if($album['priv_type'] == '1'){
             if($album['priv_pass']==''){

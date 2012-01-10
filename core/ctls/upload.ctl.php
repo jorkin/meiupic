@@ -9,7 +9,7 @@ class upload_ctl extends pagecore{
     
     function index(){
 
-        $album_id = $this->getRequest('aid');
+        $album_id = intval($this->getRequest('aid'));
         $act = $this->getGet('t');
         if($act=='normal'){
             $act = 'normal';
@@ -37,7 +37,7 @@ class upload_ctl extends pagecore{
     function multi(){
         need_login('page');
         
-        $album_id = $this->getRequest('aid');
+        $album_id = intval($this->getRequest('aid'));
 
         if(!$album_id){
             showError(lang('pls_sel_album'));
@@ -69,7 +69,7 @@ class upload_ctl extends pagecore{
     function normal(){
         need_login('page');
         
-        $album_id = $this->getRequest('aid');
+        $album_id = intval($this->getRequest('aid'));
 
         if(!$album_id){
             showError(lang('pls_sel_album'));
@@ -173,7 +173,7 @@ class upload_ctl extends pagecore{
     function reupload(){
         need_login('page');
 
-        $id = $this->getGet('id');
+        $id = intval($this->getGet('id'));
         $photo_info = $this->mdl_photo->get_info($id);
         
         $imglib =& loader::lib('image');
@@ -243,7 +243,7 @@ class upload_ctl extends pagecore{
         @set_time_limit(0);
         @ignore_user_abort(true);
         $type = $this->getGet('t');
-        $album_id = $this->getRequest('aid');
+        $album_id = intval($this->getRequest('aid'));
 
         if(!$album_id){
             showError(lang('pls_sel_album'));
