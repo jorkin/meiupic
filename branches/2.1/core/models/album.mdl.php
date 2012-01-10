@@ -124,7 +124,13 @@ class album_mdl extends modelfactory{
         if(!is_array($ids)){
             return false;
         }
-        $this->db->update('#@albums','id in ('.implode(',',$ids).')',array('deleted'=>1));
+        $in_sql = '';
+        foreach($ids as $i){
+            $in_sql .= intval($i).',';
+        }
+        $in_sql = trim($in_sql,',');
+
+        $this->db->update('#@albums','id in ('.$in_sql.')',array('deleted'=>1));
         if(!$this->db->query()){
             return false;
         }

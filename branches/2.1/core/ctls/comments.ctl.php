@@ -37,7 +37,7 @@ class comments_ctl extends pagecore{
         
         if($comment_id = $this->mdl_comment->save($comment)){
             $this->plugin->trigger('post_comment',$comment_id);
-            form_ajax_success('box',lang('post_comment_success'),null,0.5);
+            form_ajax_success('box',lang('post_comment_success'),null,10.5);
         }else{
             form_ajax_failed('text',lang('post_comment_failed'));
         }
@@ -95,7 +95,7 @@ class comments_ctl extends pagecore{
     function confirm_delete(){
         need_login('ajax_page');
 
-        $id = $this->getGet('id');
+        $id = intval($this->getGet('id'));
         $this->output->set('id',$id);
         
         $this->render();
@@ -104,7 +104,7 @@ class comments_ctl extends pagecore{
     function delete(){
         need_login('ajax_page');
 
-        $id = $this->getGet('id');
+        $id = intval($this->getGet('id'));
         if($this->mdl_comment->delete($id)){                        
             $this->plugin->trigger('deleted_comment',$id);
             ajax_box(lang('delete_comment_success'),null,0.5,$_SERVER['HTTP_REFERER']);
@@ -116,7 +116,7 @@ class comments_ctl extends pagecore{
     function more(){
         $ref_id = intval($this->getGet('ref_id'));
         $type = intval($this->getGet('type'));
-        $page = $this->getGet('page',1);
+        $page = intval($this->getGet('page',1));
         $comments = $this->mdl_comment->get_all($page,array('status'=>1,'pid'=>0,'ref_id'=>$ref_id,'type'=>$type));
         if($comments['ls']){
             foreach($comments['ls'] as $k=>$v){
@@ -142,7 +142,7 @@ class comments_ctl extends pagecore{
     function block(){
         need_login('ajax_page');
 
-        $id = $this->getGet('id');
+        $id = intval($this->getGet('id'));
         if($this->mdl_comment->block($id)){
             ajax_box(lang('block_comment_success'),null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
@@ -153,7 +153,7 @@ class comments_ctl extends pagecore{
     function approve(){
         need_login('ajax_page');
 
-        $id = $this->getGet('id');
+        $id = intval($this->getGet('id'));
         if($this->mdl_comment->approve($id)){
             ajax_box(lang('approve_comment_success'),null,0.5,$_SERVER['HTTP_REFERER']);
         }else{
@@ -167,7 +167,7 @@ class comments_ctl extends pagecore{
         $setting_menu = $this->plugin->filter('setting_menu','');
         $this->output->set('setting_menu',$setting_menu);
 
-        $page = $this->getGet('page',1);
+        $page = intval($this->getGet('page',1));
         $status = $this->getGet('status','all');
         
         $status_nums = $this->mdl_comment->count_group_status();
