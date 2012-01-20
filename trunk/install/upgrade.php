@@ -20,11 +20,9 @@ if(getPost('_upgrade_act') == 'login'){
     $login_pass = getPost('login_pass');
     if(!$login_name){
         $error .= '<div>'.lang('username_empty').'</div>';
-    }
-    if(!$login_pass){
+    }elseif(!$login_pass){
         $error .=  '<div>'.lang('userpass_empty').'</div>';
-    }
-    if($login_name && $login_pass && !$user->set_login($login_name,md5($login_pass)) ){
+    }elseif($login_name && $login_pass && !$user->set_login($login_name,md5($login_pass)) ){
         $error .= '<div>'.lang('username_pass_error').'</div>';
     }
 }
@@ -37,18 +35,105 @@ if(getPost('_upgrade_act') == 'login'){
 <style>
     body{
         font-size:12px;
+        background:#fbfbfb;
+    }
+    #main{
+        width:500px;
+        margin:0 auto;
+        border:1px solid #bbb;
+        border-radius:5px;
+        padding:10px;
+        background:#fff;
+        box-shadow: 0 4px 10px -1px rgba(200, 200, 200, 0.7);
+    }
+    #main h1{
+        text-align:center;
+        color:#003366;
+    }
+    #main form{
+        width:300px;
+        margin:30px auto 20px;
+    }
+
+    #main form .inputstyle {
+        background: none repeat scroll 0 0 #FBFBFB;
+        border: 1px solid #E5E5E5;
+        box-shadow: 1px 1px 2px rgba(200, 200, 200, 0.2) inset;
+        font-size: 24px;
+        font-weight: 200;
+        line-height: 1;
+        margin-bottom: 16px;
+        margin-right: 6px;
+        margin-top: 2px;
+        outline: medium none;
+        padding: 3px;
+        width: 100%;
+        border-radius: 3px 3px 3px 3px;
+    }
+    #main form .label{
+        font-size:14px;
+        color:#777;
+    }
+    #main form .inputstyle:focus{
+        border:1px solid #999;
+    }
+    #main form .ylbtn{
+        background-color: #F5F5F5;
+        border: 1px solid #E5E5E5;
+        border-radius: 2px 2px 2px 2px;
+        color: #666666;
+        cursor: default;
+        font-family: Arial,sans-serif;
+        font-size: 14px;
+        font-weight: bold;
+        height: 29px;
+        line-height: 27px;
+        margin: 11px 6px;
+        min-width: 54px;
+        padding: 0 8px;
+        text-align: center;
+        cursor:pointer;
+    }
+    #main form .ylbtn:hover{
+        border:1px solid #999
+    }
+    .info{
+        line-height:2;
+        margin-bottom:20px;
+        color:green;
+    }
+    .error{
+        color:red;
+    }
+    .msg{
+        width:300px;
+        margin:30px auto 20px;
+        padding:10px;
+        border:1px solid #ff9966;
+        background:#ffffee;
+    }
+    .succ{
+        color:green;
+    }
+    .fail{
+        color:red;
     }
 </style>
 </head>
 
 <body>
+<div id="main">
 <h1><?php echo lang('upgrade_title',MPIC_VERSION);?></h1>
 <?php
 //如果没有登录输出登录框
 if(!$user->loggedin()){
-    echo '<h2>'.lang('upgrade_need_login').'</h2>';
-    echo '<div style="color:red">'.$error.'</div><form id="login_form" action="" method="post">
-        <input type="hidden" name="_upgrade_act" value="login" />
+    echo '<form id="login_form" action="" method="post">';
+    if($error){
+        echo '<div class="info error">'.$error.'</div>';
+    }else{
+        echo '<div class="info">'.lang('upgrade_need_login').'</div>';
+    }
+    echo '<input type="hidden" name="_upgrade_act" value="login" />
         <div class="field">
             <div class="label">'.lang('username').'</div>
             <div class="ipts"><input type="text" name="login_name" class="inputstyle iptw2" value="" /></div>
@@ -60,7 +145,6 @@ if(!$user->loggedin()){
             <div class="clear"></div>
         </div>
         <div class="field">
-            <div class="label"> &nbsp;</div>
             <div class="ipts"><input type="submit" value="'.lang('login').'" class="ylbtn f_left" name="submit"></div>
             <div class="clear"></div>
         </div>
@@ -69,7 +153,7 @@ if(!$user->loggedin()){
     $prev_version = $setting_mdl->get_conf('system.version');
     $current_version = MPIC_VERSION;
     if($current_version == $prev_version){
-        echo lang('have_been_updated').'<br />';
+        echo '<div class="msg fail">'.lang('have_been_updated').'</div>';
         exit;
     }
     //如果没有获取到当前version，根据数据库判断
@@ -86,11 +170,11 @@ if(!$user->loggedin()){
     }
 
     if(version_compare($current_version,$prev_version,'<')){
-        echo lang('could_not_degrade').'<br />';
+        echo '<div class="msg fail">'.lang('could_not_degrade').'</div>';
         exit;
     }
     if($prev_version == '' || version_compare($prev_version,'2.0','<') ){
-        echo lang('too_old_to_update').'<br />';
+        echo '<div class="msg fail">'.lang('too_old_to_update').'</div>';
         exit;
     }
     
@@ -99,6 +183,7 @@ if(!$user->loggedin()){
         require_once($script_file);
     }
     
+    $setting_mdl->set_conf('system.enable_auto_update',true);//TODO 
     $setting_mdl->set_conf('system.version',MPIC_VERSION);
     $setting_mdl->set_conf('update.return','lastest');
     //清除缓存
@@ -107,8 +192,9 @@ if(!$user->loggedin()){
     dir_clear(ROOTDIR.'cache/templates');
     dir_clear(ROOTDIR.'cache/tmp');
 
-    echo lang('upgrade_success').' <a href="'.site_link('default','index').'">'.lang('click_to_jump').'</a>';
+    echo '<div class="msg succ">'.lang('upgrade_success').' <a href="'.site_link('default','index').'">'.lang('click_to_jump').'</a></div>';
 }
 ?>
+</div>
 </body>
 </html>

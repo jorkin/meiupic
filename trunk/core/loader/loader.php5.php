@@ -115,7 +115,7 @@ class Loader{
         if(file_exists($path)){
             require_once($path);
         }else{
-            exit('Load helper error：file (helper/'.strtolower($name).'.php) is not exists！');
+            exit('Load helper error: file (helper/'.strtolower($name).'.php) does not exist!');
         }
     }
 }

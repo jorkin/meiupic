@@ -561,6 +561,8 @@ $language   =   array(
 'show_process_info_tips'           =>  'Execute time and database query information',
 'enable_comment_label'             =>  'Allow comments',
 'enable_comment_tips'              =>  'If turn off this, users can not comment all album/photo',
+'enable_auto_update'               =>  'Automatically check for updates',
+'enable_auto_update_tips'          =>  'Check for updates from the official website automatically',
 'gravatar_url_label'               =>  'Gravatar URL',
 'gravatar_url_tips'                =>  'The system will automatically replace {idstring} with gravatar_id',
 

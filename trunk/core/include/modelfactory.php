@@ -73,7 +73,13 @@ class modelfactory{
     function get_info($id,$fileds='*'){
         if(is_array($id)){
             if(count($id) >0){
-                $this->db->select($this->table_name,$fileds,$this->id_col.' in ('.implode(',',$id).')');
+                $in_sql = '';
+                foreach($id as $i){
+                    $in_sql .= intval($i).',';
+                }
+                $in_sql = trim($in_sql,',');
+
+                $this->db->select($this->table_name,$fileds,$this->id_col.' in ('.$in_sql.')');
                 return $this->db->getAll();
             }else{
                 return false;

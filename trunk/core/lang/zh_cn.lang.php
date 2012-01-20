@@ -561,6 +561,8 @@ $language   =   array(
 'show_process_info_tips'           =>  '包括页面执行时间和数据库请求次数',
 'enable_comment_label'             =>  '是否允许评论',
 'enable_comment_tips'              =>  '如果关闭此选项，用户无法对所有相册/照片进行评论',
+'enable_auto_update'               =>  '是否自动检查更新',
+'enable_auto_update_tips'          =>  '自动从官网检查是否有更新',
 'gravatar_url_label'               =>  'Gravatar头像地址设置',
 'gravatar_url_tips'                =>  '系统将自动替换{idstring}为相应的gravatar_id',
 
