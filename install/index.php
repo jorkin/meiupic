@@ -277,6 +277,7 @@ if($method == 'license'){
         $mdl_setting->set_conf('system.version',MPIC_VERSION);
         $mdl_setting->set_conf('system.installed_time',time());
         $mdl_setting->set_conf('system.gravatar_url','http://www.gravatar.com/avatar.php?rating=G&size=48&default='.$siteurl.'statics/img/no_avatar.jpg&gravatar_id={idstring}');
+        $mdl_setting->set_conf('system.enable_auto_update',true);
         $mdl_setting->set_conf('system.show_process_info',false);
         $mdl_setting->set_conf('system.language',INS_LANG);
         $mdl_setting->set_conf('system.timezone',8);

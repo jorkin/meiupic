@@ -559,6 +559,8 @@ $language = array(
 'show_process_info_tips'           => '包括頁面執行時間和數據庫請求次數',
 'enable_comment_label'             => '是否允許評論',
 'enable_comment_tips'              => '如果關閉此選項，用戶無法對所有相冊/照片進行評論',
+'enable_auto_update'               => '是否自動檢查更新',
+'enable_auto_update_tips'          => '自動從官網檢查是否有更新',
 'gravatar_url_label'               => 'Gravatar頭像地址設置',
 'gravatar_url_tips'                => '系統將自動替換{idstring}為相應的gravatar_id',
 

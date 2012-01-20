@@ -235,6 +235,10 @@ function check_update(){
     $time = time();
     $hash = md5("{$software}{$version}{$langset}{$time}");
     $q = base64_encode("software=$software&version=$version&langset=$langset&time=$time&hash=$hash");
+    
+    if(!defined('CHECK_UPDATE_URL') || !CHECK_UPDATE_URL){
+        return false;
+    }
 
     $url = CHECK_UPDATE_URL.'?act=check&q='.$q;
     $response = get_remote($url,2);

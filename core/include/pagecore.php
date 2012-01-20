@@ -32,7 +32,7 @@ class pagecore{
     function page_init($title = '',$keywords = '',$description='',$album_id=null,$photo_id=null){
         $plugin =& loader::lib('plugin');
         
-        $head_str = "<title>{$title} - Powered by MeiuPic</title>\n";
+        $head_str = "<title>{$title}</title>\n";
         $head_str .= "<meta name=\"keywords\" content=\"{$keywords}\" />\n";
         $head_str .= "<meta name=\"description\" content=\"{$description}\" />\n";
         $meu_head = $plugin->filter('meu_head',$head_str,$album_id,$photo_id);
