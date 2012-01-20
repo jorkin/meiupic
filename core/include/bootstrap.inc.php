@@ -8,7 +8,7 @@
  */
 define('IN_MEIU',true);
 
-define('MPIC_VERSION','2.1.1');
+define('MPIC_VERSION','2.2.0');
 
 header("Content-type: text/html; charset=utf-8");
 

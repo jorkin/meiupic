@@ -9,7 +9,7 @@ class feed_ctl extends pagecore{
     
     function index(){
         global $base_path;
-        $album_id = $this->getGet('aid');
+        $album_id = intval($this->getGet('aid'));
 
         $search = array();
         

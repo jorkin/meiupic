@@ -7,10 +7,10 @@ class tags_ctl extends pagecore{
     }
     
     function index(){
-        $page = $this->getGet('page',1);
+        $page = intval($this->getGet('page',1));
         $type = $this->getGet('type');
         
-        $pageurl = site_link('tags','index',array('type'=>$type,'page'=>'[#page#]'));
+        
         $this->mdl_tag->set_pageset(40);
         
         $par = array();
@@ -18,12 +18,15 @@ class tags_ctl extends pagecore{
             $par['type'] = $type;
         }
         $tags = $this->mdl_tag->get_all($page,$par);
+
+        $par['page'] = '[#page#]';
         if($tags['ls']){
             foreach($tags['ls'] as $k =>$v){
                 $tags['ls'][$k]['fontsize'] = $this->mdl_tag->get_fontsize($v['count']);
             }
         }
         $page_obj =& loader::lib('page');
+        $pageurl = site_link('tags','index',$par);
         $pagestr = $page_obj->fetch($tags['total'],$tags['current'],$pageurl);
         $this->output->set('pagestr',$pagestr);
         $this->output->set('tag_list',$tags['ls']);

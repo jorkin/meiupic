@@ -48,7 +48,9 @@ class users_ctl extends pagecore{
             $this->plugin->trigger('user_loged_in',$login_name);
             
             //登录时检查更新
-            check_update();
+            if($this->setting->get_conf('system.enable_auto_update')){
+                check_update();
+            }
 
             form_ajax_success('box',lang('login_success'),null,0.5,$go_url);            
         }else{

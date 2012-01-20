@@ -140,8 +140,15 @@ class photo_mdl extends modelfactory{
         if(!is_array($ids)){
             return false;
         }
-        $info = $this->get_info($ids[0]);
-        $this->db->update('#@photos','id in ('.implode(',',$ids).')',array('deleted'=>1));
+        $info = $this->get_info(intval($ids[0]));
+
+        $in_sql = '';
+        foreach($ids as $i){
+            $in_sql .= intval($i).',';
+        }
+        $in_sql = trim($in_sql,',');
+
+        $this->db->update('#@photos','id in ('.$in_sql.')',array('deleted'=>1));
         if(!$this->db->query()){
             return false;
         }
@@ -169,10 +176,16 @@ class photo_mdl extends modelfactory{
     }
     
     function move_batch($ids,$album_id){
-        $photo_info = $this->get_info($ids[0]);
+        $photo_info = $this->get_info(intval($ids[0]));
         $old_album  = $photo_info['album_id'];
         
-        $this->db->update('#@photos','id in ('.implode(',',$ids).')',array('album_id'=>$album_id,'is_cover'=>0));
+        $in_sql = '';
+        foreach($ids as $i){
+            $in_sql .= intval($i).',';
+        }
+        $in_sql = trim($in_sql,',');
+
+        $this->db->update('#@photos','id in ('.$in_sql.')',array('album_id'=>$album_id,'is_cover'=>0));
         if(!$this->db->query()){
             return false;
         }

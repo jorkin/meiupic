@@ -16,6 +16,7 @@ class setting_ctl extends pagecore{
         $site['share_title'] = safe_invert($site['share_title']);
         $this->output->set('site',$site);
         $this->output->set('enable_comment',$this->setting->get_conf('system.enable_comment'));
+        $this->output->set('enable_auto_update',$this->setting->get_conf('system.enable_auto_update'));
         $this->output->set('show_process_info',$this->setting->get_conf('system.show_process_info'));
         $this->output->set('gravatar_url',$this->setting->get_conf('system.gravatar_url'));
         
@@ -66,6 +67,13 @@ class setting_ctl extends pagecore{
         }else{
             $this->setting->set_conf('system.enable_comment',false);
         }
+
+        if($this->getPost('enable_auto_update')){
+            $this->setting->set_conf('system.enable_auto_update',true);
+        }else{
+            $this->setting->set_conf('system.enable_auto_update',false);
+        }
+
         if($this->getPost('show_process_info')){
             $this->setting->set_conf('system.show_process_info',true);
         }else{
