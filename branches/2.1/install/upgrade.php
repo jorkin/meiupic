@@ -183,6 +183,7 @@ if(!$user->loggedin()){
         require_once($script_file);
     }
     
+    $setting_mdl->set_conf('system.enable_auto_update',true);//TODO 
     $setting_mdl->set_conf('system.version',MPIC_VERSION);
     $setting_mdl->set_conf('update.return','lastest');
     //清除缓存
