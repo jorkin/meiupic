@@ -680,7 +680,7 @@ class photos_ctl extends pagecore{
 
         $page_title = $info['name'].' - '.$album_info['name'].' - '.$this->setting->get_conf('site.title');
         $page_keywords = ($info['tags']?implode(',',$info['tags_list']).',':'').$this->setting->get_conf('site.keywords');
-        $page_description = $info['desc']?strip_tags($info['desc']):$this->setting->get_conf('site.description');
+        $page_description = $info['desc']?mycutstr(strip_tags($info['desc']),200):$this->setting->get_conf('site.description');
         $this->page_init($page_title,$page_keywords,$page_description,$info['album_id'],$id);
         
         $this->render();
