@@ -50,6 +50,24 @@ class modelfactory{
         }
         return $data;
     }
+    /**
+     * 根据条件获取一定数量的数据
+     * 
+     * @param int $limit 数据条数
+     * @param array $filters
+     * @param array $sort
+     */
+    function get_top($limit,$filters = array(),$sort = null){
+        $where = $this->_filters($filters);
+        if($sort){
+            $sort = $this->_sort($sort);
+        }else{
+            $sort = $this->default_order;
+        }
+        $this->db->select($this->table_name,$this->default_cols,$where,$sort);
+        $this->db->selectLimit(null,$limit);
+        return $this->db->getAll();
+    }
     
     function save($arr){
         $this->db->insert($this->table_name,$arr);
