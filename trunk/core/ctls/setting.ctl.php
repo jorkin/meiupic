@@ -109,24 +109,77 @@ class setting_ctl extends pagecore{
         
         $upload = $this->getPost('upload');
         $enable_pre_resize = $this->getPost('enable_pre_resize');
+
+        if($upload['resize_quality'] < 1 || $upload['resize_quality'] > 100){
+             form_ajax_failed('box',lang('resize_quality_error'));
+        }
+        
+        //客户端预处理
         if($enable_pre_resize){
-            if($upload['resize_width'] == '' || !is_numeric($upload['resize_width'])){
+            if($upload['resize_width'] == '' || $upload['resize_width'] < 1){
                 form_ajax_failed('box',lang('resize_width_error'));
             }
-            if($upload['resize_height'] == '' || !is_numeric($upload['resize_height'])){
+            if($upload['resize_height'] == '' || $upload['resize_height'] < 1){
                 form_ajax_failed('box',lang('resize_height_error'));
             }
-            if($upload['resize_quality'] < 1 || $upload['resize_quality'] > 100){
-                form_ajax_failed('box',lang('resize_quality_error'));
-            }
-            $this->setting->set_conf('upload.resize_width',$upload['resize_width']);
-            $this->setting->set_conf('upload.resize_height',$upload['resize_height']);
-            $this->setting->set_conf('upload.resize_quality',$upload['resize_quality']);
+            $this->setting->set_conf('upload.resize_width',intval($upload['resize_width']));
+            $this->setting->set_conf('upload.resize_height',intval($upload['resize_height']));
+            $this->setting->set_conf('upload.resize_quality',intval($upload['resize_quality']));
             $this->setting->set_conf('upload.enable_pre_resize',true);
         }else{
             $this->setting->set_conf('upload.enable_pre_resize',false);
         }
         
+        //大图按比例缩放
+        $enable_cut_big_pic = $this->getPost('enable_cut_big_pic');
+        if($enable_cut_big_pic){
+            if($upload['max_width'] == '' || $upload['max_width']<1){
+                form_ajax_failed('box',lang('max_width_error'));
+            }
+            if($upload['max_height'] == '' || $upload['max_height']<1){
+                form_ajax_failed('box',lang('max_height_error'));
+            }
+
+            $this->setting->set_conf('upload.max_width',intval($upload['max_width']));
+            $this->setting->set_conf('upload.max_height',intval($upload['max_height']));
+            $this->setting->set_conf('upload.enable_cut_big_pic',true);
+        }else{
+            $this->setting->set_conf('upload.enable_cut_big_pic',false);
+        }
+
+        //缩略图设置
+        $enable_thumb_square = $this->getPost('enable_thumb_square');
+        if($upload['thumb_width'] == '' || $upload['thumb_width']<1){
+            form_ajax_failed('box',lang('thumb_width_error'));
+        }
+        if(!$enable_thumb_square){
+            if($upload['thumb_height'] == '' || $upload['thumb_height']<1){
+                form_ajax_failed('box',lang('thumb_height_error'));
+            }
+            $this->setting->set_conf('upload.thumb_height',intval($upload['thumb_height']));
+            $this->setting->set_conf('upload.enable_thumb_square',false);
+        }else{
+            $this->setting->set_conf('upload.enable_thumb_square',true);
+        }
+        $this->setting->set_conf('upload.thumb_width',intval($upload['thumb_width']));
+        
+        //封面缩略图设置
+        $enable_cover_square = $this->getPost('enable_cover_square');
+        if($upload['cover_width'] == '' || $upload['cover_width']<1){
+            form_ajax_failed('box',lang('cover_width_error'));
+        }
+        if(!$enable_cover_square){
+            if($upload['cover_height'] == '' || $upload['cover_height']<1){
+                form_ajax_failed('box',lang('cover_height_error'));
+            }
+            $this->setting->set_conf('upload.cover_height',intval($upload['cover_height']));
+            $this->setting->set_conf('upload.enable_cover_square',false);
+        }else{
+            $this->setting->set_conf('upload.enable_cover_square',true);
+        }
+        $this->setting->set_conf('upload.cover_width',intval($upload['cover_width']));
+
+
         $this->setting->set_conf('upload.allow_size',$upload['allow_size']);
         form_ajax_success('box',lang('save_setting_success'),null,0.5,$_SERVER['HTTP_REFERER']);
     }
