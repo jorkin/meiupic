@@ -156,7 +156,7 @@ class template_mdl{
             $str = 'array(';
             foreach ($data as $key=>$val) {
                 if (is_array($val)) {
-                    $str .= "'$key'=>".self::arr_to_code($val).",";
+                    $str .= "'$key'=>".$this->arr_to_code($val).",";
                 } else {
                     if (strpos($val, '$')===0) {
                         $str .= "'$key'=>$val,";
