@@ -119,7 +119,7 @@ class template_mdl{
         $str = preg_replace("/\{lang\s+(.+?)\}/ies", "\$this->striplang('\\1')",$str);
         $str = preg_replace("/\{img\s+(.+?)\}/is", "<?php echo img_path(\\1);?>",$str);
         $str = preg_replace("/\{data\s+(.+?)\}/ies", "\$this->parse_data('\\1')",$str);
-        $str = preg_replace("/\{mp:(\w+)\s+([^}]+)\}/ie", "\$this->mp_tag('\\1','\\2', '\\0')", $str);
+        $str = preg_replace("/\{mp:(\w+)(\s+[^}]+)\}/ie", "\$this->mp_tag('\\1','\\2', '\\0')", $str);
         $str = preg_replace("/\{\/mp\}/ie", "\$this->end_mp_tag()", $str);
 
 
@@ -159,80 +159,88 @@ class template_mdl{
     function mp_tag($op,$data,$html){
         preg_match_all("/\s+([a-zA-Z0-9_\-]+)\=([^\"\s]+|\"[^\"]+\")/i", stripslashes($data), $matches, PREG_SET_ORDER);
 
-        $arr = array('action','num','cache','page', 'pagesize', 'urlrule', 'return', 'start');
-		$tools = array('mod', 'sql');
+        $arr = array('action','num','cache','page', 'urlrule', 'return');
+		$tools = array('sql');
 		$datas = array();
 		$tag_id = md5(stripslashes($html));
-
-		$str_datas = 'op='.$op.'&tag_md5='.$tag_id;
 		foreach ($matches as $v) {
-			$str_datas .= $str_datas ? "&$v[1]=".($op == 'block' && strpos($v[2], '$') === 0 ? $v[2] : urlencode($v[2])) : "$v[1]=".(strpos($v[2], '$') === 0 ? $v[2] : urlencode($v[2]));
 			if(in_array($v[1], $arr)) {
-				$$v[1] = $v[2];
+				$$v[1] = trim($v[2],'"');
 				continue;
 			}
-			$datas[$v[1]] = $v[2];
+            
+			$datas[$v[1]] = trim($v[2],'"');
 		}
 
-		$str = '';
+		$str = '<?php ';
 		$num = isset($num) && intval($num) ? intval($num) : 20;
 		$cache = isset($cache) && intval($cache) ? intval($cache) : 0;
 		$return = isset($return) && trim($return) ? trim($return) : 'data';
-		if (!isset($urlrule)) $urlrule = '';
+
+		if (isset($urlrule)){
+            $urlrule = str_replace('[#page#]',rawurlencode('[#page#]'),$urlrule);
+        }else{
+            $urlrule = '';
+        }
+
 		if (!empty($cache) && !isset($page)) {
 			$str .= '$tag_cache_name = md5(implode(\'&\','.$this->arr_to_code($datas).').\''.$tag_id.'\');';
-            $str .='if(!$'.$return.' = tpl_cache($tag_cache_name,'.$cache.')){';
+            $str .= '$cache_lib =& loader::lib("cache"); ';
+            $str .= 'if(!$'.$return.' = $cache_lib->get($tag_cache_name)){';
 		}
 
         if (in_array($op,$tools)) {
 			switch ($op) {
                 case 'sql':
-                    if ($datas['dbsource']) {
-                        $dbsource = getcache('dbsource', 'commons');
-                        if (isset($dbsource[$datas['dbsource']])) {
-                            $str .= '$get_db = new get_model('.var_export($dbsource,true).', \''.$datas['dbsource'].'\');';
-                        } else {
-                            return false;
-                        }
-                    } else {
-                        $str .= '$get_db = new get_model();';
-                    }
                     $num = isset($num) && intval($num) > 0 ? intval($num) : 20;
-                    if (isset($start) && intval($start)) {
-                        $limit = intval($start).','.$num;
-                    } else {
-                        $limit = $num;
-                    }
+                    $str .= '$db =& loader::database();';
                     if (isset($page)) {
                         $str .= '$pagesize = '.$num.';';
-                        $str .= '$page = intval('.$page.') ? intval('.$page.') : 1;if($page<=0){$page=1;}';
-                        $str .= '$offset = ($page - 1) * $pagesize;';
-                        $limit = '$offset,$pagesize';
-                        if ($sql = preg_replace('/select([^from].*)from/i', "SELECT COUNT(*) as count FROM ", $datas['sql'])) {
-                            $str .= '$r = $get_db->sql_query("'.$sql.'");$s = $get_db->fetch_next();$pages=pages($s[\'count\'], $page, $pagesize, $urlrule);';
-                        }
+                        $str .= '$page = '.(isset($page)?$page:1).';';
+                        $str .= '$urlrule = "'.$urlrule.'";';
+                        $str .= '$db->setSql("'.$datas['sql'].'");';
+                        $str .= '$r = $db->toPage($page,$pagesize);';
+                        $str .= '$page_lib =& loader::lib("page");';
+                        $str .= '$pages = $page_lib->fetch($r["total"],$r["current"],$urlrule);';
+                        $str .= '$'.$return.' = $r["ls"];';
+                        $str .= 'unset($r);';
+                    }else{
+                        $str .= '$'.$return.' = $db->getAll("'.$datas['sql'].' LIMIT '.$num.'");';
                     }
-                    
-                    $str .= '$r = $get_db->sql_query("'.$datas['sql'].' LIMIT '.$limit.'");while(($s = $get_db->fetch_next()) != false) {$a[] = $s;}$'.$return.' = $a;unset($a);';
-                break;
-                case 'mod':
                 break;
             }
+        }else{
+            if (!isset($action) || empty($action)) return false;
+            if (!file_exists(MODELDIR.$op.'_tag.mdl.php')) return false; 
+            $str .= '$'.$op.'_tag =& loader::model("'.$op.'_tag"); if (method_exists($'.$op.'_tag, \''.$action.'\')) {';
+            if (isset($start) && intval($start)) {
+                $datas['limit'] = intval($start).','.$num;
+            } else {
+                $datas['limit'] = $num;
+            }
+            if (isset($page)) {
+                $datas['page'] = $page;
+                $datas['pagesize'] = $num;
+                $str .= '$urlrule = "'.$urlrule.'";';
+                $str .= '$page_lib =& loader::lib("page");';
+                $str .= '$r = $'.$op.'_tag->'.$action.'('.$this->arr_to_code($datas).');';
+                $str .= '$pages = $page_lib->fetch($r["total"], $r["current"] ,$urlrule);';
+                $str .= '$'.$return.' = $r["ls"];';
+                $str .= 'unset($r);';
+            }else{
+                $datas['limit'] = $num;
+                $str .= '$'.$return.' = $'.$op.'_tag->'.$action.'('.$this->arr_to_code($datas).');';
+            }
+            
+            $str .= '}';
+            
         }
         if (!empty($cache) && !isset($page)) {
-			$str .= 'if(!empty($'.$return.')){setcache($tag_cache_name, $'.$return.', \'tpl_data\');}';
+			$str .= 'if(!empty($'.$return.')){ $cache_lib->set($tag_cache_name, $'.$return.',array("life_time" => '.$cache.'));}';
 			$str .= '}';
 		}
 
-        /*$str = "<?php \n";
-        $str .= '$_model =& loader::model(\''.$mod.'\');';
-        if($type == 'top'){
-            $str .= '$data = $_model->get_top('.$limit.','.$this->arr_to_code($filters).',\''.$sort.'\');';
-        }else{
-            $str .= '$data = $_model->get_all('.$page.','.$this->arr_to_code($filters).',\''.$sort.'\');';
-        }
-        $str .= '?>';*/
-        return $str;
+        return $str.' ?>';
     }
 
     function end_mp_tag(){
