@@ -194,11 +194,22 @@ class album_mdl extends modelfactory{
 
         $imglib =& loader::lib('image');
         $imglib->load($tmpfilepath);
-        $imglib->square(150);
+        
+        //处理图片至特定大小
+        $setting =& Loader::model('setting');
+        $cover_width = $setting->get_conf('upload.cover_width',150);
+        $cover_height = $setting->get_conf('upload.cover_height',150);
+        if($setting->get_conf('upload.enable_cover_square',true)){
+            $imglib->square($cover_width);//方块图
+        }else{
+            $imglib->resizeScale($cover_width,$cover_height);
+        }
+
         $ext = $imglib->getExtension();
         $new_path = get_album_cover($album_id,$ext);
         $cover_path = $tmpfslib->get_path('album_cover_'.$album_id);
         $imglib->save($cover_path);
+
         $storlib->upload($new_path , $cover_path);
         $tmpfslib->delete('album_cover_'.$album_id);
         $tmpfslib->delete($tmpfile);

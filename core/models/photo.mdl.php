@@ -243,12 +243,32 @@ class photo_mdl extends modelfactory{
                 }
             }
             
-            //resize image to thumb: 180*180
-            //更改为设置水印前生成缩略图 
-            $imglib->resizeScale(180,180);
+            $setting =& Loader::model('setting');
+            
+            //如果开启自动裁剪大图片,将临时文件直接裁剪
+            if($setting->get_conf('upload.enable_cut_big_pic',false)){
+                $max_width = $setting->get_conf('upload.max_width',1600);
+                $max_height = $setting->get_conf('upload.max_height',1600);
+                if($arr['width'] > $max_width || $arr['height'] > $max_height){
+                    $imglib->resizeScale($max_width,$max_height);
+                    $imglib->save($tmpfile);
+                    $arr['width'] = $imglib->getWidth();
+                    $arr['height'] = $imglib->getHeight();
+                }
+            }
+
+            //设置水印前生成缩略图 
+            $thumb_width = $setting->get_conf('upload.thumb_width',180);
+            $thumb_height = $setting->get_conf('upload.thumb_height',180);
+            if($setting->get_conf('upload.enable_thumb_square',false)){
+                $imglib->square($thumb_width);//方块图
+            }else{
+                $imglib->resizeScale($thumb_width,$thumb_height);
+            }
+            
             $imglib->save($tmpfile_thumb);
             
-            $setting =& Loader::model('setting');
+            
             $water_setting = $setting->get_conf('watermark');
             if($water_setting['type'] != 0){
                 $imglib->load($tmpfile);
@@ -333,8 +353,16 @@ class photo_mdl extends modelfactory{
         $imglib->save($tmpfilepath);
         $data['width'] = $imglib->getWidth();
         $data['height'] = $imglib->getHeight();
-
-        $imglib->resizeScale(180,180);
+        
+        //$imglib->resizeScale(180,180);
+        $setting =& Loader::model('setting');
+        $thumb_width = $setting->get_conf('upload.thumb_width',180);
+        $thumb_height = $setting->get_conf('upload.thumb_height',180);
+        if($setting->get_conf('upload.enable_thumb_square',false)){
+            $imglib->square($thumb_width);//方块图
+        }else{
+            $imglib->resizeScale($thumb_width,$thumb_height);
+        }
         $imglib->save($thumbtmpfilepath);
 
         $storlib->upload($photo_info['path'] , $tmpfilepath);

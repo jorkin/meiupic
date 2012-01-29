@@ -14,43 +14,6 @@
                             <div class="innerconetent">
                                 <form id="setting_upload_form" action="{link ctl=setting act=save_upload}" method="post" onsubmit="return false;">
                                     <div class="settingfield">
-                                        <div class="label">{lang enable_pre_resize_label}</div>
-                                        <div class="descinfo">{lang enable_pre_resize_tips}</div>
-                                        <div class="input">
-                                            <label><input type="checkbox" id="enable_pre_resize" name="enable_pre_resize" value="1" onclick="switch_div(this,'pre_resize')" {if $upload['enable_pre_resize']}checked="checked"{/if} /> {lang enable}</label>
-                                        </div>
-                                    </div>
-                                    <div id="pre_resize">
-                                    <div class="settingfield">
-                                        <div class="label">{lang upload_resize_width_label}</div>
-                                        <div class="descinfo">{lang upload_resize_width_tips}</div>
-                                        <div class="input">
-                                            <input type="text" name="upload[resize_width]" class="settinginput iptw1" value="{$upload['resize_width']}" />
-                                        </div>
-                                    </div>
-                                    <div class="settingfield">
-                                        <div class="label">{lang upload_resize_height_label}</div>
-                                        <div class="descinfo">{lang upload_resize_height_tips}</div>
-                                        <div class="input">
-                                            <input type="text" name="upload[resize_height]" class="settinginput iptw1" value="{$upload['resize_height']}" />
-                                        </div>
-                                    </div>
-                                    <div class="settingfield">
-                                        <div class="label">{lang upload_resize_quality_label}</div>
-                                        <div class="descinfo">{lang upload_resize_quality_tips}</div>
-                                        <div class="input">
-                                            <input type="text" name="upload[resize_quality]" class="settinginput iptw1" value="{$upload['resize_quality']}" />
-                                        </div>
-                                    </div>
-                                    </div>
-                                    <script>
-                                        if($('#enable_pre_resize').get(0).checked){
-                                            $("#pre_resize").show();
-                                        }else{
-                                            $("#pre_resize").hide();
-                                        }
-                                    </script>
-                                    <div class="settingfield">
                                         <div class="label">{lang upload_allow_size_label}</div>
                                         <div class="descinfo">{lang upload_allow_size_tips}</div>
                                         <div class="input">
@@ -63,7 +26,95 @@
                                              </select>
                                         </div>
                                     </div>
-                                    
+									<div class="settingfield">
+                                        <div class="label">{lang upload_resize_quality_label}</div>
+                                        <div class="descinfo">{lang upload_resize_quality_tips}</div>
+                                        <div class="input">
+                                            <input type="text" name="upload[resize_quality]" class="settinginput iptw1" value="{$upload['resize_quality']}" style="width:60px;" />
+                                        </div>
+                                    </div>
+									<div class="settingfield">
+                                        <div class="label">{lang enable_pre_resize_label}</div>
+                                        <div class="descinfo">{lang enable_pre_resize_tips}</div>
+                                        <div class="input">
+                                            <label><input type="checkbox" id="enable_pre_resize" name="enable_pre_resize" value="1" onclick="switch_div(this,'pre_resize')" {if $upload['enable_pre_resize']}checked="checked"{/if} /> {lang enable}</label>
+                                        </div>
+                                    </div>
+                                    <div id="pre_resize">
+                                    <div class="settingfield">
+                                        <div class="label">{lang upload_pre_resize_label}</div>
+                                        <div class="descinfo">{lang upload_pre_resize_tips}</div>
+                                        <div class="input">
+                                            <input type="text" name="upload[resize_width]" class="settinginput iptw1" value="{$upload['resize_width']}" style="width:60px;" />  ×  <input type="text" name="upload[resize_height]" class="settinginput iptw1" value="{$upload['resize_height']}" style="width:60px;" />
+                                        </div>
+                                    </div>
+                                    </div>
+                                    <script>
+                                        if($('#enable_pre_resize').get(0).checked){
+                                            $("#pre_resize").show();
+                                        }else{
+                                            $("#pre_resize").hide();
+                                        }
+
+										function switch_extra(o,d){
+											if(o.checked){
+												$("#"+d).hide();
+											}else{
+												$("#"+d).show();
+											}
+										}
+                                    </script>
+                                    <div class="settingfield">
+                                        <div class="label">自动裁剪大图片</div>
+                                        <div class="descinfo">当图片超过指定宽度和高度时自动缩放图片 </div>
+                                        <div class="input">
+                                            <label><input type="checkbox" id="enable_cut_big_pic" name="enable_cut_big_pic" value="1" onclick="switch_div(this,'cut_big_pic')" {if $upload['enable_cut_big_pic']}checked="checked"{/if} /> {lang enable}</label>
+                                        </div>
+                                    </div>
+									<div id="cut_big_pic">
+									<div class="settingfield">
+                                        <div class="label">最大图片大小(宽度/高度)</div>
+                                        <div class="descinfo">大于该指定大小的图片自动按比例缩放 </div>
+                                        <div class="input">
+                                             <input type="text" name="upload[max_width]" class="settinginput iptw1" value="{$upload['max_width']}" style="width:60px;" /> ×  <input type="text" name="upload[max_height]" class="settinginput iptw1" value="{$upload['max_height']}" style="width:60px;" /> 
+                                        </div>
+                                    </div>
+									</div>
+									<script>
+                                        if($('#enable_cut_big_pic').get(0).checked){
+                                            $("#cut_big_pic").show();
+                                        }else{
+                                            $("#cut_big_pic").hide();
+                                        }
+                                    </script>
+									
+                                    <div class="settingfield">
+                                        <div class="label">缩略图尺寸（宽度/高度）</div>
+                                        <div class="descinfo">小于该指定大小的图片将不生成缩略图,已经上传过的图片不会重新处理 </div>
+                                        <div class="input">
+                                             <input type="text" name="upload[thumb_width]" class="settinginput iptw1" value="{$upload['thumb_width']}" style="width:60px;" /> <span id="thumb_size_extra">×  <input type="text" name="upload[thumb_height]" class="settinginput iptw1" value="{$upload['thumb_height']}" style="width:60px;" /></span> <label><input type="checkbox" id="enable_thumb_square" name="enable_thumb_square" value="1" onclick="switch_extra(this,'thumb_size_extra')" {if $upload['enable_thumb_square']}checked="checked"{/if} /> 使用方块图</label>
+                                        </div>
+                                    </div>
+									<div class="settingfield">
+                                        <div class="label">封面尺寸（宽度/高度）</div>
+                                        <div class="descinfo">小于该指定大小的图片将不生成缩略图,已经上传过的图片不会重新处理 </div>
+                                        <div class="input">
+                                             <input type="text" name="upload[cover_width]" class="settinginput iptw1" value="{$upload['cover_width']}" style="width:60px;" /> <span id="cover_size_extra">×  <input type="text" name="upload[cover_height]" class="settinginput iptw1" value="{$upload['cover_height']}" style="width:60px;" /></span> <label><input type="checkbox" id="enable_cover_square" name="enable_cover_square" value="1" onclick="switch_extra(this,'cover_size_extra')" {if $upload['enable_cover_square']}checked="checked"{/if} /> 使用方块图</label>
+                                        </div>
+                                    </div>
+									<script>
+                                        if($('#enable_thumb_square').get(0).checked){
+                                            $("#thumb_size_extra").hide();
+                                        }else{
+                                            $("#thumb_size_extra").show();
+                                        }
+										if($('#enable_cover_square').get(0).checked){
+                                            $("#cover_size_extra").hide();
+                                        }else{
+                                            $("#cover_size_extra").show();
+                                        }
+                                    </script>
+									
                                     <div class="ctl_button">
                                         <input type="submit" name="submit" class="ylbtn" value="{lang save_setting}" onclick="Mui.form.sendPop('setting_upload_form')" />
                                     </div>
