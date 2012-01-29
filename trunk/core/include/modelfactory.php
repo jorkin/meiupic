@@ -35,16 +35,20 @@ class modelfactory{
         return $this->db->insertId();
     }
     
-    function get_all($page = NULL,$filters = array(),$sort = null){
+    function get_all($page = NULL,$filters = array(),$sort = null,$pageset = null){
         $where = $this->_filters($filters);
         if($sort){
             $sort = $this->_sort($sort);
         }else{
             $sort = $this->default_order;
         }
+        if(!$pageset){
+            $pageset = $this->pageset;
+        }
+
         $this->db->select($this->table_name,$this->default_cols,$where,$sort);
         if(is_numeric($page)){
-            $data = $this->db->toPage($page,$this->pageset);
+            $data = $this->db->toPage($page,$pageset);
         }else{
             $data = $this->db->getAll();
         }
@@ -69,6 +73,13 @@ class modelfactory{
         return $this->db->getAll();
     }
     
+    function get_row($fields,$filters = array()){
+        $where = $this->_filters($filters);
+        $this->db->select($this->table_name,$fields,$where);
+        $this->db->selectLimit(null,1);
+        return $this->db->getRow();
+    }
+
     function save($arr){
         $this->db->insert($this->table_name,$arr);
         if( $this->db->query() ){
