@@ -184,7 +184,7 @@ class album_mdl extends modelfactory{
     function make_cover_img($album_id,$path,& $ext,$old_ext = ''){
         $storlib =& loader::lib('storage');
         $tmpfslib =& loader::lib('tmpfs');
-        if($old_ext){
+        if($old_ext){//删除旧的封面
             $storlib->delete(get_album_cover($album_id,$old_ext));
         }
         
@@ -196,19 +196,27 @@ class album_mdl extends modelfactory{
         $imglib->load($tmpfilepath);
         
         //处理图片至特定大小
-        $setting =& Loader::model('setting');
-        $cover_width = $setting->get_conf('upload.cover_width',150);
-        $cover_height = $setting->get_conf('upload.cover_height',150);
-        if($setting->get_conf('upload.enable_cover_square',true)){
-            $imglib->square($cover_width);//方块图
-        }else{
-            $imglib->resizeScale($cover_width,$cover_height);
-        }
-
+        $orig_width = $imglib->getWidth();//原始图的宽度
+        $orig_height = $imglib->getHeight();//原始图的高度
+        
         $ext = $imglib->getExtension();
         $new_path = get_album_cover($album_id,$ext);
         $cover_path = $tmpfslib->get_path('album_cover_'.$album_id);
-        $imglib->save($cover_path);
+        
+        $setting =& Loader::model('setting');//获取封面图的设置
+        $cover_width = $setting->get_conf('upload.cover_width',150);
+        $cover_height = $setting->get_conf('upload.cover_height',150);
+        
+        if($orig_width > $cover_width || $orig_height > $cover_height){
+            if($setting->get_conf('upload.enable_cover_square',true)){
+                $imglib->square($cover_width);//方块图
+            }else{
+                $imglib->resizeScale($cover_width,$cover_height);
+            }
+            $imglib->save($cover_path);
+        }else{
+            @copy($tmpfile,$cover_path);
+        }
 
         $storlib->upload($new_path , $cover_path);
         $tmpfslib->delete('album_cover_'.$album_id);

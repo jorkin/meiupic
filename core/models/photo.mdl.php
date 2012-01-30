@@ -260,14 +260,17 @@ class photo_mdl extends modelfactory{
             //设置水印前生成缩略图 
             $thumb_width = $setting->get_conf('upload.thumb_width',180);
             $thumb_height = $setting->get_conf('upload.thumb_height',180);
-            if($setting->get_conf('upload.enable_thumb_square',false)){
-                $imglib->square($thumb_width);//方块图
-            }else{
-                $imglib->resizeScale($thumb_width,$thumb_height);
+            
+            if($arr['width'] > $thumb_width || $arr['height'] > $thumb_height){
+                if($setting->get_conf('upload.enable_thumb_square',false)){
+                    $imglib->square($thumb_width);//方块图
+                }else{
+                    $imglib->resizeScale($thumb_width,$thumb_height);
+                }
+                $imglib->save($tmpfile_thumb);
+            }else{//图片过小的话则直接拷贝至缩略图
+                @copy($tmpfile,$tmpfile_thumb);
             }
-            
-            $imglib->save($tmpfile_thumb);
-            
             
             $water_setting = $setting->get_conf('watermark');
             if($water_setting['type'] != 0){
@@ -354,16 +357,20 @@ class photo_mdl extends modelfactory{
         $data['width'] = $imglib->getWidth();
         $data['height'] = $imglib->getHeight();
         
-        //$imglib->resizeScale(180,180);
+        
         $setting =& Loader::model('setting');
         $thumb_width = $setting->get_conf('upload.thumb_width',180);
         $thumb_height = $setting->get_conf('upload.thumb_height',180);
-        if($setting->get_conf('upload.enable_thumb_square',false)){
-            $imglib->square($thumb_width);//方块图
+        if($data['width'] > $thumb_width || $data['height'] > $thumb_height){
+            if($setting->get_conf('upload.enable_thumb_square',false)){
+                $imglib->square($thumb_width);//方块图
+            }else{
+                $imglib->resizeScale($thumb_width,$thumb_height);
+            }
+            $imglib->save($thumbtmpfilepath);
         }else{
-            $imglib->resizeScale($thumb_width,$thumb_height);
+            @copy($tmpfile,$thumbtmpfilepath);
         }
-        $imglib->save($thumbtmpfilepath);
 
         $storlib->upload($photo_info['path'] , $tmpfilepath);
         $storlib->upload($photo_info['thumb'] , $thumbtmpfilepath);
