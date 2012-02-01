@@ -1,0 +1,10 @@
+<div class="footer wrap">{$footer}
+    {if $show_process_info}
+	
+    Processed in {echo timer_read('page');}ms, {php $db_obj=&loader::database();}
+    {echo $db_obj->getQueryNum()} Querys
+    {/if}
+</div>
+{if isset($page_foot)}{$page_foot}{/if}
+</body>
+</html>

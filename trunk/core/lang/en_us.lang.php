@@ -689,6 +689,7 @@ $language   =   array(
 'category'                         => 'Category',
 'category_list'                    => 'Category list',
 'all_category'                     => 'All category',
+'category_name_empty'              => 'Category name can not be empty!',
 'create_category_succ'             => 'Create category successfully!',
 'create_category_fail'             => 'Failed to create category!',
 'edit_category_succ'               => 'Edit category successfully!',
