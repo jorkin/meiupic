@@ -1022,3 +1022,8 @@ html.ie6 #meiu_float_box,html.ie7 #meiu_float_box,html.ie8 #meiu_float_box{
     padding-top:20px;
     border-top:1px solid #eee;
 }
+.meiu_notice_div{
+    border:none;
+    background:none;
+    padding:0;
+}
