@@ -1,0 +1,11 @@
+{template block/header}
+<div id="bodywrap">
+     这里是首页：<br /><br /><br />
+	数据调用：照片点击排行 取出五条记录, {mp：photo action=lists num=5 order=h_desc}<br />
+	{mp:photo action=lists num=5 order=h_desc}
+		{loop $data $k $row}
+			{echo $k+1}. {$row['name']} ----- Hits:{$row['hits']} <br />
+		{/loop}
+	{/mp}
+</div>
+{template block/footer}

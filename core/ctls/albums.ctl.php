@@ -63,7 +63,9 @@ class albums_ctl extends pagecore{
 
         $title = '';
         //面包屑
-        $crumb_nav = array();
+        $crumb_nav = array( 
+                    array('name'=>lang('album_list'),'link'=>site_link('albums'))
+                    );
         if($search['cate_id'] != ''){
             $crumb_nav = $this->mdl_cate->cate_path_link($search['cate_id']);
             foreach($crumb_nav as $b){

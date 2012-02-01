@@ -688,6 +688,7 @@ $language   =   array(
 'category'                         => '分类',
 'category_list'                    => '分类列表',
 'all_category'                     => '所有分类',
+'category_name_empty'              => '分类名不能为空！',
 'create_category_succ'             => '创建分类成功！',
 'create_category_fail'             => '创建分类失败！',
 'edit_category_succ'               => '编辑分类成功！',
