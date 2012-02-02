@@ -42,20 +42,32 @@ function ajax_box( $content , $title = '', $close_time = 0 , $forward = '' , $di
 
 //排序下拉菜单
 function get_sort_list($setting,$type,$default){
-    $str = '<div class="dropmenu f_right listorder">
-            <span class="label">'.lang('sort_by').':</span>';
-    $str .= '<div class="selectlist"><div class="selected"></div><ul class="optlist">';
     $sort = isset($_COOKIE['Mpic_sortset_'.$type])?$_COOKIE['Mpic_sortset_'.$type]:$default;
-    foreach($setting as $k=>$v){
+    $menu_data = array();
+    foreach ($setting as $k => $v) {
+        $data = array();
+        $data['name'] = $k;
+        $data['field'] = $v;
         if($v.'_asc' == $sort){
-            $str .= '<li class="current"><a href="javascript:void(0);" onclick="sort_setting(\''.$type.'\',\''.$v.'_desc\');" class="list_asc_on"><span>'.$k.'</span></a>';
+            $data['c_sort'] = 'asc';
+            $data['t_sort'] = 'desc';
+            $data['is_current'] = true;
         }elseif($v.'_desc' == $sort){
-            $str .= '<li class="current"><a href="javascript:void(0);" onclick="sort_setting(\''.$type.'\',\''.$v.'_asc\');" class="list_desc_on"><span>'.$k.'</span></a>';
+            $data['c_sort'] = 'desc';
+            $data['t_sort'] = 'asc';
+            $data['is_current'] = true;
         }else{
-            $str .= '<li><a href="javascript:void(0);" onclick="sort_setting(\''.$type.'\',\''.$v.'_asc\');" class="list_asc"><span>'.$k.'</span></a>';
+            $data['c_sort'] = 'asc';
+            $data['t_sort'] = 'desc';
+            $data['is_current'] = false;
         }
+        $menu_data[] = $data;
     }
-    $str = $str.'</ul></div></div>';
+
+    $output=&loader::lib('output');
+    $output->set('sort_menu',$menu_data);
+    $output->set('sort_menu_type',$type);
+    $str = loader::view('block/sort_menu',false);
     return array($sort,$str);
 }
 //排序分页菜单
@@ -63,12 +75,11 @@ function get_page_setting($type){
     $arr = array(12,30,56);
     $current = isset($_COOKIE['Mpic_pageset_'.$type])?$_COOKIE['Mpic_pageset_'.$type]:'12';
     
-    $str = '<div class="dropmenu pset f_right">
-        <span class="label">'.lang('show_nums_per_page').':</span>';
-    $str .= '<div class="selectlist"><div class="selected"></div><ul class="optlist">';
-    foreach($arr as $v){
-        $str .= '<li '.($current==$v?'class="current"':'').'><a href="javascript:void(0);" onclick="page_setting(\''.$type.'\','.$v.');"><span>'.$v.'</span></a></li>';
-    }
-    $str .= '</ul></div></div>';
+    $output=&loader::lib('output');
+    $output->set('pageset_menu',$arr);
+    $output->set('pageset_menu_current',$current);
+    $output->set('pageset_menu_type',$type);
+    $str = loader::view('block/pageset_menu',false);
+
     return array($current,$str);
 }

@@ -43,22 +43,12 @@ class pagecore{
         $meu_head .= "<link rel=\"alternate\" title=\"{$feed_title}\" href=\"".$feed_url."\" type=\"application/rss+xml\" />\n";
         $this->output->set('meu_head',$meu_head);
 
-        if(!$this->user->loggedin()){
-            $user_status = '<a href="'.site_link('users','login').'" title="'.lang('login_title').'" onclick="Mui.box.show(this.href,true);return false;">'.lang('login').'</a>';
-        }else{
-            $user_status = '<span class="name">'.$this->user->get_field('user_nicename').'</span>
-            <span class="pipe">|</span>
-            <a title="'.lang('profile_title').'" href="'.site_link('users','profile').'">'.lang('profile').'</a>
-            <span class="pipe">|</span>
-            <a title="'.lang('upload_photo').'" href="'.site_link('upload').'">'.lang('upload_photo').'</a>
-            <span class="pipe">|</span>
-            <a title="'.lang('sys_setting_title').'" href="'.site_link('setting').'">'.lang('sys_setting').'</a>
-            <span class="pipe">|</span>
-            <a title="'.lang('logout_title').'" href="'.site_link('users','logout').'" onclick="Mui.box.show(this.href);return false;">'.lang('logout').'</a>';
-
+        if($this->user->loggedin()){
             //更新提示
             $this->output->set('update_info',$this->setting->get_conf('update'));
         }
+        $user_status = loader::view('block/user_status',false);
+
         $this->output->set('user_status',$plugin->filter('user_status',$user_status));
         $page_head = $plugin->filter('page_head','',$album_id,$photo_id);
         $page_foot = $plugin->filter('page_foot','',$album_id,$photo_id);
