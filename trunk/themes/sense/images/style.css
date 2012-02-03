@@ -228,12 +228,14 @@ textarea.inputstyle{
 }
 /*面包屑*/
 #crumb{
-	padding:8px 0 10px;
+    border-bottom:1px solid #fff;
+    margin-bottom:10px;
 }
 #crumb em{font-style:normal;padding:0 5px;}
 #crumb .co{
 	background:url(crumb_home.png) no-repeat 8px;
-	padding-left:30px;
+    padding:10px 0 10px 30px;
+    border-bottom:1px solid #bbb;
 }
 /*#head_notify {
     left: 25%;
@@ -242,6 +244,69 @@ textarea.inputstyle{
     position: absolute;
     top: 0;
 }*/
+/*筛选框 及 搜索框*/
+.filter{
+    height:40px;
+}
+.filter .search{
+    width:250px;
+    height:29px;
+    background:url(search.png) no-repeat;
+}
+.filter .search input{
+    font-family: "Lucida Grande",verdana,arial,helvetica,sans-serif;
+    margin:7px 0 0 7px;
+    border:none;
+    width:200px;
+}
+.filter .search button{
+    background:none;
+    border: none;
+    cursor: pointer;
+    float: right;
+    height: 29px;
+    width: 40px;
+}
+.display_setting .tab{
+    margin-right:20px;
+}
+/*tab标签卡*/
+.tab{
+    border-style:solid;
+    border-width:1px 0 0 1px;
+    border-color:#ccc;
+}
+.tab li{
+    float:left;
+    background:url(tab_bg.png) repeat-x top;
+    height:27px;
+    padding:0 8px;
+    border-style:solid;
+    border-width:0 1px 1px 0;
+    border-color:#ccc;
+}
+.tab li a{
+    line-height:27px;
+    color:#666;
+}
+.tab li a:hover{
+    color:#336699;
+    text-decoration:none;
+}
+.tab li.current a{
+    color:#666;
+}
+.listorder li a{
+    line-height:15px;
+    display:block;
+    margin-top:6px;
+}
+.listorder li a span{
+    padding-right:0;
+}
+.tab li.current{
+    background-position:bottom;
+}
 /*body*/
 
 table.layout{
