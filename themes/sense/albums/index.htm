@@ -1,26 +1,32 @@
 {template block/header}
 <div id="bodywrap">
 	<div class="filter">
-		<div class="search">
-			<form id="album_search" action="/?ctl=albums" method="post">
-			<input type="text" name="sname" value="" placeholder="搜索相册" />
-
-			<button type="submit" name="submit"></button>
+		<div class="search f_right">
+			<form id="album_search" action="{link ctl=albums}" method="post">
+			    <input type="text" name="sname" value="{$search['name']}" placeholder="{lang search_albums}" />
+			    <button type="submit" name="submit"></button>
 			</form>
 		</div>
-		<div class="display_setting">
+		<div class="display_setting f_left">
 			{$album_col_menu}
 		</div>
 	</div>
+    <!--{if $loggedin}-->
+    <div class="admin_bar">
+        <div class="mb10">
+            <!--{if $search['cate_id']!=''}-->
+            <div class="bigbutton"><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=albums act=create cate=$search['cate_id']}',true);"><span>{lang create_new_album}</span></a></div>
+            <!--{else}-->
+            <div class="bigbutton"><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=albums act=create}',true);"><span>{lang create_new_album}</span></a></div>
+            <!--{/if}-->
+        </div>
+    </div>
+    <!--{/if}-->
     <table class="layout">
         <tr>
             <td class="left">
                 <div class="mainbody">
                     <!--{if $albums}-->
-                    <div class="col titbg">
-                        <h4 class="f_left">{lang total_ablum|$total_num}</h4>
-                        
-                    </div>
                     <div class="innercol grid">
                         <div class="gallary_wrap">
                             <!--{loop $albums $k $v}-->
@@ -126,24 +132,7 @@
                 </div>
             </td>
             <td class="right">
-                <div class="sidebar">
-                    <!--{if $loggedin}-->
-                    <div class="mb10">
-                        <!--{if $search['cate_id']!=''}-->
-                        <div class="bigbutton"><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=albums act=create cate=$search['cate_id']}',true);"><span>{lang create_new_album}</span></a></div>
-                        <!--{else}-->
-                        <div class="bigbutton"><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=albums act=create}',true);"><span>{lang create_new_album}</span></a></div>
-                        <!--{/if}-->
-                    </div>
-                    <!--{/if}-->
-                    <div class="sidesearch mb20">
-                        <h2>{lang search_albums}</h2>
-                            <form id="album_search" class="search" action="{link ctl=albums}" method="post">
-                                <input type="text" class="inputstyle iptw1" name="sname" value="{$search['name']}" />
-                                <input type="submit" name="submit" class="ylbtn1 ml5" value="{lang search}" />
-                            </form>
-                    </div>
-                    
+                <div class="sidebar">                   
                     <div class="side_category">
                         <h2>{lang side_category}</h2>
                         <ul class="category_tree">
@@ -161,10 +150,4 @@
         </tr>
     </table>
 </div>
-<script type="text/javascript">
-$(function(){
-    drop_select('.listorder');
-    drop_select('.pset');
-});
-</script>
 {template block/footer}
