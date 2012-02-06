@@ -124,6 +124,8 @@ class exif_cla{
             0x5D => lang('open17'),
             0x5F => lang('open18')
         );
+        if(is_array($infos)){
+        $new_img_info = array();
         foreach($infos as $k=>$info){
             if(!in_array($info,array('WhiteBalance','ExposureMode')) && $info===false){
                 continue;
@@ -180,6 +182,7 @@ class exif_cla{
                 default:
                     $new_img_info[$k] = $info;
             }
+        }
         }
         unset($new_img_info['ResolutionUnit']);
         return $new_img_info;

@@ -536,14 +536,15 @@ class photos_ctl extends pagecore{
             $chief_exif = array('Model','ApertureFNumber','ExposureTime',
                                 'Flash','FocalLength','ISOSpeedRatings','WhiteBalance',
                                 'ExposureBiasValue','DateTimeOriginal','FocusDistance');
-
-            foreach($exif as $k=>$v){
-                if(in_array($k,$chief_exif)){
-                    $metas[] = array(
-                        'key' =>$k,
-                        'value' =>$v,
-                        'cname' => lang('exif_'.$k)
-                    );
+            if(is_array($exif)){
+                foreach($exif as $k=>$v){
+                    if(in_array($k,$chief_exif)){
+                        $metas[] = array(
+                            'key' =>$k,
+                            'value' =>$v,
+                            'cname' => lang('exif_'.$k)
+                        );
+                    }
                 }
             }
             if(isset($metas))
