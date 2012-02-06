@@ -287,14 +287,14 @@ textarea.inputstyle{
 }
 .tab li a{
     line-height:27px;
-    color:#666;
+    color:#333;
 }
 .tab li a:hover{
     color:#336699;
     text-decoration:none;
 }
 .tab li.current a{
-    color:#666;
+    color:#000;
 }
 .listorder li a{
     line-height:15px;
