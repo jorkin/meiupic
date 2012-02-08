@@ -63,7 +63,7 @@ function need_login($type = 'page'){
 }
 //发送禁止缓存的header
 function no_cache_header(){
-    header("Content-Type:text/xml;charset=utf-8");
+    //header("Content-Type:text/html;charset=utf-8");
     header("Expires: Thu, 01 Jan 1970 00:00:01 GMT");
     header("Cache-Control: no-cache, must-revalidate");
     header("Pragma: no-cache");
