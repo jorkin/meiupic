@@ -42,12 +42,20 @@ class albums_ctl extends pagecore{
         $albums = $this->mdl_album->get_all($page,$search,$sort);
         
         if(is_array($albums['ls'])){
+            $mdl_photo = &loader::model('photo');
+
             foreach($albums['ls'] as $k=>$v){
                 $albums['ls'][$k]['album_control_icons'] = $this->plugin->filter(
                                                         'album_control_icons','',$v['id']);
                 if($v['cover_id']){
-                    $albums['ls'][$k]['cover_path'] = get_album_cover($v['id'],$v['cover_ext']);
+                    $cover_info = $mdl_photo->get_info($v['cover_id'],'thumb');
+                    if($cover_info)
+                        $albums['ls'][$k]['cover_path'] = $cover_info['thumb'];
+                    else
+                        $albums['ls'][$k]['cover_id'] = 0;
+                    //$albums['ls'][$k]['cover_path'] = get_album_cover($v['id'],$v['cover_ext']);
                 }
+
             }
         }
         
