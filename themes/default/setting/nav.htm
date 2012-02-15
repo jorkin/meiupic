@@ -16,9 +16,9 @@
                                 <table class="datalist">
                                 <thead>
                                 <tr>
-                                    <th style="width:80px;"></th>
+                                    <th style="width:40px;"></th>
                                     <th style="width:80px;">{lang nav_sort}</th>
-                                    <th style="width:200px;">{lang nav_name}</th>
+                                    <th style="width:250px;">{lang nav_name}</th>
                                     <th>{lang nav_url}</th>
                                     <th style="width:70px;">{lang type}</th>
                                     <th style="width:70px;">{lang enable}</th>
@@ -41,8 +41,8 @@
                                     <td colspan="4"><span class="i_add sprite"></span> <a href="javascript:void(0)" onclick="Madmin.addEditNav($(this).parent().parent())">{lang add_menu}</a></td>
                                 </tr>
                                 <tr class="hover tablerow">
-                                    <td><input type="checkbox" name="delete" onclick="Madmin.check_all('.checkbox',this.checked)" value="1" /> {lang delete?} </td>
-                                    <td colspan="5"><input type="submit" value="{lang submit}" class="ylbtn" onclick="Mui.form.sendPop('navform')" /></td>
+                                    <td colspan="2"><input type="checkbox" name="delete" onclick="Madmin.check_all('.checkbox',this.checked)" value="1" /> {lang delete?} </td>
+                                    <td colspan="4"><input type="submit" value="{lang submit}" class="ylbtn" onclick="Mui.form.sendPop('navform')" /></td>
                                 </tr>
                                 </tbody>
                                 </table>
