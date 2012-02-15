@@ -11,7 +11,7 @@
 			{$album_col_menu}
 		</div>
 	</div>
-    <!--{if $loggedin}-->
+    <!--{if $loggedin && $albums}-->
     <div class="admin_bar">
         <div class="f_left">
             <label><input type="checkbox" value="1" onclick="Madmin.check_all('.selitem',this.checked)" />{lang sel_all}</label> <span class="i_trash_sp sprite"></span><a href="javascript:void(0)" onclick="Madmin.checked_action('.selitem','{link ctl=albums act=confirm_delete_batch}');">{lang delete_selected}</a>
