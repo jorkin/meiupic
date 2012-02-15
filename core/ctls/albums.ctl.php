@@ -11,7 +11,7 @@ class albums_ctl extends pagecore{
         //search
         $search['name'] = safe_convert($this->getRequest('sname'));
         $search['tag'] = safe_convert($this->getRequest('tag'));
-        $search['cate_id'] = intval($this->getGet('cate'));
+        $search['cate_id'] = $this->getGet('cate');//这里不能加上intval
 
         $par['page'] = '[#page#]';
         if($search['name']){
