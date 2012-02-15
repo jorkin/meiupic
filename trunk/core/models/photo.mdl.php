@@ -308,7 +308,7 @@ class photo_mdl extends modelfactory{
                     $arr['create_d'] = date('j');
                 }
 
-                $arr = array_merge($arr,$photo_info);
+                $arr = $arr+$photo_info;
                 //move thumb img
                 $storlib->upload($thumbpath,$tmpfile_thumb);
 
