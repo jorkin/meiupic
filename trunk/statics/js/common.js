@@ -140,7 +140,7 @@ var Mui = {
         }else{
             var top = $(window).scrollTop() + ((document.documentElement.clientHeight-w_h)/2) - 50;
         }
-        if( top < 50 ) top = 50;
+        if( top < 20 ) top = 20;
         $(jel).css({'left':left});
         $(jel).css({'top':top});
     },

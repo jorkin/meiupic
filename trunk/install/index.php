@@ -288,6 +288,16 @@ if($method == 'license'){
         $mdl_setting->set_conf('site.share_title',lang('share_title'));
         $mdl_setting->set_conf('site.keywords',lang('site_keywords'));
         $mdl_setting->set_conf('site.description',lang('site_desc'));
+    $mdl_setting->set_conf('system.enable_auto_update',true);//TODO 
+    $mdl_setting->set_conf('upload.enable_cut_big_pic',false);
+    $mdl_setting->set_conf('upload.max_width',1600);
+    $mdl_setting->set_conf('upload.max_height',1200);
+    $mdl_setting->set_conf('upload.enable_thumb_square',false);
+    $mdl_setting->set_conf('upload.thumb_width',180);
+    $mdl_setting->set_conf('upload.thumb_height',180);
+    $mdl_setting->set_conf('upload.enable_cover_square',true);
+    $mdl_setting->set_conf('upload.cover_width',150);
+    $mdl_setting->set_conf('upload.cover_height',150);
         
         showjsmessage(lang('update_user_setting'));
         

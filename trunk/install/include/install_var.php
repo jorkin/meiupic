@@ -1,7 +1,7 @@
 <?php
 
 define('SOFT_NAME', 'MeiuPic');
-define('MPIC_VERSION','2.1.1');
+define('MPIC_VERSION','2.2.0');
 
 $sqlfile = INSDIR.'data/install.sql';
 $sqlite_sqlfile = INSDIR.'data/install_sqlite.sql';

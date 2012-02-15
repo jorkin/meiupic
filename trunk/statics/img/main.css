@@ -486,16 +486,16 @@ form .field .clear{
     float:left;
 }
 .no_data_info .no_picture{
-    background:url(no_photo.gif) no-repeat right;
+    background:url(no_photo.png) no-repeat right;
 }
 .no_data_info .no_album{
-    background:url(no_album.gif) no-repeat right;
+    background:url(no_album.png) no-repeat right;
 }
 .no_data_info .no_album_search{
-    background:url(no_album_search.gif) no-repeat right;
+    background:url(no_album_search.png) no-repeat right;
 }
 .no_data_info .no_photo_search{
-    background:url(no_photo_search.gif) no-repeat right;
+    background:url(no_photo_search.png) no-repeat right;
 }
 .no_data_info .data_msg{
     float:left;

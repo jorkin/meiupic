@@ -69,9 +69,9 @@ function no_cache_header(){
     header("Pragma: no-cache");
 }
 //获取相册的封面的地址
-function get_album_cover($aid,$ext){
+/*function get_album_cover($aid,$ext){
     return 'data/cover/'.$aid.'.'.$ext;
-}
+}*/
 //获取用户头像url
 function get_avatar($comment){
     $gravatar_url = GRAVATAR_URL;

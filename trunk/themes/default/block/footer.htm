@@ -1,8 +1,6 @@
 <div class="bottom">&nbsp;</div>
 <div class="footer">{$footer}
     {if $show_process_info}
-	{php $db_obj=&loader::database();}
-    {echo $db_obj->getQueryNum()} Querys ,
     Processed in {echo timer_read('page');}ms
     {/if}
 </div>
