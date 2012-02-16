@@ -346,7 +346,7 @@ table.layout td.right{
 /*main left*/
 
 .mainbody .innerconetent{
-    padding:20px;
+    padding-bottom:20px;
 }
 
 /*图片列表*/
@@ -361,7 +361,7 @@ table.layout td.right{
     margin-bottom:20px;
 }
 .grid .sel_on{
-    background:#ffffff;
+    background:#eee;
 }
 .grid .pic_box img{
     border:1px solid #ccc;
@@ -480,6 +480,7 @@ table.layout td.right{
     overflow:hidden;
 }
 .footer{
+    padding:10px 0;
     clear:left;
     color:#999;
     font-size:9px;
@@ -691,15 +692,27 @@ table.layout td.right{
 
 
 .taglist{
-    padding:0 10px;
     height:1%;
+    padding-top:10px;
 }
 .taglist li{
-    line-height:4em;
     display:inline;
-    padding-right:15px;
 }
-
+.taglist li a{
+    background-color: #F2F0F0;
+    border: 1px solid #BBBBBB;
+    border-radius: 20px;
+    box-shadow: 0 1px #FFFFFF inset, 0 1px 1px rgba(34, 25, 25, 0.1);
+    display: inline-block;
+    font-size: 13px;
+    margin: 0 8px 8px 0;
+    padding: 2px 10px;
+}
+.taglist li a:hover{
+    color: #8C7E7E;
+    background:#fff;
+    text-decoration:none;
+}
 
 .meta_thumb{
     margin:40px;
