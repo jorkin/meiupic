@@ -1,15 +1,21 @@
 {template block/header}
 <div id="bodywrap">
     <div class="filter">
-        <div class="search f_right">
-            <form id="photo_search" action="{link ctl=photos act=search}" method="post">
-                <input type="hidden" name="album_id" value="{$album_info['id']}" />
-                <input type="hidden" name="searchtype" value="album" />                
-                <input type="text" name="sname" value="{$search['name']}" placeholder="{lang search_photos}" />
-                <button type="submit" name="submit"></button>
-            </form>
+		<form id="photo_search" action="{link ctl=photos act=search}" method="post">
+        <div class="search f_right ml10">
+             <input type="hidden" name="album_id" value="{$album_info['id']}" />            
+             <input type="text" name="sname" value="{$search['name']}" placeholder="{lang search_photos}" />
+             <button type="submit" name="submit"></button>
         </div>
+		<div class="f_right mt5">
+             <label><input type="checkbox" name="searchtype" value="album" checked="checked" /> {lang current_album}</label>
+        </div>
+		</form>
         <div class="display_setting f_left">
+			<ul class="tab show_type f_right">
+				<li class="current tile"><a href="javascript:void(0);" title="{lang flat_mode}"><span>&nbsp;</span></a></li>
+				<li class="slideshow"><a href="{link ctl=photos act=slide aid=$album_info['id']}" title="{lang slide_mode}"><span>&nbsp;</span></a></li>
+			</ul>
             {$photo_col_menu}
         </div>
     </div>

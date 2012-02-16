@@ -301,7 +301,7 @@ class photo_mdl extends modelfactory{
                 $arr['path'] = $filepath;
                 $arr['thumb'] = $thumbpath;
                 if($new_photo){
-                    $arr['name'] = file_pure_name($filename);
+                    $arr['name'] = isset($photo_info['name'])?$photo_info['name']:file_pure_name($filename);
                     $arr['create_time'] = time();
                     $arr['create_y'] = date('Y');
                     $arr['create_m'] = date('n');

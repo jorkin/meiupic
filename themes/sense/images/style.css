@@ -6,6 +6,9 @@ body{
 td{
     text-align:center;
 }
+body,td,input{
+	font-family: "Hiragino Sans GB","Helvetica Neue",Helvetica,STHeiTi,"Microsoft YaHei",Arial,sans-serif;
+}
 /*统一相关定义*/
 .wrap,#bodywrap{
 	width:1000px;
@@ -131,6 +134,7 @@ textarea.inputstyle{
     text-align:left;
 	height:73px;
 	margin-bottom:10px;
+	min-width:1000px;
 }
 #header .wrap{
 	position:relative;
@@ -283,6 +287,7 @@ textarea.inputstyle{
 .admin_bar .f_left label{
     margin-right:20px;
 }
+.admin_bar .f_left a{margin-right:5px;}
 
 /**/
 .display_setting .tab{
@@ -298,7 +303,7 @@ textarea.inputstyle{
     float:left;
     background:url(tab_bg.png) repeat-x top;
     height:27px;
-    padding:0 8px;
+    padding:0 6px;
     border-style:solid;
     border-width:0 1px 1px 0;
     border-color:#ccc;
@@ -394,9 +399,13 @@ table.layout td.right{
     margin:2px 5px 0 0;
     float:left;
 }
+.grid .info .title .name input{
+	width:180px;
+}
 .grid .sel_on .info .title .name a{
     display:block;
     cursor: text;
+	text-decoration:none;
 }
 .grid .sel_on .info .title .name a:hover{
     background:#ffffcc;
@@ -412,6 +421,24 @@ table.layout td.right{
     padding:0 4px;
 }
 
+/*浏览模式切换按钮*/
+.show_type li{
+	padding:0 2px;
+}
+.show_type li a span{
+	padding-top:26px;
+	height:0;
+	display: inline-block;
+	overflow:hidden;
+	width:20px;
+	background:url(show_type.png) no-repeat;
+}
+.show_type li.tile a span{
+	background-position:0 -14px;
+}
+.show_type li.slideshow a span{
+	background-position:0 -33px;
+}
 /*sidebar*/
 .sidebar{padding-left:10px;}
 .album_info{
@@ -707,29 +734,66 @@ table.layout td.right{
 .innerconetent form .field div.label{
     width:170px;
 }
+/*提示界面*/
 
-#center_box{
-    width:500px;
-    padding:20px;
-    margin:0 auto 10px;
-    border:1px solid #ccc;
-    background:#fff;
-    -moz-border-radius:10px;
-    -webkit-border-radius:10px;
-    border-radius:10px;
-    -moz-box-shadow:3px 3px 4px #BBB;
-    -webkit-box-shadow:3px 3px 4px #BBB;
-    box-shadow:3px 3px 4px #BBB;
+#info_page .center_box{
+	width:500px;
+	padding:20px;
+	position:absolute;
+	top:50%;
+	left:50%;
+	margin-left:-250px;
+	margin-top:-100px;
+	background:#f6f6f6;
+	background-repeat:repeat-x;
+	background-image:-khtml-gradient(linear, left top, left bottom, from(#f6f6f6), to(#f0f0f0));
+	background:-moz-linear-gradient(top, #f6f6f6 0%, #f0f0f0 100%);
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0%, #f6f6f6), color-stop(100%, #f0f0f0));
+	background:-webkit-linear-gradient(top, #f6f6f6 0%, #f0f0f0 100%);
+	background:-o-linear-gradient(top, #f6f6f6 0%, #f0f0f0 100%);
+	background:-ms-linear-gradient(top, #f6f6f6 0%, #f0f0f0 100%);
+	background:linear-gradient(top, #f6f6f6 0%, #f0f0f0 100%);filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6',endColorstr='#f0f0f0',GradientType=0);
+	border: 1px solid #CCCCCC;
+    border-radius: 5px 5px 5px 5px;
+    box-shadow: 0 1px 1px #FFFFFF inset, 0 2px 5px rgba(0, 0, 0, 0.35);
+	text-align:center;
 }
 
-#center_box div.title{
-    font-size:16px;
-    font-weight:bold;
-    text-align:left;
+#info_page .center_box div.title{
+	background:url(info.png) no-repeat 10px 10px;
+	padding-left:70px;
+	color:#00599D;
+    font-size:26px;
+	font-weight:normal;
+    text-align:center;
+	text-shadow: 0 1px 1px #FFFFFF;
     line-height:2;
+	min-height:80px;
+	height:auto !important;
+	height:80px;
     margin-bottom:20px;
 }
-
+#info_page .info_foot{
+	color:#888;
+	text-align:center;
+}
+#info_page .info_foot a{
+	color:#666;
+}
+#info_page .info_foot a:hover{
+	color:#111;
+	text-decoration:none;
+}
+#info_page .info_foot a.login{
+	background:url(ico_login.png) no-repeat left;
+	padding:10px 0 10px 40px;
+	margin-right:20px;
+}
+#info_page .info_foot a.home{
+	background:url(ico_home.png) no-repeat left;
+	padding:8px 0 8px 30px;
+	margin-right:20px;
+}
 
 
 /*admin page*/

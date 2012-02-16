@@ -75,13 +75,13 @@ class album_mdl extends modelfactory{
     }
     
     function real_delete($id,$album_info=null){
-        if(is_null($album_info)){
+        /*if(is_null($album_info)){
             $album_info = $this->get_info($id);
         }
         if($album_info > 0){
             $cover = get_album_cover($id,$album_info['cover_ext']);
             @unlink(ROOTDIR.$cover);
-        }
+        }*/
         //remove comments
         $mdl_comment =& loader::model('comment');
         $mdl_comment->delete_by_ref(1,$id);
@@ -171,9 +171,8 @@ class album_mdl extends modelfactory{
             $this->db->update('#@photos','id='.intval($cover_info['cover_id']),array('is_cover'=>1));
             $this->db->query();
             
-            $this->make_cover_img($id,$photo_info['path'],$ext,$info['cover_ext']);
-        
-            $cover_info['cover_ext'] = $ext;
+            //$this->make_cover_img($id,$photo_info['path'],$ext,$info['cover_ext']);
+            //$cover_info['cover_ext'] = $ext;
         }else{
             $cover_info['cover_id'] = 0;
         }
@@ -181,7 +180,7 @@ class album_mdl extends modelfactory{
         return $this->update($id,$cover_info);
     }
     
-    function make_cover_img($album_id,$path,& $ext,$old_ext = ''){
+    /*function make_cover_img($album_id,$path,& $ext,$old_ext = ''){
         $storlib =& loader::lib('storage');
         $tmpfslib =& loader::lib('tmpfs');
         if($old_ext){//删除旧的封面
@@ -221,7 +220,7 @@ class album_mdl extends modelfactory{
         $storlib->upload($new_path , $cover_path);
         $tmpfslib->delete('album_cover_'.$album_id);
         $tmpfslib->delete($tmpfile);
-    }
+    }*/
     
     function set_cover($pic_id){
         $photo_mdl =& loader::model('photo');
@@ -234,8 +233,8 @@ class album_mdl extends modelfactory{
         $this->db->query();
         $this->db->update('#@photos','id='.intval($pic_id),array('is_cover'=>1));
         $this->db->query();
-        $this->make_cover_img($pic_info['album_id'],$pic_info['path'],$ext,$album_info['cover_ext']);
-        $arr['cover_ext'] = $ext;
+        //$this->make_cover_img($pic_info['album_id'],$pic_info['path'],$ext,$album_info['cover_ext']);
+        //$arr['cover_ext'] = $ext;
         return $this->update($pic_info['album_id'],$arr);
     }
     
