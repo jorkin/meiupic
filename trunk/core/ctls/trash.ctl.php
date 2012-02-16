@@ -24,7 +24,11 @@ class trash_ctl extends pagecore{
                 if(is_array($data['ls'])){
                     foreach($data['ls'] as $k=>$v){
                         if($v['cover_id']){
-                            $data['ls'][$k]['cover_path'] = get_album_cover($v['id'],$v['cover_ext']);
+                            $cover_info = $this->mdl_photo->get_info($v['cover_id'],'thumb');
+                            if($cover_info)
+                                $data['ls'][$k]['cover_path'] = $cover_info['thumb'];
+                            else
+                                $data['ls'][$k]['cover_id'] = 0;
                         }
                     }
                 }

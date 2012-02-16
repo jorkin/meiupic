@@ -8,6 +8,7 @@ class albums_ctl extends pagecore{
     }
     
     function index(){
+        $page = intval($this->getGet('page','1'));
         //search
         $search['name'] = safe_convert($this->getRequest('sname'));
         $search['tag'] = safe_convert($this->getRequest('tag'));
@@ -25,6 +26,12 @@ class albums_ctl extends pagecore{
         }
         $pageurl = site_link('albums','index',$par);
         
+        //TODO: 如果是搜索表单提交，则进行页面跳转
+        if($this->isPost()){
+            $redirect_url = site_link('albums','index',array('page'=>$page)+$par);
+            redirect($redirect_url);
+        }
+
         if($search['name'] || $search['tag']){
             $this->output->set('is_search',true);
         }else{
@@ -37,7 +44,6 @@ class albums_ctl extends pagecore{
         $sort_setting = array(lang('create_time') => 'ct',lang('upload_time') => 'ut',lang('photo_nums') => 'p');
         list($sort,$sort_list) =  get_sort_list($sort_setting,'album','ct_desc');
         
-        $page = intval($this->getGet('page','1'));
         $this->mdl_album->set_pageset($pageset);
         $albums = $this->mdl_album->get_all($page,$search,$sort);
         
@@ -53,9 +59,7 @@ class albums_ctl extends pagecore{
                         $albums['ls'][$k]['cover_path'] = $cover_info['thumb'];
                     else
                         $albums['ls'][$k]['cover_id'] = 0;
-                    //$albums['ls'][$k]['cover_path'] = get_album_cover($v['id'],$v['cover_ext']);
                 }
-
             }
         }
         

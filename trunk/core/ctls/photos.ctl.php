@@ -57,16 +57,6 @@ class photos_ctl extends pagecore{
             }
         }
         
-        $view_type = '<div class="dropmenu f_right viewtype">
-        <span class="label">'.lang('view_type').':</span>
-        <div class="selectlist">
-        <div class="selected"></div>
-        <ul class="optlist">
-        <li class="current"><a href="'.site_link('photos','index',array('aid'=>$album_id)).'"><span>'.lang('flat_mode').'</span></a></li>
-        <li><a href="'.site_link('photos','slide',array('aid'=>$album_id)).'"><span>'.lang('slide_mode').'</span></a></li>
-        </ul>
-        </div></div>';
-        
         //load comments
         if($this->setting->get_conf('system.enable_comment') && $album_info['enable_comment']==1){
             $cpage = intval($this->getGet('cpage',1));
@@ -98,7 +88,7 @@ class photos_ctl extends pagecore{
         $album_info['tags_list'] = parse_tag($album_info['tags']);
         $album_info['desc'] = $this->plugin->filter('album_desc',$album_info['desc'],$album_id);
         
-        $this->output->set('photo_col_menu',$this->plugin->filter('photo_col_menu',$view_type.$page_setting_str.$sort_list,$album_id));
+        $this->output->set('photo_col_menu',$this->plugin->filter('photo_col_menu',$page_setting_str.$sort_list,$album_id));
         $this->output->set('photo_multi_opt',$this->plugin->filter('photo_multi_opt','',$album_id));
         $this->output->set('photo_sidebar',$this->plugin->filter('photo_sidebar','',$album_id));
         
@@ -258,8 +248,7 @@ class photos_ctl extends pagecore{
             }else{
                 $url = site_link('photos','index',array('aid'=>$album_id));
             }
-            header('Location: '.$url);
-            exit;
+            redirect($url);
         }else{
             $page = intval($this->getGet('page',1));
             $search['tag'] = safe_convert($this->getRequest('tag'));
@@ -271,6 +260,11 @@ class photos_ctl extends pagecore{
                 $par['tag'] = $search['tag'];
             }
             $pageurl = site_link('photos','search',$par);
+            //TODO: 如果是搜索表单提交，则进行页面跳转
+            if($this->isPost()){
+                $redirect_url = site_link('photos','search',array('page'=>$page)+$par);
+                redirect($redirect_url);
+            }
 
             $sort_setting = $this->_sort_setting();
             list($sort,$sort_list) =  get_sort_list($sort_setting,'photo','tu_desc');
@@ -281,6 +275,8 @@ class photos_ctl extends pagecore{
             if(is_array($photos['ls'])){
                 foreach($photos['ls'] as $k=>$v){
                     $photos['ls'][$k]['photo_priv'] = $this->mdl_album->check_album_priv($v['album_id']);
+                    $photos['ls'][$k]['photo_control_icons'] = $this->plugin->filter('photo_control_icons','',0,$v['id']);
+
                     $img_thumb = '<a href="'.site_link('photos','view',array('id'=>$v['id'])).'">
                     <img src="'.img_path($v['thumb']).'" /></a>';
                     $photos['ls'][$k]['img_thumb'] = $this->plugin->filter('photo_list_thumb',$img_thumb,$v['id'],$v['thumb'],$v['path']);
@@ -290,11 +286,12 @@ class photos_ctl extends pagecore{
             $pagestr = $page_obj->fetch($photos['total'],$photos['current'],$pageurl);
 
             $this->output->set('photo_col_menu',$this->plugin->filter('photo_col_menu',$page_setting_str.$sort_list,null));
+            $this->output->set('photo_multi_opt',$this->plugin->filter('photo_multi_opt','',0));
             $this->output->set('photos',$photos['ls']);
             $this->output->set('search',$search);
             $this->output->set('pagestr',$pagestr);
             $this->output->set('total_num',$photos['count']);
-
+            $this->output->set('show_takentime',($sort=='tt_desc'||$sort=='tt_asc')?true:false);
             //面包屑
             $crumb_nav = array();
             
