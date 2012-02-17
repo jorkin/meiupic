@@ -1,9 +1,7 @@
 <!--{if !$loggedin}-->
 <a href="{link ctl=users act=login}" title="{lang login_title}" onclick="Mui.box.show(this.href,true);return false;">{lang login}</a>
 <!--{else}-->
-<span class="name">{$u_info['user_nicename']}</span>
-<span class="pipe">|</span>
-<a title="{lang profile_title}" href="{link ctl=users act=profile}">{lang profile}</a>
+<a title="{lang profile_title}" href="{link ctl=users act=profile}">{$u_info['user_nicename']}</a>
 <span class="pipe">|</span>
 <a title="{lang upload_photo}" href="{link ctl=upload}">{lang upload_photo}</a>
 <span class="pipe">|</span>

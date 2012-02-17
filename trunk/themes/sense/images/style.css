@@ -112,7 +112,7 @@ select{
 }
 /*表单相关*/
 form .field .label{
-    color:#444;
+    color:#111;
 }
 form .field .ipts span{
     margin-left: 10px;
@@ -228,9 +228,11 @@ textarea.inputstyle{
     top:0;
 	color:#fff;
 }
-#header #settings_person span.pipe {
+#header #ustatus_menu span.pipe {
     font-size:1em;
     opacity:0.6;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=60)"; /*IE8*/
+    filter:alpha(opacity=60);  /*IE5、IE5.5、IE6、IE7*/
 }
 #header #ustatus_menu a{
 	color:#fff;
@@ -810,6 +812,21 @@ table.layout td.right{
 
 
 /*admin page*/
+#setting_layout .col{
+	float:left;
+	width:150px;
+}
+#setting_layout .col .f_left{
+	float:none;
+}
+#setting_layout .innercol{
+	border:1px solid #ccc;
+	border-radius:10px;
+	background:#fff;
+	padding:20px 10px;
+	width:800px;
+	float:right;
+}
 .settingfield{
     margin-bottom:15px;
 }
