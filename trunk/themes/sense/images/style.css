@@ -443,7 +443,8 @@ table.layout td.right{
 }
 /*sidebar*/
 .sidebar{padding-left:10px;}
-.album_info{
+
+/*.album_info{
     border-bottom:1px solid #e1e1e1;
 }
 .album_info h2,.other_info h2{
@@ -474,7 +475,7 @@ table.layout td.right{
     color:#777;
     line-height:1.5;
 }
-
+*/
 
 /*foot*/
 .bottom{
@@ -666,13 +667,12 @@ table.layout td.right{
     box-shadow:0 0 3px #4694D0;
 }
 /*tabs*/
-.data_tab{padding-left:20px;height:26px;margin-bottom:10px;background:url(1pxdot.gif) repeat-x bottom;}
+/*.data_tab{padding-left:20px;height:26px;margin-bottom:10px;background:url(1pxdot.gif) repeat-x bottom;}
 .data_tab li{
     float:left;
     padding:0 20px;
     line-height:24px;
     margin-right:10px;
-    /*background:#EDF3FE;*/
     border-color: #aaa;
     border-style: solid;
     border-width: 1px;
@@ -690,7 +690,7 @@ table.layout td.right{
 .data_tab li.current{
     background: #fff;
     border-color: #aaa #aaa #fff;
-}
+}*/
 
 
 .taglist{
@@ -815,7 +815,27 @@ table.layout td.right{
 #setting_layout .col{
 	float:left;
 	width:150px;
+    padding-top:20px;
+    margin-right:-1px;
+    z-index:10;
+    position: relative;
 }
+#setting_layout .col h1{
+    font-size:13px;
+    padding:5px 25px 5px 0px;
+    border:1px solid #ccc;
+    border-right:none;
+    border-radius:8px 0 0 8px;
+    background:#fff;
+    text-align:right;
+}
+#setting_layout .col h4{
+    font-size:12px;
+    font-weight:normal;
+    padding:5px 25px 5px 0px;
+    text-align:right;
+}
+
 #setting_layout .col .f_left{
 	float:none;
 }
@@ -823,9 +843,15 @@ table.layout td.right{
 	border:1px solid #ccc;
 	border-radius:10px;
 	background:#fff;
-	padding:20px 10px;
-	width:800px;
-	float:right;
+	width:847px;
+    min-height:500px;
+    height:auto !important;
+    height:500px;
+	float:left;
+    z-index:11;
+}
+#setting_layout .innerconetent{
+    padding:25px 15px;
 }
 .settingfield{
     margin-bottom:15px;
@@ -848,17 +874,19 @@ table.layout td.right{
 .ctl_button{
     padding-left:50px;
 }
-input.settinginput{
-    border:1px solid #999;
-    font-size:13px;
-    font-family: "Lucida Grande",verdana,arial,helvetica,sans-serif;
-    padding: 4px 3px;
+.settinginput{
+    background: #FFFFFF;
+    border: 1px solid #D6D6D6;
+    border-radius: 5px 5px 5px 5px;
+    box-shadow: 2px 2px 3px #EEEEEE inset, 0 1px 0 #FFFFFF;
+    font-size: 13px;
+    line-height: 18px;
+    outline: 0 none;
+    padding: 3px 5px;
 }
-textarea.settinginput{
-    border:1px solid #999;
-    font-size:13px;
-    font-family: "Lucida Grande",verdana,arial,helvetica,sans-serif;
-    padding: 4px 3px;
+.settinginput:focus{
+    border:1px solid #4694D0;
+    box-shadow:0 0 3px #4694D0
 }
 .themelist{
     height:1%;
@@ -906,10 +934,10 @@ table.datalist{
     border-collapse: collapse;
 }
 table.datalist thead th{
-    padding:5px;
-    font-size:14px;
-    background:-moz-linear-gradient(center top , #FDFDFD, #E5E5E5) repeat scroll 0 0 transparent;
-    background:-webkit-gradient(linear,0% 0%, 0% 100%, from(#FDFDFD), to(#E5E5E5));
+    padding:8px;
+    font-size:12px;
+    background:#f0f0f0;
+    border-bottom:1px solid #ccc;
 }
 
 table.datalist td{
