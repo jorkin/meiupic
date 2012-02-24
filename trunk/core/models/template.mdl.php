@@ -47,7 +47,7 @@ class template_mdl{
         if(isset($loggedin) && $loggedin){
             $footer .= '<script src="'.$statics_path.'js/admin.js" type="text/javascript"></script>';
         }
-        $footer .= 'Pow'.'ered by <a href="http://mei'.'upic.m'.'eiu.cn/" target="_blank">Mei'.'uPic '.MPIC_VERSION.'</a>';
+        $footer .= 'Pow'.'ered by <a href="http://mei'.'upic.m'.'eiu.cn/" target="_blank">Mei'.'uPic '.MPIC_VERSION.'</a> ';
         $footer .= safe_invert($setting->get_conf('site.footer'),true);
         
         $show_process_info = $setting->get_conf('system.show_process_info');
