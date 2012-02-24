@@ -23,6 +23,27 @@ class category_ctl extends pagecore{
         $this->render();
     }
 
+    function manage(){
+        $categorylist = $this->mdl_cate->get_flat_category();
+        $this->output->set('categorylist',$categorylist);
+        
+        $setting_menu = $this->plugin->filter('setting_menu','');
+        $this->output->set('setting_menu',$setting_menu);
+        //面包屑
+        $crumb_nav = array();
+        $crumb_nav[] = array('name'=>lang('system_setting'),'link'=>site_link('setting'));
+        $crumb_nav[] = array('name'=>lang('category_manage'));
+
+        $this->page_crumb($crumb_nav);
+
+        $page_title =  lang('comments_manage').' - '.lang('system_setting').' - '.$this->setting->get_conf('site.title');
+        $page_keywords = $this->setting->get_conf('site.keywords');
+        $page_description = $this->setting->get_conf('site.description');
+        $this->page_init($page_title,$page_keywords,$page_description);
+        
+        $this->render();
+    }
+
     function create(){
         need_login('ajax_page');
         $from = $this->getGet('from');

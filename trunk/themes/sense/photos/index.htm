@@ -90,21 +90,26 @@
                         </div>
                         
                     {if $enable_comment}
-                        <div class="col titbg">
-                            <h1 class="f_left">{lang all_album_comments}</h1>
-                            <h4 class="f_left">{lang t_comments_num|`$album_info['comments_num']`}</h4>
+                    <div class="comment_wrap">
+                        <div class="bd-b">
+                            <h2 class="hd bd-a">
+                                {if $loggedin}
+                                <span class="f_right" style="margin-top:7px;">
+                                    {lang loginwith|<span class="gray">`$u_info['user_nicename']`</span>}<a href="{link ctl=users act=logout}"  onclick="Mui.box.show(this.href);return false;">{lang logout}</a> 
+                                </span>
+                                {/if}
+                                <strong>{lang all_album_comments}</strong>
+                                <span>{lang t_comments_num|`$album_info['comments_num']`}</span>
+                            </h2>
                         </div>
                         <div class="innetcol">
-                            <div class="comment_form">
-                                <form id="album_comment_form" action="{link ctl=comments act=post}" method="post" onsubmit="return false;">
+                            <div class="comment_form bd-b">
+                                <form id="album_comment_form" action="{link ctl=comments act=post}" method="post" onsubmit="return false;" class="bd-a">
                                     <input type="hidden" name="ref_id" value="{$ref_id}" />
                                     <input type="hidden" name="type" value="{$comments_type}" />
                                     {if $loggedin}
-                                    <div class="field">
-                                        {lang loginwith|<span class="title_c">`$u_info['user_nicename']`</span>}<a href="{link ctl=users act=logout}"  onclick="Mui.box.show(this.href);return false;">{lang logout}</a> ?
-                                        <input type="hidden" name="email" value="{if isset($u_extrainfo['email'])}{$u_extrainfo['email']}{/if}" />
-                                        <input type="hidden" name="author" value="{$u_info['user_nicename']}" />
-                                    </div>
+                                    <input type="hidden" name="email" value="{if isset($u_extrainfo['email'])}{$u_extrainfo['email']}{/if}" />
+                                    <input type="hidden" name="author" value="{$u_info['user_nicename']}" />
                                     {else}
                                     <div class="field">
                                         <div class="label">{lang email}</div>

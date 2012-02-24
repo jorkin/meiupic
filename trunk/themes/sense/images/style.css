@@ -16,16 +16,37 @@ body,td,input{
 }
 a{
 	text-decoration:none;
-	color:#404E6A;
+	color:#333;
 }
 a:hover{
 	text-decoration:underline;
 }
 a.b{
-	color:#000;
+	color:#222;
 }
 a.b:hover{
 	color:#336699;
+}
+
+/*双重边框*/
+.bd-a{
+    border-bottom:1px solid #ddd;
+}
+.bd-b{
+    border-bottom:1px solid #fff;
+}
+/*分页样式*/
+.paginator .thispage{
+    padding:5px;
+}
+.paginator a{
+    padding:5px;
+    background:#ddd;
+}
+.paginator a:hover{
+    background:#aaa;
+    color:#fff;
+    text-decoration:none;
 }
 /*按钮相关定义*/
 .inputstyle{
@@ -34,9 +55,11 @@ a.b:hover{
     border-radius: 5px 5px 5px 5px;
     box-shadow: 2px 2px 3px #EEEEEE inset, 0 1px 0 #FFFFFF;
     font-size: 13px;
+    font-family: "Courier New",Courier,Verdana,sans-serif;
     line-height: 18px;
     outline: 0 none;
     padding: 3px 5px;
+    color:#333;
 }
 input.inputstyle{
     height:20px;
@@ -241,6 +264,7 @@ textarea.inputstyle{
 #crumb{
     border-bottom:1px solid #fff;
     margin-bottom:10px;
+    padding-top:10px;
 }
 #crumb em{font-style:normal;padding:0 5px;}
 #crumb .co{
@@ -248,6 +272,8 @@ textarea.inputstyle{
     padding:10px 0 10px 30px;
     border-bottom:1px solid #ddd;
 }
+
+
 /*#head_notify {
     left: 25%;
 	margin: 7px 0 0;
@@ -257,6 +283,7 @@ textarea.inputstyle{
 }*/
 /*筛选框 及 搜索框*/
 .filter{
+    padding:10px 0;
     height:40px;
 }
 .filter .search{
@@ -278,6 +305,11 @@ textarea.inputstyle{
     float: right;
     height: 29px;
     width: 40px;
+}
+.filter .f_right select{
+    line-height:18px;
+    padding:5px;
+    border:1px solid #ccc;
 }
 .admin_bar{
     height:40px;
@@ -312,14 +344,14 @@ textarea.inputstyle{
 }
 .tab li a{
     line-height:27px;
-    color:#333;
+    color:#222;
 }
 .tab li a:hover{
     color:#555;
     text-decoration:none;
 }
 .tab li.current a{
-    color:#000;
+    color:#222;
 }
 .listorder li a{
     line-height:15px;
@@ -331,6 +363,9 @@ textarea.inputstyle{
 }
 .tab li.current{
     background-position:bottom;
+}
+.wide li{
+    padding:0 20px;
 }
 /*body*/
 
@@ -369,6 +404,7 @@ table.layout td.right{
     border:1px solid #ccc;
     padding:4px;
     background:#fff;
+    border-radius:3px;
 } 
 .grid .pic_box table{width:100%}
 .grid .pic_box table td{
@@ -443,7 +479,12 @@ table.layout td.right{
 }
 /*sidebar*/
 .sidebar{padding-left:10px;}
-
+.sidebar .tinfo{
+    padding:5px;
+    color:#555;
+    line-height:1.6;
+    border-bottom:1px solid #e1e1e1;
+}
 /*.album_info{
     border-bottom:1px solid #e1e1e1;
 }
@@ -457,12 +498,7 @@ table.layout td.right{
 .album_info .tags {
     margin-top:10px;
 }
-.sidebar .tinfo{
-    padding:5px;
-    color:#333;
-    line-height:1.6;
-    border-bottom:1px solid #e1e1e1;
-}
+
 .sidebar .sideline{
     height:2px;
     overflow:hidden;
@@ -501,7 +537,10 @@ table.layout td.right{
 
 /*upload*/
 #upload_field{
-    padding:20px;
+    padding:40px 25px;
+    background:#fff;
+    border:1px solid #ccc;
+    border-radius:10px;
 }
 #upload_field .field{
     padding-left:10px;
@@ -509,14 +548,57 @@ table.layout td.right{
 #muilti_uploader .notice_info{
     padding:40px 0 40px 50px;
 }
+.plupload {
+    border: 1px solid #CCCCCC;
+}
 
 /*comments*/
+.comment_wrap h2 {
+    padding-bottom: 10px;
+}
+.comment_wrap h2 strong {
+    font-size: 14px;
+    margin-right: 20px;
+}
+.comment_wrap h2 span {
+    font-size: 12px;
+    font-weight: 100;
+}
+.comment_form{
+    padding:20px 0 0;
+    margin-bottom:20px;
+}
+.comment_wrap .field .label {
+    float: none;
+    text-align: left;
+    width: auto;
+    color:#666;
+}
+.comment_wrap .field .ipts{
+    float:none;
+}
+.comment_list {
+    padding: 0 0 40px;
+}
+.comment_list .title_c{
+    color:#69c;
+}
+.comment_list .ctlbtn a{
+    color:#888;
+}
 .more_comments{
     background:-moz-linear-gradient(center top , #FDFDFD, #ECECEC);
     background:-webkit-gradient(linear,0% 0%, 0% 100%, from(#FDFDFD), to(#ECECEC));
     -moz-border-radius:5px;
     -webkit-border-radius:5px;
     border-radius:5px;
+}
+.cmt_fce img,.comment_author img{
+    border-radius:5px;
+}
+.no_comments{
+    padding:20px;
+    text-align:center;
 }
 
 #photo_body{
@@ -525,6 +607,7 @@ table.layout td.right{
     height: auto !important;
     height: 200px;
     min-height:200px;
+    padding-bottom:20px;
 }
 #imgarea img{
     border:1px solid #ccc;
@@ -532,7 +615,7 @@ table.layout td.right{
     background: #fff url(loading.gif) no-repeat center;
 }
 #photo_infos{
-    padding:0 20px 20px;
+    padding:0 0 20px;
     height:1%;
 }
 #photo_infos h1{
@@ -541,9 +624,26 @@ table.layout td.right{
     color:#666;
     padding-bottom:10px;
 }
-.photo_main .desc{
-    line-height:1.6;
+.photo_main .desc,.photo_main .tags{
+    padding-bottom:10px;
+    line-height:1.8;
     color:#444;
+    font-size:13px;
+}
+.photo_main .tags .inline a{
+    background-color: #F2F0F0;
+    border: 1px solid #BBBBBB;
+    border-radius: 14px;
+    box-shadow: 0 1px #FFFFFF inset, 0 1px 1px rgba(34, 25, 25, 0.1);
+    display: inline-block;
+    font-size: 13px;
+    margin: 0 0 8px 10px;
+    padding: 2px 6px;
+}
+.photo_main .tags .inline a:hover{
+    color: #8C7E7E;
+    background:#fff;
+    text-decoration:none;
 }
 
 /*详情页缩略图导航*/
@@ -692,7 +792,14 @@ table.layout td.right{
     border-color: #aaa #aaa #fff;
 }*/
 
-
+/*用户信息页*/
+#profile_box,#login_box{
+    padding:40px 25px;
+    background:#fff;
+    border:1px solid #ccc;
+    border-radius:10px;
+}
+/*标签页*/
 .taglist{
     height:1%;
     padding-top:10px;
@@ -708,7 +815,7 @@ table.layout td.right{
     display: inline-block;
     font-size: 13px;
     margin: 0 8px 8px 0;
-    padding: 2px 10px;
+    padding: 4px 10px;
 }
 .taglist li a:hover{
     color: #8C7E7E;
@@ -721,6 +828,11 @@ table.layout td.right{
     _margin-left:20px;
     width:180px;
     float:left;
+}
+.meta_thumb img{
+    background:#fff;
+    padding:5px;
+    border:1px solid #ccc;
 }
 .meta_thumb p.datetime{
     margin:10px 0;
@@ -737,17 +849,24 @@ table.layout td.right{
 }
 .meta_data table td{
     line-height:30px;
-    border-bottom:1px solid #eee;
 }
 .meta_data .lht2{
     padding:10px 0 20px;
+    text-align:right;
 }
-
+.mainbody .col{
+    height:50px;
+    padding-left:0;
+}
+.mainbody .col h1{
+    font-size:20px;
+    font-weight:normal;
+}
 .innerconetent form .field {
     padding: 0 0 15px;
 }
 .innerconetent form .field div.label{
-    width:170px;
+    width:150px;
 }
 /*提示界面*/
 
@@ -819,10 +938,13 @@ table.layout td.right{
     margin-right:-1px;
     z-index:10;
     position: relative;
+    height:auto;
+    padding-left:0px;
 }
+
 #setting_layout .col h1{
     font-size:13px;
-    padding:5px 25px 5px 0px;
+    padding:5px 20px 5px 0px;
     border:1px solid #ccc;
     border-right:none;
     border-radius:8px 0 0 8px;
@@ -832,7 +954,7 @@ table.layout td.right{
 #setting_layout .col h4{
     font-size:12px;
     font-weight:normal;
-    padding:5px 25px 5px 0px;
+    padding:5px 20px 5px 0px;
     text-align:right;
 }
 
@@ -941,7 +1063,7 @@ table.datalist thead th{
 }
 
 table.datalist td{
-    padding:8px;
+    padding:12px 8px;
     border-bottom:1px dotted #ddd;
     display: table-cell;
     overflow: hidden;
@@ -964,7 +1086,7 @@ table.datalist tr.hover:hover td{
 }
 .sysinfo table.info td,.sysinfo table.info th{
     border:1px solid #eee;
-    padding:5px;
+    padding:8px;
 }
 .sysinfo table.info th{
     width:20%;
@@ -976,8 +1098,10 @@ table.datalist tr.hover:hover td{
 
 .category_list{
     padding-left:20px;
+    padding-bottom:20px;
 }
 .category_list li{
+    clear:both;
     height:25px;
     line-height:30px;
     font-size:14px;
@@ -987,6 +1111,11 @@ table.datalist tr.hover:hover td{
 }
 .category_list li a.i{
     background:transparent;
+    font-size:12px;
+    color:#666;
+}
+.manage_btns .bigbutton{
+    padding-left:20px;
 }
 
 .treebg{
@@ -1003,38 +1132,6 @@ table.datalist tr.hover:hover td{
 .tree1{
     background-position:0 0px;
 }
-
-/*#nav{
-    height:24px;
-    padding:10px 0 0 25px;
-}
-#nav ul{
-    height:24px;
-    padding-left:10px;
-    background:url(crumb_bg.png) no-repeat top left;
-}
-#nav ul li{
-    float:left;
-    height:24px;
-    line-height:24px;
-    background:url(crumb_bg.png) no-repeat right center;
-    padding-right:15px;
-    font-size:13px;
-    color:#666;
-}
-#nav ul li.last{
-    background:url(crumb_bg.png) no-repeat right bottom;
-}
-#nav ul li a,#nav ul li span{
-    display:block;
-    padding:0 8px;
-    background:#e0e0d4;
-    text-decoration:none;
-    font-weight:bold;
-}
-#nav ul li a:hover{
-    color:green;
-}*/
 
 
 #meta_detail{
@@ -1069,4 +1166,7 @@ html.ie6 #meiu_float_box,html.ie7 #meiu_float_box,html.ie8 #meiu_float_box{
     border:none;
     background:none;
     padding:0;
+}
+#listcopy input.inputstyle{
+    width:150px;
 }

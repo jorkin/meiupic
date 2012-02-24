@@ -32,7 +32,7 @@ class plugin_copyimg extends plugin{
     
     function photo_list_page_icon($str,$album_id,$id){
         if($this->loggedin){
-            return $str.'<li><a href="javascript:void(0);" onclick="Mui.bubble.show(this,\''.site_link('utils','copyurl',array('id'=>$id)).'\',true);Mui.bubble.resize(400)" title="'.lang('copyimg:copy_to_clipboard').'"><span class="i_copyclip sprite"></span></a></li>';
+            return $str.'<li><a href="javascript:void(0);" onclick="Mui.bubble.show(this,\''.site_link('utils','copyurl',array('id'=>$id)).'\',true);Mui.bubble.resize(330);" title="'.lang('copyimg:copy_to_clipboard').'"><span class="i_copyclip sprite"></span></a></li>';
         }else{
             return $str;
         }
