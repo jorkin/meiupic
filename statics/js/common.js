@@ -148,7 +148,13 @@ var Mui = {
         var pos = $(obj).offset();
         var width = $(obj).width();
         var height = $(obj).height();
-        $(jel).css({'left':pos.left});
+        var rightp = pos.left+$(jel).outerWidth();
+        
+        if(rightp > $(document.body).width()){
+            $(jel).css({'right':10,'left':''});
+        }else{
+            $(jel).css({'left':pos.left,'right':''});
+        }
         $(jel).css({'top':pos.top+height+3});
     }
 };

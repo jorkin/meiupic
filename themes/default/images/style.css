@@ -716,8 +716,10 @@ table.datalist tr.hover:hover td{
 
 .category_list{
     padding-left:20px;
+    padding-bottom:20px;
 }
 .category_list li{
+    clear:both;
     height:25px;
     line-height:30px;
     font-size:14px;
@@ -727,6 +729,8 @@ table.datalist tr.hover:hover td{
 }
 .category_list li a.i{
     background:transparent;
+    font-size:12px;
+    color:#666;
 }
 
 .treebg{

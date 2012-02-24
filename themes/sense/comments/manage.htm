@@ -8,7 +8,7 @@
                     {template setting/setting_menu}
                     <div class="innercol">
                        <div class="innerconetent">
-                              <ul class="tab f_left">
+                              <ul class="tab f_left wide">
                                 <li class="all {if $status=='all'} current{/if}"><a href="{link ctl=comments act=manage}">{lang all}</a></li>
                                     <li class="moderated {if $status=='0'} current{/if}"><a href="{link ctl=comments act=manage status=0}">{lang moderated} <span class="count">(<span class="pending-count">{if isset($status_nums[0])}{$status_nums[0]}{else}0{/if}</span>)</span></a></li>
                                     <li class="blocked {if $status=='2'} current{/if}"><a href="{link ctl=comments act=manage status=2}">{lang blocked} <span class="count">(<span class="pending-count">{if isset($status_nums[2])}{$status_nums[2]}{else}0{/if}</span>)</span></a></li>
@@ -21,10 +21,10 @@
                                        <thead>
                                        <tr>
                                            <th width="40"><input type="checkbox" class="selitem" onclick="Madmin.check_all('.selitem',this.checked)" value="1" /></th>
-                                           <th width="17%">{lang comment_user}</th>
+                                           <th width="19%">{lang comment_user}</th>
                                            <th>{lang comment_content}</th>
                                            <th width="17%">{lang reply_to}</th>
-                                           <th width="120">{lang operate}</th>
+                                           <th width="100">{lang operate}</th>
                                        </tr>
                                        </thead>
                                        <tbody>
@@ -59,7 +59,7 @@
                                    </table>
                                </div>
                                {else}
-                                {lang no_comments}
+                                  <div class="no_comments">{lang no_comments}</div>
                                {/if}
                        </div>
                        <div class="paginator">

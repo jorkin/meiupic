@@ -8,7 +8,7 @@
                     
                     <!--{if !$isempty}-->
                     <div class="mb10">
-                        <div class="tab f_left">
+                        <div class="tab f_left wide">
                              <ul>
                                  <li {if $type==1}class="current"{/if}><a href="{link ctl=trash type=1}"><span>{lang album}({$deleted_albums})</span></a></li>
                                  <li {if $type==2}class="current"{/if}><a href="{link ctl=trash type=2}"><span>{lang photo}({$deleted_photos})</span></a></li>
@@ -54,20 +54,18 @@
                                                <li><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=trash act=restore type=$type id=$v['id']}');" title="{lang restore}"><span class="i_restore sprite"></span></a></li>
                                            </ul>
                                        </div>
-                                       <div class="clear brief">
-                                           <span class="f_left"></span>
-                                           <span class="f_right gray">{lang in_create_time}{echo date('Y-m-d',$v['create_time'])}</span>
-                                       </div>
+                                       
                                    </div>
                                    <div class="info">
                                        <div class="title">
                                        <input class="selitem" type="checkbox" name="sel_id[{$v['id']}]" value="1" /> 
                                        <span class="name">{$v['name']}</span>
                                        </div>
-                                       <div class="info_col">
+                                       <div class="info_col gray">
                                            {if $type==1}
-                                           <span class="f_left gray">{lang photos_num|`$v['photos_num']`}</span>
+                                           {lang photos_num|`$v['photos_num']`} ,
                                            {/if}
+                                           {lang in_create_time}{echo date('Y-m-d',$v['create_time'])}</span>
                                        </div>
                                    </div>
                                </div>
