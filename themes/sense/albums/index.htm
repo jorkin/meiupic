@@ -88,7 +88,7 @@
                                             {lang in_create_time}{echo date('Y-m-d',$v['create_time'])}
                                             {/if}
                                         </p>
-										<p><!--{if $loggedin}--><span class="i_greenicn sprite"></span>{echo enum_priv_type($v['priv_type'])}<!--{/if}--> &nbsp;</p>
+										<p><!--{if $loggedin}--><span class="i_greenicn sprite"></span>{echo enum_priv_type($v['priv_type'])}<!--{/if}-->&nbsp; <!--{if $v['enable_comment'] && $v['comments_num']}--><a href="{link ctl=photos act=index aid=$v['id']}#comments" class="gray">{lang comments_num|`$v['comments_num']`}</a><!--{/if}--> </p>
                                     </div>
                                 </div>
                             </div>

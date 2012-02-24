@@ -47,6 +47,8 @@ class albums_ctl extends pagecore{
         $this->mdl_album->set_pageset($pageset);
         $albums = $this->mdl_album->get_all($page,$search,$sort);
         
+        $g_enable_comment = $this->setting->get_conf('system.enable_comment');
+
         if(is_array($albums['ls'])){
             $mdl_photo = &loader::model('photo');
 
@@ -59,6 +61,12 @@ class albums_ctl extends pagecore{
                         $albums['ls'][$k]['cover_path'] = $cover_info['thumb'];
                     else
                         $albums['ls'][$k]['cover_id'] = 0;
+                }
+                //是否允许评论
+                if($g_enable_comment && $v['enable_comment']==1){
+                    $albums['ls'][$k]['enable_comment'] = 1;
+                }else{
+                    $albums['ls'][$k]['enable_comment'] = 0;
                 }
             }
         }

@@ -6,9 +6,9 @@ body{
 td{
     text-align:center;
 }
-body,td,input{
+/*body,td,input{
 	font-family: "Hiragino Sans GB","Helvetica Neue",Helvetica,STHeiTi,"Microsoft YaHei",Arial,sans-serif;
-}
+}*/
 /*统一相关定义*/
 .wrap,#bodywrap{
 	width:1000px;
@@ -996,19 +996,24 @@ table.layout td.right{
 .ctl_button{
     padding-left:50px;
 }
+input.settinginput{
+	height:20px;
+}
 .settinginput{
-    background: #FFFFFF;
+	background: #FFFFFF;
     border: 1px solid #D6D6D6;
     border-radius: 5px 5px 5px 5px;
     box-shadow: 2px 2px 3px #EEEEEE inset, 0 1px 0 #FFFFFF;
     font-size: 13px;
+    font-family: "Courier New",Courier,Verdana,sans-serif;
     line-height: 18px;
     outline: 0 none;
     padding: 3px 5px;
+    color:#333;
 }
 .settinginput:focus{
     border:1px solid #4694D0;
-    box-shadow:0 0 3px #4694D0
+    box-shadow:0 0 3px #4694D0;
 }
 .themelist{
     height:1%;
