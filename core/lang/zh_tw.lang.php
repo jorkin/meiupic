@@ -682,6 +682,7 @@ $language = array(
 'reupload_photo_short'             => '重新上傳',
 //分类
 'category'                         => '分類',
+'category_manage'                  => '分類管理',
 'category_list'                    => '分類列表',
 'all_category'                     => '所有分類',
 'category_name_empty'              => '分類名不能為空！',

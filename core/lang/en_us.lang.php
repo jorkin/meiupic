@@ -687,6 +687,7 @@ $language   =   array(
 
 //分类
 'category'                         => 'Category',
+'category_manage'                  => 'Category manage',
 'category_list'                    => 'Category list',
 'all_category'                     => 'All category',
 'category_name_empty'              => 'Category name can not be empty!',
