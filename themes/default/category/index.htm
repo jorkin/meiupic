@@ -8,8 +8,8 @@
                     <div class="col titbg">
                         <h1 class="f_left">{lang all_category}</h1>
                         <h4 class="f_left"></h4>
-                        <div class="f_right" style="padding:8px 10px;">
-                            <!--{if $loggedin}--><div class="bigbutton"><a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=category act=create}',true);"><span>{lang create_category}</span></a></div><!--{/if}-->
+                        <div class="f_right mt5">
+                            {if $loggedin}<a href="{link ctl=category act=manage}">{lang category_manage}</a>{/if}
                         </div>
                     </div>
                     <div class="innercol">
@@ -21,11 +21,6 @@
                                     <span class="treebg tree{$i}"></span>
                                 <!--{/for}-->
                                 <a href="{link ctl=albums act=index cate=$row['id']}">{$row['name']}</a> 
-                                <!--{if $loggedin}-->
-                                <a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=category act=create pid=$row['id']}',true)" class="i ml10" title="{lang create_sub_category}"><span class="i_add sprite"></span></a>
-                                <a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=category act=edit id=$row['id']}',true)" class="i" title="{lang edit}"><span class="i_edit sprite"></span></a>
-                                <a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=category act=confirm_delete id=$row['id']}')" class="i" title="{lang delete}"><span class="i_littletrash sprite"></span></a>
-                                <!--{/if}-->
                             </li>
                             <!--{/loop}-->
                             <li><a href="{link ctl=albums act=index cate=0}">{lang no_cate_album}</a></li>

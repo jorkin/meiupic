@@ -30,6 +30,22 @@
         </div>
     </div>
     <!--{/if}-->
+    <div class="album_desc">
+    <!--{if $loggedin}-->
+        <div class="inline_edit" title="{lang click_editable}" onclick="Madmin.inline_edit(this,'{link ctl=albums act=modify_desc_inline id=$album_info['id']}')"><!--{if $album_info['desc']}-->{$album_info['desc']}<!--{else}-->{lang no_album_desc}<!--{/if}-->
+            <span class="i_editinfo sprite"></span>
+        </div>
+    <!--{else}-->
+        <!--{if $album_info['desc']}-->
+        <div class="inline">
+            <!--{echo mycutstr(strip_tags($album_info['desc']),250,'... <a href="javascript:void(0)" onclick="$(\'.album_desc .inline_full\').show();$(\'.album_desc .inline\').hide();" class="blue">'.lang('show_all').'</a>')}-->
+        </div>
+        <div class="inline_full" style="display:none;">
+            {$album_info['desc']}
+        </div>
+        <!--{/if}-->
+    <!--{/if}-->
+    </div>
     <table class="layout">
         <tr>
             <td class="left">

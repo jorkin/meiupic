@@ -71,7 +71,7 @@
                                         {else}
                                         {lang in_upload_time}{echo date('Y-m-d',$v['create_time'])}
                                         {/if}</p>
-                                        <p><!--{if $v['comments_num'] && $enable_comment}--><a href="{link ctl=photos act=view id=$v['id']}#comments">{lang comments_num|`$v['comments_num']`}</a><!--{/if}--> <!--{if $v['is_cover']}--><span class="cover">{lang cover}</span><!--{/if}-->&nbsp;</p>
+                                        <p><!--{if $v['comments_num']}--><a href="{link ctl=photos act=view id=$v['id']}#comments">{lang comments_num|`$v['comments_num']`}</a><!--{/if}--> <!--{if $v['is_cover']}--><span class="cover">{lang cover}</span><!--{/if}-->&nbsp;</p>
                                     </div>
                                 </div>
                             </div>

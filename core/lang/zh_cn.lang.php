@@ -62,6 +62,7 @@ $language   =   array(
 'using'                            =>  '启用中',
 'edit'                             =>  '编辑',
 'not_set'                          =>  '未指定',
+'show_all'                         =>  '显示全部',
 
 //head
 'myalbum'                          =>  '我的相册',
@@ -593,8 +594,6 @@ $language   =   array(
 'thumb_size_label'                 =>  '缩略图尺寸 (宽度/高度)',
 'thumb_size_tips'                  =>  '小于该指定大小的图片将不生成缩略图,已经上传过的图片不会重新处理',
 'use_square'                       =>  '使用方块图',
-'cover_size_label'                 =>  '封面尺寸 (宽度/高度)',
-'cover_size_tips'                  =>  '小于该指定大小的图片将不生成缩略图,已经上传过的图片不会重新处理 ',
 'upload_resize_quality_label'      =>  '图片质量',
 'upload_resize_quality_tips'       =>  '处理图片的质量 1-100',
 'upload_allow_size_label'          =>  '允许上传的图片大小',
