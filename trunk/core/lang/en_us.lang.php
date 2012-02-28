@@ -62,6 +62,7 @@ $language   =   array(
 'using'                            =>  'Using',
 'edit'                             =>  'Edit',
 'not_set'                          =>  'Not setted',
+'show_all'                         =>  'Show all',
 
 //head
 'myalbum'                          =>  'My gallery',
@@ -593,8 +594,6 @@ $language   =   array(
 'thumb_size_label'                 =>  'Thumbnail size (width/height)',
 'thumb_size_tips'                  =>  'If the picture is smaller than the specified width and height, it will do nothing.',
 'use_square'                       =>  'Square',
-'cover_size_label'                 =>  'Cover size (width/height)',
-'cover_size_tips'                  =>  'If the picture is smaller than the specified width and height, it will do nothing.',
 'upload_resize_quality_label'      =>  'Image quality',
 'upload_resize_quality_tips'       =>  'The image quality of resizing should between 1-100',
 'upload_allow_size_label'          =>  'Allowed uploading image size',

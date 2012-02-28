@@ -115,7 +115,7 @@ class photos_ctl extends pagecore{
         
         $page_title = $album_info['name'].' - '.$this->setting->get_conf('site.title');
         $page_keywords = ($album_info['tags']?implode(',',$album_info['tags_list']).',':'').$this->setting->get_conf('site.keywords');
-        $page_description = $album_info['desc']?strip_tags($album_info['desc']):$this->setting->get_conf('site.description');
+        $page_description = $album_info['desc']?mycutstr(strip_tags($album_info['desc']),200):$this->setting->get_conf('site.description');
         $this->page_init($page_title,$page_keywords,$page_description,$album_id);
         
         $this->render();
@@ -294,7 +294,6 @@ class photos_ctl extends pagecore{
             $this->output->set('show_takentime',($sort=='tt_desc'||$sort=='tt_asc')?true:false);
             //面包屑
             $crumb_nav = array();
-            
             if($search['name']){
                 $crumb_nav[] = array('name'=>lang('search_s',$search['name']));
             }elseif($search['tag']){

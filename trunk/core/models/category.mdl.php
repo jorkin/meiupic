@@ -114,6 +114,7 @@ class category_mdl extends modelfactory {
         if($this->db->query()){
             $cache =& loader::lib('cache');
             $cache->remove('flat_category');
+            $cache->remove('cate_path_'.$id);
             return true;
         }else{
             return false;
@@ -156,6 +157,7 @@ class category_mdl extends modelfactory {
         $ret = $this->db->query();
         $cache =& loader::lib('cache');
         $cache->remove('flat_category');
+        $cache->remove('cate_path_'.$id);
         return $ret;
     }
     //添加分类
@@ -191,15 +193,20 @@ class category_mdl extends modelfactory {
         if($cate_id == 0){
             $data[] = array('name'=>lang('no_cate_album'),'link'=>site_link('albums','index',array('cate'=>'0')));
         }else{
-            $row = $this->get_info(intval($cate_id),'cate_path');
-            $cates = explode(',',trim($row['cate_path'],','));
-            $cate_infos = $this->get_info($cates,'id,name');
-            foreach($cates as $cate){
-                foreach($cate_infos as $info){
-                    if($info['id'] == $cate){
-                        $data[] = array('name'=>$info['name'],'link'=>site_link('albums','index',array('cate'=>$cate)));
+            $cache =& loader::lib('cache');
+            $data = $cache->get('cate_path_'.$cate_id);
+            if(!$data){
+                $row = $this->get_info(intval($cate_id),'cate_path');
+                $cates = explode(',',trim($row['cate_path'],','));
+                $cate_infos = $this->get_info($cates,'id,name');
+                foreach($cates as $cate){
+                    foreach($cate_infos as $info){
+                        if($info['id'] == $cate){
+                            $data[] = array('name'=>$info['name'],'link'=>site_link('albums','index',array('cate'=>$cate)));
+                        }
                     }
                 }
+                $cache->set('cate_path_'.$cate_id,$data);
             }
         }
         return $data;

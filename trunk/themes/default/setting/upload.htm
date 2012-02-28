@@ -91,23 +91,11 @@
                                              <input type="text" name="upload[thumb_width]" class="settinginput iptw0" value="{$upload['thumb_width']}" /> <span id="thumb_size_extra">×  <input type="text" name="upload[thumb_height]" class="settinginput iptw0" value="{$upload['thumb_height']}" /></span> <label><input type="checkbox" id="enable_thumb_square" name="enable_thumb_square" value="1" onclick="switch_extra(this,'thumb_size_extra')" {if $upload['enable_thumb_square']}checked="checked"{/if} /> {lang use_square}</label>
                                         </div>
                                     </div>
-									<div class="settingfield">
-                                        <div class="label">{lang cover_size_label}</div>
-                                        <div class="descinfo">{lang cover_size_tips}</div>
-                                        <div class="input">
-                                             <input type="text" name="upload[cover_width]" class="settinginput iptw0" value="{$upload['cover_width']}" /> <span id="cover_size_extra">×  <input type="text" name="upload[cover_height]" class="settinginput iptw0" value="{$upload['cover_height']}" /></span> <label><input type="checkbox" id="enable_cover_square" name="enable_cover_square" value="1" onclick="switch_extra(this,'cover_size_extra')" {if $upload['enable_cover_square']}checked="checked"{/if} /> {lang use_square}</label>
-                                        </div>
-                                    </div>
 									<script>
                                         if($('#enable_thumb_square').get(0).checked){
                                             $("#thumb_size_extra").hide();
                                         }else{
                                             $("#thumb_size_extra").show();
-                                        }
-										if($('#enable_cover_square').get(0).checked){
-                                            $("#cover_size_extra").hide();
-                                        }else{
-                                            $("#cover_size_extra").show();
                                         }
                                     </script>
 									

@@ -164,22 +164,6 @@ class setting_ctl extends pagecore{
         $this->setting->set_conf('upload.thumb_width',intval($upload['thumb_width']));
         
         //封面缩略图设置
-        $enable_cover_square = $this->getPost('enable_cover_square');
-        if($upload['cover_width'] == '' || $upload['cover_width']<1){
-            form_ajax_failed('box',lang('cover_width_error'));
-        }
-        if(!$enable_cover_square){
-            if($upload['cover_height'] == '' || $upload['cover_height']<1){
-                form_ajax_failed('box',lang('cover_height_error'));
-            }
-            $this->setting->set_conf('upload.cover_height',intval($upload['cover_height']));
-            $this->setting->set_conf('upload.enable_cover_square',false);
-        }else{
-            $this->setting->set_conf('upload.enable_cover_square',true);
-        }
-        $this->setting->set_conf('upload.cover_width',intval($upload['cover_width']));
-
-
         $this->setting->set_conf('upload.allow_size',$upload['allow_size']);
         form_ajax_success('box',lang('save_setting_success'),null,0.5,$_SERVER['HTTP_REFERER']);
     }
