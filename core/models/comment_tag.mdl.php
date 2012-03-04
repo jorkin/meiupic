@@ -34,4 +34,10 @@ class comment_tag_mdl{
             return $this->comment->get_top($data['limit'],$filters,$order);
         }
     }
+
+    function load($data){
+        $photo_id = $data['id'];
+        $fields = isset($data['fields'])?$data['fields']:'*';
+        return $this->album->get_info($photo_id,$fields);
+    }
 }

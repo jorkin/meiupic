@@ -11,7 +11,7 @@
 class page_cla{
     
     var $tpl = 'default';
-    var $pageset = 5;
+    var $pageset = 4;
     var $pagination = null;
     var $pagerep = '%5B%23page%23%5D';//rawurlencode('[#page#]');
     

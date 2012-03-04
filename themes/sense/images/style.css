@@ -1200,3 +1200,45 @@ html.ie6 #meiu_float_box,html.ie7 #meiu_float_box,html.ie8 #meiu_float_box{
 .editbg{
     background:#ffffef;
 }
+
+/*首页瀑布流*/
+#waterfall {
+    clear: both;
+    margin-bottom: 20px;
+}
+#waterfall .box {
+    float:left;
+    margin-right:10px;
+    border-radius: 3px;
+    font-size: 11px;
+    line-height: 1.4em;
+    padding: 10px;
+    margin-bottom:15px;
+    background-color: #FFFFFF;
+    box-shadow: 0 1px 3px rgba(34, 25, 25, 0.4);
+    font-size: 12px;
+    width: 218px;
+}
+#waterfall .box img{
+    display: block;
+    width:100%;
+}
+#waterfall .box p.description{
+    margin:10px 0 5px;
+    color:#444;
+}
+#infscr-loading { 
+  text-align: center;
+  z-index: 100;
+  position: fixed;
+  left: 45%;
+  bottom: 40px;
+  width: 200px;
+  padding: 10px;
+  background: #000; 
+  opacity: 0.8;
+  color: #FFF;
+  -webkit-border-radius: 10px;
+     -moz-border-radius: 10px;
+          border-radius: 10px;
+}

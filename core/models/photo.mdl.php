@@ -14,7 +14,10 @@ class photo_mdl extends modelfactory{
         $str = 'deleted=0';
         if(isset($filters['album_id'])){
             $str .= ' and album_id='.intval($filters['album_id']);
+        }elseif(isset($filters['is_open']) && $filters['is_open']){
+            $str .= ' and album_id in (select id from '.$this->db->stripTpre('#@albums').' where priv_type=0)';
         }
+
         if(isset($filters['name']) && $filters['name']!='' && $filters['name']!='ANY'){
             $str .= " and name like '%".$this->db->q_str($filters['name'],false)."%'";
         }
@@ -27,6 +30,7 @@ class photo_mdl extends modelfactory{
                 $str .= " and 1=0";
             }
         }
+
         return $str;
     }
     

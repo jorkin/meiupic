@@ -8,6 +8,13 @@
  */
 class category_mdl extends modelfactory {
     var $table_name = '#@cate';
+    
+    function _filters($filters){
+        $str = 'deleted=0';
+        if(isset($filters['par_id']) && $filters['par_id']!=''){
+            $str .= " and par_id=".intval($filters['par_id']);
+        }
+    }
 
     function get_categorys_width_cache(){
         $cache =& loader::lib('cache');

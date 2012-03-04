@@ -1,11 +1,64 @@
 {template block/header}
+<script src="{$style_path}jquery.masonry.min.js" type="text/javascript"></script>
+<script src="{$style_path}jquery.infinitescroll.min.js" type="text/javascript"></script>
 <div id="bodywrap">
-     这里是首页：<br /><br /><br />
-	数据调用：照片点击排行 取出五条记录, {mp：photo action=lists num=5 order=h_desc}<br />
-	{mp:photo action=lists num=5 order=h_desc}
-		{loop $data $k $row}
-			{echo $k+1}. {$row['name']} ----- Hits:{$row['hits']} <br />
-		{/loop}
-	{/mp}
+    <div id="waterfall">
+    {php $urlrule=site_link('default','index',array('page'=>'[#page#]'));}
+    {mp:photo action=lists order=tu_desc is_open=1 num=20 page=`getGet('page')` urlrule=$urlrule}
+        {if $total_page<getGet('page')}
+            {php header('HTTP/1.1 404 Not Found');}
+        {/if}
+        {loop $data $photo}
+        <div class="box photo">
+            <a href="{link ctl=photos act=view id=$photo['id']}"><img src="{img $photo['thumb']}" alt="{$photo['name']}" /></a>
+            <p class="description">{$photo['desc']}</p>
+        </div>
+        {/loop}
+    {/mp}
+    </div>
+    <nav id="page-nav" class="paginator">
+      {$pages}
+    </nav>
 </div>
+<script type="text/javascript">
+ $(function(){
+    
+    var $container = $('#waterfall');
+    
+    $container.imagesLoaded(function(){
+      $container.masonry({
+        itemSelector: '.box',
+        columnWidth: function( containerWidth ) {
+            return containerWidth / 4;
+        },
+        isAnimated: true,
+        animationOptions: {
+            duration: 300
+        }
+      });
+    });
+
+    
+    $container.infinitescroll({
+      navSelector  : '#page-nav',
+      nextSelector : '#page-nav span.next a', 
+      itemSelector : '.box',
+      loading: {
+          finishedMsg: "<em>没有更多图片了.</em>",
+          img: "http://i.imgur.com/6RMhx.gif",
+          msgText: "<em>正在加载...</em>",
+        }
+      },
+      function( newElements ) {
+        var $newElems = $( newElements ).css({ opacity: 0 });
+        $newElems.imagesLoaded(function(){
+          $newElems.animate({ opacity: 1 });
+          $container.masonry( 'appended', $newElems, true ); 
+        });
+      }
+    );
+    $('#page-nav').hide();
+    
+  });
+</script>
 {template block/footer}

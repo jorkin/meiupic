@@ -23,6 +23,9 @@ class modelfactory{
     }
     
     function _sort($sort){
+        if($sort){
+            return $sort;
+        }
         return $this->default_order;
     }
     
@@ -69,7 +72,12 @@ class modelfactory{
             $sort = $this->default_order;
         }
         $this->db->select($this->table_name,$this->default_cols,$where,$sort);
-        $this->db->selectLimit(null,$limit);
+        if(strpos($limit, ',') !== false){
+            $lim = explode(',',$limit);
+            $this->db->selectLimit(null,$lim[1],$lim[0]);
+        }else{
+            $this->db->selectLimit(null,$limit);
+        }        
         return $this->db->getAll();
     }
     
