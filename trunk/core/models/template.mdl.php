@@ -118,7 +118,6 @@ class template_mdl{
         $str = preg_replace("/\{link(\s+.+?)\}/ies", "\$this->striplink('\\1')", $str);
         $str = preg_replace("/\{lang\s+(.+?)\}/ies", "\$this->striplang('\\1')",$str);
         $str = preg_replace("/\{img\s+(.+?)\}/is", "<?php echo img_path(\\1);?>",$str);
-        $str = preg_replace("/\{data\s+(.+?)\}/ies", "\$this->parse_data('\\1')",$str);
         $str = preg_replace("/\{mp:(\w+)(\s+[^}]+)\}/ie", "\$this->mp_tag('\\1','\\2', '\\0')", $str);
         $str = preg_replace("/\{\/mp\}/ie", "\$this->end_mp_tag()", $str);
 
@@ -159,7 +158,7 @@ class template_mdl{
     function mp_tag($op,$data,$html){
         preg_match_all("/\s+([a-zA-Z0-9_\-]+)\=([^\"\s]+|\"[^\"]+\")/i", stripslashes($data), $matches, PREG_SET_ORDER);
 
-        $arr = array('action','num','cache','page', 'urlrule', 'return');
+        $arr = array('action','start','num','cache','page', 'urlrule', 'return');
 		$tools = array('sql');
 		$datas = array();
 		$tag_id = md5(stripslashes($html));
@@ -192,7 +191,11 @@ class template_mdl{
         if (in_array($op,$tools)) {
 			switch ($op) {
                 case 'sql':
-                    $num = isset($num) && intval($num) > 0 ? intval($num) : 20;
+                    if (isset($start) && intval($start)) {
+                        $limit = intval($start).','.$num;
+                    } else {
+                        $limit = $num;
+                    }
                     $str .= '$db =& loader::database();';
                     if (isset($page)) {
                         $str .= '$pagesize = '.$num.';';
@@ -203,9 +206,10 @@ class template_mdl{
                         $str .= '$page_lib =& loader::lib("page");';
                         $str .= '$pages = $page_lib->fetch($r["total"],$r["current"],$urlrule);';
                         $str .= '$'.$return.' = $r["ls"];';
+                        $str .= '$total_page = $r["total"];';
                         $str .= 'unset($r);';
                     }else{
-                        $str .= '$'.$return.' = $db->getAll("'.$datas['sql'].' LIMIT '.$num.'");';
+                        $str .= '$'.$return.' = $db->getAll("'.$datas['sql'].' LIMIT '.$limit.'");';
                     }
                 break;
             }
@@ -226,9 +230,10 @@ class template_mdl{
                 $str .= '$r = $'.$op.'_tag->'.$action.'('.$this->arr_to_code($datas).');';
                 $str .= '$pages = $page_lib->fetch($r["total"], $r["current"] ,$urlrule);';
                 $str .= '$'.$return.' = $r["ls"];';
+                $str .= '$total_page = $r["total"];';
                 $str .= 'unset($r);';
             }else{
-                $datas['limit'] = $num;
+                //$datas['limit'] = $num;
                 $str .= '$'.$return.' = $'.$op.'_tag->'.$action.'('.$this->arr_to_code($datas).');';
             }
             
@@ -256,6 +261,8 @@ class template_mdl{
                 } else {
                     if (strpos($val, '$')===0) {
                         $str .= "'$key'=>$val,";
+                    }elseif(preg_match('/^`(.+)`$/',$val)){
+                        $str .= "'$key'=>".trim($val,'`').",";
                     } else {
                         $str .= "'$key'=>'".addslashes($val)."',";
                     }

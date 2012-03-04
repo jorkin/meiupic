@@ -15,7 +15,10 @@ class photo_tag_mdl{
     function lists($data){
         $filters = array();
         if(isset($data['album_id'])){
-            $filters['album_id'] = $data['album_id'];
+            $filters['album_id'] = intval($data['album_id']);
+        }
+        if(isset($data['is_open'])){
+            $filters['is_open'] = intval($data['is_open']);
         }
         
         $order = isset($data['order'])?$data['order']:null;
@@ -28,5 +31,11 @@ class photo_tag_mdl{
         }else{
             return $this->photo->get_top($data['limit'],$filters,$order);
         }
+    }
+    
+    function load($data){
+        $photo_id = $data['id'];
+        $fields = isset($data['fields'])?$data['fields']:'*';
+        return $this->photo->get_info($photo_id,$fields);
     }
 }
