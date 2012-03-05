@@ -10,7 +10,7 @@
         {/if}
         {loop $data $photo}
         <div class="box photo">
-            <a href="{link ctl=photos act=view id=$photo['id']}"><img src="{img $photo['thumb']}" alt="{$photo['name']}" /></a>
+            <a href="{link ctl=photos act=view id=$photo['id']}"><img src="{$base_path}img.php?w=218&path={echo encode_path($photo['path']);}" alt="{$photo['name']}" /></a>
             <p class="description">{$photo['desc']}</p>
         </div>
         {/loop}
