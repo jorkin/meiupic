@@ -26,7 +26,7 @@ class albums_ctl extends pagecore{
         }
         $pageurl = site_link('albums','index',$par);
         
-        //TODO: 如果是搜索表单提交，则进行页面跳转
+        //如果是搜索表单提交，则进行页面跳转
         if($this->isPost()){
             $redirect_url = site_link('albums','index',array('page'=>$page)+$par);
             redirect($redirect_url);

@@ -47,10 +47,10 @@ class image_cla{
         $this->worker->output();
     }
     
-    function resizeTo($w,$h){
+    function resizeTo($w=0,$h=0){
         $this->worker->resizeTo($w,$h);
     }
-    function resizeScale($w,$h){
+    function resizeScale($w=0,$h=0){
         $this->worker->resizeScale($w,$h);
     }
     
