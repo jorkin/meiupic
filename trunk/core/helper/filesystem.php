@@ -8,6 +8,17 @@ if(!function_exists('file_put_contents')) {
         return TRUE;
     }
 }
+//获取文件的真实路径
+function get_realpath($path){
+    //try to remove any relative paths
+    $remove_relatives = '/\w+\/\.\.\//';
+    while(preg_match($remove_relatives,$path)){
+        $path = preg_replace($remove_relatives, '', $path);
+    }
+    //if any remain use PHP realpath to strip them out, otherwise return $path
+    //if using realpath, any symlinks will also be resolved
+    return preg_match('#^\.\./|/\.\./#', $path) ? realpath($path) : $path;
+}
 //文件后缀
 function file_ext($filename){
     return strtolower(end(explode('.',$filename)));
