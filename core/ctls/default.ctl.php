@@ -9,7 +9,7 @@ class default_ctl extends pagecore{
             $crumb_nav = array();
             $this->page_crumb($crumb_nav);
 
-            $page_title =  lang('all_category').' - '.$this->setting->get_conf('site.title');
+            $page_title =  $this->setting->get_conf('site.title');
             $page_keywords = $this->setting->get_conf('site.keywords');
             $page_description = $this->setting->get_conf('site.description');
             $this->page_init($page_title,$page_keywords,$page_description);

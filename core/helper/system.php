@@ -87,12 +87,7 @@ function img_path($path){
     $plugin =& loader::lib('plugin');
     return $plugin->filter('photo_path',$fullpath,$path);
 }
-//转换图片地址
-function encode_path($path){
-    $config =& loader::config();
-    $path = authcode($path, $operation = 'ENCODE', $config['img_path_key']);
-    return urlencode($path);
-}
+
 //用户真实的IP地址
 function get_real_ip(){
     if(getenv('HTTP_CLIENT_IP') && strcasecmp(getenv('HTTP_CLIENT_IP'), 'unknown')) {
