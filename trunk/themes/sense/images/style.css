@@ -309,6 +309,9 @@ textarea.inputstyle{
     width:200px;
     background:transparent;
 }
+.ie6 .filter .search input,.ie7 .filter .search input{
+    float:left;
+}
 .filter .search button{
     background:none;
     border: none;
