@@ -52,9 +52,9 @@
 				<!--{loop $nav_menu $k $v}-->
 					<!--{if $k+1<=10}-->
 						<!--{if $v['type']==0}-->
-							<li class="item<!--{if $k==0}--> first<!--{/if}--><!--{if $k==$nav_total-1||$k==9}--> last<!--{/if}--><!--{if $v['url']==IN_CTL}--> current<!--{/if}-->"><span><a href="{link ctl=$v[url]}" title="{$v['name']}"><em>{$v['name']}</em></a></span></li>
+							<li class="png item<!--{if $k==0}--> first<!--{/if}--><!--{if $k==$nav_total-1||$k==9}--> last<!--{/if}--><!--{if $v['url']==IN_CTL}--> current<!--{/if}-->"><span><a href="{link ctl=$v[url]}" title="{$v['name']}"><em>{$v['name']}</em></a></span></li>
 						<!--{else}-->
-							<li class="item<!--{if $k==0}--> first<!--{/if}--><!--{if $k==$nav_total-1||$k==9}--> last<!--{/if}-->"><span><a href="{$v['url']}" title="{$v['name']}"><em>{$v['name']}</em></a></span></li>
+							<li class="png item<!--{if $k==0}--> first<!--{/if}--><!--{if $k==$nav_total-1||$k==9}--> last<!--{/if}-->"><span><a href="{$v['url']}" title="{$v['name']}"><em>{$v['name']}</em></a></span></li>
 						<!--{/if}-->
 					<!--{/if}-->
 				<!--{/loop}-->

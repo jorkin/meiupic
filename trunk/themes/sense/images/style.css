@@ -31,7 +31,7 @@ a.blue{
     color:#369;
 }
 
-/*双重边框*/
+/*带阴影边框*/
 .bd-a{
     border-bottom:1px solid #ddd;
 }
@@ -206,6 +206,7 @@ textarea.inputstyle{
 }
 #header .nav li.item span{
 	display:block;
+    float:left;
 	height:29px;
 	border-left:1px solid #207bc5;
 }
@@ -220,11 +221,14 @@ textarea.inputstyle{
 
 #header .nav li a{
 	display:block;
+    float:left;
 	color:#fff;
 	text-shadow: 1px 1px 1px #041933;
     text-decoration:none;
+    cursor: pointer;
 }
 #header .nav li a em{
+    float:left;
 	display:block;
 	padding:0 20px;
 	max-width:160px;
@@ -403,7 +407,9 @@ table.layout td.right{
     width:225px;
     padding:9px;
     margin-bottom:20px;
+
 }
+.ie6 .grid .gallary_item,.ie7 .grid .gallary_item{display:inline;}
 .grid .sel_on{
     background:#eee;
 }
@@ -479,7 +485,7 @@ table.layout td.right{
 	background:url(show_type.png) no-repeat;
 }
 .show_type li.tile a span{
-	background-position:0 -14px;
+	background-position:0 -13px;
 }
 .show_type li.slideshow a span{
 	background-position:0 -33px;
@@ -774,12 +780,12 @@ table.layout td.right{
     height:18px;
     overflow: hidden;
     margin-bottom:2px;
-    padding:2px;
-    border-width:1px;
-    border-color:transparent;
-    border-style:solid;
+    padding:3px;
+    border:none;
+    float:left;
 }
 #photo_modify_icons li a:hover{
+    padding:2px;
     color:#333;
     border-width:1px;
     border-color:#4694D0;
@@ -788,32 +794,6 @@ table.layout td.right{
     border-radius: 5px 5px 5px 5px;
     box-shadow:0 0 3px #4694D0;
 }
-/*tabs*/
-/*.data_tab{padding-left:20px;height:26px;margin-bottom:10px;background:url(1pxdot.gif) repeat-x bottom;}
-.data_tab li{
-    float:left;
-    padding:0 20px;
-    line-height:24px;
-    margin-right:10px;
-    border-color: #aaa;
-    border-style: solid;
-    border-width: 1px;
-    background:-moz-linear-gradient(center top , #ffffff, #eeeeee) repeat scroll 0 0 transparent;
-    background:-webkit-gradient(linear,0% 0%, 0% 100%, from(#ffffff), to(#eeeeee));
-}
-.data_tab li a,.data_tab li a:link,.data_tab li a:visited{
-    color:#333;
-    background:transparent;
-    text-decoration:none;
-}
-.data_tab li.current a{
-    font-weight:bold;
-}
-.data_tab li.current{
-    background: #fff;
-    border-color: #aaa #aaa #fff;
-}*/
-
 /*用户信息页*/
 #profile_box,#login_box{
     padding:40px 25px;
@@ -1098,6 +1078,11 @@ table.datalist td{
 table.datalist tr.hover:hover td{
     background:#feffe3;
 }
+
+table.datalist .oneline{
+    margin-right:-1000px;
+    overflow:hidden;
+}
 .sysinfo .section{
     height:30px;
     line-height:30px;
@@ -1218,6 +1203,9 @@ html.ie6 #meiu_float_box,html.ie7 #meiu_float_box,html.ie8 #meiu_float_box{
     box-shadow: 0 1px 3px rgba(34, 25, 25, 0.4);
     font-size: 12px;
     width: 218px;
+}
+.ie6 #waterfall .box,.ie7 #waterfall .box,.ie8 #waterfall .box{
+    border:1px solid #ccc;
 }
 #waterfall .box img{
     display: block;

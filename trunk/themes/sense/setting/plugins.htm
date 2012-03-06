@@ -29,7 +29,7 @@
                                         {loop $plugins $v}
                                         <tr class="hover">
                                             <td>{$v['plugin_id']}</td>
-                                            <td>{$v['description']}</td>
+                                            <td><div class="oneline">{$v['description']}</div></td>
                                             <td>{$v['local_ver']}</td>
                                             <td><a href="{$v['author_url']}" target="_blank">{$v['author_name']}</a></td>
                                             <td>{if $v['installed']}

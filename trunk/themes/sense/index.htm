@@ -11,15 +11,15 @@
         {/if}
         {loop $data $photo}
         <div class="box photo">
-            <a href="{link ctl=photos act=view id=$photo['id']}"><img src="{$base_path}img.php?w=218&path={echo urlencode($photo['path']);}" alt="{$photo['name']}" /></a><!--timthumb.php?src={$photo['path']}&w=218&zc=1-->
+            <a href="{link ctl=photos act=view id=$photo['id']}"><img src="{$base_path}img.php?w=218&path={echo urlencode($photo['path']);}&cache=1" alt="{$photo['name']}" /></a>
             <p class="description">{$photo['desc']}</p>
         </div>
         {/loop}
     {/mp}
     </div>
-    <nav id="page-nav" class="paginator">
+    <div id="page-nav" class="paginator">
       {$pages}
-    </nav>
+    </div>
 </div>
 <script type="text/javascript">
  $(function(){
@@ -46,8 +46,8 @@
       itemSelector : '.box',
       loading: {
           finishedMsg: "<em>没有更多图片了.</em>",
-          img: "http://i.imgur.com/6RMhx.gif",
-          msgText: "<em>正在加载...</em>",
+          img: "{$style_path}images/cloading.gif",
+          msgText: "<em>正在加载...</em>"
         }
       },
       function( newElements ) {

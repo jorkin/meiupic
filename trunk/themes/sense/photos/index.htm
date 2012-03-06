@@ -12,11 +12,11 @@
         </div>
 		</form>
         <div class="display_setting f_left">
-			<ul class="tab show_type f_right">
-				<li class="current tile"><a href="javascript:void(0);" title="{lang flat_mode}"><span>&nbsp;</span></a></li>
-				<li class="slideshow"><a href="{link ctl=photos act=slide aid=$album_info['id']}" title="{lang slide_mode}"><span>&nbsp;</span></a></li>
-			</ul>
             {$photo_col_menu}
+			<ul class="tab show_type f_left">
+				<li class="current tile"><a href="javascript:void(0);" title="{lang flat_mode}"><span class="png">&nbsp;</span></a></li>
+				<li class="slideshow"><a href="{link ctl=photos act=slide aid=$album_info['id']}" title="{lang slide_mode}"><span class="png">&nbsp;</span></a></li>
+			</ul>
         </div>
     </div>
     <!--{if $loggedin && $photos}-->
