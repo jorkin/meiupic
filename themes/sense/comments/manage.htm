@@ -34,6 +34,7 @@
                                             <input type="checkbox" value="1" name="sel_id[{$v['id']}]" class="selitem" />
                                            </td>
                                            <td class="comment_author">
+                                            <div class="oneline">
                                                <strong><img src="{echo get_avatar($v)}" />
                                                    {$v['author']}
                                                </strong>
@@ -42,10 +43,14 @@
                                                <br />
                                                {$v['author_ip']}<br /></td>
                                            <td class="comment_content"><div class="submit-on">{lang posted_at} <a href="{if $v['type']==1}{link ctl=photos act=index aid=$v['ref_id']}{else}{link ctl=photos act=view id=$v['ref_id']}{/if}#comment-{$v['id']}">{echo date('Y-m-d H:i:s',$v['post_time'])}</a> {if $v['reply_author']}| {lang replyed_to} <a href="{if $v['type']==1}{link ctl=photos act=index aid=$v['ref_id']}{else}{link ctl=photos act=view id=$v['ref_id']}{/if}#comment-{$v['pid']}">{$v['reply_author']}</a>{/if}</div>
-                                               <p>{$v['content']}</p></td>
+                                               <p>{$v['content']}</p>
+                                             </div></td>
                                            <td>
-                                               <a href="{if $v['type']==1}{link ctl=photos act=index aid=$v['subject']['id']}{else}{link ctl=photos act=view id=$v['subject']['id']}{/if}">{$v['subject']['name']}</a> <span class="gray">{if $v['type']==1}({lang album}){else}({lang photo}){/if}</span>
-                                               <br /><span class="comments_num">{$v['subject']['comments_num']}</span></td>
+                                              <div class="oneline">
+                                               <a href="{if $v['type']==1}{link ctl=photos act=index aid=$v['subject']['id']}{else}{link ctl=photos act=view id=$v['subject']['id']}{/if}">{$v['subject']['name']}</a> <br /><span class="gray">{if $v['type']==1}({lang album}){else}({lang photo}){/if}</span>
+                                               <br /><span class="comments_num">{$v['subject']['comments_num']}</span>
+                                              </div>
+                                           </td>
                                            <td>{if $v['status']==1}<a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=comments act=block id=$v['id']}')" class="c_block">{lang block}</a>{else}<a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=comments act=approve id=$v['id']}')" class="c_approve">{lang approve}</a>{/if} <a href="javascript:void(0)" onclick="admin_reply_comment(this,'{link ctl=comments act=reply id=$v['id']}')">{lang reply}</a> <a href="javascript:void(0)" onclick="Mui.box.show('{link ctl=comments act=confirm_delete id=$v['id']}')" class="c_delete">{lang delete}</a></td>
                                        </tr>
                                        {/loop}
