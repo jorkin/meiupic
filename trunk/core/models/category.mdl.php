@@ -209,11 +209,14 @@ class category_mdl extends modelfactory {
                 foreach($cates as $cate){
                     foreach($cate_infos as $info){
                         if($info['id'] == $cate){
-                            $data[] = array('name'=>$info['name'],'link'=>site_link('albums','index',array('cate'=>$cate)));
+                            $data[] = array('name'=>$info['name'],'cate_id'=>$cate);
                         }
                     }
                 }
                 $cache->set('cate_path_'.$cate_id,$data);
+            }
+            foreach($data as $k=>$v){
+                $data[$k]['link'] =site_link('albums','index',array('cate'=>$v['cate_id']));
             }
         }
         return $data;
