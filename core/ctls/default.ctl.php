@@ -6,8 +6,7 @@ class default_ctl extends pagecore{
 
         $index_tpl = ROOTDIR.TPLDIR.DIRECTORY_SEPARATOR.'index.htm';
         if(file_exists($index_tpl)){
-            $crumb_nav = array();
-            $this->page_crumb($crumb_nav);
+            $this->output->set('page_crumb','');
 
             $page_title =  $this->setting->get_conf('site.title');
             $page_keywords = $this->setting->get_conf('site.keywords');
