@@ -20,6 +20,8 @@ class exif_cla{
         }
         $exif_info = exif_read_data($file,NULL,true);
         $exif_arr = $this->supported_exif();
+        $new_exif = array();
+        
         foreach($exif_arr as $k=>$v){
             $arr = explode('.',$v);
             if(isset($exif_info[$arr[0]])){
@@ -30,6 +32,9 @@ class exif_cla{
                 }
             }else{
                 $new_exif[$k] = false;
+            }
+            if($k=='Software' && !empty($new_exif['Software'])){
+                $new_exif['Software'] = preg_replace('/([^a-zA-Z0-9_\-,\.\:&#@!\(\)\s]+)/i','',$new_exif['Software']);
             }
         }
         return $new_exif;
