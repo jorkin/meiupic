@@ -87,9 +87,12 @@ class albums_ctl extends pagecore{
                     array('name'=>lang('album_list'),'link'=>site_link('albums'))
                     );
         if($search['cate_id'] != ''){
-            $crumb_nav = $this->mdl_cate->cate_path_link($search['cate_id']);
-            foreach($crumb_nav as $b){
-                $title = $b['name'].' &lt; '.$title;
+            $cate_nav = $this->mdl_cate->cate_path_link($search['cate_id']);
+            if($cate_nav){
+                $crumb_nav = $cate_nav;
+                foreach($cate_nav as $b){
+                    $title = $b['name'].' &lt; '.$title;
+                }
             }
         }
         if($search['name']){
