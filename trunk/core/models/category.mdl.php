@@ -204,12 +204,14 @@ class category_mdl extends modelfactory {
             $data = $cache->get('cate_path_'.$cate_id);
             if(!$data){
                 $row = $this->get_info(intval($cate_id),'cate_path');
-                $cates = explode(',',trim($row['cate_path'],','));
-                $cate_infos = $this->get_info($cates,'id,name');
-                foreach($cates as $cate){
-                    foreach($cate_infos as $info){
-                        if($info['id'] == $cate){
-                            $data[] = array('name'=>$info['name'],'cate_id'=>$cate);
+                if($row){
+                    $cates = explode(',',trim($row['cate_path'],','));
+                    $cate_infos = $this->get_info($cates,'id,name');
+                    foreach($cates as $cate){
+                        foreach($cate_infos as $info){
+                            if($info['id'] == $cate){
+                                $data[] = array('name'=>$info['name'],'cate_id'=>$cate);
+                            }
                         }
                     }
                 }
