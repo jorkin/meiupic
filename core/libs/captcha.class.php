@@ -3,7 +3,6 @@
  *
  */
 class captcha_cla{
-{
     /**
      * Captcha session key
      *
@@ -30,42 +29,42 @@ class captcha_cla{
      *
      * @var string
      */
-    var $_font = 'c:\windows\fonts\times.ttf';
+    var $_font = '';
 
     /**
      * Font size
      *
      * @var int
      */
-    var $_size = 20;
+    var $_size = 15;
 
     /**
      * Padding
      *
      * @var int
      */
-    var $_padding = 5;
+    var $_padding = 4;
 
     /**
      * Space between chars
      *
      * @var int
      */
-    var $_space = 5;
+    var $_space = 4;
 
     /**
      * Captcha width
      *
      * @var int
      */
-    var $_width = 100;
+    var $_width = 80;
 
     /**
      * Captcha height
      *
      * @var int
      */
-    var $_height = 35;
+    var $_height = 30;
 
     /**
      * Num of chars in captcha
@@ -95,7 +94,7 @@ class captcha_cla{
      *
      * @param array $config
      */
-    function __construct($config = array())
+    function captcha_cla($config = array())
     {
         isset($_SESSION) || session_start();
 
@@ -109,6 +108,8 @@ class captcha_cla{
      */
     function _init($config)
     {
+        $this->_font = dirname(__FILE__).'/captcha.ttf';//默认的字体
+
         $keys = array('sessionValueKey', 'sessionTtlKey', 'ttl', 'seed', 'font', 'size', 'width', 'height', 'length', 'bgColor', 'padding');
         foreach ($keys as $key)
         {
