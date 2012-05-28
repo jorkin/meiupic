@@ -32,9 +32,13 @@ class album_mdl extends modelfactory{
                 $str .= " and cate_id in (select id from ".$this->db->stripTpre('#@cate')." where cate_path like '%,".intval($cate_id).",%')";
             }
         }
-        $user_mdl = loader::model('user');
-        if(! $user_mdl->loggedin()){
-            $str .= " and priv_type<>3";
+        if(isset($filters['priv_type']) && $filters['priv_type'] != ''){
+            $str .= " and priv_type=".intval($filters['priv_type']);
+        }else{
+            $user_mdl = loader::model('user');
+            if(! $user_mdl->loggedin()){
+                $str .= " and priv_type<>3";
+            }
         }
         return $str;
     }
