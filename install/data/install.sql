@@ -78,6 +78,7 @@ DROP TABLE IF EXISTS `meu_photos`;
 CREATE TABLE `meu_photos` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `album_id` bigint(20) NOT NULL,
+  `cate_id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
   `thumb` varchar(255) NOT NULL,
   `path` varchar(255) NOT NULL,
@@ -100,7 +101,8 @@ CREATE TABLE `meu_photos` (
   `deleted` tinyint(1) NOT NULL DEFAULT '0',
   `type` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `album_id` (`album_id`)
+  KEY `album_id` (`album_id`),
+  KEY `cate_id` (`cate_id`)
 ) TYPE=MyISAM ;
 
 DROP TABLE IF EXISTS `meu_plugins`;
