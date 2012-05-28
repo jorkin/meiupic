@@ -17,6 +17,9 @@ class album_tag_mdl{
         if(isset($data['cate_id'])){
             $filters['cate_id'] = $data['cate_id'];
         }
+        if(isset($data['type'])){
+            $filters['priv_type'] = $data['type'];
+        }
         
         $order = isset($data['order'])?$data['order']:null;
 

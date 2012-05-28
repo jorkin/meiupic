@@ -104,7 +104,7 @@ class template_mdl{
         $str = preg_replace("/\{\/for\}/","<?php } ?>",$str);
         //++ --
         $str = preg_replace("/\{\+\+(.+?)\}/","<?php ++\\1; ?>",$str);
-        $str = preg_replace("/\{\-\-(.+?)\}/","<?php ++\\1; ?>",$str);
+        $str = preg_replace("/\{\-\-(.+?)\}/","<?php --\\1; ?>",$str);
         $str = preg_replace("/\{(.+?)\+\+\}/","<?php \\1++; ?>",$str);
         $str = preg_replace("/\{(.+?)\-\-\}/","<?php \\1--; ?>",$str);
         $str = preg_replace ( "/\{loop\s+(\S+)\s+(\S+)\}/", "<?php if(is_array(\\1)) foreach(\\1 AS \\2) { ?>", $str );
@@ -120,7 +120,7 @@ class template_mdl{
         $str = preg_replace("/\{img\s+(.+?)\}/is", "<?php echo img_path(\\1);?>",$str);
         $str = preg_replace("/\{mp:(\w+)(\s+[^}]+)\}/ie", "\$this->mp_tag('\\1','\\2', '\\0')", $str);
         $str = preg_replace("/\{\/mp\}/ie", "\$this->end_mp_tag()", $str);
-
+        $str = preg_replace("/\{filter:(\w+)(\s+.+?)\}/ie","\$this->do_filter('\\1','\\2')",$str);
 
         
         $str = "<?php if(!defined('IN_MEIU')) exit('Access Denied'); ?>" . $str;
@@ -252,6 +252,12 @@ class template_mdl{
         return '';
     }
     
+
+    function do_filter($filtername,$data){
+        preg_match_all("/\s+([a-zA-Z0-9_\-]+)\=([^\"\s]+|\"[^\"]+\")/i", stripslashes($data), $matches, PREG_SET_ORDER);
+        
+    }
+
     function arr_to_code($data) {
         if (is_array($data)) {
             $str = 'array(';
