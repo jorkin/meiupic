@@ -30,7 +30,14 @@ class photo_mdl extends modelfactory{
                 $str .= " and 1=0";
             }
         }
-
+        if(isset($filters['cate_id']) && $filters['cate_id'] != '' && $filters['cate_id'] != 'ANY'){
+            $cate_id = intval($filters['cate_id']);
+            if($cate_id == 0){
+                $str .= " and cate_id=".$cate_id;
+            }else{
+                $str .= " and cate_id in (select id from ".$this->db->stripTpre('#@cate')." where cate_path like '%,".intval($cate_id).",%')";
+            }
+        }
         return $str;
     }
     
@@ -166,8 +173,11 @@ class photo_mdl extends modelfactory{
     function move($id,$album_id){
         $photo_info = $this->get_info($id);
         $old_album  = $photo_info['album_id'];
-        if($this->update($id,array('album_id'=>$album_id,'is_cover'=>0))){
-            $album_mdl =& loader::model('album');
+        $album_mdl =& loader::model('album');
+        $album_info = $album_mdl->get_info($album_id);
+
+        if($this->update($id,array('album_id'=>$album_id,'is_cover'=>0,'cate_id'=>$album_info['cate_id']))){
+            
             $album_mdl->update_photos_num($old_album);
             $album_mdl->update_photos_num($album_id);
             $album_mdl->check_repare_cover($old_album);
@@ -182,19 +192,22 @@ class photo_mdl extends modelfactory{
     function move_batch($ids,$album_id){
         $photo_info = $this->get_info(intval($ids[0]));
         $old_album  = $photo_info['album_id'];
-        
+
+        $album_mdl =& loader::model('album');
+        $album_info = $album_mdl->get_info($album_id);
+
         $in_sql = '';
         foreach($ids as $i){
             $in_sql .= intval($i).',';
         }
         $in_sql = trim($in_sql,',');
 
-        $this->db->update('#@photos','id in ('.$in_sql.')',array('album_id'=>$album_id,'is_cover'=>0));
+        $this->db->update('#@photos','id in ('.$in_sql.')',array('album_id'=>$album_id,'is_cover'=>0,'cate_id'=>$album_info['cate_id']));
         if(!$this->db->query()){
             return false;
         }
         
-        $album_mdl =& loader::model('album');
+        
         $album_mdl->update_photos_num($old_album);
         $album_mdl->update_photos_num($album_id);
         $album_mdl->check_repare_cover($old_album);
@@ -224,7 +237,9 @@ class photo_mdl extends modelfactory{
             if(!in_array($fileext,array('jpg','png','jpeg','gif','bmp')) ){
                 $fileext = $imglib->getExtension();
             }
-            
+            if(isset($photo_info['cate_id'])){
+                $arr['cate_id'] = $photo_info['cate_id'];
+            }
             if(!$new_photo){
                 $filepath = $photo_info['path'];
                 $thumbpath = $photo_info['thumb'];
@@ -430,5 +445,11 @@ class photo_mdl extends modelfactory{
         $this->db->select('#@photometa','meta_key,meta_value','photo_id='.intval($id));
         $value = $this->db->getAssoc();
         return $value;
+    }
+
+    function update_by_aid($aid,$arr){
+        $this->db->update($this->table_name,'album_id='.intval($aid),$arr);
+
+        return $this->db->query();
     }
 }

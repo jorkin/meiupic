@@ -231,6 +231,10 @@ class albums_ctl extends pagecore{
         if($this->mdl_album->update($album_id,$album)){
             $tag_mdl =& loader::model('tag');
             $tag_mdl->save_tags($album_id,$album['tags'],1);
+            
+            $photo_mdl =& loader::model('photo');
+            $photo_mdl->update_by_aid($album_id,array('cate_id'=>$album['cate_id']));
+
             $this->plugin->trigger('modified_album',$album_id);
             
             form_ajax_success('box',lang('modify_album_success'),null,0.5,$_SERVER['HTTP_REFERER']);

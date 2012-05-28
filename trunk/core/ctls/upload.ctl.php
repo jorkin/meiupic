@@ -156,7 +156,9 @@ class upload_ctl extends pagecore{
         }
 
         if($status ==0 && ($chunks == 0||$chunk+1==$chunks)){
-            if(! $this->mdl_photo->save_upload($album_id,$tmpfs_lib->get_path($filename),$filename)){
+            $album_mdl =& loader::model('album');
+            $album_info = $album_mdl->get_info($album_id);
+            if(! $this->mdl_photo->save_upload($album_id,$tmpfs_lib->get_path($filename),$filename,true,array('cate_id'=>$album_info['cate_id']))){
                 $return = array(
                 'jsonrpc'=>'2.0',
                 'error'=>array(
@@ -317,7 +319,7 @@ class upload_ctl extends pagecore{
                         }
                         
 
-                        if(! $this->mdl_photo->save_upload($album_id,$tmpfile,$filename)){
+                        if(! $this->mdl_photo->save_upload($album_id,$tmpfile,$filename,true,array('cate_id'=>$album_info['cate_id']))){
                             $error .= lang('file_upload_failed',$filename).'<br />';
                         }
                     }else{

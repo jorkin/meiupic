@@ -27,7 +27,7 @@
                                     <!--{if $v['type']!=0}--><input type="checkbox" name="del[{$v['id']}]" value="1" class="checkbox" /><!--{/if}--></td>
                                     <td><input type="text" class="inputstyle iptw0" name="sort[{$v['id']}]" value="{$v['sort']}" /></td>
                                     <td><input type="text" class="inputstyle iptw1" name="name[{$v['id']}]" value="{$v['name']}" /></td>
-                                    <td><!--{if $v['type']!=0}--><input type="text" class="inputstyle iptw1" name="url[{$v['id']}]" value="{$v['url']}" /><!--{else}-->{$v[url]}<!--{/if}--></td>
+                                    <td><!--{if $v['type']!=0}--><input type="text" class="inputstyle iptw1" name="url[{$v['id']}]" value="{$v['url']}" /><!--{else}-->{link ctl=$v[url]}<!--{/if}--></td>
                                     <td><!--{if $v['type']==0}-->{lang nav_inside}<!--{else}-->{lang nav_custom}<!--{/if}--></td>
                                     <td><input type="checkbox" name="enable[{$v['id']}]" value="1" {if $v['enable']}checked="checked"{/if} /></td>
                                 </tr>

@@ -18,6 +18,7 @@ CREATE TABLE meu_albums (
 CREATE TABLE meu_photos ( 
     id integer NOT NULL primary key, 
     album_id int(11) NOT NULL, 
+    cate_id int(4) NOT NULL DEFAULT 0,
     name varchar(100) NOT NULL, 
     thumb varchar(255) NOT NULL, 
     path varchar(255) NOT NULL, 
@@ -142,3 +143,4 @@ CREATE INDEX am_album_id on meu_albummeta (album_id);
 CREATE INDEX cg_par_id on meu_cate (par_id);
 CREATE INDEX a_cate_id on meu_albums (cate_id);
 CREATE INDEX p_album_id on meu_photos (album_id);
+CREATE INDEX p_cate_id on meu_photos (cate_id);
