@@ -120,9 +120,10 @@ class upload_ctl extends pagecore{
         $chunk = $this->getRequest('chunk',0);
         $chunks = $this->getRequest('chunks',0);
         $filename = $this->getRequest('name','');
-        
+        $filehashname = md5($filename);
+
         $tmpfs_lib =& loader::lib('tmpfs');
-        $status = $tmpfs_lib->upload($filename,$chunk!=0);
+        $status = $tmpfs_lib->upload($filehashname,$chunk!=0);
         switch($status){
             case 100:
             $return = array(
@@ -158,7 +159,7 @@ class upload_ctl extends pagecore{
         if($status ==0 && ($chunks == 0||$chunk+1==$chunks)){
             $album_mdl =& loader::model('album');
             $album_info = $album_mdl->get_info($album_id);
-            if(! $this->mdl_photo->save_upload($album_id,$tmpfs_lib->get_path($filename),$filename,true,array('cate_id'=>$album_info['cate_id']))){
+            if(! $this->mdl_photo->save_upload($album_id,$tmpfs_lib->get_path($filehashname),$filename,true,array('cate_id'=>$album_info['cate_id']))){
                 $return = array(
                 'jsonrpc'=>'2.0',
                 'error'=>array(
@@ -254,7 +255,7 @@ class upload_ctl extends pagecore{
         if($type == 'multi'){
             need_login('ajax');
 
-            $files_count = intval($this->getPost('muilti_uploader_count'));
+            /*$files_count = intval($this->getPost('muilti_uploader_count'));
             for($i=0;$i<$files_count;$i++){
                 $filename = $this->getPost("muilti_uploader_{$i}_tmpname");
                 $realname = $this->getPost("muilti_uploader_{$i}_name");
@@ -265,7 +266,7 @@ class upload_ctl extends pagecore{
                     $this->mdl_photo->update($photorow['id'],array('name'=>$purerealname));
                 }
             }
-            
+            */
             $this->mdl_album->update_photos_num($album_id);
             $this->mdl_album->check_repare_cover($album_id);
             

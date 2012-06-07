@@ -34,7 +34,7 @@ $(function() {
         url : '{link ctl=upload act=process aid=$album_id}',
         max_file_size : '15mb',
         chunk_size : '512kb',
-        unique_names : true,
+        unique_names : false,
         filters : [
             {title : "Image files", extensions : "{$support_type}"}
         ],
