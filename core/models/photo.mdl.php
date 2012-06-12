@@ -226,6 +226,7 @@ class photo_mdl extends modelfactory{
         $imglib =& loader::lib('image');
         $exiflib =& loader::lib('exif');
         $fileext = file_ext($filename);
+        $filepure = file_pure_name($filename);
         $key = str_replace('.','',microtime(true));
         
         $tmpfs_lib =& loader::lib('tmpfs');
@@ -233,6 +234,8 @@ class photo_mdl extends modelfactory{
     
         
         if(file_exists($tmpfile)){
+            $setting =& Loader::model('setting');
+
             $imglib->load($tmpfile);
             if(!in_array($fileext,array('jpg','png','jpeg','gif','bmp')) ){
                 $fileext = $imglib->getExtension();
@@ -244,7 +247,20 @@ class photo_mdl extends modelfactory{
                 $filepath = $photo_info['path'];
                 $thumbpath = $photo_info['thumb'];
             } else {
-                $filepath = $media_dirname.'/'.$key.'.'.$fileext;
+                $use_old_img_name = $setting->get_conf('upload.use_old_imgname',false);
+                //如果文件名是只包含数字
+                if($use_old_img_name && preg_match('/^[0-9a-z_\-\.\(\)~]+$/i', $filepure)){
+                    //如果存在此图片，则生成唯一的名字
+                    $filepath = $media_dirname.'/'.$filepure.'.'.$fileext;
+                    $count = 1;
+                    while(file_exists($filepath)){
+                        $filepath = $media_dirname.'/'.$filepure.'_'.$count.'.'.$fileext;
+                        $count++;
+                    }
+                }else{
+                    $filepath = $media_dirname.'/'.$key.'.'.$fileext;
+                }
+
                 $thumbpath = $thumb_dirname.'/'.$key.'.'.$fileext;
             }
 
@@ -261,8 +277,6 @@ class photo_mdl extends modelfactory{
                     $arr['taken_d'] = date('j',$taken_time);
                 }
             }
-            
-            $setting =& Loader::model('setting');
             
             //如果开启自动裁剪大图片,将临时文件直接裁剪
             if($setting->get_conf('upload.enable_cut_big_pic',false)){
@@ -320,7 +334,7 @@ class photo_mdl extends modelfactory{
                 $arr['path'] = $filepath;
                 $arr['thumb'] = $thumbpath;
                 if($new_photo){
-                    $arr['name'] = isset($photo_info['name'])?$photo_info['name']:file_pure_name($filename);
+                    $arr['name'] = isset($photo_info['name'])?$photo_info['name']:$filepure;
                     $arr['create_time'] = time();
                     $arr['create_y'] = date('Y');
                     $arr['create_m'] = date('n');

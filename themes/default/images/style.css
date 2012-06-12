@@ -290,7 +290,7 @@ table.layout td.right{
 }
 
 /*sidebar*/
-.sidebar{padding-left:10px;}
+.sidebar{padding-left:10px;width:240px;overflow: hidden;}
 .sidesearch{clear:both;}
 .sidesearch h2{
     font-size:1.2em;

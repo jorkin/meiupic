@@ -163,6 +163,12 @@ class setting_ctl extends pagecore{
         }
         $this->setting->set_conf('upload.thumb_width',intval($upload['thumb_width']));
         
+        if($this->getPost('use_old_imgname')){
+            $this->setting->set_conf('upload.use_old_imgname',true);
+        }else{
+            $this->setting->set_conf('upload.use_old_imgname',false);
+        }
+
         //封面缩略图设置
         $this->setting->set_conf('upload.allow_size',$upload['allow_size']);
         form_ajax_success('box',lang('save_setting_success'),null,0.5,$_SERVER['HTTP_REFERER']);
@@ -551,6 +557,13 @@ class setting_ctl extends pagecore{
         dir_clear(ROOTDIR.'cache/data');
         dir_clear(ROOTDIR.'cache/templates');
         dir_clear(ROOTDIR.'cache/tmp');
+        //清除缩略图片缓存
+        $files = glob(ROOTDIR.'cache/dimgs/[a-zA-Z0-9][a-zA-Z0-9]/*.php');//用glob通过通配符搜索所有缓存文件
+        if ($files) {
+            foreach($files as $file){
+                @unlink($file);
+            }
+        }
         
         ajax_box(lang('clear_cache_success'),null,0.5,$_SERVER['HTTP_REFERER']);
     }

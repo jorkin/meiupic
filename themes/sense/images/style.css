@@ -12,7 +12,7 @@ td{
 /*统一相关定义*/
 .wrap,#bodywrap{
 	clear:both;
-	width:1000px;
+	width:980px;
 	margin:0 auto;
 }
 a{
@@ -174,7 +174,7 @@ textarea.inputstyle{
     line-height:54px;
     color:#fff;
     text-shadow: 1px 1px 1px #041933;
-    text-indent:10px;
+    /*text-indent:10px;*/
 }
 
 /*主菜单*/
@@ -340,7 +340,7 @@ textarea.inputstyle{
 
 /**/
 .display_setting .tab{
-    margin-right:20px;
+    margin-right:15px;
 }
 /*tab标签卡*/
 .tab{
@@ -409,7 +409,7 @@ table.layout td.right{
     display:inline-block;
     vertical-align: baseline;
     width:225px;
-    padding:9px;
+    padding:8px;
     margin-bottom:20px;
 
 }
@@ -973,7 +973,7 @@ table.layout td.right{
 	border:1px solid #ccc;
 	border-radius:10px;
 	background:#fff;
-	width:847px;
+	width:827px;
     min-height:500px;
     height:auto !important;
     height:500px;
@@ -1028,7 +1028,7 @@ input.settinginput{
 }
 .themelist .item{
     float:left;
-    padding-left:20px;
+    padding-left:18px;
     padding-bottom:20px;
     width:180px;
 }

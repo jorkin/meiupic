@@ -87,6 +87,13 @@ function img_path($path){
     $plugin =& loader::lib('plugin');
     return $plugin->filter('photo_path',$fullpath,$path);
 }
+//获取加密后的图片地址
+function encrypt_imgpath($params){
+    global $base_path;
+    $string = serialize($params);
+    $config =& loader::config();
+    return $base_path.'img.php?'.mycrypt($string,$config['img_path_key'],'EN');
+}
 
 //用户真实的IP地址
 function get_real_ip(){

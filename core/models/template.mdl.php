@@ -121,7 +121,7 @@ class template_mdl{
         $str = preg_replace("/\{mp:(\w+)(\s+[^}]+)\}/ie", "\$this->mp_tag('\\1','\\2', '\\0')", $str);
         $str = preg_replace("/\{\/mp\}/ie", "\$this->end_mp_tag()", $str);
         $str = preg_replace("/\{filter:(\w+)(\s+.+?)\}/ie","\$this->do_filter('\\1','\\2')",$str);
-
+        $str = preg_replace("/\{thumbimg(\s+.+?)\}/ies","\$this->makethumbpath('\\1')",$str);
         
         $str = "<?php if(!defined('IN_MEIU')) exit('Access Denied'); ?>" . $str;
         return $str;
@@ -153,6 +153,16 @@ class template_mdl{
             }
         }
         return "<?php echo site_link(\"$ctl\",\"$act\",".$this->arr_to_code($args)."); ?>";
+    }
+
+    function makethumbpath($var){
+        preg_match_all("/\s+([a-zA-Z0-9_\-]+)\=([^\"\s]+|\"[^\"]+\")/i", stripslashes($var), $matches, PREG_SET_ORDER);
+        
+        $args = array();
+        foreach($matches as $v){
+            $args[$v[1]] = trim($v[2],'"');
+        }
+        return '<?php echo encrypt_imgpath('.$this->arr_to_code($args).'); ?>';
     }
 
     function mp_tag($op,$data,$html){

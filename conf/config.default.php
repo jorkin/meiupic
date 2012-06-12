@@ -29,6 +29,7 @@ $CONFIG['cookie_name'] = 'MPIC_AU';
 $CONFIG['cookie_auth_key'] = 'eijs21aa0332$jsdf23';
 //默认请留空
 $CONFIG['cookie_domain'] = '';
+$CONFIG['img_path_key'] = 'sdfasdf23424aa';
 
 //安全模式
 $CONFIG['safemode'] = false;

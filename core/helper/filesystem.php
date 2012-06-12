@@ -21,7 +21,9 @@ function get_realpath($path){
 }
 //文件后缀
 function file_ext($filename){
-    return strtolower(end(explode('.',$filename)));
+    $farr = explode('.',$filename);
+    $tmp = end($farr);
+    return strtolower($tmp);
 }
 //文件除去后缀的文件名
 function file_pure_name($filename){

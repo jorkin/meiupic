@@ -34,16 +34,44 @@ class thumb{
     function thumb(){
         date_default_timezone_set('UTC');
 
-        $path = getGet('path');
+        $params = $_SERVER["QUERY_STRING"];
+        $config = loader::config();
+
+        $params = mycrypt($params,$config['img_path_key'],'DE');
+        $params = @unserialize($params);
+        if(!$params['path']){
+            header($_SERVER['SERVER_PROTOCOL'].' 404 Not Found!');
+            exit;
+        }
+        $path = $params['path'];
         $this->realpath = get_realpath(ROOTDIR.$path);
+
+        if(isset($params['guard']) && $params['guard']){//防盗链代码,具体代码需要在插件中实现
+            include_once(INCDIR.'plugin.php');
+            $plugin =& loader::lib('plugin');
+            $Config =& loader::config();
+            if(!$Config['safemode']){
+                $plugin->init_plugins();
+            }
+            $plugin->trigger('output_image',$path);
+        }
+
+        $this->pathCheck();
+
+        //不处理图片直接输出
+        if(isset($params['donothing']) && $params['donothing']){
+            $this->responseImg();
+            return ;
+        }
+
         $this->cache_dir = ROOTDIR.'cache/dimgs/';
 
-        $this->param['w'] = intval(getGet('w',0));
-        $this->param['h'] = intval(getGet('h',0));
-        $this->param['square'] = intval(getGet('square',0));
-        $this->param['zoom'] = getGet('zoom',0);
+        $this->param['w'] = $params['w']?intval($params['w']):0;//intval(getGet('w',0));
+        $this->param['h'] = $params['h']?intval($params['h']):0;//intval(getGet('h',0));
+        $this->param['square'] = $params['square']?intval($params['square']):0;//intval(getGet('square',0));
+        $this->param['zoom'] = $params['zoom']?intval($params['zoom']):0;//getGet('zoom',0);
         
-        $open_cache = intval(getGet('cache',0));
+        $open_cache = $params['cache']?intval($params['cache']):0;
 
         $cache_key = md5($path.$this->param['w'].$this->param['h'].$this->param['square'].$this->param['zoom'] );
         $this->cache_subdir = $this->cache_dir.substr($cache_key,0,2);
@@ -74,6 +102,18 @@ class thumb{
             }
             $this->outputImg();//直接输出图片
         }
+    }
+
+    function responseImg(){
+        if(PHP_VERSION < 5.3){
+            $mimetype = mime_content_type($this->realpath);
+        }else{
+            $finfo    = finfo_open(FILEINFO_MIME);
+            $mimetype = finfo_file($finfo, $this->realpath);
+        }
+
+        header("Content-Type: " . $mimetype);
+        echo readfile($this->realpath);
     }
     
     //路径检查，如果不是网站目录下的图片，禁止访问
