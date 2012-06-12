@@ -9,6 +9,14 @@
                     <div class="innercol">
                             <div class="innerconetent">
                                 <form id="setting_upload_form" action="{link ctl=setting act=save_upload}" method="post" onsubmit="return false;">
+                                    
+                                    <div class="settingfield">
+                                        <div class="label">{lang old_imgname_label}</div>
+                                        <div class="descinfo">{lang old_imgname_tips}</div>
+                                        <div class="input">
+                                            <label><input type="checkbox" id="use_old_imgname" name="use_old_imgname" value="1" {if $upload['use_old_imgname']}checked="checked"{/if} /> {lang enable}</label>
+                                        </div>
+                                    </div>
                                     <div class="settingfield">
                                         <div class="label">{lang upload_allow_size_label}</div>
                                         <div class="descinfo">{lang upload_allow_size_tips}</div>

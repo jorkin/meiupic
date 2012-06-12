@@ -1,4 +1,28 @@
 <?php
+//简单加密解密函数
+function mycrypt($string,$seccode,$action="EN")
+{ 
+    $secret_string = $seccode;
+    if($string=="") return ""; 
+    if($action=="EN") $md5code=substr(md5($string),8,10);
+    else
+    { 
+        $md5code=substr($string,-10);
+        $string=substr($string,0,strlen($string)-10);
+    } 
+    
+    $key = md5($md5code.$secret_string);
+    $string = ($action=="EN"?$string:base64_decode($string));
+    $len = strlen($key); 
+    $code = ""; 
+    for($i=0; $i<strlen($string); $i++)
+    { 
+        $k = $i%$len; 
+        $code .= $string[$i]^$key[$k]; 
+    } 
+    $code = ($action == "DE" ? (substr(md5($code),8,10)==$md5code?$code:NULL) : base64_encode($code)."$md5code"); 
+    return $code; 
+}
 
 //相册权限类型对应的名称
 function enum_priv_type($v){
