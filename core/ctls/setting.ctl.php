@@ -16,6 +16,9 @@ class setting_ctl extends pagecore{
         $site['share_title'] = safe_invert($site['share_title']);
         $this->output->set('site',$site);
         $this->output->set('enable_comment',$this->setting->get_conf('system.enable_comment'));
+        $this->output->set('enable_comment_captcha',$this->setting->get_conf('system.enable_comment_captcha'));
+        $this->output->set('comment_audit',$this->setting->get_conf('system.comment_audit'));
+
         $this->output->set('enable_auto_update',$this->setting->get_conf('system.enable_auto_update'));
         $this->output->set('show_process_info',$this->setting->get_conf('system.show_process_info'));
         $this->output->set('gravatar_url',$this->setting->get_conf('system.gravatar_url'));
@@ -61,11 +64,18 @@ class setting_ctl extends pagecore{
         $this->setting->set_conf('site.share_title',$site['share_title']);
         $this->setting->set_conf('system.gravatar_url',$gravatar_url);
         $this->setting->set_conf('site.logo',$site['logo']);
-        
+        $this->setting->set_conf('system.comment_audit',intval($this->getPost('comment_audit')));
+
         if($this->getPost('enable_comment')){
             $this->setting->set_conf('system.enable_comment',true);
         }else{
             $this->setting->set_conf('system.enable_comment',false);
+        }
+
+        if($this->getPost('enable_comment_captcha')){
+            $this->setting->set_conf('system.enable_comment_captcha',true);
+        }else{
+            $this->setting->set_conf('system.enable_comment_captcha',false);
         }
 
         if($this->getPost('enable_auto_update')){

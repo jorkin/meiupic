@@ -685,10 +685,16 @@ $language   =   array(
 'reupload_photo'                   => '重新上传照片',
 'reupload_photo_short'             => '重新上传',
 
-//评论验证码
+//评论验证码//added 12-07-11
 'captcha_code'                     => '验证码',
 'click_to_reload'                  => '点击刷新',
 'invalid_captcha_code'             => '验证码输入错误!',
+'enable_comment_captcha_label'     => '启用评论验证码',
+'enable_comment_captcha_tips'      => '游客必须输入验证码才能提交评论',
+'comment_audit_label'              => '评论审核方式',
+'comment_audit_tips'               => '如果选择直接获准，将不需要管理员审核直接显示',
+'comment_audit_auto'               => '直接获准',
+'comment_audit_manual'             => '手动审核',
 
 //分类
 'category'                         => '分类',

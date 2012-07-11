@@ -20,9 +20,10 @@ class comments_ctl extends pagecore{
         
         $this->plugin->trigger('before_post_comment');
         
-        $captcha =& loader::lib('captcha');
-        if(!$this->user->loggedin() && !$captcha->check($this->getPost('captcha'))){
-            form_ajax_failed('text',lang('invalid_captcha_code'));
+        if($this->setting->get_conf('system.enable_comment_captcha') && !$this->user->loggedin()){
+            $captcha =& loader::lib('captcha');
+            if(!$captcha->check($this->getPost('captcha')))
+                form_ajax_failed('text',lang('invalid_captcha_code'));
         }
 
         if($comment['email'] && !check_email($comment['email'])){
@@ -39,6 +40,11 @@ class comments_ctl extends pagecore{
         }
         $comment['post_time'] = time();
         $comment['author_ip'] = get_real_ip();
+        if($this->setting->get_conf('system.comment_audit') == 1 && !$this->user->loggedin()){
+            $comment['status'] = 0;
+        }else{
+            $comment['status'] = 1;
+        }
 
         if($comment_id = $this->mdl_comment->save($comment)){
             $this->plugin->trigger('post_comment',$comment_id);
@@ -54,6 +60,7 @@ class comments_ctl extends pagecore{
         $comment_info['author'] = safe_invert($comment_info['author']);
         $comment_info['pid'] = $comment_info['pid']?  $comment_info['pid']:$comment_info['id'];
         $this->output->set('info',$comment_info);
+        $this->output->set('enable_comment_captcha',$this->setting->get_conf('system.enable_comment_captcha'));
         $this->render();
     }
     
@@ -72,9 +79,10 @@ class comments_ctl extends pagecore{
         
         $this->plugin->trigger('before_post_comment');
 
-        $captcha =& loader::lib('captcha');
-        if(!$this->user->loggedin() && !$captcha->check($this->getPost('captcha'))){
-            form_ajax_failed('text',lang('invalid_captcha_code'));
+        if($this->setting->get_conf('system.enable_comment_captcha') && !$this->user->loggedin()){
+            $captcha =& loader::lib('captcha');
+            if(!$captcha->check($this->getPost('captcha')))
+                form_ajax_failed('text',lang('invalid_captcha_code'));
         }
 
         if($comment['email'] && !check_email($comment['email'])){
@@ -91,6 +99,11 @@ class comments_ctl extends pagecore{
         }
         $comment['post_time'] = time();
         $comment['author_ip'] = get_real_ip();
+        if($this->setting->get_conf('system.comment_audit') == 1 && !$this->user->loggedin()){
+            $comment['status'] = 0;
+        }else{
+            $comment['status'] = 1;
+        }
         
         if($reply_id = $this->mdl_comment->save($comment)){
             $comment['id'] = $reply_id;

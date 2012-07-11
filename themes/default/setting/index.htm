@@ -67,6 +67,23 @@
                                             <label><input type="checkbox" name="enable_comment" value="1" {if $enable_comment}checked="checked"{/if} /> {lang enable}</label>
                                         </div>
                                     </div>
+                                    <div class="settingfield">
+                                        <div class="label">{lang enable_comment_captcha_label}</div>
+                                        <div class="descinfo">{lang enable_comment_captcha_tips}</div>
+                                        <div class="input">
+                                            <label><input type="checkbox" name="enable_comment_captcha" value="1" {if $enable_comment_captcha}checked="checked"{/if} /> {lang enable}</label>
+                                        </div>
+                                    </div>
+                                    <div class="settingfield">
+                                        <div class="label">{lang comment_audit_label}</div>
+                                        <div class="descinfo">{lang comment_audit_tips}</div>
+                                        <div class="input">
+                                            <select name="comment_audit">
+                                                <option value="0" {if $comment_audit==0}selected="selected"{/if}>{lang comment_audit_auto}</option>
+                                                <option value="1" {if $comment_audit==1}selected="selected"{/if}>{lang comment_audit_manual}</option>
+                                            </select>
+                                        </div>
+                                    </div>
 
 									<div class="settingfield">
                                         <div class="label">{lang enable_auto_update}</div>

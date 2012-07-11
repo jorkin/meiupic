@@ -81,6 +81,7 @@ class photos_ctl extends pagecore{
             $this->output->set('comments_type',1);
             
             $this->output->set('enable_comment',true);
+            $this->output->set('enable_comment_captcha',$this->setting->get_conf('system.enable_comment_captcha'));
         }else{
             $this->output->set('enable_comment',false);
         }
@@ -647,6 +648,7 @@ class photos_ctl extends pagecore{
             $this->output->set('ref_id',$id);
             $this->output->set('comments_type',2);
             $this->output->set('enable_comment',true);
+            $this->output->set('enable_comment_captcha',$this->setting->get_conf('system.enable_comment_captcha'));
         }else{
             $this->output->set('enable_comment',false);
         }
