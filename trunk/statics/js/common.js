@@ -502,6 +502,16 @@ function toggle_tree(o){
     }
 }
 
+function reload_captcha(o){
+	var url=$(o).attr('src');
+	if(url.indexOf("?")>=0){
+		url = url+'&_='+Math.random();
+	}else{
+		url = url+'?_='+Math.random();
+	}
+	$(o).attr('src',url);
+}
+
 $(function(){
     //press esc to close float div
     $(document).bind('keypress',

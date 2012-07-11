@@ -61,6 +61,9 @@ a:hover{text-decoration:none;}
 .mainbody .editbg{
     background:#ffb;
 }
+img.captcha{
+	cursor:pointer;
+}
 /*paginator*/
 .paginator a, .thispage, .break {
     margin:2px;

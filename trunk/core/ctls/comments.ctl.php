@@ -20,6 +20,11 @@ class comments_ctl extends pagecore{
         
         $this->plugin->trigger('before_post_comment');
         
+        $captcha =& loader::lib('captcha');
+        if(!$this->user->loggedin() && !$captcha->check($this->getPost('captcha'))){
+            form_ajax_failed('text',lang('invalid_captcha_code'));
+        }
+
         if($comment['email'] && !check_email($comment['email'])){
             form_ajax_failed('text',lang('error_email'));
         }
@@ -34,7 +39,7 @@ class comments_ctl extends pagecore{
         }
         $comment['post_time'] = time();
         $comment['author_ip'] = get_real_ip();
-        
+
         if($comment_id = $this->mdl_comment->save($comment)){
             $this->plugin->trigger('post_comment',$comment_id);
             form_ajax_success('box',lang('post_comment_success'),null,10.5);
@@ -66,7 +71,12 @@ class comments_ctl extends pagecore{
         $comment['pid'] = intval($this->getPost('pid'));
         
         $this->plugin->trigger('before_post_comment');
-        
+
+        $captcha =& loader::lib('captcha');
+        if(!$this->user->loggedin() && !$captcha->check($this->getPost('captcha'))){
+            form_ajax_failed('text',lang('invalid_captcha_code'));
+        }
+
         if($comment['email'] && !check_email($comment['email'])){
             form_ajax_failed('text',lang('error_email'));
         }
