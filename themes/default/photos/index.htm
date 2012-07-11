@@ -113,8 +113,8 @@
                                         <div class="clear"></div>
                                     </div>
                                     <div class="field">
-                                        <div class="label">验证码 *</div>
-                                        <div class="ipts"><input type="text" class="inputstyle iptw1" name="seccode" /> <img src="{link ctl=captcha}" align="absmiddle" alt="点击刷新" /></div>
+                                        <div class="label">{lang captcha_code} *</div>
+                                        <div class="ipts"><input type="text" class="inputstyle iptw1" name="captcha" /> <img src="{link ctl=captcha}" align="absmiddle" class="captcha" title="{lang click_to_reload}" onclick="reload_captcha(this)" /></div>
                                         <div class="clear"></div>
                                     </div>
                                     {/if}

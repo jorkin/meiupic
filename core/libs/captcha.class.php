@@ -228,6 +228,10 @@ class captcha_cla{
     function check($value, $caseSensitive = false)
     {
         isset($_SESSION) || session_start();
+        if(!isset($_SESSION[$this->_sessionTtlKey]) || !isset($_SESSION[$this->_sessionValueKey])){
+            return false;
+        }
+
         $expireTime = $_SESSION[$this->_sessionTtlKey];
         $captchaCode = $_SESSION[$this->_sessionValueKey];
 
