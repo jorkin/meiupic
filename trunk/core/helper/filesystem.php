@@ -19,6 +19,12 @@ function get_realpath($path){
     //if using realpath, any symlinks will also be resolved
     return preg_match('#^\.\./|/\.\./#', $path) ? realpath($path) : $path;
 }
+function file_base($file){
+    $arr = explode('/',$file);
+    $tmp = end($arr);
+    $arr = explode('\\',$tmp);
+    return end($arr);
+}
 //文件后缀
 function file_ext($filename){
     $farr = explode('.',$filename);
@@ -30,6 +36,10 @@ function file_pure_name($filename){
     $arr = explode('.',$filename);
     array_pop($arr);
     return implode('.',$arr);
+}
+//判断是否是纯英文的名字
+function file_en_name($filepure){
+    return preg_match('/^[0-9a-z_\-\.\(\)~]+$/i', $filepure);
 }
 //删除文件夹
 function deldir($dir) {
@@ -51,6 +61,45 @@ function deldir($dir) {
     if(@rmdir($dir)) {
         return true;
     } else {
+        return false;
+    }
+}
+
+function filelist($dir,& $list){
+    if($directory = @dir($dir)) {
+        while ($file = $directory->read()) {
+            if($file!="." && $file!="..") {
+                $fullpath=$dir."/".$file;
+                if(!is_dir($fullpath)) {
+                    $list[] = $fullpath;
+                }else{
+                    filelist($fullpath,$list);
+                }
+            }
+        }
+        return true;
+    }
+    return false;
+}
+
+function getdirlist($dir){
+    $dirs = array();
+    if($directory = @dir($dir)) {
+        while ($file = $directory->read()) {
+            if($file!="." && $file!="..") {
+              $fullpath=$dir."/".$file;
+              if(!is_dir($fullpath)) {
+                $dirs[$dir][] = $fullpath;
+              } else {
+                $list = array();
+                if(filelist($fullpath,$list))
+                    $dirs[$fullpath] = $list;
+              }
+            }
+        }
+        $directory->close();
+        return $dirs;
+    }else{
         return false;
     }
 }

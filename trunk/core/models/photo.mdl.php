@@ -230,8 +230,7 @@ class photo_mdl extends modelfactory{
         $key = str_replace('.','',microtime(true));
         
         $tmpfs_lib =& loader::lib('tmpfs');
-        $tmpfile_thumb = $tmpfile.'_thumb.'.$fileext;
-    
+        $tmpfile_thumb = $tmpfs_lib->get_path($key.'_thumb.'.$fileext);
         
         if(file_exists($tmpfile)){
             $setting =& Loader::model('setting');
@@ -243,13 +242,14 @@ class photo_mdl extends modelfactory{
             if(isset($photo_info['cate_id'])){
                 $arr['cate_id'] = $photo_info['cate_id'];
             }
+
             if(!$new_photo){
                 $filepath = $photo_info['path'];
                 $thumbpath = $photo_info['thumb'];
             } else {
                 $use_old_img_name = $setting->get_conf('upload.use_old_imgname',false);
                 //如果文件名是只包含数字
-                if($use_old_img_name && preg_match('/^[0-9a-z_\-\.\(\)~]+$/i', $filepure)){
+                if($use_old_img_name && file_en_name($filepure)){
                     //如果存在此图片，则生成唯一的名字
                     $filepath = $media_dirname.'/'.$filepure.'.'.$fileext;
                     $count = 1;
@@ -263,7 +263,7 @@ class photo_mdl extends modelfactory{
 
                 $thumbpath = $thumb_dirname.'/'.$key.'.'.$fileext;
             }
-
+            
             $arr['width'] = $imglib->getWidth();
             $arr['height'] = $imglib->getHeight();
             if( $fileext == 'jpg'){
@@ -289,7 +289,7 @@ class photo_mdl extends modelfactory{
                     $arr['height'] = $imglib->getHeight();
                 }
             }
-
+            
             //设置水印前生成缩略图 
             $thumb_width = $setting->get_conf('upload.thumb_width',180);
             $thumb_height = $setting->get_conf('upload.thumb_height',180);
@@ -310,15 +310,21 @@ class photo_mdl extends modelfactory{
                 $imglib->load($tmpfile);
                 if($water_setting['type'] == 1){
                     $water_setting['water_mark_type'] = 'image';
-                    $ws_tmpfile = 'ws_tmp';
-                    $ws_file_content = $storlib->read($water_setting['water_mark_image']);
-                    if($ws_file_content){
-                        $tmpfs_lib->write($ws_tmpfile,$ws_file_content);
-                        $water_setting['water_mark_image'] = $tmpfs_lib->get_path($ws_tmpfile);
-                    $imglib->waterMarkSetting($water_setting);
-                    $imglib->waterMark();
-                    $imglib->save($tmpfile);
-                        $tmpfs_lib->delete($ws_tmpfile);
+                    if(STORAGE_ENGINE != 'file'){
+                        $ws_tmpfile = 'ws_tmp';
+                        $ws_file_content = $storlib->read($water_setting['water_mark_image']);
+                        if($ws_file_content){
+                            $tmpfs_lib->write($ws_tmpfile,$ws_file_content);
+                            $water_setting['water_mark_image'] = $tmpfs_lib->get_path($ws_tmpfile);
+                            $imglib->waterMarkSetting($water_setting);
+                            $imglib->waterMark();
+                            $imglib->save($tmpfile);
+                            $tmpfs_lib->delete($ws_tmpfile);
+                        }
+                    }else{
+                        $imglib->waterMarkSetting($water_setting);
+                        $imglib->waterMark();
+                        $imglib->save($tmpfile);
                     }
                 }elseif($water_setting['type'] == 2){
                     $water_setting['water_mark_type'] = 'font';

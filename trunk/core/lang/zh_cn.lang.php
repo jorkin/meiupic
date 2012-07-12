@@ -695,6 +695,16 @@ $language   =   array(
 'comment_audit_tips'               => '如果选择直接获准，将不需要管理员审核直接显示',
 'comment_audit_auto'               => '直接获准',
 'comment_audit_manual'             => '手动审核',
+'import_mode'                      => '导入模式',
+'scan_dir'                         => '需要扫描的文件夹',
+'auto_del_added'                   => '添加后自动删除图片',
+'save_mode'                        => '保存方式',
+'save_to_current_album'            => '存入当前相册',
+'create_dir_by_folder'             => '按照文件夹名创建新相册',
+'scan_dir_not_exists'              => '要扫描的文件夹不存在！',
+'dir_cannot_read'                  => '文件夹不可读！',
+'dir_has_no_files'                 => '该目录没有任何文件！',
+'import_success'                   => '成功扫描并添加了: %s个相册,%s张图片！',
 
 //分类
 'category'                         => '分类',

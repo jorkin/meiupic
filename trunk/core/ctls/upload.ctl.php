@@ -13,6 +13,8 @@ class upload_ctl extends pagecore{
         $act = $this->getGet('t');
         if($act=='normal'){
             $act = 'normal';
+        }elseif($act=='import'){
+            $act = 'import';
         }else{
             $act = 'multi';
         }
@@ -83,6 +85,124 @@ class upload_ctl extends pagecore{
         $crumb_nav = array();
         $crumb_nav[] = array('name'=>lang('upload_photo'),'link'=>site_link('upload'));
         $crumb_nav[] = array('name'=>lang('normal_mode'));
+        $this->page_crumb($crumb_nav);
+
+        $page_title = lang('upload_photo').' - '.$this->setting->get_conf('site.title');
+        $page_keywords = $this->setting->get_conf('site.keywords');
+        $page_description = $this->setting->get_conf('site.description');
+        
+        $this->page_init($page_title,$page_keywords,$page_description);
+        $this->render();
+    }
+
+    function import(){
+        need_login('page');
+        
+        $album_id = intval($this->getRequest('aid'));
+        if(!$album_id){
+            showError(lang('pls_sel_album'));
+        }
+
+        $this->output->set('album_id',$album_id);
+        $album_info = $this->mdl_album->get_info($album_id);
+        $this->output->set('album_info',$album_info);
+
+        //面包屑
+        $crumb_nav = array();
+        $crumb_nav[] = array('name'=>lang('upload_photo'),'link'=>site_link('upload'));
+        $crumb_nav[] = array('name'=>lang('normal_mode'));
+        $this->page_crumb($crumb_nav);
+
+        $page_title = lang('upload_photo').' - '.$this->setting->get_conf('site.title');
+        $page_keywords = $this->setting->get_conf('site.keywords');
+        $page_description = $this->setting->get_conf('site.description');
+        
+        $this->page_init($page_title,$page_keywords,$page_description);
+        $this->render();
+    }
+
+    function save_import(){
+        need_login('page');
+        @set_time_limit(0);
+
+        $timestamp = time();
+        $dir = $this->getPost('dir');
+        $autodel = $this->getPost('autodel')?true:false;
+        $savemode = intval($this->getPost('save_mode'));
+        $album_id = intval($this->getRequest('aid'));
+
+        //判断扫描的文件夹是否存在
+        $dirpath = ROOTDIR.$dir;
+        if(!is_dir($dirpath)){
+            showError(lang('scan_dir_not_exists'));
+        }
+        if(!is_readable($dirpath)){
+            showError(lang('dir_cannot_read'));
+        }
+
+        //开始扫描文件夹
+        $alldir = getdirlist($dirpath);
+        if(!$alldir){
+            showError(lang('dir_has_no_files'));
+        }
+
+        $tmpfslib =& loader::lib('tmpfs');
+        $imglib =& loader::lib('image');
+        $supportType = $imglib->supportType();
+
+        $album_num = 0;
+        $photos_num = 0;
+        foreach($alldir as $dir=>$files){
+            if(count($files)<=0){
+                continue;
+            }
+            if($savemode == 2){
+                $dirname = file_base($dir);
+                $dirname = file_en_name($dirname)?$dirname:date('Y-m-d',$timestamp).'_'.rand(10,99);
+                $data = array(
+                    'name' => $dirname,
+                    'create_time' =>$timestamp,
+                    'enable_comment' => 1,
+                    'cate_id' => 0
+                );
+                //创建相册
+                $album_id = $this->mdl_album->save($data);
+                $album_num++;
+            }
+
+            foreach($files as $file){
+                $file_ext = file_ext($file);
+                if(!in_array($file_ext,$supportType)){
+                    continue;
+                }
+                
+                //将存储的图片读取到临时文件
+                $tmpfile = time().rand(1000,9999).'.'.$file_ext;
+                $tmpfslib->write($tmpfile,file_get_contents($file));
+                $tmpfilepath = $tmpfslib->get_path($tmpfile);
+
+                if($this->mdl_photo->save_upload($album_id,$tmpfilepath,file_base($file))){
+                    if($autodel){
+                        @unlink($file);
+                    }
+                    $photos_num++;
+                }
+            }
+            if($savemode == 2){
+                $this->mdl_album->update_photos_num($album_id);
+                $this->mdl_album->check_repare_cover($album_id);
+            }
+        }
+        if($savemode == 1){
+            $this->mdl_album->update_photos_num($album_id);
+            $this->mdl_album->check_repare_cover($album_id);
+        }
+        $msg = lang('import_success',$album_num,$photos_num);
+        $this->output->set('result_msg',$msg);
+
+        //面包屑
+        $crumb_nav = array();
+        $crumb_nav[] = array('name'=>lang('upload_photo'));        
         $this->page_crumb($crumb_nav);
 
         $page_title = lang('upload_photo').' - '.$this->setting->get_conf('site.title');
