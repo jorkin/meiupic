@@ -705,6 +705,7 @@ $language   =   array(
 'dir_cannot_read'                  => '文件夹不可读！',
 'dir_has_no_files'                 => '该目录没有任何文件！',
 'import_success'                   => '成功扫描并添加了: %s个相册,%s张图片！',
+'display_setting'                 => '显示设置',
 
 //分类
 'category'                         => '分类',

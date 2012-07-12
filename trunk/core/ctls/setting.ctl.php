@@ -60,10 +60,8 @@ class setting_ctl extends pagecore{
         $this->setting->set_conf('site.url',$site['url']);
         $this->setting->set_conf('site.keywords',$site['keywords']);
         $this->setting->set_conf('site.description',$site['description']);
-        $this->setting->set_conf('site.footer',safe_convert($site['footer'],true,true));
         $this->setting->set_conf('site.share_title',$site['share_title']);
         $this->setting->set_conf('system.gravatar_url',$gravatar_url);
-        $this->setting->set_conf('site.logo',$site['logo']);
         $this->setting->set_conf('system.comment_audit',intval($this->getPost('comment_audit')));
 
         if($this->getPost('enable_comment')){
@@ -84,6 +82,44 @@ class setting_ctl extends pagecore{
             $this->setting->set_conf('system.enable_auto_update',false);
         }
 
+        
+        form_ajax_success('box',lang('save_setting_success'),null,0.5,$_SERVER['HTTP_REFERER']);
+    }
+    
+    function display(){
+        need_login('page');
+        
+        $site = $this->setting->get_conf('site');
+        $site['footer'] = safe_invert($site['footer'],true);
+        $this->output->set('site',$site);
+        $this->output->set('show_process_info',$this->setting->get_conf('system.show_process_info'));
+
+        $album_sort_list = array(lang('create_time') => 'ct',lang('upload_time') => 'ut',lang('photo_nums') => 'p');
+        $photo_sort_list = array(lang('upload_time') => 'tu',lang('taken_time') => 'tt',lang('hits')=>'h',lang('comments_nums')=>'c',lang('photo_name')=>'n');
+        
+        $this->output->set('album_sort_list',$album_sort_list);
+        $this->output->set('photo_sort_list',$photo_sort_list);
+        //面包屑
+        $crumb_nav = array();
+        $crumb_nav[] = array('name'=>lang('system_setting'),'link'=>site_link('setting'));
+        $crumb_nav[] = array('name'=>lang('display_setting'));
+        
+        $this->page_crumb($crumb_nav);
+        
+        $page_title = lang('display_setting').' - '.lang('system_setting').' - '.$this->setting->get_conf('site.title');
+        $page_keywords = $this->setting->get_conf('site.keywords');
+        $page_description = $this->setting->get_conf('site.description');
+        
+        $this->page_init($page_title,$page_keywords,$page_description);
+        $this->render();
+    }
+
+    function save_display(){
+        $site = $this->getPost('site');
+
+        $this->setting->set_conf('site.footer',safe_convert($site['footer'],true,true));
+        $this->setting->set_conf('site.logo',$site['logo']);
+
         if($this->getPost('show_process_info')){
             $this->setting->set_conf('system.show_process_info',true);
         }else{
@@ -91,7 +127,7 @@ class setting_ctl extends pagecore{
         }
         form_ajax_success('box',lang('save_setting_success'),null,0.5,$_SERVER['HTTP_REFERER']);
     }
-    
+
     function upload(){
         need_login('page');
         

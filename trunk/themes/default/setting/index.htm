@@ -37,28 +37,7 @@
                                             <textarea name="site[description]" class="settinginput iptw5 ipth1">{$site['description']}</textarea>
                                         </div>
                                     </div>
-                                    <div class="settingfield">
-                                        <div class="label">{lang site_logo_label}</div>
-                                        <div class="descinfo">{lang site_logo_tips}</div>
-                                        <div class="input">
-                                            <input type="text" id="logo_img" name="site[logo]" class="settinginput iptw3" value="{if isset($site['logo'])}{$site['logo']}{/if}" />
-                                            <a href="javascript:void(0)" onclick="upload_logo()">{lang upload}</a>
-                                        </div>
-                                    </div>
-                                    <div class="settingfield">
-                                        <div class="label">{lang site_footer_label}</div>
-                                        <div class="descinfo">{lang site_footer_tips}</div>
-                                        <div class="input">
-                                            <textarea name="site[footer]" class="settinginput iptw5 ipth1">{$site['footer']}</textarea>
-                                        </div>
-                                    </div>
-                                    <div class="settingfield">
-                                        <div class="label">{lang show_process_info_label}</div>
-                                        <div class="descinfo">{lang show_process_info_tips}</div>
-                                        <div class="input">
-                                            <label><input type="checkbox" name="show_process_info" value="1" {if $show_process_info}checked="checked"{/if} /> {lang enable}</label>
-                                        </div>
-                                    </div>
+                                    
                                     
                                     <div class="settingfield">
                                         <div class="label">{lang enable_comment_label}</div>
@@ -84,7 +63,6 @@
                                             </select>
                                         </div>
                                     </div>
-
 									<div class="settingfield">
                                         <div class="label">{lang enable_auto_update}</div>
                                         <div class="descinfo">{lang enable_auto_update_tips}</div>
@@ -118,40 +96,4 @@
         </tr>
     </table>
 </div>
-<script>
-function upload_logo(){
-    var newuploadwin = '<div class="box_title titbg"><div onclick="Mui.box.close()" class="closer sprite i_close"></div>{lang upload}</div><div class="box_container"><input id="fileToUpload" type="file" size="25" name="fileToUpload"> <button class="ylbtn1" id="buttonUpload" onclick="return ajaxFileUpload();">{lang upload}</button> <input class="ylbtn1" type="button" value="{lang cancel}" onclick="Mui.box.close();" /></div>';
-    Mui.box.setData(newuploadwin,true);
-}
-
-function ajaxFileUpload(){
-    $.ajaxFileUpload
-    (
-        {
-            url:'{link ctl=setting act=fileupload}',
-            secureuri:false,
-            fileElementId:'fileToUpload',
-            dataType: 'json',
-            data:{upaction:'logo'},
-            success: function (data, status)
-            {
-                if(typeof(data.error) != 'undefined'){
-                    if(data.error != ''){
-                        alert(data.error);
-                    }else{
-                        $('#logo_img').val(data.msg);
-                        Mui.box.close();
-                    }
-                }
-            },
-            error: function (data, status, e){
-                alert(e);
-            }
-        }
-    )
-    
-    return false;
-    
-}
-</script>
 {template block/footer}
