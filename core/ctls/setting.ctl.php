@@ -99,6 +99,16 @@ class setting_ctl extends pagecore{
         
         $this->output->set('album_sort_list',$album_sort_list);
         $this->output->set('photo_sort_list',$photo_sort_list);
+        
+        $album_pageset = $this->setting->get_conf('display.album_pageset');
+        $photo_pageset = $this->setting->get_conf('display.photo_pageset');
+        $album_sort_default = $this->setting->get_conf('display.album_sort_default');
+        $photo_sort_default = $this->setting->get_conf('display.photo_sort_default');
+
+        $this->output->set('album_pageset',$album_pageset);
+        $this->output->set('photo_pageset',$photo_pageset);
+        $this->output->set('album_sort_default',$album_sort_default);
+        $this->output->set('photo_sort_default',$photo_sort_default);
         //面包屑
         $crumb_nav = array();
         $crumb_nav[] = array('name'=>lang('system_setting'),'link'=>site_link('setting'));
@@ -116,9 +126,14 @@ class setting_ctl extends pagecore{
 
     function save_display(){
         $site = $this->getPost('site');
+        $display = $this->getPost('display');
 
         $this->setting->set_conf('site.footer',safe_convert($site['footer'],true,true));
         $this->setting->set_conf('site.logo',$site['logo']);
+        $this->setting->set_conf('display.album_pageset',$display['album_pageset']);
+        $this->setting->set_conf('display.photo_pageset',$display['photo_pageset']);
+        $this->setting->set_conf('display.album_sort_default',$display['album_sort_default']);
+        $this->setting->set_conf('display.photo_sort_default',$display['photo_sort_default']);
 
         if($this->getPost('show_process_info')){
             $this->setting->set_conf('system.show_process_info',true);
@@ -578,8 +593,8 @@ class setting_ctl extends pagecore{
         $utility_mdl =& loader::model('utility');
         $info = $utility_mdl->sys_info();
         $this->output->set('info',$info);
-        $size = dirsize(ROOTDIR.'cache');
-        $this->output->set('cache_size',bytes2u($size));
+        //$size = dirsize(ROOTDIR.'cache');
+        //$this->output->set('cache_size',bytes2u($size));
 
 
         //面包屑
@@ -597,6 +612,15 @@ class setting_ctl extends pagecore{
         $this->render();
     }
     
+    function get_cache_size(){
+        need_login('ajax');
+
+        $size = dirsize(ROOTDIR.'cache');
+        $cache_size = bytes2u($size);
+
+        echo $cache_size;
+    }
+
     function clear_cache(){
         need_login('ajax_page');
 

@@ -29,4 +29,10 @@ class tag_tag_mdl{
             return $this->tag->get_top($data['limit'],$filters,$order);
         }
     }
+
+    function load($data){
+        $tag_id = $data['id'];
+        $fields = isset($data['fields'])?$data['fields']:'*';
+        return $this->tag->get_info($tag_id,$fields);
+    }
 }

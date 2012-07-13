@@ -705,7 +705,14 @@ $language   =   array(
 'dir_cannot_read'                  => '文件夹不可读！',
 'dir_has_no_files'                 => '该目录没有任何文件！',
 'import_success'                   => '成功扫描并添加了: %s个相册,%s张图片！',
-'display_setting'                 => '显示设置',
+'display_setting'                  => '显示设置',
+'album_sort_default_label'         => '相册列表默认排序',
+'album_pageset_label'              => '相册列表默认每页显示',
+'photo_sort_default_label'         => '照片列表默认排序',
+'photo_pageset_label'              => '照片列表默认每页显示',
+'desc'                             => '逆序',
+'asc'                              => '正序',
+'get_cache_size'                   => '计算缓存大小',
 
 //分类
 'category'                         => '分类',
