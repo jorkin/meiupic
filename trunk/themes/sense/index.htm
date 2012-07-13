@@ -1,4 +1,10 @@
 {template block/header}
 <div id="bodywrap" class="mainbody">
+	<!--最新上传的照片-->
+	{mp:photo action="lists" order=ut_desc num=5}
+		{loop $data $ph}
+		{$ph['name']}<br>
+		{/loop}
+	{/mp}
 </div>
 {template block/footer}

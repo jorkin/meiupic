@@ -41,7 +41,13 @@ function ajax_box( $content , $title = '', $close_time = 0 , $forward = '' , $di
 }
 
 //排序下拉菜单
-function get_sort_list($setting,$type,$default){
+function get_sort_list($setting,$type,$default=''){
+    $setting_mdl =& loader::model('setting');
+    if($type=='album'){
+        $default = $setting_mdl->get_conf('display.album_sort_default','ct_desc');
+    }else{
+        $default = $setting_mdl->get_conf('display.photo_sort_default','tu_desc');
+    }
     $sort = isset($_COOKIE['Mpic_sortset_'.$type])?$_COOKIE['Mpic_sortset_'.$type]:$default;
     $menu_data = array();
     foreach ($setting as $k => $v) {
@@ -73,7 +79,15 @@ function get_sort_list($setting,$type,$default){
 //排序分页菜单
 function get_page_setting($type){
     $arr = array(12,30,56);
-    $current = isset($_COOKIE['Mpic_pageset_'.$type])?$_COOKIE['Mpic_pageset_'.$type]:'12';
+    
+    $setting_mdl =& loader::model('setting');
+    if($type=='album'){
+        $default = $setting_mdl->get_conf('display.album_pageset',12);
+    }else{
+        $default = $setting_mdl->get_conf('display.photo_pageset',12);
+    }
+
+    $current = isset($_COOKIE['Mpic_pageset_'.$type])?$_COOKIE['Mpic_pageset_'.$type]:$default;
     
     $output=&loader::lib('output');
     $output->set('pageset_menu',$arr);

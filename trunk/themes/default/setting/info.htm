@@ -9,7 +9,7 @@
                     <div class="innercol">
                             <div class="innerconetent">
                                 <div class="sysinfo">
-                                 <div class="btns">{lang cache_size}{$cache_size} <input class="ml10 ylbtn" type="button" onclick="Mui.box.show('{link ctl=setting act=clear_cache}')" value="{lang clear_all_cache}" /> <input class="ml10 ylbtn" type="button" onclick="Mui.box.show('{link ctl=setting act=check_update}',true)" value="{lang check_update}" /></div>
+                                 <div class="btns">{lang cache_size} <span id="cache_size">?</span> &nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" onclick="get_cache_size()">{lang get_cache_size}</a> <input class="ml10 ylbtn" type="button" onclick="Mui.box.show('{link ctl=setting act=clear_cache}')" value="{lang clear_all_cache}" /> <input class="ml10 ylbtn" type="button" onclick="Mui.box.show('{link ctl=setting act=check_update}',true)" value="{lang check_update}" /></div>
                                  
                                  <form id="recounter" action="{link ctl=setting act=counter}" method="post" onsubmit="return false;">
                                      <div class="section">{lang recounter}</div>
@@ -46,5 +46,12 @@
         </tr>
     </table>
 </div>
-
+<script>
+function get_cache_size(){
+	$('#cache_size').text('...');
+	$.post('{link ctl=setting act=get_cache_size}',{},function(data){
+		$('#cache_size').text(data);
+	});
+}
+</script>
 {template block/footer}
