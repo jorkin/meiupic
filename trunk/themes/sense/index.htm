@@ -1,33 +1,5 @@
 {template block/header}
 <div id="bodywrap" class="mainbody">
-	<!--最新上传的照片-->
-	<div class="index_box">
-		<div class="box_title">
-			<h2>{lang new_pictures}</h2>
-		</div>
-		<div class="gallary_wrap grid">
-			{mp:photo action="lists" order=tu_desc num=8 cache=500}
-			{loop $data $ph}
-			<div class="gallary_item idx">
-				<div class="item">
-					<div class="pic_box">
-						<table><tr><td>
-							<a href="{link ctl=photos act=view id=$ph['id']}"><img alt="media" src="{img $ph['thumb']}" /></a>
-						</td></tr></table>
-					</div>
-					<div class="clear"></div>
-				</div>
-				<div class="info">
-					<div class="title">
-						<span class="name"><a href="{link ctl=photos act=view id=$ph['id']}">{$ph['name']}</a></span>
-					</div>
-					<p class="gray">{echo date('Y-m-d',$ph['create_time'])}</p>
-				</div>
-			</div>
-			{/loop}
-			{/mp}
-		</div>
-	</div>
 	<!--最新创建的相册-->
 	<div class="index_box">
 		<div class="box_title">
@@ -60,15 +32,45 @@
 		</div>
 	</div>
 	
+	<!--最新上传的照片-->
+	<div class="index_box">
+		<div class="box_title">
+			<h2>{lang new_photos}</h2>
+		</div>
+		<div class="gallary_wrap grid">
+			{mp:photo action="lists" order=tu_desc num=8 cache=500}
+			{loop $data $ph}
+			<div class="gallary_item idx">
+				<div class="item">
+					<div class="pic_box">
+						<table><tr><td>
+							<a href="{link ctl=photos act=view id=$ph['id']}"><img alt="media" src="{img $ph['thumb']}" /></a>
+						</td></tr></table>
+					</div>
+					<div class="clear"></div>
+				</div>
+				<div class="info">
+					<div class="title">
+						<span class="name"><a href="{link ctl=photos act=view id=$ph['id']}">{$ph['name']}</a></span>
+					</div>
+					<p class="gray">{echo date('Y-m-d',$ph['create_time'])}</p>
+				</div>
+			</div>
+			{/loop}
+			{/mp}
+		</div>
+	</div>
+	
+	
 	<!--{if get_config('system.enable_comment')}-->
 	<div class="index_comments_block">
 		<!--最新评论-->
 		<div class="index_box f_left">
 			<div class="box_title">
-				<h2>最新相册评论</h2>
+				<h2>{lang new_comment_for_albums}</h2>
 			</div>
 			<div class="index_comments">
-				{mp:comment action="lists" type=1 num=8}
+				{mp:comment action="lists" type=1 num=5}
 				{loop $data $cmt}
 				<div class="cmt_item">
 					<div class="f_left fce">
@@ -87,10 +89,10 @@
 		<!--最新评论-->
 		<div class="index_box f_right">
 			<div class="box_title">
-				<h2>最新照片评论</h2>
+				<h2>{lang new_comment_for_photos}</h2>
 			</div>
 			<div class="index_comments">
-				{mp:comment action="lists" type=2 num=8}
+				{mp:comment action="lists" type=2 num=5}
 				{loop $data $cmt}
 				<div class="cmt_item">
 					<div class="f_left fce">

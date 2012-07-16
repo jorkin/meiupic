@@ -288,9 +288,11 @@ class image_gd {
     旋转图片
     */
     function rotate($dgree){
-        $tran = imagecolortransparent($this->image,NULL);
-        $new_image = imagerotate($this->image, $dgree , $tran);
-        $this->image = $new_image;
+        if(function_exists('imagerotate')){
+            $tran = imagecolortransparent($this->image,NULL);
+            $new_image = imagerotate($this->image, $dgree , $tran);
+            $this->image = $new_image;
+        }
     }
     
     function waterMarkSetting($param){

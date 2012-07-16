@@ -454,6 +454,10 @@ table.layout td.right{
     margin:2px 5px 0 0;
     float:left;
 }
+.grid .info .title .name{
+    float:left;
+    width:200px;
+}
 .grid .info .title .name input{
 	width:180px;
 }
@@ -1208,7 +1212,11 @@ div.index_box div.box_title h2 a.f_right{
 	padding-right:20px;
 	color:#666;
 }
-
+div.index_comments_block{
+    margin-bottom:10px;
+    padding-bottom:10px;
+    border-bottom:1px solid #ccc;
+}
 div.index_comments_block div.index_box{
 	width:485px;
 }
@@ -1216,6 +1224,7 @@ div.index_comments_block div.index_box{
 div.index_comments div.cmt_item{
 	height:60px;
 	overflow:hidden;
+    margin-bottom:5px;
 }
 div.index_comments div.fce{
 	float: left;
