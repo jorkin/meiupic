@@ -1,5 +1,5 @@
 $(function(){
-    $('.gallary_item').hover(function(){
+    $('.gallary_item:not(.idx)').hover(function(){
         $('.gallary_wrap .gallary_item').removeClass('sel_on');
         $(this).addClass('sel_on');
         var obj = this;

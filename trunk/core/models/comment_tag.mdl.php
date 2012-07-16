@@ -22,6 +22,9 @@ class comment_tag_mdl{
             $filters['type'] = 2;
             $filters['ref_id'] = $data['photo_id'];
         }
+        if(isset($data['type']) && !isset($filters['type'])){
+            $filters['type'] = intval($data['type']);
+        }
         
         $order = isset($data['order'])?$data['order']:null;
 
