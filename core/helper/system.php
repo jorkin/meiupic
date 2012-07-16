@@ -195,6 +195,11 @@ function getvars($data, $type = 'VAR') {
     return $evaluate;
 }
 
+function get_config($str){
+    $setting =& loader::model('setting');
+    return $setting->get_conf($str);
+}
+
 function buildarray($array, $level = 0, $pre = '$CONFIG') {
     static $ks;
     $return = '';
