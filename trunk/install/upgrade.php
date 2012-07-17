@@ -182,17 +182,6 @@ if(!$user->loggedin()){
     if(file_exists($script_file)){
         require_once($script_file);
     }
-    
-    $setting_mdl->set_conf('system.enable_auto_update',true);//TODO 
-    $setting_mdl->set_conf('upload.enable_cut_big_pic',false);
-    $setting_mdl->set_conf('upload.max_width',1600);
-    $setting_mdl->set_conf('upload.max_height',1200);
-    $setting_mdl->set_conf('upload.enable_thumb_square',false);
-    $setting_mdl->set_conf('upload.thumb_width',180);
-    $setting_mdl->set_conf('upload.thumb_height',180);
-    $setting_mdl->set_conf('upload.enable_cover_square',true);
-    $setting_mdl->set_conf('upload.cover_width',150);
-    $setting_mdl->set_conf('upload.cover_height',150);
 
     $setting_mdl->set_conf('system.version',MPIC_VERSION);
     $setting_mdl->set_conf('update.return','lastest');
