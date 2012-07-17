@@ -229,6 +229,25 @@ Class adapter_sqlite{
         
     }
 
+    public function getColumns($table){
+        $tempQuery = "SELECT sql,name,type FROM sqlite_master WHERE tbl_name = '".$table."' ORDER BY type DESC";
+        $row = $this->getRow($tempQuery);
+        if(sizeof($row)>0)
+        {
+            $origsql = trim(preg_replace("/[\s]+/", " ", str_replace(",", ", ",preg_replace("/[\(]/", "( ", $row['sql'], 1))));
+            $oldcols = preg_split("/[,]+/", substr(trim($origsql), strpos(trim($origsql), '(')+1), -1, PREG_SPLIT_NO_EMPTY);
+            for($i=0; $i<sizeof($oldcols); $i++)
+            {
+                $colparts = preg_split("/[\s]+/", $oldcols[$i], -1, PREG_SPLIT_NO_EMPTY);
+                $oldcols[$i] = $colparts[0];
+            }
+            
+            return $oldcols;
+        }else{
+            return array();
+        }
+    }
+
     public function alterTable($table, $alterdefs)
     {
         if($alterdefs == '')
