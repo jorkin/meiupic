@@ -156,16 +156,27 @@ if(!$user->loggedin()){
         echo '<div class="msg fail">'.lang('have_been_updated').'</div>';
         exit;
     }
+    
     //如果没有获取到当前version，根据数据库判断
     $db =& loader::database();
     if($prev_version == ''){
+        //获取照片表的字段
+        $photo_cols = $db->getColumns('#@photos');
         $rows = $db->show_tables();
         if(!in_array($db->pre.'setting',$rows)){
-            $current_version = '1.1';
+            $prev_version = '1.1';
         }elseif(!in_array($db->pre.'cate',$rows)){
-            $current_version = '2.0';
+            $prev_version = '2.0';
+        }elseif(!in_array('cate_id',$photo_cols)){
+            $prev_version = '2.1';
         }else{
             $prev_version = $current_version;
+        }
+    }else{
+        if(version_compare($prev_version,'2.0','>=') && version_compare($prev_version,'2.1','<')){
+            $prev_version = '2.0';
+        }elseif(version_compare($prev_version,'2.1','>=') && version_compare($prev_version,'2.2','<')){
+            $prev_version = '2.1';
         }
     }
 

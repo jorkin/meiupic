@@ -345,6 +345,10 @@ Class adapter_mysql{
     function show_tables(){
         return $this->getCol('show tables');
     }
+
+    function getColumns($table){
+        return $this->getCol('desc `'.$table.'`');
+    }
     /**
      * 获得刚插入数据的ID号
      *

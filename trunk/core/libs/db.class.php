@@ -481,6 +481,10 @@ class db_cla{
     function show_tables(){
         return $this->db->show_tables();
     }
+
+    function getColumns($table){
+        return $this->db->getColumns($this->stripTpre($table));
+    }
 }
 
 class DB_Expr{
