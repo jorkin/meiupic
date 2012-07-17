@@ -8,11 +8,19 @@ if($db->adapter == 'sqlite'){
 }else{
     //把album字段加大
     $sqls[] = "ALTER TABLE #@albums CHANGE `name` `name` VARCHAR(150) CHARACTER SET utf8 NOT NULL";
-    $sqls[] = "ALTER TABLE `meu_photos` ADD `cate_id` INT NOT NULL DEFAULT '0' AFTER `album_id` ,ADD INDEX ( `cate_id` );"
+    $sqls[] = "ALTER TABLE `meu_photos` ADD `cate_id` INT NOT NULL DEFAULT '0' AFTER `album_id` ,ADD INDEX ( `cate_id` );";
 }
 
 foreach($sqls as $sql){
     $db->query($sql);
+}
+
+//更新图片所属的分类
+$album_mdl =& loader::model('album');
+$photo_mdl =& loader::model('photo');
+$albums = $album_mdl->get_all();
+if($albums as $album){
+    $photo_mdl->update_by_aid(array('cate_id'=>$album['cate_id']),$album['id']);
 }
 
 //setting新增值
