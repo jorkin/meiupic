@@ -19,8 +19,10 @@ foreach($sqls as $sql){
 $album_mdl =& loader::model('album');
 $photo_mdl =& loader::model('photo');
 $albums = $album_mdl->get_all();
-if($albums as $album){
-    $photo_mdl->update_by_aid(array('cate_id'=>$album['cate_id']),$album['id']);
+if($albums){
+    foreach ($albums as $album){
+        $photo_mdl->update_by_aid($album['id'],array('cate_id'=>$album['cate_id']));
+    }
 }
 
 //setting新增值
