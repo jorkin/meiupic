@@ -8,7 +8,7 @@ if($db->adapter == 'sqlite'){
 }else{
     //把album字段加大
     $sqls[] = "ALTER TABLE #@albums CHANGE `name` `name` VARCHAR(150) CHARACTER SET utf8 NOT NULL";
-    $sqls[] = "ALTER TABLE `meu_photos` ADD `cate_id` INT NOT NULL DEFAULT '0' AFTER `album_id` ,ADD INDEX ( `cate_id` );";
+    $sqls[] = "ALTER TABLE `#@photos` ADD `cate_id` INT NOT NULL DEFAULT '0' AFTER `album_id` ,ADD INDEX ( `cate_id` );";
 }
 
 foreach($sqls as $sql){
