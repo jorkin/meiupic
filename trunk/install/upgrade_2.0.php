@@ -39,7 +39,7 @@ if($db->adapter == 'sqlite'){
         `enable` tinyint(1) NOT NULL DEFAULT '1',
         PRIMARY KEY ( `id` )
         ) TYPE=MyISAM ;");
-    $sqls[] = 'ALTER TABLE `#@albums` ADD `cate_id` int(4) NOT NULL DEFAULT 0 , ADD INDEX `cate_id` (`cate_id`)';
+    $sqls[] = 'ALTER TABLE `#@albums` ADD `cate_id` int(4) NOT NULL DEFAULT 0 AFTER `name`, ADD INDEX `cate_id` (`cate_id`)';
 }
 
 $sqls[] = $db->insert('#@nav',array('type'=>0,'name'=>lang('album_index'),'url' =>'default','sort'=>'100'));
