@@ -1,6 +1,6 @@
 CREATE TABLE meu_albums ( 
     id integer NOT NULL primary key, 
-    name varchar(50) NOT NULL, 
+    name varchar(150) NOT NULL, 
     cate_id int(4) NOT NULL DEFAULT 0,
     cover_id int(11) NOT NULL DEFAULT 0, 
     cover_ext varchar(20) DEFAULT NULL, 

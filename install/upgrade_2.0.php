@@ -61,4 +61,6 @@ $default_config =& loader::config('config.default');
 
 save_config_file(ROOTDIR.'conf/config.php', $config, $default_config);
 
+$setting_mdl->set_conf('system.enable_auto_update',true);
+
 require_once(ROOTDIR.'install/upgrade_2.1.php');
