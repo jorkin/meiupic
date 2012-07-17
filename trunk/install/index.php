@@ -281,6 +281,7 @@ if($method == 'license'){
         $mdl_setting->set_conf('system.show_process_info',false);
         $mdl_setting->set_conf('system.language',INS_LANG);
         $mdl_setting->set_conf('system.timezone',8);
+        $mdl_setting->set_conf('system.current_theme','sense');
         $mdl_setting->set_conf('site.title',$sitename);
         $mdl_setting->set_conf('site.url',$siteurl);
         $mdl_setting->set_conf('site.footer','');
@@ -289,21 +290,20 @@ if($method == 'license'){
         $mdl_setting->set_conf('site.keywords',lang('site_keywords'));
         $mdl_setting->set_conf('site.description',lang('site_desc'));
 
-        $mdl_setting->set_conf('system.enable_auto_update',true);
-        $setting_mdl->set_conf('system.enable_comment_captcha',true);
-        $setting_mdl->set_conf('system.comment_audit',0);
+        /*$mdl_setting->set_conf('system.enable_comment_captcha',true);
+        $mdl_setting->set_conf('system.comment_audit',0);
 
-        $setting_mdl->set_conf('upload.enable_cut_big_pic',false);
-        $setting_mdl->set_conf('upload.max_width',1600);
-        $setting_mdl->set_conf('upload.max_height',1200);
-        $setting_mdl->set_conf('upload.enable_thumb_square',false);
-        $setting_mdl->set_conf('upload.thumb_width',180);
-        $setting_mdl->set_conf('upload.thumb_height',180);
-        $setting_mdl->set_conf('upload.use_old_imgname',false);
-        $setting_mdl->set_conf('display.album_pageset',12);
-        $setting_mdl->set_conf('display.photo_pageset',12);
-        $setting_mdl->set_conf('display.album_sort_default','ct_desc');
-        $setting_mdl->set_conf('display.photo_sort_default','tu_desc');
+        $mdl_setting->set_conf('upload.enable_cut_big_pic',false);
+        $mdl_setting->set_conf('upload.max_width',1600);
+        $mdl_setting->set_conf('upload.max_height',1200);
+        $mdl_setting->set_conf('upload.enable_thumb_square',false);
+        $mdl_setting->set_conf('upload.thumb_width',180);
+        $mdl_setting->set_conf('upload.thumb_height',180);
+        $mdl_setting->set_conf('upload.use_old_imgname',false);
+        $mdl_setting->set_conf('display.album_pageset',12);
+        $mdl_setting->set_conf('display.photo_pageset',12);
+        $mdl_setting->set_conf('display.album_sort_default','ct_desc');
+        $mdl_setting->set_conf('display.photo_sort_default','tu_desc');*/
         
         showjsmessage(lang('update_user_setting'));
         
