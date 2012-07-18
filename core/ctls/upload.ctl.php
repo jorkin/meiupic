@@ -8,6 +8,7 @@ class upload_ctl extends pagecore{
     }
     
     function index(){
+        need_login('page');
 
         $album_id = intval($this->getRequest('aid'));
         $act = $this->getGet('t');
