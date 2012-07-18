@@ -705,6 +705,15 @@ $language   =   array(
 'dir_cannot_read'                  => 'The directory is not readable!',
 'dir_has_no_files'                 => 'There\'s no files in this directory!',
 'import_success'                   => 'Import successfully: %s albums,%s photos!',
+'display_setting'                  => 'Display',
+'album_sort_default_label'         => 'Album default sort',
+'album_pageset_label'              => 'Albums per page',
+'photo_sort_default_label'         => 'Photo default sort',
+'photo_pageset_label'              => 'Photos per page',
+'desc'                             => 'DESC',
+'asc'                              => 'ASC',
+'get_cache_size'                   => 'Get cache size',
+
 //分类
 'category'                         => 'Category',
 'category_manage'                  => 'Category manage',

@@ -1,7 +1,6 @@
 <?php
-$language['new_pictures'] =  'New Photos';
-$language['hot_pictures']   =  'Hot Photos';
-$language['all_albums']   =  'All Albums';
-$language['no_more_pictures']   =  'No more photos.';
-$language['loading']   =  'Loading...';
-$language['back_to_top'] = 'TOP';
+$language['new_photos'] =  'New photos';
+$language['new_albums']   =  'New albums';
+$language['all_albums']   =  'All albums';
+$language['new_comment_for_albums'] = 'New comments for albums';
+$language['new_comment_for_photos'] = 'New comments for photos';

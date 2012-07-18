@@ -701,6 +701,14 @@ $language = array(
 'dir_cannot_read'                  => '文件夾不可讀！ ',
 'dir_has_no_files'                 => '該目錄沒有任何文件！ ',
 'import_success'                   => '成功掃描並添加了: %s個相冊,%s張圖片！ ',
+'display_setting'                  => '顯示設置',
+'album_sort_default_label'         => '相冊清單界面風格默認排序',
+'album_pageset_label'              => '相冊清單界面風格默認每頁顯示',
+'photo_sort_default_label'         => '照片清單界面風格默認排序',
+'photo_pageset_label'              => '照片清單界面風格默認每頁顯示',
+'desc'                             => '逆序',
+'asc'                              => '正序',
+'get_cache_size'                   => '計算緩存大小',
 
 //分类
 'category'                         => '分類',
