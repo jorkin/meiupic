@@ -1,4 +1,6 @@
 <?php
+//如果无法生成缩略图，请打开此处调试
+error_reporting(0);
 
 define('FCPATH',__FILE__);
 define('ROOTDIR',dirname(FCPATH).DIRECTORY_SEPARATOR);
