@@ -246,10 +246,10 @@ class image_imagick {
         $water_img = new Imagick($this->param['water_mark_image']);
         $water_h = $water_img->getImageHeight();
         $water_w = $water_img->getImageWidth();
-        if($bg_h < $water_h || $bg_w < $water_w )
-        {  
-           return false;
-        }
+        //if($bg_h < $water_h || $bg_w < $water_w )
+        //{  
+        //   return false;
+        //}
         if($this->param['water_mark_opacity']){
             $water_img->setImageOpacity($this->param['water_mark_opacity']/100);
         }
