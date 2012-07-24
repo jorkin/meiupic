@@ -317,9 +317,10 @@ class image_gd {
         $ground_w = $this->getWidth();
         $ground_h = $this->getHeight();
     
-        if( $ground_w<$w || $ground_h<$h ){
-            return false;
-        }
+        //if( $ground_w<$w || $ground_h<$h ){
+        //    return false;
+        //}
+
         switch($this->param['water_mark_pos'])
         {
             case 0://随机
@@ -451,27 +452,6 @@ class image_gd {
             $posY = rand(5,($ground_h - $h - 5));
             break;
         }
-        /*if($this->param['water_mark_shadow'] == 'gray'){
-            $shadowcolor = imagecolorallocate( $this->image, 160, 160, 160 );
-            imagettftext($this->image,
-                 $this->param['water_mark_fontsize'],
-                 $this->param['water_mark_angle'],
-                 $posX + $ax+1,
-                 $posY + $ay+1,
-                 $shadowcolor,
-                 $this->param['water_mark_font'],
-                 $this->param['water_mark_string']);
-        }elseif($this->param['water_mark_shadow'] == 'white'){
-            $shadowcolor = imagecolorallocate( $this->image, 255, 255, 255 );
-            imagettftext($this->image,
-                 $this->param['water_mark_fontsize'],
-                 $this->param['water_mark_angle'],
-                 $posX + $ax + 1,
-                 $posY + $ay + 1,
-                 $shadowcolor,
-                 $this->param['water_mark_font'],
-                 $this->param['water_mark_string']);
-        }*/
         
         imagettftext($this->image,
              $this->param['water_mark_fontsize'],
