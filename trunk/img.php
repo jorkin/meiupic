@@ -23,6 +23,8 @@ if (floor(PHP_VERSION) < 5){
 require_once(COREDIR.'loader.php');
 require_once(INCDIR.'functions.php');
 
+@set_time_limit(20);
+@ignore_user_abort();
 class thumb{
     var $file_pre_block = "<?php die('Execution denied!'); //";
     var $cache_file = '';
