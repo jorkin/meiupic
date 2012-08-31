@@ -605,6 +605,7 @@ table.layout td.right{
     margin-bottom:20px;
 }
 .comment_wrap .field .label {
+    line-height: 25px;
     float: none;
     text-align: left;
     width: auto;
