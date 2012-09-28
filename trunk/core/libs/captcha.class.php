@@ -22,7 +22,7 @@ class captcha_cla{
      *
      * @var string
      */
-    var $_seed = '346789ABCDEFGHJKLMNPQRTUVWXYabcdefhjkmnpwxy';
+    var $_seed = '346789ABCDEFGHJKLMNPRTUVWXYabcdefhjkmnpwxy';
 
     /**
      * Font

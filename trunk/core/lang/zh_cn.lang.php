@@ -63,6 +63,8 @@ $language   =   array(
 'edit'                             =>  '编辑',
 'not_set'                          =>  '未指定',
 'show_all'                         =>  '显示全部',
+'yes'                              =>  '是',
+'no'                               =>  '否',
 
 //head
 'myalbum'                          =>  '我的相册',
@@ -713,7 +715,10 @@ $language   =   array(
 'desc'                             => '逆序',
 'asc'                              => '正序',
 'get_cache_size'                   => '计算缓存大小',
-
+//added 12-09-28
+'enable_login_captcha_label'       =>  '启用登录验证码',
+'enable_login_captcha_tips'        =>  '启用后登录时必须输入验证码',
+'thank_list'                       =>  '感谢者名单',
 //分类
 'category'                         => '分类',
 'category_manage'                  => '分类管理',

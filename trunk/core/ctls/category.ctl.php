@@ -24,6 +24,8 @@ class category_ctl extends pagecore{
     }
 
     function manage(){
+        need_login('page');
+        
         $categorylist = $this->mdl_cate->get_flat_category();
         $this->output->set('categorylist',$categorylist);
         

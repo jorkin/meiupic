@@ -27,6 +27,7 @@ if($albums){
 
 //setting新增值
 $setting_mdl->set_conf('system.enable_comment_captcha',true);
+$setting_mdl->set_conf('system.enable_login_captcha',false);
 $setting_mdl->set_conf('system.comment_audit',0);
 
 $setting_mdl->set_conf('upload.enable_cut_big_pic',false);

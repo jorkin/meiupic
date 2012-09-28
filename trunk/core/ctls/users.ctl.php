@@ -24,6 +24,7 @@ class users_ctl extends pagecore{
             $page_description = $this->setting->get_conf('site.description');
             $this->page_init($page_title,$page_keywords,$page_description);
         }
+        $this->output->set('enable_login_captcha',$this->setting->get_conf('system.enable_login_captcha'));
         $this->render();
     }
     
@@ -32,6 +33,12 @@ class users_ctl extends pagecore{
         $login_pass = $this->getPost('login_pass');
         $remember_pass = $this->getPost('remember_pass');
         $normal = $this->getPost('normal');
+
+        if($this->setting->get_conf('system.enable_login_captcha')){
+            $captcha =& loader::lib('captcha');
+            if(!$captcha->check($this->getPost('captcha')))
+                form_ajax_failed('text',lang('invalid_captcha_code'));
+        }
         if(!$login_name){
             form_ajax_failed('text',lang('username_empty'));
         }
