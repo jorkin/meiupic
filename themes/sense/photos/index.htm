@@ -1,6 +1,8 @@
 {template block/header}
 <div id="bodywrap">
+    <!--{if $_config['showlistbtns'] || $_config['showphotosearch']}-->
     <div class="filter">
+        <!--{if $_config['showphotosearch']}-->
 		<form id="photo_search" action="{link ctl=photos act=search}" method="post">
         <div class="search f_right ml10">
              <input type="hidden" name="album_id" value="{$album_info['id']}" />            
@@ -11,6 +13,8 @@
              <label><input type="checkbox" name="searchtype" value="album" checked="checked" /> {lang current_album}</label>
         </div>
 		</form>
+        <!--{/if}-->
+        <!--{if $_config['showlistbtns']}-->
         <div class="display_setting f_left">
             {$photo_col_menu}
 			<ul class="tab show_type f_left">
@@ -18,7 +22,9 @@
 				<li class="slideshow"><a href="{link ctl=photos act=slide aid=$album_info['id']}" title="{lang slide_mode}"><span class="png">&nbsp;</span></a></li>
 			</ul>
         </div>
+        <!--{/if}-->
     </div>
+    <!--{/if}-->
     <!--{if $loggedin && $photos}-->
     <div class="admin_bar">
         <div class="f_left">

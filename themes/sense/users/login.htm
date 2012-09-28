@@ -15,6 +15,13 @@
             <div class="ipts"><input type="password" name="login_pass" class="inputstyle iptw2" value="" /></div>
             <div class="clear"></div>
         </div>
+        {if $enable_login_captcha}
+        <div class="field">
+            <div class="label">{lang captcha_code} *</div>
+            <div class="ipts"><input type="text" style="width:100px;" class="inputstyle iptw1" name="captcha" /> <img src="{link ctl=captcha}" align="absmiddle" class="captcha" title="{lang click_to_reload}" onclick="reload_captcha(this)" /></div>
+            <div class="clear"></div>
+        </div>
+        {/if}
         <div class="field">
             <div class="label">&nbsp;</div>
             <div class="ipts"><label><input type="checkbox" name="remember_pass" value="1" /> {lang remember_pass}</label></div>
@@ -51,6 +58,13 @@ $('#login_form').find('input[name=login_name]').focus();
                                    <div class="ipts"><input type="password" name="login_pass" class="inputstyle iptw2" value="" /></div>
                                    <div class="clear"></div>
                                </div>
+                               {if $enable_login_captcha}
+                               <div class="field">
+                                  <div class="label">{lang captcha_code} *</div>
+                                  <div class="ipts"><input type="text" style="width:100px;" class="inputstyle iptw1" name="captcha" /> <img src="{link ctl=captcha}" align="absmiddle" class="captcha" title="{lang click_to_reload}" onclick="reload_captcha(this)" /></div>
+                                  <div class="clear"></div>
+                              </div>
+                              {/if}
                                <div class="field">
                                    <div class="label">&nbsp;</div>
                                    <div class="ipts"><label><input type="checkbox" name="remember_pass" value="1" /> {lang remember_pass}</label></div>

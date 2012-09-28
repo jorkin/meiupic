@@ -37,7 +37,13 @@
                                         </div>
                                     </div>
                                     
-                                    
+                                    <div class="settingfield">
+                                        <div class="label">{lang enable_login_captcha_label}</div>
+                                        <div class="descinfo">{lang enable_login_captcha_tips}</div>
+                                        <div class="input">
+                                            <label><input type="checkbox" name="enable_login_captcha" value="1" {if $enable_login_captcha}checked="checked"{/if} /> {lang enable}</label>
+                                        </div>
+                                    </div>
                                     <div class="settingfield">
                                         <div class="label">{lang enable_comment_label}</div>
                                         <div class="descinfo">{lang enable_comment_tips}</div>
@@ -52,6 +58,7 @@
                                             <label><input type="checkbox" name="enable_comment_captcha" value="1" {if $enable_comment_captcha}checked="checked"{/if} /> {lang enable}</label>
                                         </div>
                                     </div>
+                                    
                                     <div class="settingfield">
                                         <div class="label">{lang comment_audit_label}</div>
                                         <div class="descinfo">{lang comment_audit_tips}</div>

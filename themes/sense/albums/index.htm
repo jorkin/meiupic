@@ -1,12 +1,16 @@
 {template block/header}
 <div id="bodywrap">
+    <!--{if $_config['showlistbtns'] || $_config['showalbumsearch']}-->
 	<div class="filter">
+        <!--{if $_config['showalbumsearch']}-->
 		<div class="search f_right ml10">
 			<form id="album_search" action="{link ctl=albums}" method="post">
 			    <input type="text" name="sname" value="{$search['name']}" placeholder="{lang search_albums}" />
 			    <button type="submit" name="submit"></button>
 			</form>
 		</div>
+        <!--{/if}-->
+        <!--{if $_config['showlistbtns']}-->
 		<div class="f_right">
 			<select id="par_id" name="par_id" onchange="window.location.href=this.value">
                 <option value="{link ctl=albums act=index cate=0}">{lang no_cate_album}</option>
@@ -18,7 +22,9 @@
 		<div class="display_setting f_left">
 			{$album_col_menu}
 		</div>
+        <!--{/if}-->
 	</div>
+    <!--{/if}-->
 
     <!--{if $loggedin && $albums}-->
     <div class="admin_bar">

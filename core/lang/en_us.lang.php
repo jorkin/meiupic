@@ -63,6 +63,8 @@ $language   =   array(
 'edit'                             =>  'Edit',
 'not_set'                          =>  'Not setted',
 'show_all'                         =>  'Show all',
+'yes'                              =>  'yes',
+'no'                               =>  'no',
 
 //head
 'myalbum'                          =>  'My gallery',
@@ -659,11 +661,11 @@ $language   =   array(
 'notsupport'                       =>  'Unsupport',
 
 'nothing_to_do'                    =>  'Do nothing',
-'recounter_success'                =>  'Recounter successfully!',
-'recounter'                        =>  'Recounter',
-'comment_recounter'                =>  'Recounter comments',
-'photo_recounter'                  =>  'Recounter photos',
-'tag_recounter'                    =>  'Recounter tags',
+'recounter_success'                =>  'Recalculated successfully!',
+'recounter'                        =>  'Recalculated',
+'comment_recounter'                =>  'Recalculated comments',
+'photo_recounter'                  =>  'Recalculated photos',
+'tag_recounter'                    =>  'Recalculated tags',
 'check_update'                     =>  'Check update',
 'connect_to_server_failed'         =>  'Fail to connectto server!',
 
@@ -689,8 +691,8 @@ $language   =   array(
 'captcha_code'                     => 'Captcha',
 'click_to_reload'                  => 'Click to reload',
 'invalid_captcha_code'             => 'Invalid captcha!',
-'enable_comment_captcha_label'     => 'Enable captcha',
-'enable_comment_captcha_tips'      => 'Guest must input captcha in the comments!',
+'enable_comment_captcha_label'     => 'Enable captcha for comment',
+'enable_comment_captcha_tips'      => 'Guest must enter captcha verification for posting a comment!',
 'comment_audit_label'              => 'Audit method of comments',
 'comment_audit_tips'               => 'If you choose to "Directly approved", the comment will display immediately',
 'comment_audit_auto'               => 'Directly approved',
@@ -713,6 +715,10 @@ $language   =   array(
 'desc'                             => 'DESC',
 'asc'                              => 'ASC',
 'get_cache_size'                   => 'Get cache size',
+//added 12-09-28
+'enable_login_captcha_label'       => 'Enable captcha for login',
+'enable_login_captcha_tips'        => 'You must enter captcha verification for login!',
+'thank_list'                       => 'Thank list',
 
 //分类
 'category'                         => 'Category',

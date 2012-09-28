@@ -17,6 +17,7 @@ class setting_ctl extends pagecore{
         $this->output->set('site',$site);
         $this->output->set('enable_comment',$this->setting->get_conf('system.enable_comment'));
         $this->output->set('enable_comment_captcha',$this->setting->get_conf('system.enable_comment_captcha'));
+        $this->output->set('enable_login_captcha',$this->setting->get_conf('system.enable_login_captcha'));
         $this->output->set('comment_audit',$this->setting->get_conf('system.comment_audit'));
 
         $this->output->set('enable_auto_update',$this->setting->get_conf('system.enable_auto_update'));
@@ -76,6 +77,12 @@ class setting_ctl extends pagecore{
             $this->setting->set_conf('system.enable_comment_captcha',false);
         }
 
+        if($this->getPost('enable_login_captcha')){
+            $this->setting->set_conf('system.enable_login_captcha',true);
+        }else{
+            $this->setting->set_conf('system.enable_login_captcha',false);
+        }
+        
         if($this->getPost('enable_auto_update')){
             $this->setting->set_conf('system.enable_auto_update',true);
         }else{

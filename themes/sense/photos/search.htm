@@ -1,6 +1,8 @@
 {template block/header}
 <div id="bodywrap">
+    <!--{if $_config['showlistbtns'] || $_config['showphotosearch']}-->
     <div class="filter">
+        <!--{if $_config['showphotosearch']}-->
         <div class="search f_right">
             <form id="photo_search" action="{link ctl=photos act=search}" method="post">
                 <input type="hidden" name="searchtype" value="all" />                
@@ -8,10 +10,14 @@
                 <button type="submit" name="submit"></button>
             </form>
         </div>
+        <!--{/if}-->
+        <!--{if $_config['showlistbtns']}-->
         <div class="display_setting f_left">
             {$photo_col_menu}
         </div>
+        <!--{/if}-->
     </div>
+    <!--{/if}-->
     <!--{if $loggedin && $photos}-->
     <div class="admin_bar">
         <div class="f_left">
