@@ -372,16 +372,9 @@ function show_env_result(&$env_items, &$dirfile_items, &$func_items) {
         }
         $status = 1;
         if($item['r'] != 'notset') {
-            if(intval($item['current']) && intval($item['r'])) {
-                if(intval($item['current']) < intval($item['r'])) {
-                    $status = 0;
-                    $error_code = ENV_CHECK_ERROR;
-                }
-            } else {
-                if(strcmp($item['current'], $item['r']) < 0) {
-                    $status = 0;
-                    $error_code = ENV_CHECK_ERROR;
-                }
+            if($item['status'] != 1){
+                $status = 0;
+                $error_code = ENV_CHECK_ERROR;
             }
         }
         

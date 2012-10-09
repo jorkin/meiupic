@@ -14,7 +14,7 @@ define('ORIG_TABLEPRE', 'meu_');
 
 define('ENV_CHECK_ERROR', 31);
 
-$func_items = array('copy', 'file_get_contents');
+$func_items = array('copy', 'file_get_contents','fopen');
 
 $env_items = array
 (
@@ -32,6 +32,7 @@ $dirfile_items = array
 	'config' => array('type' => 'file', 'path' => './conf/config.php'),
 	'config_dir' => array('type' => 'dir', 'path' => './conf'),
 	'data' => array('type' => 'dir', 'path' => './data'),
+	'cache' => array('type' => 'dir', 'path' => './cache'),
 	'cache data' => array('type' => 'dir', 'path' => './cache/data'),
 	'template cache' => array('type' => 'dir', 'path' => './cache/templates'),
 	'temp dir' => array('type' => 'dir', 'path' => './cache/tmp'),
