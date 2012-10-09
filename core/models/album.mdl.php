@@ -277,6 +277,29 @@ class album_mdl extends modelfactory{
         return false;
     }
 
+    function save_extra($id,$extra){
+        if(is_array($extra)){
+            foreach($extra as $k => $v){
+                $this->db->select('#@albummeta','meta_value','album_id='.intval($id).' and meta_key='.$this->db->q_str($k));
+                $row = $this->db->getRow();
+                if($row){
+                    $this->db->update('#@albummeta','album_id='.intval($id).' and meta_key='.$this->db->q_str($k),array('meta_value'=>$v));
+                }else{
+                    $this->db->insert('#@albummeta',array('album_id'=>intval($id),'meta_key'=>$k,'meta_value'=>$v));
+                }
+                $this->db->query();
+            }
+        }
+    }
+    
+    function get_extra($id){
+        if($value){
+            return $value;
+        }
+        $this->db->select('#@albummeta','meta_key,meta_value','album_id='.intval($id));
+        $value = $this->db->getAssoc();
+        return $value;
+    }
 
     //将某分类相册的分类置为未分类相册
     function set_default_cate($catid){
