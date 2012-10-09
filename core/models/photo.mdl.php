@@ -235,7 +235,10 @@ class photo_mdl extends modelfactory{
         if(file_exists($tmpfile)){
             $setting =& Loader::model('setting');
 
-            $imglib->load($tmpfile);
+            if(!$imglib->load($tmpfile)){//如果不是有效的直接退出，并删除临时文件
+                $tmpfs_lib->delete($tmpfile,true);
+                return false;
+            }
             if(!in_array($fileext,array('jpg','png','jpeg','gif','bmp')) ){
                 $fileext = $imglib->getExtension();
             }
