@@ -240,6 +240,10 @@ function env_check(&$env_items) {
         if($item['r'] != 'notset' && strcmp($env_items[$key]['current'], $item['r']) < 0) {
             $env_items[$key]['status'] = 0;
         }
+        //没GD库不允许继续安装
+        if($env_items[$key]['current'] == 'noext'){
+            $env_items[$key]['status'] = 0;
+        }
     }
 }
 

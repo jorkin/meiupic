@@ -671,7 +671,7 @@ $language   =   array(
 
 'sel_album_to_upload'              => 'Pls. select the album you want to upload!',
 'you_chose_album'                  => 'Selected album',
-'back_to_re_select'                => 'Back to reselect ',
+'back_to_re_select'                => 'Back to reselect',
 
 
 //翻转图片
@@ -719,6 +719,7 @@ $language   =   array(
 'enable_login_captcha_label'       => 'Enable captcha for login',
 'enable_login_captcha_tips'        => 'You must enter captcha verification for login!',
 'thank_list'                       => 'Thank list',
+'donatenow'                         => '<form action="https://www.paypal.com/cgi-bin/webscr" method="post"><input type="hidden" name="cmd" value="_s-xclick"><input type="hidden" name="hosted_button_id" value="FFJ2746XLCHPY"><input type="image" src="https://www.paypalobjects.com/en_GB/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal — The safer, easier way to pay online."><img alt="" border="0" src="https://www.paypalobjects.com/zh_XC/i/scr/pixel.gif" width="1" height="1"></form>',
 
 //分类
 'category'                         => 'Category',

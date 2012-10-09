@@ -89,11 +89,11 @@ function unset_globals() {
  * 载入语言
  */
 function lang() {
-    global $templatelangs;
+    global $templatelangs,$base_path;
     $varr = func_get_args();
     $var = array_shift($varr);
     if(isset($GLOBALS['language'][$var])) {
-        return vsprintf($GLOBALS['language'][$var],$varr);
+        return vsprintf(str_replace('{base_path}', $base_path, $GLOBALS['language'][$var]),$varr);
     } else {
         $vars = explode(':', $var);
         if(count($vars) != 2) {
@@ -108,7 +108,7 @@ function lang() {
         if(!isset($GLOBALS['templatelangs'][$vars[0]][$vars[1]])) {
             return "!$var!";
         } else {
-            return vsprintf($GLOBALS['templatelangs'][$vars[0]][$vars[1]],$varr);
+            return vsprintf(str_replace('{base_path}', $base_path,$GLOBALS['templatelangs'][$vars[0]][$vars[1]]),$varr);
         }
     }
     return $var;

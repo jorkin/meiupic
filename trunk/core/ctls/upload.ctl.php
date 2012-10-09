@@ -132,8 +132,12 @@ class upload_ctl extends pagecore{
         $savemode = intval($this->getPost('save_mode'));
         $album_id = intval($this->getRequest('aid'));
 
+        if(substr($dir,0,1) == '/' || substr($dir,1,1) == ':'){//如果是绝对地址
+            $dirpath = $dir;
+        }else{
+            $dirpath = ROOTDIR.$dir;
+        }
         //判断扫描的文件夹是否存在
-        $dirpath = ROOTDIR.$dir;
         if(!is_dir($dirpath)){
             showError(lang('scan_dir_not_exists'));
         }

@@ -719,6 +719,8 @@ $language   =   array(
 'enable_login_captcha_label'       =>  '启用登录验证码',
 'enable_login_captcha_tips'        =>  '启用后登录时必须输入验证码',
 'thank_list'                       =>  '感谢者名单',
+'donatenow'                        =>  '<a href="https://me.alipay.com/meiu" target="_blank"><img src="{base_path}statics/img/donate.png" /></a>',
+
 //分类
 'category'                         => '分类',
 'category_manage'                  => '分类管理',
