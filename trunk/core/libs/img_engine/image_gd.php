@@ -33,21 +33,24 @@ class image_gd {
      * @return void
      */
     function load($filename) {
-        $image_info = getimagesize($filename);
+        $image_info = @getimagesize($filename);
         $this->image_type = $image_info[2];
         if( $this->image_type == IMAGETYPE_JPEG ) {
-            $this->image = imagecreatefromjpeg($filename);
+            $this->image = @imagecreatefromjpeg($filename);
         } elseif( $this->image_type == IMAGETYPE_GIF ) {
-            $this->image = imagecreatefromgif($filename);
+            $this->image = @imagecreatefromgif($filename);
         } elseif( $this->image_type == IMAGETYPE_PNG ) {
-            $this->image = imagecreatefrompng($filename);
+            $this->image = @imagecreatefrompng($filename);
         }else{
             return false;
         }
         if(function_exists("imagecopyresampled") && function_exists("imagecreatetruecolor") && $this->image_type != IMAGETYPE_GIF){
             $this->true_color = true;
         }
-        return true;
+        if($this->image){
+            return true;
+        }
+        return false;
     }
     
     function supportType(){

@@ -205,6 +205,7 @@ class upload_ctl extends pagecore{
         $msg = lang('import_success',$album_num,$photos_num);
         $this->output->set('result_msg',$msg);
 
+        $this->output->set('album_id',$album_id);
         //面包屑
         $crumb_nav = array();
         $crumb_nav[] = array('name'=>lang('upload_photo'));        
