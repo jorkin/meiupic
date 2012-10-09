@@ -51,7 +51,7 @@ class photos_ctl extends pagecore{
             foreach($photos['ls'] as $k=>$v){
                 $photos['ls'][$k]['photo_control_icons'] = $this->plugin->filter('photo_control_icons','',$v['album_id'],$v['id']);
                 $img_thumb = '<a href="'.site_link('photos','view',array('id'=>$v['id'])).'">
-                <img src="'.img_path($v['thumb']).'" alt="'.$v['name'].'" /></a>';
+                <img src="'.img_path($v['thumb']).'" alt="'.$album_info['name'].'_'.$v['name'].'" /></a>';
                 $photos['ls'][$k]['img_thumb'] = $this->plugin->filter('photo_list_thumb',$img_thumb,$v['id'],$v['thumb'],$v['path']);
                 
             }
