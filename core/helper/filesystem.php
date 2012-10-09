@@ -39,7 +39,7 @@ function file_pure_name($filename){
 }
 //判断是否是纯英文的名字
 function file_en_name($filepure){
-    return preg_match('/^[0-9a-z_\-\.\(\)~]+$/i', $filepure);
+    return preg_match('/^[0-9a-z_\-\.\(\)~\[\]]+$/i', $filepure);
 }
 //删除文件夹
 function deldir($dir) {

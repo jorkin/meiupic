@@ -716,6 +716,8 @@ $language = array(
 'enable_login_captcha_label'       => '啟用登錄驗證碼',
 'enable_login_captcha_tips'        => '啟用後登錄時必須輸入驗證碼',
 'thank_list'                       => '感謝者名單',
+'donatenow'                        => '<form action="https://www.paypal.com/cgi-bin/webscr" method="post"><input type="hidden" name="cmd" value="_s-xclick"><input type="hidden" name="hosted_button_id" value="FFJ2746XLCHPY"><input type="image" src="https://www.paypal.com/zh_TW/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal — The safer, easier way to pay online."><img alt="" border="0" src="https://www.paypalobjects.com/zh_XC/i/scr/pixel.gif" width="1" height="1"></form>',
+
 //分类
 'category'                         => '分類',
 'category_manage'                  => '分類管理',
