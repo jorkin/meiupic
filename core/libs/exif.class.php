@@ -73,7 +73,11 @@ class exif_cla{
             'ColorSpace' => 'EXIF.ColorSpace',
             'ExposureMode' => 'EXIF.ExposureMode',
             'ExposureProgram' => 'EXIF.ExposureProgram',
-            'DateTimeDigitized' => 'EXIF.DateTimeDigitized'
+            'DateTimeDigitized' => 'EXIF.DateTimeDigitized',
+            'GPSLatitude' => 'GPS.GPSLatitude',
+            'GPSLongitude' => 'GPS.GPSLongitude',
+            'GPSLatitudeRef' => 'GPS.GPSLatitudeRef',
+            'GPSLongitudeRef' => 'GPS.GPSLongitudeRef'
         );
     }
     function parse_exif($infos){
@@ -132,7 +136,7 @@ class exif_cla{
         if(is_array($infos)){
         $new_img_info = array();
         foreach($infos as $k=>$info){
-            if(!in_array($info,array('WhiteBalance','ExposureMode')) && $info===false){
+            if(!in_array($k,array('WhiteBalance','ExposureMode')) && $info===false){
                 continue;
             }
             switch($k){
@@ -184,6 +188,20 @@ class exif_cla{
                 case 'ExposureProgram':
                     $new_img_info[$k] = isset($ExposureProgram[$info])?$ExposureProgram[$info]:lang('unkown');
                     break;
+                case 'GPSLatitude':
+                    $dgree = getGps($info);
+                    $new_img_info[$k] = (isset($infos["GPSLatitudeRef"])?$infos["GPSLatitudeRef"].' ':'').dgreeToNum($dgree);
+                    break;
+                case 'GPSLongitude':
+                    $dgree = getGps($info);
+                    $new_img_info[$k] = (isset($infos["GPSLongitudeRef"])?$infos["GPSLongitudeRef"].' ':'').dgreeToNum($dgree);
+                    break;
+                case 'GPSLatitudeRef':
+                    continue;
+                    break;
+                case 'GPSLongitudeRef':
+                    continue;
+                    break;
                 default:
                     $new_img_info[$k] = $info;
             }
@@ -192,4 +210,49 @@ class exif_cla{
         unset($new_img_info['ResolutionUnit']);
         return $new_img_info;
     }
+}
+
+//Pass in GPS.GPSLatitude or GPS.GPSLongitude or something in that format 
+function getGps($exifCoord) 
+{
+  $degrees = count($exifCoord) > 0 ? gps2Num($exifCoord[0]) : 0; 
+  $minutes = count($exifCoord) > 1 ? gps2Num($exifCoord[1]) : 0; 
+  $seconds = count($exifCoord) > 2 ? gps2Num($exifCoord[2]) : 0; 
+  
+  //normalize 
+  $minutes += 60 * ($degrees - floor($degrees)); 
+  $degrees = floor($degrees); 
+  
+  $seconds += 60 * ($minutes - floor($minutes)); 
+  $minutes = floor($minutes); 
+  
+  //extra normalization, probably not necessary unless you get weird data 
+  if($seconds >= 60) 
+  { 
+    $minutes += floor($seconds/60.0); 
+    $seconds -= 60*floor($seconds/60.0); 
+  } 
+  
+  if($minutes >= 60) 
+  { 
+    $degrees += floor($minutes/60.0); 
+    $minutes -= 60*floor($minutes/60.0); 
+  } 
+  
+  return array('degrees' => $degrees, 'minutes' => $minutes, 'seconds' => $seconds); 
+} 
+  
+function gps2Num($coordPart) { 
+  $parts = explode('/', $coordPart); 
+  
+  if(count($parts) <= 0) 
+    return 0; 
+  if(count($parts) == 1) 
+    return $parts[0]; 
+  
+  return floatval($parts[0]) / floatval($parts[1]); 
+}
+function dgreeToNum($d){
+    $num = $d['degrees'] + ($d['minutes']+$d['seconds']/60)/60;
+    return round($num,8);
 }

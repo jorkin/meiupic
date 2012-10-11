@@ -105,6 +105,7 @@ class thumb{
                 exit('Process image failed!');
             }
             $this->outputImg();//直接输出图片
+            $this->imgHandler->close();
         }
     }
 

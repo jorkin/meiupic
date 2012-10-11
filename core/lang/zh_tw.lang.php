@@ -446,6 +446,8 @@ $language = array(
 'exif_ExposureMode'                => '曝光模式',
 'exif_ExposureProgram'             => '曝光程序',
 'exif_DateTimeDigitized'           => '數字化時間',
+'exif_GPSLatitude'                 => '緯度',
+'exif_GPSLongitude'                => '經度',
 
 'standard_procedure'               => '標準程序',
 'aperture_priority'                => '光圈先決',

@@ -249,6 +249,7 @@ class image_gd {
             $newim = imagecreate($width, $height);
             imagecopyresized($newim, $this->image, 0, 0, 0, 0, $width, $height, $this->getWidth(), $this->getHeight());
         }
+        imagedestroy($this->image);
         $this->image = $newim;
     }
 
@@ -265,6 +266,8 @@ class image_gd {
             $new_image = imagecreate($width, $height);
         }
         imagecopy($new_image, $this->image, 0, 0, $left, $top, $width, $height);
+
+        imagedestroy($this->image);
         $this->image = $new_image;
     }
 
@@ -284,6 +287,8 @@ class image_gd {
             $new_image = imagecreate($width, $height);
         }
         imagecopy($new_image, $this->image, 0, 0, 0, $top, $width, $height);
+
+        imagedestroy($this->image);
         $this->image = $new_image;
     }
     
@@ -294,6 +299,8 @@ class image_gd {
         if(function_exists('imagerotate')){
             $tran = imagecolortransparent($this->image,NULL);
             $new_image = imagerotate($this->image, $dgree , $tran);
+
+            imagedestroy($this->image);
             $this->image = $new_image;
         }
     }
@@ -474,5 +481,9 @@ class image_gd {
             $this->watermarkFont();
         }
         return false;
+    }
+
+    function close(){
+        imagedestroy($this->image);
     }
 }

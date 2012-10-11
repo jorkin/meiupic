@@ -129,6 +129,7 @@ class image_imagick {
                 $dest->setImageDispose($frame->getImageDispose());
             }
             $dest->coalesceImages();
+            $this->image->destroy();
             $this->image = $dest;
         }
     }
@@ -177,6 +178,7 @@ class image_imagick {
                 $dest->setImageDispose($frame->getImageDispose());
             }
             $dest->coalesceImages();
+            $this->image->destroy();
             $this->image = $dest;
         }
     }
@@ -203,6 +205,7 @@ class image_imagick {
                 $dest->setImageDispose($frame->getImageDispose());
             }
             $dest->coalesceImages();
+            $this->image->destroy();
             $this->image = $dest;
         }
     }
@@ -225,6 +228,7 @@ class image_imagick {
                 $dest->setImageDispose($frame->getImageDispose());
             }
             $dest->coalesceImages();
+            $this->image->destroy();
             $this->image = $dest;
         }else{
             $this->image->rotateImage($color_transparent,$d);
@@ -301,6 +305,7 @@ class image_imagick {
                 $dest->setImageDispose($frame->getImageDispose());
             }
             $dest->coalesceImages();
+            $this->image->destroy();
             $this->image = $dest;
         }else{
             $this->image->drawImage($draw);
@@ -369,6 +374,7 @@ class image_imagick {
                 $dest->setImageDispose($frame->getImageDispose());
             }
             $dest->coalesceImages();
+            $this->image->destroy();
             $this->image = $dest;
         }else{
             if($this->param['water_mark_opacity']){
@@ -389,4 +395,7 @@ class image_imagick {
         return false;
     }
     
+    function close(){
+        $this->image->destroy();
+    }   
 }
