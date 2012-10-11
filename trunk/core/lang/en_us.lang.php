@@ -448,6 +448,8 @@ $language   =   array(
 'exif_ExposureMode'                => 'Exposure mode',
 'exif_ExposureProgram'             => 'Exposure program',
 'exif_DateTimeDigitized'           => 'Digitized Date/Time',
+'exif_GPSLatitude'                 => 'Latitude',
+'exif_GPSLongitude'                => 'Longitude',
 
 'standard_procedure'               =>  'Standard procedure',
 'aperture_priority'                =>  'Aperture priority',

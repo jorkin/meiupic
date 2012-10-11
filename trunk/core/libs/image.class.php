@@ -69,5 +69,9 @@ class image_cla{
     function waterMark(){
         $this->worker->waterMark();
     }
+
+    function close(){
+        $this->worker->close();
+    }
 }
 ?>

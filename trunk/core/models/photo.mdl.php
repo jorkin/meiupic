@@ -338,6 +338,8 @@ class photo_mdl extends modelfactory{
                 }
             }
 
+            $imglib->close();
+            
             if( $storlib->upload($filepath,$tmpfile)){
                 $arr['album_id'] = $album_id;
                 $arr['path'] = $filepath;
@@ -413,6 +415,7 @@ class photo_mdl extends modelfactory{
         }else{
             @copy($tmpfile,$thumbtmpfilepath);
         }
+        $imglib->close();
 
         $storlib->upload($photo_info['path'] , $tmpfilepath);
         $storlib->upload($photo_info['thumb'] , $thumbtmpfilepath);
