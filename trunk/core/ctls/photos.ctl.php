@@ -726,12 +726,15 @@ class photos_ctl extends pagecore{
         $info['exif'] = unserialize($info['exif']);
         $exif_obj =& loader::lib('exif');
         $exif = $exif_obj->parse_exif($info['exif']);
-        foreach($exif as $k=>$v){
-            $metas[] = array(
-                'key' =>$k,
-                'value' =>$v,
-                'cname' => lang('exif_'.$k)
-            );
+        $metas = array();
+        if($exif){
+            foreach($exif as $k=>$v){
+                $metas[] = array(
+                    'key' =>$k,
+                    'value' =>$v,
+                    'cname' => lang('exif_'.$k)
+                );
+            }
         }
         $this->output->set('metas',$metas);
         $this->output->set('info',$info);

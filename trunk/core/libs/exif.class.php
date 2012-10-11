@@ -81,6 +81,9 @@ class exif_cla{
         );
     }
     function parse_exif($infos){
+        if(!$infos['Make'] && !$infos['Model']){
+            return false;
+        }
 
         $ExposureProgram = array(lang("not_defined"), lang('manual'), lang('standard_procedure'), lang('aperture_priority'), lang('shutter_priority'), lang('depth_priority'),lang('sport_mode'), lang('portrait_mode'),lang('landscape_mode'));
         $Orientation = array("", lang('top_left'), lang('top_right'), lang('bottom_right'), lang('bottom_left'), lang('left_top'), lang('right_top'), lang('right_bottom'), lang('left_bottom'));
@@ -136,7 +139,7 @@ class exif_cla{
         if(is_array($infos)){
         $new_img_info = array();
         foreach($infos as $k=>$info){
-            if(!in_array($k,array('WhiteBalance','ExposureMode')) && $info===false){
+            if($info===false){
                 continue;
             }
             switch($k){
