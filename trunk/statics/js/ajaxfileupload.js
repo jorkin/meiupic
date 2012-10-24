@@ -1,5 +1,6 @@
 //Ajax file upload V2.1
-jQuery.extend({createUploadIframe:function(id,uri)
+jQuery.extend({handleError:function(s,xhr,status,e){if(s.error){s.error.call(s.context||s,xhr,status,e);}
+if(s.global){(s.context?jQuery(s.context):jQuery.event).trigger("ajaxError",[xhr,s,e]);}},createUploadIframe:function(id,uri)
 {var frameId='jUploadFrame'+id;var iframeHtml='<iframe id="'+frameId+'" name="'+frameId+'" style="position:absolute; top:-9999px; left:-9999px"';if(window.ActiveXObject)
 {if(typeof uri=='boolean'){iframeHtml+=' src="'+'javascript:false'+'"';}
 else if(typeof uri=='string'){iframeHtml+=' src="'+uri+'"';}}
