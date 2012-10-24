@@ -10,6 +10,16 @@ function _createtable($sql) {
     return preg_replace("/^\s*(CREATE TABLE\s+.+\s+\(.+?\)).*$/isU", "\\1", $sql).
     ($db->version() > '4.1' ? " ENGINE=$type DEFAULT CHARSET=utf8" : " TYPE=$type");
 }
+function random($length) {
+    $hash = '';
+    $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz';
+    $max = strlen($chars) - 1;
+    PHP_VERSION < '4.2.0' && mt_srand((double)microtime() * 1000000);
+    for($i = 0; $i < $length; $i++) {
+        $hash .= $chars[mt_rand(0, $max)];
+    }
+    return $hash;
+}
 
 @set_time_limit(0);
 @ignore_user_abort(true);

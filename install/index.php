@@ -210,7 +210,8 @@ if($method == 'license'){
             $CONFIG['cookie_name'] = 'MPIC_'.random(4);
             $CONFIG['cookie_auth_key'] = random(12);
             $CONFIG['img_engine'] = class_exists('imagick')?'imagick':'gd';
-            
+            $CONFIG['img_path_key'] = random(10);
+
             save_config_file($confile, $CONFIG, $default_config);
             $db =& loader::database();
         
