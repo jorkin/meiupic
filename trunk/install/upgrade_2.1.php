@@ -42,4 +42,11 @@ $setting_mdl->set_conf('display.photo_pageset',12);
 $setting_mdl->set_conf('display.album_sort_default','ct_desc');
 $setting_mdl->set_conf('display.photo_sort_default','tu_desc');
 
+
+$config =& loader::config();
+$default_config =& loader::config('config.default');
+$default_config['img_path_key'] = random(10);
+
+save_config_file(ROOTDIR.'conf/config.php', $config, $default_config);
+
 //require_once(ROOTDIR.'install/upgrade_2.2.php');
