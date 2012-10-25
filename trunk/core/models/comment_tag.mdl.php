@@ -25,6 +25,7 @@ class comment_tag_mdl{
         if(isset($data['type']) && !isset($filters['type'])){
             $filters['type'] = intval($data['type']);
         }
+        $filters['status'] = 1;
         
         $order = isset($data['order'])?$data['order']:null;
 
