@@ -216,20 +216,20 @@ class setting_ctl extends pagecore{
         }
 
         //缩略图设置
-        $enable_thumb_square = $this->getPost('enable_thumb_square');
+        $enable_thumb_cut = $this->getPost('enable_thumb_cut');
         if($upload['thumb_width'] == '' || $upload['thumb_width']<1){
             form_ajax_failed('box',lang('thumb_width_error'));
         }
-        if(!$enable_thumb_square){
-            if($upload['thumb_height'] == '' || $upload['thumb_height']<1){
-                form_ajax_failed('box',lang('thumb_height_error'));
-            }
-            $this->setting->set_conf('upload.thumb_height',intval($upload['thumb_height']));
-            $this->setting->set_conf('upload.enable_thumb_square',false);
+        if($upload['thumb_height'] == '' || $upload['thumb_height']<1){
+            form_ajax_failed('box',lang('thumb_height_error'));
+        }
+        if(!$enable_thumb_cut){
+            $this->setting->set_conf('upload.enable_thumb_cut',false);
         }else{
-            $this->setting->set_conf('upload.enable_thumb_square',true);
+            $this->setting->set_conf('upload.enable_thumb_cut',true);
         }
         $this->setting->set_conf('upload.thumb_width',intval($upload['thumb_width']));
+        $this->setting->set_conf('upload.thumb_height',intval($upload['thumb_height']));
         
         if($this->getPost('use_old_imgname')){
             $this->setting->set_conf('upload.use_old_imgname',true);

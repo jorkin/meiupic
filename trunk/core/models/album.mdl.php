@@ -184,48 +184,6 @@ class album_mdl extends modelfactory{
         return $this->update($id,$cover_info);
     }
     
-    /*function make_cover_img($album_id,$path,& $ext,$old_ext = ''){
-        $storlib =& loader::lib('storage');
-        $tmpfslib =& loader::lib('tmpfs');
-        if($old_ext){//删除旧的封面
-            $storlib->delete(get_album_cover($album_id,$old_ext));
-        }
-        
-        $tmpfile = time().rand(1000,9999).file_ext($path);
-        $tmpfslib->write($tmpfile,$storlib->read($path));
-        $tmpfilepath = $tmpfslib->get_path($tmpfile);
-
-        $imglib =& loader::lib('image');
-        $imglib->load($tmpfilepath);
-        
-        //处理图片至特定大小
-        $orig_width = $imglib->getWidth();//原始图的宽度
-        $orig_height = $imglib->getHeight();//原始图的高度
-        
-        $ext = $imglib->getExtension();
-        $new_path = get_album_cover($album_id,$ext);
-        $cover_path = $tmpfslib->get_path('album_cover_'.$album_id);
-        
-        $setting =& Loader::model('setting');//获取封面图的设置
-        $cover_width = $setting->get_conf('upload.cover_width',150);
-        $cover_height = $setting->get_conf('upload.cover_height',150);
-        
-        if($orig_width > $cover_width || $orig_height > $cover_height){
-            if($setting->get_conf('upload.enable_cover_square',true)){
-                $imglib->square($cover_width);//方块图
-            }else{
-                $imglib->resizeScale($cover_width,$cover_height);
-            }
-            $imglib->save($cover_path);
-        }else{
-            @copy($tmpfile,$cover_path);
-        }
-
-        $storlib->upload($new_path , $cover_path);
-        $tmpfslib->delete('album_cover_'.$album_id);
-        $tmpfslib->delete($tmpfile);
-    }*/
-    
     function set_cover($pic_id){
         $photo_mdl =& loader::model('photo');
         $pic_info = $photo_mdl->get_info($pic_id);
@@ -237,8 +195,6 @@ class album_mdl extends modelfactory{
         $this->db->query();
         $this->db->update('#@photos','id='.intval($pic_id),array('is_cover'=>1));
         $this->db->query();
-        //$this->make_cover_img($pic_info['album_id'],$pic_info['path'],$ext,$album_info['cover_ext']);
-        //$arr['cover_ext'] = $ext;
         return $this->update($pic_info['album_id'],$arr);
     }
     
@@ -299,6 +255,18 @@ class album_mdl extends modelfactory{
         $this->db->select('#@albummeta','meta_key,meta_value','album_id='.intval($id));
         $value = $this->db->getAssoc();
         return $value;
+    }
+
+    function get_next($id,$fields='*'){
+        $this->db->select($this->table_name,$fields,'id<'.intval($id).' and priv_type<>3','id desc limit 1');
+        $row = $this->db->getRow();
+        return $row;
+    }
+
+    function get_prev($id,$fields='*'){
+        $this->db->select($this->table_name,$fields,'id>'.intval($id).' and priv_type<>3','id asc limit 1');
+        $row = $this->db->getRow();
+        return $row;
     }
 
     //将某分类相册的分类置为未分类相册

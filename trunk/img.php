@@ -72,12 +72,11 @@ class thumb{
 
         $this->param['w'] = isset($params['w'])?intval($params['w']):0;//intval(getGet('w',0));
         $this->param['h'] = isset($params['h'])?intval($params['h']):0;//intval(getGet('h',0));
-        $this->param['square'] = isset($params['square'])?intval($params['square']):0;//intval(getGet('square',0));
         $this->param['zoom'] = isset($params['zoom'])?intval($params['zoom']):0;//getGet('zoom',0);
         
         $open_cache = isset($params['cache'])?intval($params['cache']):0;
 
-        $cache_key = md5($path.$this->param['w'].$this->param['h'].$this->param['square'].$this->param['zoom'] );
+        $cache_key = md5($path.$this->param['w'].$this->param['h'].$this->param['zoom'] );
         $this->cache_subdir = $this->cache_dir.substr($cache_key,0,2);
 
         $this->cache_file = $this->cache_subdir.'/'.$cache_key.'.php';
@@ -213,8 +212,8 @@ class thumb{
 
         if($this->param['zoom'] ){
             $this->imgHandler->resizeScale($this->param['w'],$this->param['h']);
-        }elseif($this->param['square']){
-            $this->imgHandler->square($this->param['w']);
+        }elseif($this->param['w'] && $this->param['h']){
+            $this->imgHandler->resizeCut($this->param['w'],$this->param['h']);
         }elseif($this->param['w'] || $this->param['h']){
             $this->imgHandler->resizeTo($this->param['w'],$this->param['h']);
         }else{

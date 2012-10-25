@@ -437,7 +437,7 @@ table.layout td.right{
     display:none;
 }
 .grid .sel_on .pic_ctl .btns{
-    display:inherit;
+    display:block;
     padding:0 5px;
 }
 .grid .sel_on .pic_ctl li{

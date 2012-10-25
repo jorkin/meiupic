@@ -298,8 +298,8 @@ class photo_mdl extends modelfactory{
             $thumb_height = $setting->get_conf('upload.thumb_height',180);
             
             if($arr['width'] > $thumb_width || $arr['height'] > $thumb_height){
-                if($setting->get_conf('upload.enable_thumb_square',false)){
-                    $imglib->square($thumb_width);//方块图
+                if($setting->get_conf('upload.enable_thumb_cut',false)){
+                    $imglib->resizeCut($thumb_width,$thumb_height);//裁剪
                 }else{
                     $imglib->resizeScale($thumb_width,$thumb_height);
                 }
@@ -406,8 +406,8 @@ class photo_mdl extends modelfactory{
         $thumb_width = $setting->get_conf('upload.thumb_width',180);
         $thumb_height = $setting->get_conf('upload.thumb_height',180);
         if($data['width'] > $thumb_width || $data['height'] > $thumb_height){
-            if($setting->get_conf('upload.enable_thumb_square',false)){
-                $imglib->square($thumb_width);//方块图
+            if($setting->get_conf('upload.enable_thumb_cut',false)){
+                $imglib->resizeCut($thumb_width,$resizeCut);//裁剪
             }else{
                 $imglib->resizeScale($thumb_width,$thumb_height);
             }

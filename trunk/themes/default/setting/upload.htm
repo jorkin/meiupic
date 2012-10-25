@@ -96,16 +96,9 @@
                                         <div class="label">{lang thumb_size_label}</div>
                                         <div class="descinfo">{lang thumb_size_tips}</div>
                                         <div class="input">
-                                             <input type="text" name="upload[thumb_width]" class="settinginput iptw0" value="{$upload['thumb_width']}" /> <span id="thumb_size_extra">×  <input type="text" name="upload[thumb_height]" class="settinginput iptw0" value="{$upload['thumb_height']}" /></span> <label><input type="checkbox" id="enable_thumb_square" name="enable_thumb_square" value="1" onclick="switch_extra(this,'thumb_size_extra')" {if $upload['enable_thumb_square']}checked="checked"{/if} /> {lang use_square}</label>
+                                             <input type="text" name="upload[thumb_width]" class="settinginput iptw0" value="{$upload['thumb_width']}" /> <span id="thumb_size_extra">×  <input type="text" name="upload[thumb_height]" class="settinginput iptw0" value="{$upload['thumb_height']}" /></span> <label><input type="checkbox" id="enable_thumb_cut" name="enable_thumb_cut" value="1" {if $upload['enable_thumb_cut']}checked="checked"{/if} /> {lang cut_thumb}</label>
                                         </div>
                                     </div>
-									<script>
-                                        if($('#enable_thumb_square').get(0).checked){
-                                            $("#thumb_size_extra").hide();
-                                        }else{
-                                            $("#thumb_size_extra").show();
-                                        }
-                                    </script>
 									
                                     <div class="ctl_button">
                                         <input type="submit" name="submit" class="ylbtn" value="{lang save_setting}" onclick="Mui.form.sendPop('setting_upload_form')" />

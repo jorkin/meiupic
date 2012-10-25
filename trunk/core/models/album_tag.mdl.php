@@ -34,8 +34,20 @@ class album_tag_mdl{
     }
 
     function load($data){
-        $photo_id = $data['id'];
+        $album_id = $data['id'];
         $fields = isset($data['fields'])?$data['fields']:'*';
-        return $this->album->get_info($photo_id,$fields);
+        return $this->album->get_info($album_id,$fields);
+    }
+
+    function get_next($data){
+        $album_id = $data['id'];
+        $fields = isset($data['fields'])?$data['fields']:'*';
+        return $this->album->get_next($album_id,$fields);
+    }
+
+    function get_prev($data){
+        $album_id = $data['id'];
+        $fields = isset($data['fields'])?$data['fields']:'*';
+        return $this->album->get_prev($album_id,$fields);
     }
 }
