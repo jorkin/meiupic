@@ -209,6 +209,29 @@ class image_imagick {
             $this->image = $dest;
         }
     }
+    //缩小并剪切
+    function resizeCut($w,$h){
+        if($this->image_type != 'GIF'){
+            $this->image->cropThumbnailImage($w,$h);
+        }else{
+            $color_transparent = new ImagickPixel("transparent"); //透明色
+            $dest = new Imagick();
+            foreach($this->image as $frame){
+                $page = $frame->getImagePage();
+                $tmp = new Imagick(); 
+                $tmp->newImage($page['width'], $page['height'], $color_transparent, 'gif');
+                $tmp->compositeImage($frame, Imagick::COMPOSITE_OVER, $page['x'], $page['y']);
+                $tmp->cropThumbnailImage($w,$h);
+                $dest->addImage($tmp);
+                $dest->setImagePage($tmp->getImageWidth(), $tmp->getImageHeight(), 0, 0);
+                $dest->setImageDelay($frame->getImageDelay());
+                $dest->setImageDispose($frame->getImageDispose());
+            }
+            $dest->coalesceImages();
+            $this->image->destroy();
+            $this->image = $dest;
+        }
+    }
     
     function rotate($d){
         $d =$d * -1;

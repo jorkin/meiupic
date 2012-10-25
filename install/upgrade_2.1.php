@@ -33,7 +33,7 @@ $setting_mdl->set_conf('system.comment_audit',0);
 $setting_mdl->set_conf('upload.enable_cut_big_pic',false);
 $setting_mdl->set_conf('upload.max_width',1600);
 $setting_mdl->set_conf('upload.max_height',1200);
-$setting_mdl->set_conf('upload.enable_thumb_square',false);
+$setting_mdl->set_conf('upload.enable_thumb_cut',false);
 $setting_mdl->set_conf('upload.thumb_width',180);
 $setting_mdl->set_conf('upload.thumb_height',180);
 $setting_mdl->set_conf('upload.use_old_imgname',false);

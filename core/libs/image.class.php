@@ -58,6 +58,10 @@ class image_cla{
         $this->worker->square($v);
     }
     
+    function resizeCut($w,$h){
+        $this->worker->resizeCut($w,$h);
+    }
+    
     function rotate($a){
         $this->worker->rotate($a);
     }

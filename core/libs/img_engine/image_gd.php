@@ -212,6 +212,47 @@ class image_gd {
         }
         $this->cut($v,$v,$left,$top);
     }
+
+    //缩小并剪切
+    function resizeCut($w,$h){
+        $left = 0;
+        $top = 0;
+
+        $width = $this->getWidth();
+        $height = $this->getHeight();
+
+        if($w == $width && $h == $height){
+            return true;
+        }
+
+        $ratio_o = $width/$height;
+        $ratio_t = $w/$h;
+
+        if($width>$w && $height > $h){
+            if($ratio_o == $ratio_t){
+                return $this->resizeTo($w,$h);
+            }
+
+            if($ratio_o > $ratio_t){
+                $this->resizeToHeight($h);
+                $left = ceil(($h/$height * $width - $w)/2);
+            }else{
+                $this->resizeToWidth($w);
+                $top = ceil(($w/$width * $height - $h)/2);
+            }
+            return $this->cut($w,$h,$left,$top);
+        }elseif($width<$w && $height < $h){
+            return true;
+        }else{
+            if($width < $w){
+                $top = ceil(($height - $h)/2);
+                return $this->cut($width,$h,$left,$top);
+            }else{
+                $left = ceil(($width - $w)/2);
+                return $this->cut($w,$height,$left,$top);
+            }
+        }
+    }
     /**
      * 等比例缩小到指定宽度
      * 
