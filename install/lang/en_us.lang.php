@@ -13,7 +13,7 @@ $lang = array(
 	
 	'click_to_back' => 'Click to return',
 	'method_undefined' => 'Undefined method',
-	'license' => '<div class="license"> <h1> English version of the License Agreement for English users </ h1> <p> © 2010-2011 Meiu Studio meiu.cn. All rights reserved. </p> <p> Thank you for choosing MeiuPic album management system. We hope that our efforts to provide you with an efficient image management, your support will be our biggest driving force for development. </p>
+	'license' => '<div class="license"> <h1> English version of the License Agreement for English users </ h1> <p> © 2010-2012 Meiu Studio meiu.cn. All rights reserved. </p> <p> Thank you for choosing MeiuPic album management system. We hope that our efforts to provide you with an efficient image management, your support will be our biggest driving force for development. </p>
     <h3> I. License agreement right </ h3>
     <ol>
     <li> You can fully comply with the end user license agreement, based on the software used in this non-commercial use, without having to pay licensing fees for software copyright. </li>
