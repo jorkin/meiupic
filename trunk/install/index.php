@@ -91,7 +91,7 @@ if($method == 'license'){
     $dbuser = $CONFIG['database']['default']['dbuser'];
     $tablepre = $CONFIG['database']['default']['pre'];
 
-    $adminemail = 'admin@admin.com';
+    $adminemail = '';
     $PHP_SELF = htmlspecialchars($_SERVER['PHP_SELF'] ? $_SERVER['PHP_SELF'] : $_SERVER['SCRIPT_NAME']);
     $url = htmlspecialchars('http://'.$_SERVER['HTTP_HOST'].preg_replace("/\/+(api|archiver|wap)?\/*$/i", '', substr($PHP_SELF, 0, strrpos($PHP_SELF, '/'))));
     $siteurl = substr($url, 0, -7);
@@ -301,7 +301,7 @@ if($method == 'license'){
         
         echo '<script type="text/javascript">document.getElementById("laststep").disabled=false;document.getElementById("laststep").value = \''.lang('installed_complete').'\';</script><script type="text/javascript">setTimeout(function(){window.location=\'index.php?method=complete\'}, 2000);</script>'."\r\n";
         @touch(ROOTDIR.'conf/install.lock');
-        getstatinfo();
+        getstatinfo(array('email'=>$email));
         show_footer();
     }else{
         show_form($form_db_init_items, $error_msg);
