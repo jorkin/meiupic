@@ -6,7 +6,7 @@
  * @support : http://meiupic.meiu.cn
  * @copyright : (c)2011 meiu.cn lingter@gmail.com
  */
-error_reporting(E_ALL);
+error_reporting(E_ALL & ~E_NOTICE);
 define('CHECK_UPDATE_URL','http://meiupic.meiu.cn/check_update.php');
 
 @ini_set('memory_limit', '128M');
