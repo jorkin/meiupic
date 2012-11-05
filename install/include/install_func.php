@@ -294,7 +294,7 @@ function runquery($sql) {
 }
 
 
-function getstatinfo() {
+function getstatinfo($params=array()) {
     $version = MPIC_VERSION;
     $onlineip = get_real_ip();
     $funcurl = 'http://meiupic'.'.mei'.'u'.'.c'.'n/stats_in.php';
@@ -303,6 +303,9 @@ function getstatinfo() {
     $url = substr($url, 0, -8);
     $hash = md5("{$url}{$version}{$onlineip}");
     $q = "url=$url&version=$version&ip=$onlineip&time=".time()."&hash=$hash";
+    foreach ($params as $key => $value) {
+        $q .= '&'.$key.'='.$value;
+    }
     $q=rawurlencode(base64_encode($q));
     get_remote($funcurl."?action=newinstall&q=$q",5);
 }
