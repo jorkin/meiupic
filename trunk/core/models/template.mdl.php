@@ -209,7 +209,7 @@ class template_mdl{
                     $str .= '$db =& loader::database();';
                     if (isset($page)) {
                         $str .= '$pagesize = '.$num.';';
-                        $str .= '$page = '.(isset($page)?$page:1).';';
+                        $str .= '$page = '.(isset($page)?str_replace('`','', $page):1).';';
                         $str .= '$urlrule = "'.$urlrule.'";';
                         $str .= '$db->setSql("'.$datas['sql'].'");';
                         $str .= '$r = $db->toPage($page,$pagesize);';

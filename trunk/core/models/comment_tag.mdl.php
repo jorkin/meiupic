@@ -28,14 +28,15 @@ class comment_tag_mdl{
         $filters['status'] = 1;
         
         $order = isset($data['order'])?$data['order']:null;
+        $fields = isset($data['fields'])?$data['fields']:'*';
 
         if(array_key_exists('page',$data)){
             $page = intval($data['page']);
             $page = $page<1?1:$page;
             $pageset = intval($data['pagesize']);
-            return $this->comment->get_all($page,$filters,$order,$pageset);
+            return $this->comment->get_all($page,$filters,$order,$pageset,$fields);
         }else{
-            return $this->comment->get_top($data['limit'],$filters,$order);
+            return $this->comment->get_top($data['limit'],$filters,$order,$fields);
         }
     }
 
