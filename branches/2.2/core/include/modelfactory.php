@@ -38,7 +38,7 @@ class modelfactory{
         return $this->db->insertId();
     }
     
-    function get_all($page = NULL,$filters = array(),$sort = null,$pageset = null){
+    function get_all($page = NULL,$filters = array(),$sort = null,$pageset = null,$fields = null){
         $where = $this->_filters($filters);
         if($sort){
             $sort = $this->_sort($sort);
@@ -48,8 +48,11 @@ class modelfactory{
         if(!$pageset){
             $pageset = $this->pageset;
         }
+        if(!$fields){
+            $fields = $this->default_cols;
+        }
 
-        $this->db->select($this->table_name,$this->default_cols,$where,$sort);
+        $this->db->select($this->table_name,$fields,$where,$sort);
         if(is_numeric($page)){
             $data = $this->db->toPage($page,$pageset);
         }else{
@@ -64,14 +67,17 @@ class modelfactory{
      * @param array $filters
      * @param array $sort
      */
-    function get_top($limit,$filters = array(),$sort = null){
+    function get_top($limit,$filters = array(),$sort = null,$fields = null){
         $where = $this->_filters($filters);
         if($sort){
             $sort = $this->_sort($sort);
         }else{
             $sort = $this->default_order;
         }
-        $this->db->select($this->table_name,$this->default_cols,$where,$sort);
+        if(!$fields){
+            $fields = $this->default_cols;
+        }
+        $this->db->select($this->table_name,$fields,$where,$sort);
         if(strpos($limit, ',') !== false){
             $lim = explode(',',$limit);
             $this->db->selectLimit(null,$lim[1],$lim[0]);

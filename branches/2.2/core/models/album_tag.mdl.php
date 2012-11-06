@@ -15,21 +15,27 @@ class album_tag_mdl{
     function lists($data){
         $filters = array();
         if(isset($data['cate_id'])){
-            $filters['cate_id'] = $data['cate_id'];
+            $filters['cate_id'] = intval($data['cate_id']);
+        }
+        if(isset($data['tag'])){
+            $filters['tag'] = $data['tag'];
+        }
+        if(isset($data['name'])){
+            $filters['name'] = $data['name'];
         }
         if(isset($data['type'])){
-            $filters['priv_type'] = $data['type'];
+            $filters['priv_type'] = intval($data['type']);
         }
         
         $order = isset($data['order'])?$data['order']:null;
-
+        $fields = isset($data['fields'])?$data['fields']:'*';
         if(array_key_exists('page',$data)){
             $page = intval($data['page']);
             $page = $page<1?1:$page;
             $pageset = intval($data['pagesize']);
-            return $this->album->get_all($page,$filters,$order,$pageset);
+            return $this->album->get_all($page,$filters,$order,$pageset,$fields);
         }else{
-            return $this->album->get_top($data['limit'],$filters,$order);
+            return $this->album->get_top($data['limit'],$filters,$order,$fields);
         }
     }
 

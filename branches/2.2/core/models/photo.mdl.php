@@ -74,7 +74,11 @@ class photo_mdl extends modelfactory{
                 $str = 'name desc,id desc';
                 break;
             default:
-                $str = $this->default_order;
+                if(preg_match('/[0-9a-z\-_]\s+(asc|desc)/is',$sort)){
+                    $str = $sort;
+                }else{
+                    $str = $this->default_order;
+                }
         }
         return $str;
     }
