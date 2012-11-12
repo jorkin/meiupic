@@ -252,9 +252,12 @@ function gps2Num($coordPart) {
     return 0; 
   if(count($parts) == 1) 
     return $parts[0]; 
-  
+  if(floatval($parts[1]) == 0){
+    return 0;
+  }
   return floatval($parts[0]) / floatval($parts[1]); 
 }
+
 function dgreeToNum($d){
     $num = $d['degrees'] + ($d['minutes']+$d['seconds']/60)/60;
     return round($num,8);
