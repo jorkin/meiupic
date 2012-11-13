@@ -237,7 +237,11 @@ function env_check(&$env_items) {
         }
 
         $env_items[$key]['status'] = 1;
-        if($item['r'] != 'notset' && strcmp($env_items[$key]['current'], $item['r']) < 0) {
+
+        $current = preg_replace('/[^0-9\.]/', '', $env_items[$key]['current']);
+        $require = preg_replace('/[^0-9\.]/', '', $item['r']);
+        //改用version_compare来比较
+        if($item['r'] != 'notset' && $item['r'] != 'unknow' && version_compare($current, $require) < 0) {
             $env_items[$key]['status'] = 0;
         }
         //没GD库不允许继续安装
