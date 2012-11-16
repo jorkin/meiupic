@@ -237,17 +237,6 @@ function env_check(&$env_items) {
         }
 
         $env_items[$key]['status'] = 1;
-
-        $current = preg_replace('/[^0-9\.]/', '', $env_items[$key]['current']);
-        $require = preg_replace('/[^0-9\.]/', '', $item['r']);
-        //改用version_compare来比较
-        if($item['r'] != 'notset' && $item['r'] != 'unknow' && version_compare($current, $require) < 0) {
-            $env_items[$key]['status'] = 0;
-        }
-        //没GD库不允许继续安装
-        if($env_items[$key]['current'] == 'noext'){
-            $env_items[$key]['status'] = 0;
-        }
     }
 }
 
@@ -379,9 +368,19 @@ function show_env_result(&$env_items, &$dirfile_items, &$func_items) {
         }
         $status = 1;
         if($item['r'] != 'notset') {
-            if($item['status'] != 1){
+            if(intval($item['current']) && intval($item['r'])) {
+                if(intval($item['current']) < intval($item['r'])) {
+                    $status = 0;
+                    $error_code = ENV_CHECK_ERROR;
+                }
+            }elseif($item['current'] == 'noext'){
                 $status = 0;
                 $error_code = ENV_CHECK_ERROR;
+            }else {
+                if(strcmp($item['current'], $item['r']) < 0) {
+                    $status = 0;
+                    $error_code = ENV_CHECK_ERROR;
+                }
             }
         }
         
