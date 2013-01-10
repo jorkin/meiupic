@@ -1,6 +1,6 @@
 <?php
 //如果无法生成缩略图，请打开此处调试
-error_reporting(0);
+//error_reporting(0);
 
 define('FCPATH',__FILE__);
 define('ROOTDIR',dirname(FCPATH).DIRECTORY_SEPARATOR);
@@ -34,6 +34,8 @@ class thumb{
     var $imgHandler = null;
     var $cleanCacheTime = 43200; //每隔多长时间检查清理缓存 默认半天
     var $fileCacheAge = 86400; //文件缓存有效期 默认一天
+
+    var $mimetypes = array('jpg'=>'image/jpeg','jpeg'=>'image/jpeg','gif'=>'image/gif','png'=>'image/png','bmp'=>'image/bmp');
     
     function thumb(){
         date_default_timezone_set('UTC');
@@ -109,11 +111,15 @@ class thumb{
     }
 
     function responseImg(){
-        if(PHP_VERSION < 5.3){
+
+        if(PHP_VERSION < 5.3 && function_exists('mime_content_type')){
             $mimetype = mime_content_type($this->realpath);
-        }else{
+        }elseif(function_exists('finfo_open')){
             $finfo    = finfo_open(FILEINFO_MIME);
             $mimetype = finfo_file($finfo, $this->realpath);
+        }else{
+            $ext = file_ext($this->realpath);
+            $mimetype = $this->mimetypes[$ext];
         }
 
         header("Content-Type: " . $mimetype);
