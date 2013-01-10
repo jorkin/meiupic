@@ -94,6 +94,39 @@ function encrypt_imgpath($params){
     $config =& loader::config();
     return $base_path.'img.php?'.mycrypt($string,$config['img_path_key'],'EN');
 }
+/**
+ * 生成缩略图并返回缩略图地址
+ * @param  string  $path 图片地址
+ * @param  int  $w    生成的缩略图宽度
+ * @param  int  $h    生成的缩略图高度
+ * @param  integer $t    缩放方式 1,裁切;2,强制缩放到某个尺寸;3,按比例缩放
+ * @return string 路径
+ */
+function thumb($path,$w=100,$h=100,$t=1,$smallpic = 'nopreview.gif'){
+    $realpath = ROOTDIR.$path;
+    if(empty($path)) return 'statics/img/'.$smallpic;
+    if(!file_exists($realpath)) return 'statics/img/'.$smallpic;
+    $newimgurl = preg_replace('/^(data)\/([0-9]+)/','\\1/t/\\2',dirname($path)).'/t_'.$w.'_'.$h.'_'.$t.'_'.basename($path);
+
+    list($width_t, $height_t, $type, $attr) = getimagesize($realpath);
+    if($w>=$width_t || $w>=$height_t) return $imgurl;
+
+    if(file_exists(ROOTDIR.$newimgurl)){
+        return $newimgurl;
+    }
+    $img =& loader::lib('image');
+
+    $img->load($realpath);
+    if($t == 1){
+        $img->resizeCut($w,$h);
+    }elseif($t == 2){
+        $img->resize($w,$h);
+    }else{
+        $img->resizeScale($w,$h);
+    }
+    $img->save(ROOTDIR.$newimgurl);
+    return $newimgurl;
+}
 
 //用户真实的IP地址
 function get_real_ip(){
