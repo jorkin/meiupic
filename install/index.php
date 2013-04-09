@@ -135,7 +135,8 @@ if($method == 'license'){
         $forceinstall = isset($_POST['mysqldbinfo']['forceinstall']) ? $_POST['mysqldbinfo']['forceinstall'] : '';
         $dbname_not_exists = true;
         if(!empty($dbhost) && $dbadapter=='mysql' && empty($forceinstall)) {
-            $dbname_not_exists = check_db($dbhost, $dbuser, $dbpw, $dbname, $tablepre);
+            $dbname_not_exists = check_db($dbhost.':'.$dbport, $dbuser, $dbpw, $dbname, $tablepre);
+
             if(!$dbname_not_exists) {
                 $form_db_init_items['mysqldbinfo']['forceinstall'] = array('type' => 'checkbox', 'required' => 0, 'reg' => '/^.*+/');
                 $error_msg['mysqldbinfo']['forceinstall'] = 1;
